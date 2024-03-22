@@ -2,20 +2,45 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config,lib, pkgs, ... }:
 
+
+
+
+
+
+
+
+###
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
+nix.distributedBuilds= true;
+
+###############
+
+      
+
+
+
+#services.emacs.enable= true;
+
+#services.emacs.enable= true;
+
+
+###############
+# services.emacs.defaultEditor= true;
+
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "nixos"; # Define Your Hostname.
+  # Networking.Wireless.Enable = True;  # Enables Wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -58,11 +83,23 @@ services.pipewire = {
 
 
 
+###
+services.xserver.windowManager.bspwm.configFile = "/home/murat/.config/bspwm/bspwmrc";
+services.xserver.windowManager.bspwm.package = pkgs.bspwm;
+services.xserver.windowManager.bspwm.enable = true;
+services.xserver.windowManager.bspwm.sxhkd.package = pkgs.sxhkd;
+services.xserver.windowManager.bspwm.sxhkd.configFile = "/home/murat/.config/sxhkd/sxhkdrc";
+
+services.picom.settings = { enable = true; settings = {
+ };
+  config = "/home/murat/.config/picom/picom.conf";  # Optional, include if needed
+};
+
+###
 services.xserver.enable= true;
 services.xserver.displayManager.startx.enable= true;
-services.xserver.windowManager.dwm.enable = true;
-#programs.zsh.enable= true;
-  # Configure keymap in X11
+#services.xserver.windowManager.dwm.enable = true;
+#programs.zsh.enable= true;  # Configure keymap in X11
   services.xserver = {
     layout = "us";
     xkbVariant = "";
@@ -107,8 +144,8 @@ programs = {
   environment.systemPackages = with pkgs; [
    pkgs.vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   pkgs.wget
-pkgs.dmenu
-pkgs.st
+#pkgs.dmenu
+#pkgs.st
 pkgs.firefox
 pkgs.neofetch
 pkgs.google-chrome
@@ -119,6 +156,33 @@ pkgs.zsh
 pkgs.oh-my-zsh
 pkgs.git
 pkgs.rclone
+pkgs.xorg.xorgserver
+pkgs.xorg.xf86inputlibinput
+pkgs.feh
+pkgs.android-studio
+pkgs.ripgrep
+pkgs.emacs
+pkgs.xorg.xrandr
+pkgs.emacsPackages.doom
+pkgs.fd
+pkgs.emacsPackages.doom-modeline
+pkgs.emacsPackages.doom-themes
+pkgs.gnumake42
+    pkgs.pkg-config
+pkgs.qemu_full
+pkgs.coreutils
+pkgs.clang
+pkgs.screen
+pkgs.lux
+pkgs.qutebrowser
+pkgs.kitty
+pkgs.alacritty
+pkgs.xterm
+pkgs.dunst
+pkgs.nitrogen
+pkgs.sxhkd
+pkgs.nitrogen
+pkgs.bspwm
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
