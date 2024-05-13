@@ -1,0 +1,10 @@
+hugo
+git
+curl
+fastfetch
+vlc
+firefox
+rclone
+kitty
+zsh
+emacs
