@@ -238,7 +238,7 @@ bindsym $mod+r mode "resize"
 
 
 # Mod + F6 ile artır, Mod + F5 ile azalt
-bindsym $mod+F6 exec "brightnessctl -d intel_backlight set +5%"
+
 bindsym $mod+F5 exec "brightnessctl -d intel_backlight set 5%-"
 # Special key to take a screenshot with grim
 
