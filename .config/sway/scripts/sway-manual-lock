@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+set -u
+
+SWAYLOCK="/usr/local/bin/swaylock"
+
+exec "$SWAYLOCK" -c 000000

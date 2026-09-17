@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+import gi
+
+gi.require_version("Gtk", "4.0")
+from gi.repository import Gtk, Gdk
+
+SHORTCUT_READER = os.path.expanduser("~/.config/sway/scripts/sway-shortcuts")
+
+
+class ShortcutWindow(Gtk.ApplicationWindow):
+    def __init__(self, app):
+        super().__init__(application=app)
+
+        self.was_active = False
+
+        self.set_title("Sway Shortcuts")
+        self.set_default_size(900, 700)
+
+        key_controller = Gtk.EventControllerKey.new()
+        key_controller.connect("key-pressed", self.on_key_pressed)
+        self.add_controller(key_controller)
+
+        self.connect("notify::is-active", self.on_active_changed)
+
+        root = Gtk.Box(
+            orientation=Gtk.Orientation.VERTICAL,
+            spacing=0,
+        )
+        root.set_margin_top(24)
+        root.set_margin_bottom(24)
+        root.set_margin_start(30)
+        root.set_margin_end(30)
+
+        title = Gtk.Label(label="SWAY SHORTCUTS")
+        title.add_css_class("title-2")
+        title.set_margin_bottom(20)
+        root.append(title)
+
+        separator = Gtk.Separator(
+            orientation=Gtk.Orientation.HORIZONTAL
+        )
+        separator.set_margin_bottom(12)
+        root.append(separator)
+
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(
+            Gtk.PolicyType.NEVER,
+            Gtk.PolicyType.AUTOMATIC,
+        )
+        scroll.set_vexpand(True)
+
+        rows = Gtk.Box(
+            orientation=Gtk.Orientation.VERTICAL,
+            spacing=3,
+        )
+
+        for shortcut, description in self.load_shortcuts():
+            row = Gtk.Box(
+                orientation=Gtk.Orientation.HORIZONTAL,
+                spacing=24,
+            )
+
+            key_label = Gtk.Label(label=shortcut)
+            key_label.set_xalign(0)
+            key_label.set_width_chars(32)
+            key_label.add_css_class("monospace")
+
+            description_label = Gtk.Label(label=description)
+            description_label.set_xalign(0)
+            description_label.set_hexpand(True)
+            description_label.set_wrap(True)
+
+            row.append(key_label)
+            row.append(description_label)
+
+            rows.append(row)
+
+        scroll.set_child(rows)
+        root.append(scroll)
+
+        self.set_child(root)
+
+    def load_shortcuts(self):
+        result = subprocess.run(
+            [SHORTCUT_READER, "--print"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        entries = []
+
+        for line in result.stdout.splitlines():
+            if not line.strip():
+                continue
+
+            parts = line.split("\t", 1)
+
+            shortcut = parts[0].strip()
+            description = parts[1].strip() if len(parts) == 2 else ""
+
+            entries.append((shortcut, description))
+
+        return entries
+
+    def on_key_pressed(self, controller, keyval, keycode, state):
+        if keyval in (
+            Gdk.KEY_Escape,
+            Gdk.KEY_q,
+            Gdk.KEY_Q,
+        ):
+            self.close()
+            return True
+
+        return False
+
+    def on_active_changed(self, window, param):
+        if self.is_active():
+            self.was_active = True
+            return
+
+        if self.was_active:
+            self.close()
+
+
+class ShortcutApplication(Gtk.Application):
+    def __init__(self):
+        super().__init__(
+            application_id="io.sway.shortcuts"
+        )
+
+    def do_activate(self):
+        window = ShortcutWindow(self)
+        window.present()
+
+
+app = ShortcutApplication()
+app.run()

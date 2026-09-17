@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DIRECTION="${1:-}"
+
+case "$DIRECTION" in
+    next|prev)
+        ;;
+    *)
+        printf 'Usage: %s {next|prev}\n' "$0" >&2
+        exit 2
+        ;;
+esac
+
+WORKSPACE="$(
+    swaymsg -t get_workspaces -r |
+        jq -r '.[] | select(.focused == true) | .name' |
+        head -n1
+)"
+
+mapfile -t WINDOWS < <(
+    swaymsg -t get_tree -r |
+        jq -r --arg workspace "$WORKSPACE" '
+            .. |
+            objects |
+            select(.type? == "workspace" and .name == $workspace) |
+            .. |
+            objects |
+            select(
+                .type? == "con" and
+                (
+                    .app_id? != null or
+                    .window_properties?.class? != null
+                )
+            ) |
+            "\(.id)\t\(.focused)"
+        '
+)
+
+COUNT="${#WINDOWS[@]}"
+
+if (( COUNT < 2 )); then
+    exit 0
+fi
+
+CURRENT=-1
+
+for i in "${!WINDOWS[@]}"; do
+    IFS=$'\t' read -r ID FOCUSED <<< "${WINDOWS[$i]}"
+
+    if [[ "$FOCUSED" == "true" ]]; then
+        CURRENT="$i"
+        break
+    fi
+done
+
+if (( CURRENT < 0 )); then
+    exit 1
+fi
+
+case "$DIRECTION" in
+    next)
+        TARGET=$(( (CURRENT + 1) % COUNT ))
+        ;;
+    prev)
+        TARGET=$(( (CURRENT - 1 + COUNT) % COUNT ))
+        ;;
+esac
+
+IFS=$'\t' read -r TARGET_ID _ <<< "${WINDOWS[$TARGET]}"
+
+swaymsg "[con_id=$TARGET_ID] focus" >/dev/null

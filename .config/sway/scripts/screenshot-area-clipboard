@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCREENSHOT_DIR="$HOME/.screenshoot"
+TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
+OUTPUT_FILE="$SCREENSHOT_DIR/clipboard_${TIMESTAMP}.png"
+
+WL_COPY="$HOME/.local/bin/wl-copy"
+
+mkdir -p "$SCREENSHOT_DIR"
+
+GEOMETRY="$(slurp)" || exit 0
+
+grim -g "$GEOMETRY" "$OUTPUT_FILE"
+"$WL_COPY" --type image/png < "$OUTPUT_FILE"
+
+notify-send "Screenshot" "Copied and saved: $OUTPUT_FILE"

@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+LOCK_DIR="$RUNTIME_DIR/sway-recording.lock"
+OWNER_FILE="$LOCK_DIR/owner"
+PID_FILE="$LOCK_DIR/pid"
+
+notify_busy() {
+    local owner="$1"
+    notify-send "Recording Busy" "Another recording is active: $owner"
+}
+
+read_owner() {
+    [[ -r "$OWNER_FILE" ]] && cat "$OWNER_FILE" || printf 'unknown\n'
+}
+
+read_pid() {
+    [[ -r "$PID_FILE" ]] && cat "$PID_FILE" || printf '0\n'
+}
+
+lock_is_alive() {
+    local pid
+
+    [[ -d "$LOCK_DIR" ]] || return 1
+
+    pid="$(read_pid)"
+
+    [[ "$pid" =~ ^[0-9]+$ ]] || return 1
+    (( pid > 0 )) || return 1
+
+    kill -0 "$pid" 2>/dev/null
+}
+
+cleanup_stale_lock() {
+    if [[ -d "$LOCK_DIR" ]] && ! lock_is_alive; then
+        rm -rf "$LOCK_DIR"
+    fi
+}
+
+acquire_lock() {
+    local owner="$1"
+
+    cleanup_stale_lock
+
+    if mkdir "$LOCK_DIR" 2>/dev/null; then
+        printf '%s\n' "$owner" > "$OWNER_FILE"
+        printf '%s\n' "$PPID" > "$PID_FILE"
+        return 0
+    fi
+
+    notify_busy "$(read_owner)"
+    return 1
+}
+
+release_lock() {
+    local owner="$1"
+    local current_owner
+
+    [[ -d "$LOCK_DIR" ]] || return 0
+
+    current_owner="$(read_owner)"
+
+    if [[ "$current_owner" == "$owner" ]]; then
+        rm -rf "$LOCK_DIR"
+    fi
+}
+
+show_status() {
+    cleanup_stale_lock
+
+    if lock_is_alive; then
+        printf 'ACTIVE | %s | PID %s\n' "$(read_owner)" "$(read_pid)"
+    else
+        printf 'IDLE\n'
+    fi
+}
+
+case "${1:-}" in
+    acquire)
+        [[ $# -eq 2 ]] || exit 2
+        acquire_lock "$2"
+        ;;
+    release)
+        [[ $# -eq 2 ]] || exit 2
+        release_lock "$2"
+        ;;
+    status)
+        show_status
+        ;;
+    *)
+        printf 'Usage: %s {acquire OWNER|release OWNER|status}\n' "$0" >&2
+        exit 2
+        ;;
+esac

@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+export LD_LIBRARY_PATH=/usr/lib
+
+RECORD_DIR="$HOME/.record"
+PID_FILE="$HOME/.cache/sway-camera-record.pid"
+
+FFMPEG="/usr/bin/ffmpeg"
+RECORDING_LOCK="$HOME/.config/sway/scripts/sway-recording-lock"
+
+CAMERA="/dev/video0"
+MIC="alsa_input.pci-0000_00_1f.3.analog-stereo"
+SPEAKER="alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"
+
+mkdir -p "$RECORD_DIR" "$HOME/.cache"
+
+# Toggle: stop the currently active camera recording.
+if [[ -f "$PID_FILE" ]]; then
+    PID="$(cat "$PID_FILE")"
+
+    if kill -0 "$PID" 2>/dev/null; then
+        kill -INT "$PID"
+        notify-send "Camera Recording" "Stopping recording"
+        exit 0
+    fi
+
+    rm -f "$PID_FILE"
+fi
+
+# Prevent overlapping recording sessions.
+"$RECORDING_LOCK" acquire camera || exit 1
+trap '"$RECORDING_LOCK" release camera' EXIT
+
+TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
+OUTPUT_FILE="$RECORD_DIR/camera_${TIMESTAMP}.mp4"
+
+"$FFMPEG" \
+    -f v4l2 \
+    -input_format mjpeg \
+    -framerate 30 \
+    -video_size 1280x720 \
+    -i "$CAMERA" \
+    -f pulse \
+    -i "$MIC" \
+    -f pulse \
+    -i "$SPEAKER" \
+    -map 0:v \
+    -map 1:a \
+    -map 2:a \
+    -c:v libx264 \
+    -c:a aac \
+    "$OUTPUT_FILE" &
+
+PID=$!
+echo "$PID" > "$PID_FILE"
+
+notify-send "Camera Recording" "Recording started"
+
+wait "$PID" || true
+
+rm -f "$PID_FILE"
+
+notify-send "Camera Recording" "Recording finished: $OUTPUT_FILE"

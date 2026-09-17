@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SWAY_DIR="$HOME/.config/sway"
+DOC_DIR="$SWAY_DIR/docs"
+GLOW="/usr/local/bin/glow"
+WMENU="/usr/bin/wmenu"
+
+mkdir -p "$DOC_DIR"
+
+declare -A MODULES=(
+    ["1 Window Management"]="window-management.conf"
+    ["2 Workspaces"]="workspaces.conf"
+    ["3 Applications and Utilities"]="shortcuts.conf"
+    ["4 System Controls"]="system-controls.conf"
+    ["5 Capture and Recording"]="capture.conf"
+    ["6 Outputs"]="outputs.conf"
+    ["7 Input"]="input.conf"
+    ["8 Swaybar"]="bar.conf"
+    ["9 Session"]="session.conf"
+    ["0 Application Assignments"]="app-assignments.conf"
+)
+
+generate_doc() {
+    local title="$1"
+    local source="$2"
+    local target="$3"
+
+    {
+        printf '# %s\n\n' "$title"
+        printf '> Generated automatically from `%s`.\n\n' "$source"
+        printf '| Shortcut | Action |\n'
+        printf '|---|---|\n'
+
+        awk '
+        function clean_key(key) {
+            gsub(/\$mod/, "Super", key)
+            gsub(/Mod4/, "Super", key)
+            gsub(/\$left/, "H", key)
+            gsub(/\$down/, "J", key)
+            gsub(/\$up/, "K", key)
+            gsub(/\$right/, "L", key)
+            gsub(/\+/, " + ", key)
+            return key
+        }
+
+        /^[[:space:]]*#[^#]/ {
+            comment=$0
+            sub(/^[[:space:]]*#[[:space:]]*/, "", comment)
+            next
+        }
+
+        /^[[:space:]]*bindsym[[:space:]]+/ {
+            line=$0
+            sub(/^[[:space:]]*bindsym[[:space:]]+/, "", line)
+
+            while (line ~ /^--[^[:space:]]+[[:space:]]+/) {
+                sub(/^--[^[:space:]]+[[:space:]]+/, "", line)
+            }
+
+            key=line
+            sub(/[[:space:]].*$/, "", key)
+
+            command=line
+            sub(/^[^[:space:]]+[[:space:]]+/, "", command)
+
+            action=comment
+            if (action == "") {
+                action=command
+            }
+
+            gsub(/\|/, "\\|", action)
+            gsub(/\|/, "\\|", command)
+
+            printf "| `%s` | %s |\n", clean_key(key), action
+            comment=""
+        }
+        ' "$source"
+
+        printf '\n## Source\n\n'
+        printf '```text\n%s\n```\n' "$source"
+    } > "$target"
+}
+
+for label in "${!MODULES[@]}"; do
+    file="${MODULES[$label]}"
+    title="${label#* }"
+    slug="${file%.conf}"
+
+    generate_doc \
+        "$title" \
+        "$SWAY_DIR/$file" \
+        "$DOC_DIR/$slug.md"
+done
+
+selection="$(
+    printf '%s\n' "${!MODULES[@]}" |
+        sort -n |
+        "$WMENU" -p "Sway Help"
+)"
+
+[[ -n "$selection" ]] || exit 0
+
+file="${MODULES[$selection]:-}"
+[[ -n "$file" ]] || exit 0
+
+doc="$DOC_DIR/${file%.conf}.md"
+
+exec /usr/local/bin/foot /usr/local/bin/glow -p "$doc"

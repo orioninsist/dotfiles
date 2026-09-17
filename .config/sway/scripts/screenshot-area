@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCREENSHOT_DIR="$HOME/.screenshoot"
+TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
+FREEZE_FILE="/tmp/screenshot-freeze-${TIMESTAMP}.png"
+OUTPUT_FILE="$SCREENSHOT_DIR/screenshot_${TIMESTAMP}.png"
+
+SATTY="$HOME/.local/bin/satty"
+SWAYIMG="/usr/local/bin/swayimg"
+WL_COPY="$HOME/.local/bin/wl-copy"
+
+WAYBAR_STATE_FILE="$HOME/.cache/waybar-hidden"
+
+FREEZE_PID=""
+WAYBAR_HIDDEN_BY_SCRIPT=0
+
+cleanup() {
+    if [[ -n "$FREEZE_PID" ]]; then
+        kill "$FREEZE_PID" 2>/dev/null || true
+        wait "$FREEZE_PID" 2>/dev/null || true
+    fi
+
+    if (( WAYBAR_HIDDEN_BY_SCRIPT == 1 )); then
+        pkill -USR1 -x waybar 2>/dev/null || true
+    fi
+
+    rm -f "$FREEZE_FILE"
+}
+
+trap cleanup EXIT INT TERM
+
+mkdir -p "$SCREENSHOT_DIR"
+
+OUTPUT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused) | .name')"
+X="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused) | .rect.x')"
+Y="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused) | .rect.y')"
+WIDTH="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused) | .rect.width')"
+HEIGHT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused) | .rect.height')"
+
+# Capture the original screen including Waybar when it is currently visible.
+grim -o "$OUTPUT" "$FREEZE_FILE"
+
+# Temporarily hide Waybar only when the user currently has it visible.
+if [[ ! -f "$WAYBAR_STATE_FILE" ]] && pgrep -x waybar >/dev/null; then
+    pkill -USR1 -x waybar
+    WAYBAR_HIDDEN_BY_SCRIPT=1
+    sleep 0.05
+fi
+
+"$SWAYIMG" \
+    --appid=screenshot-freeze \
+    --size="${WIDTH},${HEIGHT}" \
+    --position="${X},${Y}" \
+    "$FREEZE_FILE" &
+
+FREEZE_PID=$!
+
+for _ in {1..20}; do
+    if swaymsg -t get_tree -r | jq -e '.. | objects | select(.app_id? == "screenshot-freeze")' >/dev/null 2>&1; then
+        break
+    fi
+    sleep 0.02
+done
+
+swaymsg '[app_id="screenshot-freeze"] floating enable'
+swaymsg '[app_id="screenshot-freeze"] border none'
+swaymsg "[app_id=\"screenshot-freeze\"] resize set width ${WIDTH} px height ${HEIGHT} px"
+swaymsg "[app_id=\"screenshot-freeze\"] move position ${X} ${Y}"
+
+GEOMETRY="$(slurp)" || exit 0
+
+grim -g "$GEOMETRY" "$OUTPUT_FILE"
+
+kill "$FREEZE_PID" 2>/dev/null || true
+wait "$FREEZE_PID" 2>/dev/null || true
+FREEZE_PID=""
+
+if (( WAYBAR_HIDDEN_BY_SCRIPT == 1 )); then
+    pkill -USR1 -x waybar
+    WAYBAR_HIDDEN_BY_SCRIPT=0
+fi
+
+"$WL_COPY" --type image/png < "$OUTPUT_FILE"
+
+"$SATTY" \
+    --filename "$OUTPUT_FILE" \
+    --copy-command "$WL_COPY"
+
+notify-send "Screenshot" "Saved: $OUTPUT_FILE"
