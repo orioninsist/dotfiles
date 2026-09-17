@@ -135,7 +135,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
         bo.textwidth = 0
         bo.wrapmargin = 0
-        bo.spell = true
+        wo.spell = true
         bo.spelllang = 'en_us'
 
         wo.wrap = true
