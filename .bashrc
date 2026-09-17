@@ -14,6 +14,7 @@ alias grep="grep --color=auto"
 
 PS1="[\u@\h \W]\$ "
 
+export _ZO_RESOLVE_SYMLINKS=1
 eval "$(zoxide init bash)"
 
 enable -p | grep -q "^enable flyline$" || enable -f /mnt/local/projects/flyline/target/release/libflyline.so flyline
