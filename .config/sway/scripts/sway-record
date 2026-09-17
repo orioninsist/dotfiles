@@ -8,7 +8,7 @@ export LD_LIBRARY_PATH=/usr/lib
 RECORD_DIR="$HOME/.record"
 PID_FILE="$HOME/.cache/sway-record.pid"
 
-WL_SCREENREC="/mnt/local/projects/wl-screenrec/target/release/wl-screenrec"
+WL_SCREENREC="/usr/local/bin/wl-screenrec"
 RECORDING_LOCK="$HOME/.config/sway/scripts/sway-recording-lock"
 
 AUDIO_DEVICE="alsa_input.pci-0000_00_1f.3.analog-stereo"

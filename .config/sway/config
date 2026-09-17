@@ -48,4 +48,3 @@ include ~/.config/sway/session.conf
 xwayland force
 
 ### System configuration
-include /etc/sway/config.d/*
