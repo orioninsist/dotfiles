@@ -1,0 +1,4 @@
+[[mgr.prepend_keymap]]
+on   = "d"
+run  = "plugin gdrive-trash"
+desc = "Trash: Google Drive via rclone, otherwise Yazi"
