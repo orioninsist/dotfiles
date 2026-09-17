@@ -1,26 +1,35 @@
 local M = {}
 
-local note_completion_active = false
+local index_file = '/mnt/local/areas/note/storage/note-index.txt'
 
-function M.complete()
-    local file = "/mnt/local/areas/note/storage/note-index.txt"
+local function read_index()
     local items = {}
-
-    for line in io.lines(file) do
-        table.insert(items, line)
+    local handle = io.open(index_file, 'r')
+    if not handle then
+        return items
     end
 
+    for line in handle:lines() do
+        if line ~= '' then
+            table.insert(items, line)
+        end
+    end
+
+    handle:close()
     return items
+end
+
+function M.complete()
+    return read_index()
 end
 
 function M.open_completion()
     local items = {}
-    local all = M.complete()
-
+    local all = read_index()
     local line = vim.api.nvim_get_current_line()
-    local current = line:sub(1, vim.fn.col(".") - 1)
-
-    local base = current:match("%((.*)$") or ""
+    local col = vim.fn.col('.')
+    local before_cursor = line:sub(1, col - 1)
+    local base = before_cursor:match('%[[^%]]*%]%(([^)]*)$') or ''
 
     for _, item in ipairs(all) do
         if item:find(base, 1, true) then
@@ -28,54 +37,29 @@ function M.open_completion()
         end
     end
 
-    if #items > 0 then
-        note_completion_active = true
-
-        vim.fn.complete(
-            vim.fn.col(".") - 1,
-            items
-        )
+    if #items == 0 then
+        return
     end
+
+    local start_col = col - #base
+    vim.fn.complete(start_col, items)
 end
 
 function M.setup()
-    vim.api.nvim_create_user_command("NoteLinks", function()
-        print("Note links loaded: " .. #M.complete())
+    vim.api.nvim_create_user_command('NoteLinks', function()
+        print('Note links loaded: ' .. #read_index())
     end, {})
 
-    vim.api.nvim_create_autocmd("TextChangedI", {
-        pattern = "*.md",
+    vim.api.nvim_create_autocmd('TextChangedI', {
+        pattern = '*.md',
         callback = function()
             local line = vim.api.nvim_get_current_line()
+            local col = vim.fn.col('.')
+            local before_cursor = line:sub(1, col - 1)
 
-            if line:match("%[[^%]]*%]%([^)]*$") then
-                vim.schedule(function()
-                    M.open_completion()
-                end)
+            if before_cursor:match('%[[^%]]*%]%([^)]*$') then
+                vim.schedule(M.open_completion)
             end
-        end,
-    })
-
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = "markdown",
-        callback = function()
-            vim.keymap.set("i", "<Tab>", function()
-                if vim.fn.pumvisible() == 1 then
-                    vim.api.nvim_feedkeys(
-                        vim.api.nvim_replace_termcodes("<C-y>", true, false, true),
-                        "n",
-                        false
-                    )
-
-                    vim.schedule(function()
-                        vim.api.nvim_feedkeys(")", "i", false)
-                    end)
-
-                    return
-                end
-
-                return "<Tab>"
-            end, { buffer = true, expr = true })
         end,
     })
 end
