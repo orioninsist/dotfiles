@@ -46,5 +46,3 @@ include ~/.config/sway/session.conf
 
 ### XWayland
 xwayland force
-
-### System configuration

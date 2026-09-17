@@ -16,8 +16,7 @@ move_all_to() {
     swaymsg -t get_workspaces -r |
         jq -r '.[].name' |
         while IFS= read -r workspace; do
-            swaymsg workspace "$workspace" >/dev/null
-            swaymsg move workspace to output "$target" >/dev/null
+            swaymsg "workspace \"$workspace\"; move workspace to output \"$target\"" >/dev/null
         done
 }
 
@@ -26,11 +25,11 @@ restore_dual_layout() {
         jq -r '.[].name' |
         while IFS= read -r workspace; do
             case "$workspace" in
-                10[1-9]:*|110:*)
-                    swaymsg move workspace "$workspace" to output "$INTERNAL" >/dev/null
+                1|2|3|4|5)
+                    swaymsg "workspace $workspace; move workspace to output \"$EXTERNAL\"" >/dev/null
                     ;;
-                20[1-9]:*|210:*)
-                    swaymsg move workspace "$workspace" to output "$EXTERNAL" >/dev/null
+                6|7|8|9|10)
+                    swaymsg "workspace $workspace; move workspace to output \"$INTERNAL\"" >/dev/null
                     ;;
             esac
         done
@@ -54,11 +53,11 @@ case "$MODE" in
         ;;
 
     dual)
-        swaymsg output "$INTERNAL" enable >/dev/null
         swaymsg output "$EXTERNAL" enable >/dev/null
+        swaymsg output "$INTERNAL" enable >/dev/null
         restore_dual_layout
-        swaymsg focus output "$INTERNAL" >/dev/null
-        swaymsg workspace "101:1: 🌐" >/dev/null
+        swaymsg focus output "$EXTERNAL" >/dev/null
+        swaymsg workspace 1 >/dev/null
         notify_mode "Dual screen"
         ;;
 
