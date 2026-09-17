@@ -4,7 +4,7 @@ set -euo pipefail
 SWAY_DIR="$HOME/.config/sway"
 DOC_DIR="$SWAY_DIR/docs"
 GLOW="/usr/local/bin/glow"
-WMENU="/usr/bin/wmenu"
+WMENU="$(command -v wmenu)"
 
 mkdir -p "$DOC_DIR"
 
