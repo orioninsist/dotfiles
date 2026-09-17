@@ -6,7 +6,6 @@
 |---|---|
 | `Super + d` | Launchers, terminals, applications and user tools. |
 | `Super + g` | exec /usr/local/bin/foot /home/murat/.config/sway/scripts/cliphist-fzf |
-| `Super + x` | exec thunar |
 | `Super + y` | exec /usr/local/bin/kitty /home/murat/.local/bin/yazi |
 | `Super + Shift + Return` | exec /usr/local/bin/foot |
 | `Super + Ctrl + Return` | exec alacritty |
