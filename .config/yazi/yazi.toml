@@ -12,3 +12,34 @@ image_quality = 90
 [tasks]
 image_alloc = 1073741824
 image_bound = [ 15000, 15000 ]
+
+[opener]
+edit = [
+  { run = '/usr/local/bin/nvim "$@"', block = true, desc = "Neovim", for = "unix" },
+]
+
+image = [
+  { run = '/usr/local/bin/swayimg "$@"', orphan = true, desc = "Swayimg", for = "unix" },
+]
+
+media = [
+  { run = '/usr/local/bin/mpv "$@"', orphan = true, desc = "mpv", for = "unix" },
+]
+
+pdf = [
+  { run = 'xdg-open "$1"', orphan = true, desc = "Default", for = "unix" },
+]
+
+[open]
+rules = [
+  { mime = "text/*", use = "edit" },
+  { mime = "application/{json,ndjson,javascript,wine-extension-ini}", use = "edit" },
+
+  { mime = "image/*", use = "image" },
+
+  { mime = "{audio,video}/*", use = "media" },
+
+  { mime = "application/pdf", use = "pdf" },
+
+  { url = "*", use = "open" },
+]
