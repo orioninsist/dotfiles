@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-set -o pipefail
-
-/usr/local/bin/flameshot gui --raw \
-    | /home/murat/.local/bin/wl-copy --type image/png
