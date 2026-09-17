@@ -1,0 +1,9 @@
+[Unit]
+Description=Wayland Clipboard History
+After=graphical-session-pre.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/wl-paste --watch /usr/local/bin/cliphist store
+Restart=on-failure
+RestartSec=2

@@ -1,0 +1,166 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 28,
+    "spacing": 4,
+
+    "modules-left": [
+        "sway/workspaces"
+    ],
+
+    "modules-center": [],
+
+    "modules-right": [
+        "network",
+        "cpu",
+        "memory",
+        "temperature#cpu",
+        "temperature#nvme",
+        "temperature#pch",
+        "temperature#wifi",
+        "bluetooth",
+        "sway/language",
+        "wireplumber#source",
+        "power-profiles-daemon",
+        "custom/system",
+        "wireplumber",
+        "battery",
+        "clock",
+        "tray"
+    ],
+
+    "tray": {
+        "icon-size": 18,
+        "spacing": 6
+    },
+
+    "sway/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": false,
+        "format": "{name}"
+    },
+
+    "clock": {
+        "interval": 1,
+        "format": "󰃭 {:%a %m/%d/%Y %H:%M:%S}",
+        "tooltip": false,
+    },
+
+    "network": {
+        "interval": 1,
+        "format": "D{bandwidthDownBytes:>6}    U{bandwidthUpBytes:>6}",
+        "format-disconnected": "D    0B    U    0B",
+        "tooltip": false
+    },
+
+    "cpu": {
+        "interval": 1,
+        "format": "󰻠 {usage:>3}%",
+        "tooltip": false
+    },
+
+    "memory": {
+        "interval": 2,
+        "format": "󰍛 {percentage:>3}%",
+        "tooltip": false
+    },
+
+    "temperature#cpu": {
+        "hwmon-path": "/sys/class/hwmon/hwmon8/temp1_input",
+        "interval": 2,
+        "format": "󰔏 {temperatureC}°",
+        "tooltip": false
+    },
+
+    "temperature#nvme": {
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "interval": 2,
+        "format": "󰋊 {temperatureC}°",
+        "tooltip": false
+    },
+
+    "temperature#pch": {
+        "hwmon-path": "/sys/class/hwmon/hwmon5/temp1_input",
+        "interval": 2,
+        "format": "󰛵 {temperatureC}°",
+        "tooltip": false
+    },
+
+    "temperature#wifi": {
+        "hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
+        "interval": 2,
+        "format": "󰖩 {temperatureC}°",
+        "tooltip": false
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-connected": "󰂯 {num_connections}",
+        "tooltip": true,
+        "tooltip-format": "Connected: {num_connections}",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias} {device_battery_percentage}%"
+    },
+
+    "sway/language": {
+        "keyboard-name": "Razer Razer Ornata V3 X",
+        "format": "󰌌 {short}",
+        "tooltip": false
+    },
+
+    "wireplumber#source": {
+        "node-type": "Audio/Source",
+        "format": "󰍬",
+        "format-muted": "󰍭",
+        "tooltip": false,
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip": false,
+        "format-icons": {
+            "performance": "󰓅",
+            "balanced": "󰾅",
+            "power-saver": "󰌪"
+        }
+    },
+
+    "custom/system": {
+        "exec": "~/.config/waybar/scripts/system-status.sh",
+        "signal": 8,
+        "tooltip": false
+    },
+
+    "wireplumber": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁 MUTE",
+        "format-icons": [
+            "󰕿",
+            "󰖀",
+            "󰕾"
+        ],
+        "tooltip": false,
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+
+    "battery": {
+        "bat": "BAT0",
+        "interval": 30,
+        "format": "{icon}{capacity}%",
+        "format-charging": "󰂄{capacity}%",
+        "format-icons": [
+            "󰁺",
+            "󰁻",
+            "󰁽",
+            "󰁿",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ],
+        "tooltip": false
+    }
+}

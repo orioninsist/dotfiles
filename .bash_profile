@@ -8,8 +8,6 @@ export XDG_SESSION_DESKTOP=sway
 
 # Qt / Wayland
 export QT_QPA_PLATFORM='wayland;xcb'
-export QT_QPA_PLATFORMTHEME='kde'
-export QT_STYLE_OVERRIDE='Breeze'
 
 # Global dark appearance
 export CALIBRE_USE_SYSTEM_THEME=1
@@ -23,4 +21,4 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Added by Toolbox App
-export PATH="$PATH:/home/murat/.local/share/JetBrains/Toolbox/scripts"
+export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"

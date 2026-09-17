@@ -1,0 +1,13 @@
+[Unit]
+Description=Sway idle manager
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/swayidle -w \
+    timeout 1800 "/usr/local/bin/swaylock -f -c 000000"
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

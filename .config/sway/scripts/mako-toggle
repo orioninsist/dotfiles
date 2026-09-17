@@ -9,13 +9,13 @@ export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 
 STATE_FILE="$HOME/.cache/mako-popup-state"
 
-/home/murat/.config/sway/bin/makoctl mode
+/usr/local/bin/makoctl mode
 
-if /home/murat/.config/sway/bin/makoctl mode | grep -q "do-not-disturb"; then
-    /home/murat/.config/sway/bin/makoctl mode -r do-not-disturb
+if /usr/local/bin/makoctl mode | grep -q "do-not-disturb"; then
+    /usr/local/bin/makoctl mode -r do-not-disturb
     echo enabled > "$STATE_FILE"
 else
-    /home/murat/.config/sway/bin/makoctl mode -a do-not-disturb
+    /usr/local/bin/makoctl mode -a do-not-disturb
     echo disabled > "$STATE_FILE"
 fi
 

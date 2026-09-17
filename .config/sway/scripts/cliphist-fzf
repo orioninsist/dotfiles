@@ -3,7 +3,7 @@ set -u
 
 selection=$(
     /usr/local/bin/cliphist list |
-        /home/murat/.local/bin/fzf --prompt="Clipboard> " --reverse --border
+        $HOME/.local/bin/fzf --prompt="Clipboard> " --reverse --border
 ) || exit 0
 
 [[ -n "$selection" ]] || exit 0
@@ -22,5 +22,5 @@ printf '%s\n' "$selection" |
     /usr/bin/bash -c '
         exec 0<"$1"
         /usr/bin/rm -f "$1"
-        exec /home/murat/.local/bin/wl-copy --foreground
+        exec $HOME/.local/bin/wl-copy --foreground
     ' bash "$tmp"
