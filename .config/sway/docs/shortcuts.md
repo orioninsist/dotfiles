@@ -13,8 +13,6 @@
 | `Super + o` | exec /usr/bin/obsidian |
 | `Super + F10` | exec /usr/local/bin/snapshot |
 | `Super + F9` | exec /usr/local/bin/gnome-clocks |
-| `Super + F8` | exec /usr/local/bin/papers |
-| `Super + F7` | exec /usr/local/bin/gnome-music |
 | `Super + p` | exec /usr/local/bin/flameshot gui |
 | `Super + Shift + a` | exec ~/.config/sway/scripts/display-mode.sh asus |
 | `Super + Shift + t` | exec ~/.config/sway/scripts/display-mode.sh thinkpad |
