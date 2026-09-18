@@ -1,6 +1,0 @@
-[Unit]
-Description=Copy Zellij full scrollback to Wayland clipboard
-
-[Service]
-Type=simple
-ExecStart=/bin/sh -c 'exec /home/murat/.local/bin/wl-copy --foreground < /tmp/zellij-copy.txt'
