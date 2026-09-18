@@ -6,6 +6,9 @@ PATH="$(printf '%s' "$PATH" | awk -v RS=: -v ORS=: -v local_bin="$HOME/.local/bi
 PATH="${PATH%:}"
 export PATH="$HOME/.local/bin:$PATH"
 
+# ripgrep
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
