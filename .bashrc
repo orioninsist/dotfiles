@@ -9,7 +9,11 @@ export PATH="$HOME/.local/bin:$PATH"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls="ls --color=auto"
+# eza
+alias ls="eza --icons=auto --group-directories-first"
+alias ll="eza -lah --git --icons=auto --group-directories-first"
+alias la="eza -a --icons=auto --group-directories-first"
+alias lt="eza --tree --level=2 --icons=auto --group-directories-first"
 alias grep="grep --color=auto"
 
 PS1="[\u@\h \W]\$ "
