@@ -66,7 +66,6 @@ Bu dizin artık tek bir güncel belge içerir. Amaç, Sway içindeki bütün kla
 | Shortcut | Action | Source |
 |---|---|---|
 | `Super + D` | Application launcher | `shortcuts.conf` |
-| `Super + G` | Clipboard history in Foot | `shortcuts.conf` |
 | `Super + Shift + V` | Clipboard history | `shortcuts.conf` |
 | `Super + Y` | Yazi in Kitty | `shortcuts.conf` |
 | `Super + Shift + Return` | Foot terminal | `shortcuts.conf` |
