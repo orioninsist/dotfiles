@@ -15,6 +15,7 @@ Shell:
 Desktop and applications:
 
 - `atuin`
+- `eza`
 - `foot`
 - `fuzzel`
 - `gtk-3.0`
@@ -41,6 +42,7 @@ Examples:
 ~/.profile      -> /mnt/local/projects/dotfiles/.profile
 
 ~/.config/atuin  -> /mnt/local/projects/dotfiles/.config/atuin
+~/.config/eza    -> /mnt/local/projects/dotfiles/.config/eza
 ~/.config/foot   -> /mnt/local/projects/dotfiles/.config/foot
 ~/.config/nvim   -> /mnt/local/projects/dotfiles/.config/nvim
 ~/.config/sway   -> /mnt/local/projects/dotfiles/.config/sway
