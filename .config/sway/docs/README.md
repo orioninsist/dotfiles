@@ -68,7 +68,6 @@ Bu dizin artık tek bir güncel belge içerir. Amaç, Sway içindeki bütün kla
 | `Super + D` | Application launcher | `shortcuts.conf` |
 | `Super + Shift + V` | Clipboard history | `shortcuts.conf` |
 | `Super + Y` | Yazi in Kitty | `shortcuts.conf` |
-| `Super + Shift + Return` | Foot terminal | `shortcuts.conf` |
 | `Super + Ctrl + Return` | Alacritty | `shortcuts.conf` |
 | `Super + F10` | Snapshot | `shortcuts.conf` |
 | `Super + P` | Flameshot GUI | `shortcuts.conf` |
