@@ -93,3 +93,8 @@ flyline key bind Up 'editingBufferMode+cursorOnFirstLine=runBashCommand("__atuin
 if [[ -r "$HOME/.config/sd/sd.bash" ]]; then
     source "$HOME/.config/sd/sd.bash"
 fi
+
+# ast-grep shell completion
+if [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]]; then
+    source "$HOME/.config/ast-grep/ast-grep.bash"
+fi
