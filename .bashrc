@@ -75,6 +75,11 @@ fc() {
     printf 'Completion installed and loaded: %s\n' "$command_name"
 }
 
+# fzf shell integration
+if [[ -r "$HOME/.config/fzf/fzf.bash" ]]; then
+    source "$HOME/.config/fzf/fzf.bash"
+fi
+
 # Atuin shell history
 eval "$(atuin init bash)"
 
