@@ -1,0 +1,13 @@
+# ripgrep configuration
+# One argument per line. Command-line flags can override these defaults.
+
+# Case-insensitive only when the pattern contains no uppercase letters.
+--smart-case
+
+# Keep very long matching lines from flooding the terminal, but show a preview.
+--max-columns=200
+--max-columns-preview
+
+# Prefer readable grouped output in interactive terminal use.
+--heading
+--line-number
