@@ -195,7 +195,7 @@ keybinds {
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
-        bind "Ctrl Shift y" { Copy; }
+        bind "Ctrl Shift y" { DumpScreen "/tmp/zellij-copy.txt" { full true; }; }
         bind "Ctrl q" { Quit; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt n" { NewPane; }
