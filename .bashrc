@@ -89,3 +89,7 @@ eval "$(atuin init bash)"
 # Flyline integration for Atuin.
 flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
 flyline key bind Up 'editingBufferMode+cursorOnFirstLine=runBashCommand("__atuin_history --shell-up-key-binding --keymap-mode=emacs")+submitOrNewline'
+# sd shell integration
+if [[ -r "$HOME/.config/sd/sd.bash" ]]; then
+    source "$HOME/.config/sd/sd.bash"
+fi
