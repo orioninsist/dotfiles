@@ -3,4 +3,5 @@ Description=Copy Zellij full scrollback to Wayland clipboard
 
 [Service]
 Type=oneshot
+KillMode=process
 ExecStart=/bin/sh -c '/home/murat/.local/bin/wl-copy < /tmp/zellij-copy.txt'
