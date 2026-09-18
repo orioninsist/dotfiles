@@ -73,3 +73,7 @@ fc() {
 
 # Atuin shell history
 eval "$(atuin init bash)"
+
+# Flyline integration for Atuin.
+flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
+flyline key bind Up 'editingBufferMode+cursorOnFirstLine=runBashCommand("__atuin_history --shell-up-key-binding --keymap-mode=emacs")+submitOrNewline'
