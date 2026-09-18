@@ -11,7 +11,7 @@ set $menu wmenu-run
 
 ### Core bindings
 bindsym $mod+Return exec $term
-bindsym $mod+q kill
+bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
 
 ### Input
