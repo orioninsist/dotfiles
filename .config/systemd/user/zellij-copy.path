@@ -2,7 +2,7 @@
 Description=Watch Zellij full-scrollback dump
 
 [Path]
-PathChanged=/tmp/zellij-copy.txt
+PathModified=/tmp/zellij-copy.txt
 Unit=zellij-copy.service
 
 [Install]
