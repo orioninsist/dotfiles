@@ -1,32 +1,101 @@
-# Starship prompt configuration
-# Managed by: /mnt/local/projects/dotfiles
+"$schema" = "https://starship.rs/config-schema.json"
 
+# Developer-focused Starship prompt.
+# Catppuccin Mocha + Nerd Font.
+# Language/tool modules are shown only when Starship detects the matching project.
 add_newline = true
+scan_timeout = 30
 command_timeout = 1000
+palette = "catppuccin_mocha"
 
 format = """
-$directory\
-$git_branch\
-$git_status\
-$package\
-$rust\
-$python\
-$nodejs\
-$golang\
-$cmd_duration\
-$line_break\
-$character"""
+$os$username$hostname$directory$git_branch$git_commit$git_state$git_status$git_metrics$package$docker_context$kubernetes$aws$gcloud$azure$openstack$terraform$pulumi$helm$buf$c$cpp$cmake$meson$rust$golang$zig$odin$nim$vlang$nodejs$bun$deno$python$conda$pixi$java$kotlin$gradle$scala$dotnet$php$ruby$lua$swift$dart$elixir$erlang$gleam$haskell$ocaml$perl$julia$typst$solidity$elm$fennel$haxe$crystal$purescript$raku$quarto$nix_shell$guix_shell$direnv$mise$container$netns$sudo$memory_usage$cmd_duration$jobs$status$line_break$character"""
+
+right_format = """$battery$time"""
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+[os]
+disabled = false
+style = "bold lavender"
+
+[os.symbols]
+Arch = "󰣇 "
+Linux = "󰌽 "
+Macos = "󰀵 "
+Windows = "󰍲 "
+
+[username]
+show_always = false
+style_user = "bold mauve"
+style_root = "bold red"
+format = "[$user]($style) "
+
+[hostname]
+ssh_only = true
+style = "bold peach"
+format = "on [$hostname]($style) "
 
 [directory]
+style = "bold sapphire"
 truncation_length = 4
 truncate_to_repo = true
 read_only = " 󰌾"
+read_only_style = "red"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Videos" = " "
+"Projects" = "󰲋 "
 
 [git_branch]
 symbol = " "
+style = "bold mauve"
 format = "on [$symbol$branch(:$remote_branch)]($style) "
 
+[git_commit]
+commit_hash_length = 7
+style = "overlay1"
+format = "[$hash$tag]($style) "
+only_detached = true
+tag_disabled = false
+
+[git_state]
+style = "bold yellow"
+format = "\\([$state( $progress_current/$progress_total)]($style)\\) "
+
 [git_status]
+style = "bold red"
 format = "([$all_status$ahead_behind]($style) )"
 conflicted = "="
 ahead = "⇡${count}"
@@ -40,29 +109,300 @@ staged = "+"
 renamed = "»"
 deleted = "✘"
 
+[git_metrics]
+disabled = false
+added_style = "green"
+deleted_style = "red"
+format = "([+$added]($added_style))([-$deleted]($deleted_style) )"
+
 [package]
-symbol = "📦 "
+symbol = "󰏗 "
+style = "peach"
 format = "is [$symbol$version]($style) "
 
 [rust]
-symbol = "🦀 "
-format = "via [$symbol$version]($style) "
-
-[python]
-symbol = "🐍 "
+symbol = "󱘗 "
+style = "peach"
 format = "via [$symbol$version]($style) "
 
 [nodejs]
 symbol = " "
+style = "green"
 format = "via [$symbol$version]($style) "
+
+[bun]
+symbol = " "
+style = "peach"
+format = "via [$symbol$version]($style) "
+
+[deno]
+symbol = " "
+style = "green"
+format = "via [$symbol$version]($style) "
+
+[python]
+symbol = " "
+style = "yellow"
+format = "via [$symbol$version( \\($virtualenv\\))]($style) "
+
+[conda]
+symbol = " "
+style = "green"
+format = "via [$symbol$environment]($style) "
+
+[pixi]
+symbol = "󰏗 "
+style = "mauve"
 
 [golang]
 symbol = " "
+style = "sky"
 format = "via [$symbol$version]($style) "
+
+[c]
+symbol = " "
+style = "blue"
+format = "via [$symbol$version]($style) "
+
+[cpp]
+disabled = false
+symbol = " "
+style = "blue"
+format = "via [$symbol$version]($style) "
+
+[cmake]
+symbol = " "
+style = "blue"
+format = "via [$symbol$version]($style) "
+
+[meson]
+symbol = "󰔷 "
+style = "blue"
+
+[zig]
+symbol = " "
+style = "yellow"
+format = "via [$symbol$version]($style) "
+
+[odin]
+symbol = "Ø "
+style = "blue"
+
+[nim]
+symbol = "󰆥 "
+style = "yellow"
+
+[java]
+symbol = " "
+style = "red"
+format = "via [$symbol$version]($style) "
+
+[kotlin]
+symbol = " "
+style = "mauve"
+format = "via [$symbol$version]($style) "
+
+[gradle]
+symbol = " "
+style = "green"
+
+[scala]
+symbol = " "
+style = "red"
+
+[dotnet]
+symbol = "󰪮 "
+style = "mauve"
+
+[php]
+symbol = " "
+style = "lavender"
+format = "via [$symbol$version]($style) "
+
+[ruby]
+symbol = " "
+style = "red"
+format = "via [$symbol$version]($style) "
+
+[lua]
+symbol = " "
+style = "blue"
+format = "via [$symbol$version]($style) "
+
+[swift]
+symbol = " "
+style = "peach"
+
+[dart]
+symbol = " "
+style = "sky"
+
+[elixir]
+symbol = " "
+style = "mauve"
+
+[erlang]
+symbol = " "
+style = "red"
+
+[gleam]
+symbol = " "
+style = "pink"
+
+[haskell]
+symbol = " "
+style = "mauve"
+
+[ocaml]
+symbol = " "
+style = "peach"
+
+[perl]
+symbol = " "
+style = "blue"
+
+[julia]
+symbol = " "
+style = "mauve"
+
+[typst]
+symbol = " "
+style = "sky"
+
+[terraform]
+symbol = "󱁢 "
+style = "mauve"
+format = "via [$symbol$workspace]($style) "
+
+[pulumi]
+symbol = " "
+style = "mauve"
+
+[helm]
+symbol = "󰠳 "
+style = "blue"
+
+[buf]
+symbol = " "
+style = "blue"
+
+[docker_context]
+symbol = " "
+style = "blue"
+format = "via [$symbol$context]($style) "
+
+[kubernetes]
+disabled = false
+symbol = "󱃾 "
+style = "blue"
+format = "on [$symbol$context( \\($namespace\\))]($style) "
+detect_files = ["k8s.yaml", "k8s.yml", "Chart.yaml", "skaffold.yaml"]
+detect_folders = ["k8s", "kubernetes", "helm"]
+
+[aws]
+symbol = "󰸏 "
+style = "peach"
+format = "on [$symbol($profile )(\\($region\\) )]($style)"
+
+[gcloud]
+symbol = "󱇶 "
+style = "blue"
+
+[azure]
+disabled = false
+symbol = "󰠅 "
+style = "blue"
+
+[openstack]
+symbol = "󰢻 "
+style = "red"
+
+[nix_shell]
+symbol = " "
+style = "blue"
+format = "via [$symbol$state( \\($name\\))]($style) "
+
+[guix_shell]
+symbol = " "
+style = "yellow"
+
+[direnv]
+disabled = false
+symbol = "󰇥 "
+style = "yellow"
+format = "[$symbol$loaded]($style) "
+
+[mise]
+symbol = "󰌌 "
+style = "mauve"
+
+[container]
+symbol = "⬢ "
+style = "yellow"
+format = "[$symbol$name]($style) "
+
+[netns]
+symbol = "󰛳 "
+style = "blue"
+
+[sudo]
+disabled = false
+symbol = "󰌆 "
+style = "red"
+format = "[$symbol]($style)"
+
+[memory_usage]
+disabled = false
+threshold = 85
+symbol = "󰍛 "
+style = "yellow"
+format = "[$symbol${ram_pct}]($style) "
 
 [cmd_duration]
 min_time = 2000
+show_milliseconds = false
+style = "yellow"
 format = "took [$duration]($style) "
+
+[jobs]
+symbol = " "
+style = "blue"
+number_threshold = 1
+symbol_threshold = 1
+
+[status]
+disabled = false
+symbol = "✘ "
+success_symbol = ""
+not_executable_symbol = "🚫 "
+not_found_symbol = "󰍉 "
+sigint_symbol = "󰚌 "
+signal_symbol = "⚡ "
+style = "bold red"
+format = "[$symbol$status]($style) "
+
+[battery]
+disabled = false
+full_symbol = "󰁹 "
+charging_symbol = "󰂄 "
+discharging_symbol = "󰂃 "
+unknown_symbol = "󰂑 "
+empty_symbol = "󰂎 "
+format = "[$symbol$percentage]($style) "
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
+
+[[battery.display]]
+threshold = 50
+style = "yellow"
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "overlay1"
+format = "[$time]($style)"
 
 [character]
 success_symbol = "[❯](bold green)"
