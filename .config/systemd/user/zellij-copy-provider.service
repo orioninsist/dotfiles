@@ -3,4 +3,4 @@ Description=Serve Zellij full scrollback on Wayland clipboard
 
 [Service]
 Type=simple
-ExecStart=/bin/sh -c 'exec /home/murat/.local/bin/wl-copy --foreground < /tmp/zellij-copy.txt'
+ExecStart=/bin/sh -c '/usr/bin/awk '\''NF { for (i = 1; i <= blanks; i++) print ""; blanks = 0; print; next } { blanks++ }'\'' /tmp/zellij-copy.txt | exec /home/murat/.local/bin/wl-copy --foreground'
