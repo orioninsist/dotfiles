@@ -1,0 +1,6 @@
+[Unit]
+Description=Copy Zellij screen dump to Wayland clipboard
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'exec %h/.local/bin/wl-copy --foreground < /tmp/zellij-copy.txt'

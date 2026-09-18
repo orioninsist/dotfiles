@@ -1,0 +1,6 @@
+[Unit]
+Description=Sync Chrome web apps into wmenu-run
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/chrome-webapps-sync

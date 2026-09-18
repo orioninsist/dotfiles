@@ -1,0 +1,6 @@
+[Unit]
+Description=Normalize desktop application names for Open With menus
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/normalize-openwith-names

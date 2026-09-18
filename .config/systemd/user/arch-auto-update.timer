@@ -1,0 +1,10 @@
+[Unit]
+Description=Run automatic Arch Linux update after login
+
+[Timer]
+OnStartupSec=5min
+Unit=arch-auto-update.service
+Persistent=false
+
+[Install]
+WantedBy=timers.target

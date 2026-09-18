@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch Zellij full scrollback dump
+
+[Path]
+PathChanged=%t/zellij-full-scrollback.txt
+Unit=zellij-scrollback-copy.service
+
+[Install]
+WantedBy=default.target
