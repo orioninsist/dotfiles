@@ -1,19 +1,18 @@
 themes {
     orion_dark {
-        // Catppuccin Mocha, optimized for a uniform low-glare Zellij bar.
-        // Make every key-cap read like the calm "Ctrl +" segment:
-        // dark surfaces, muted separators, and soft light text.
+        // Catppuccin Mocha, ultra-uniform low-glare Zellij UI.
+        // Use the same calm dark surface for all status-bar color roles.
         bg "#1e1e2e"       // Base
         fg "#45475a"       // Surface1
 
-        black "#181825"    // Mantle
+        black "#45475a"    // Surface1
         red "#45475a"      // Surface1
         green "#45475a"    // Surface1
         yellow "#45475a"   // Surface1
         blue "#45475a"     // Surface1
         magenta "#45475a"  // Surface1
         cyan "#45475a"     // Surface1
-        white "#bac2de"    // Subtext1
+        white "#45475a"    // Surface1
         orange "#45475a"   // Surface1
     }
 }
