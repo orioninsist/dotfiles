@@ -99,8 +99,8 @@ if [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]]; then
     source "$HOME/.config/ast-grep/ast-grep.bash"
 fi
 
-# Launch Zellij in a dedicated Foot instance where Ctrl+Shift+Y passes through
-# to Zellij instead of being consumed by Foot's pipe-scrollback binding.
+# Start or attach to the persistent Zellij session using config.kdl.
+# config.kdl owns session_name, attach_to_session and default_layout ("orion").
 foot-zellij() {
-    /usr/local/bin/zellij attach --create orioninsist "$@"
+    /usr/local/bin/zellij "$@"
 }
