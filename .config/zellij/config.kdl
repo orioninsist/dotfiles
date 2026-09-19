@@ -196,7 +196,7 @@ keybinds {
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
         bind "Ctrl Shift y" {
-            MessagePlugin "file:/mnt/local/projects/dotfiles/.config/zellij/plugins/scrollback-copy/target/wasm32-wasip1/release/zellij-scrollback-copy.wasm" {
+            MessagePlugin "file:/mnt/local/projects/dotfiles/.config/zellij/plugins/scrollback-copy/target/wasm32-wasip1/release/zellij_scrollback_copy.wasm" {
                 name "copy_scrollback"
             }
         }
@@ -264,7 +264,7 @@ plugins {
 // Plugins to load in the background when a new session starts
 load_plugins {
     "zellij:link"
-    "file:/mnt/local/projects/dotfiles/.config/zellij/plugins/scrollback-copy/target/wasm32-wasip1/release/zellij-scrollback-copy.wasm"
+    "file:/mnt/local/projects/dotfiles/.config/zellij/plugins/scrollback-copy/target/wasm32-wasip1/release/zellij_scrollback_copy.wasm"
     // "https://example.com/my-plugin.wasm"
 }
 
