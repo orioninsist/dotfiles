@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-zellij-tile = "0.46.0"
+zellij-tile = { git = "https://github.com/zellij-org/zellij", tag = "v0.46.0", package = "zellij-tile" }
 
 [profile.release]
 lto = true
