@@ -99,8 +99,15 @@ if [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]]; then
     source "$HOME/.config/ast-grep/ast-grep.bash"
 fi
 
-# Start or attach to the persistent Zellij session using config.kdl.
-# config.kdl owns session_name, attach_to_session and default_layout ("orion").
+# Start a fresh Zellij session with the current Orion layout/theme.
+# Old persistent sessions are removed first so stale layouts are never reused.
+zellij-fresh() {
+    /usr/local/bin/zellij kill-session orioninsist >/dev/null 2>&1 || true
+    /usr/local/bin/zellij kill-session clean-orion-test >/dev/null 2>&1 || true
+    exec /usr/local/bin/zellij --session orioninsist --layout orion "$@"
+}
+
+# Open a dedicated Foot window and start a fresh Zellij session.
 foot-zellij() {
-    /usr/local/bin/zellij "$@"
+    /usr/local/bin/foot -e /bin/bash -lc 'source "$HOME/.bashrc"; zellij-fresh'
 }
