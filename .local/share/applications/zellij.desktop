@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Zellij
+Comment=Open a fresh Orion Zellij session in Foot
+Exec=/usr/local/bin/foot -e /bin/bash -lc 'source "$HOME/.bashrc"; zellij-fresh'
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;
+StartupNotify=true
