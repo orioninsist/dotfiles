@@ -1,19 +1,19 @@
 themes {
     orion_dark {
-        // Catppuccin Mocha with a restrained, low-glare Zellij UI.
-        // Keep the whole status bar visually quiet: one dark base, muted key caps,
-        // and only a few semantic accents.
+        // Catppuccin Mocha, optimized for a uniform low-glare Zellij bar.
+        // Make every key-cap read like the calm "Ctrl +" segment:
+        // dark surfaces, muted separators, and soft light text.
         bg "#1e1e2e"       // Base
-        fg "#7f849c"       // Overlay1
+        fg "#45475a"       // Surface1
 
         black "#181825"    // Mantle
-        red "#7f849c"      // Overlay1
-        green "#a6e3a1"    // Green
-        yellow "#f9e2af"   // Yellow
-        blue "#89b4fa"     // Blue
-        magenta "#b4befe"  // Lavender
-        cyan "#89dceb"     // Sky
+        red "#45475a"      // Surface1
+        green "#45475a"    // Surface1
+        yellow "#45475a"   // Surface1
+        blue "#45475a"     // Surface1
+        magenta "#45475a"  // Surface1
+        cyan "#45475a"     // Surface1
         white "#bac2de"    // Subtext1
-        orange "#fab387"   // Peach
+        orange "#45475a"   // Surface1
     }
 }
