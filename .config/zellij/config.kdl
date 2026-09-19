@@ -195,7 +195,11 @@ keybinds {
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
-        bind "Ctrl Shift y" { Run "/mnt/local/projects/dotfiles/.local/bin/zellij-copy-scrollback" { close_on_exit true; }; }
+        bind "Ctrl Shift y" {
+            MessagePlugin "file:/mnt/local/projects/dotfiles/.config/zellij/plugins/scrollback-copy/target/wasm32-wasip1/release/zellij-scrollback-copy.wasm" {
+                name "copy_scrollback"
+            }
+        }
         bind "Ctrl q" { Quit; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt n" { NewPane; }
@@ -260,7 +264,7 @@ plugins {
 // Plugins to load in the background when a new session starts
 load_plugins {
     "zellij:link"
-    // "file:/path/to/my-plugin.wasm"
+    "file:/mnt/local/projects/dotfiles/.config/zellij/plugins/scrollback-copy/target/wasm32-wasip1/release/zellij-scrollback-copy.wasm"
     // "https://example.com/my-plugin.wasm"
 }
 
