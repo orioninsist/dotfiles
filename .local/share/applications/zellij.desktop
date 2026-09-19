@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 Name=Zellij
-Comment=Open Zellij in Foot
-Exec=/usr/local/bin/foot -e /usr/local/bin/zellij
+Comment=Open or attach to the Orion Zellij session in Foot
+Exec=/usr/local/bin/foot -e /usr/local/bin/zellij attach --create orioninsist
 Icon=utilities-terminal
 Terminal=false
 Categories=System;TerminalEmulator;
