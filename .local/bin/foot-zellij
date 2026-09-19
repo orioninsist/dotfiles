@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-ZELLIJ=/usr/local/bin/zellij
-FOOT=/usr/local/bin/foot
-
-exec "$FOOT" -e "$ZELLIJ" "$@"
