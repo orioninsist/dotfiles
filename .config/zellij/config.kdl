@@ -642,4 +642,3 @@ web_client {
 theme "orion_dark"
 
 session_name "orioninsist"
-attach_to_session true
