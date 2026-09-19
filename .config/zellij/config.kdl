@@ -195,7 +195,7 @@ keybinds {
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
-        bind "Ctrl Shift y" { DumpScreen "/tmp/zellij-copy.txt" { full true; }; Run "/home/murat/.local/bin/zellij-copy-scrollback"; }
+        bind "Ctrl Shift y" { DumpScreen "/tmp/zellij-copy.txt" { full true; }; Run "/mnt/local/projects/dotfiles/.local/bin/zellij-copy-scrollback" { close_on_exit true; }; }
         bind "Ctrl q" { Quit; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt n" { NewPane; }
