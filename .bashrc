@@ -99,12 +99,7 @@ if [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]]; then
     source "$HOME/.config/ast-grep/ast-grep.bash"
 fi
 
-# Zellij launchers are standalone executables in ~/.local/bin.
-# Keep shell aliases thin so terminal and wmenu use the same implementation.
-zellij-fresh() {
-    "$HOME/.local/bin/foot-zellij" "$@"
-}
-
-foot-zellij() {
-    "$HOME/.local/bin/foot-zellij" "$@"
+# Open Zellij in Foot using the single Orion session defined in config.kdl.
+zellij() {
+    /usr/local/bin/foot -e /usr/local/bin/zellij "$@"
 }
