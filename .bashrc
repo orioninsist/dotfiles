@@ -99,15 +99,12 @@ if [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]]; then
     source "$HOME/.config/ast-grep/ast-grep.bash"
 fi
 
-# Start a fresh Zellij session with the current Orion layout/theme.
-# Old persistent sessions are removed first so stale layouts are never reused.
+# Zellij launchers are standalone executables in ~/.local/bin.
+# Keep shell aliases thin so terminal and wmenu use the same implementation.
 zellij-fresh() {
-    /usr/local/bin/zellij kill-session orioninsist >/dev/null 2>&1 || true
-    /usr/local/bin/zellij kill-session clean-orion-test >/dev/null 2>&1 || true
-    exec /usr/local/bin/zellij --session orioninsist --layout orion "$@"
+    "$HOME/.local/bin/foot-zellij" "$@"
 }
 
-# Open a dedicated Foot window and start a fresh Zellij session.
 foot-zellij() {
-    /usr/local/bin/foot -e /bin/bash -lc 'source "$HOME/.bashrc"; zellij-fresh'
+    "$HOME/.local/bin/foot-zellij" "$@"
 }
