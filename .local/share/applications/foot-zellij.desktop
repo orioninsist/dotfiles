@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Foot Zellij
-Comment=Open a fresh Orion Zellij session in Foot
-Exec=/home/murat/.local/bin/foot-zellij
-Icon=utilities-terminal
-Terminal=false
-Categories=System;TerminalEmulator;
-StartupNotify=true
