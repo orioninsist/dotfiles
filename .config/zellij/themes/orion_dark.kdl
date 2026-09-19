@@ -1,18 +1,15 @@
 themes {
     orion_dark {
-        // Catppuccin Mocha, ultra-uniform low-glare Zellij UI.
-        // Use the same calm dark surface for all status-bar color roles.
-        bg "#1e1e2e"       // Base
-        fg "#45475a"       // Surface1
-
-        black "#45475a"    // Surface1
-        red "#45475a"      // Surface1
-        green "#45475a"    // Surface1
-        yellow "#45475a"   // Surface1
-        blue "#45475a"     // Surface1
-        magenta "#45475a"  // Surface1
-        cyan "#45475a"     // Surface1
-        white "#45475a"    // Surface1
-        orange "#45475a"   // Surface1
+        bg "#585b70" // Surface2
+        fg "#cdd6f4" // Text
+        red "#f38ba8"
+        green "#a6e3a1"
+        blue "#89b4fa"
+        yellow "#f9e2af"
+        magenta "#f5c2e7" // Pink
+        orange "#fab387" // Peach
+        cyan "#89dceb" // Sky
+        black "#181825" // Mantle
+        white "#cdd6f4" // Text
     }
 }
