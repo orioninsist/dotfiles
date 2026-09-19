@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+dump=/tmp/zellij-copy.txt
+
+# DumpScreen runs immediately before this command. Wait briefly for the
+# full scrollback dump to become available, then copy it to Wayland clipboard.
+for _ in {1..50}; do
+    if [[ -s "$dump" ]]; then
+        /usr/bin/wl-copy < "$dump"
+        rm -f "$dump"
+        exit 0
+    fi
+    sleep 0.01
+done
+
+exit 1
