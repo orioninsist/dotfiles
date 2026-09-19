@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ZELLIJ=/usr/local/bin/zellij
+FOOT=/usr/local/bin/foot
+SESSION=orioninsist
+LAYOUT=orion
+
+"$ZELLIJ" kill-session "$SESSION" >/dev/null 2>&1 || true
+"$ZELLIJ" kill-session clean-orion-test >/dev/null 2>&1 || true
+
+exec "$FOOT" -e "$ZELLIJ" --session "$SESSION" --layout "$LAYOUT" "$@"
