@@ -99,7 +99,7 @@ if [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]]; then
     source "$HOME/.config/ast-grep/ast-grep.bash"
 fi
 
-# Open Zellij in Foot using the single Orion session defined in config.kdl.
+# Open or attach to the single Orion Zellij session.
 zellij() {
-    /usr/local/bin/foot -e /usr/local/bin/zellij "$@"
+    /usr/local/bin/zellij attach --create orioninsist "$@"
 }
