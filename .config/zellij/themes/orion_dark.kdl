@@ -1,16 +1,18 @@
 themes {
     orion_dark {
-        fg "#cdd6f4"
-        bg "#1e1e2e"
+        // Catppuccin Mocha tuned for Zellij status-bar readability.
+        // Keep accents soft enough for long terminal sessions while retaining contrast.
+        bg "#585b70"       // Surface2
+        fg "#cdd6f4"       // Text
 
-        black "#45475a"
-        red "#b4befe"
+        black "#181825"    // Mantle
+        red "#a6adc8"      // Subtext0: softened vs Mocha Red for key-hint text
         green "#a6e3a1"
         yellow "#f9e2af"
         blue "#89b4fa"
-        magenta "#cba6f7"
-        cyan "#94e2d5"
-        white "#bac2de"
-        orange "#fab387"
+        magenta "#b4befe"  // Lavender: calmer than Pink for repeated UI accents
+        cyan "#89dceb"     // Sky
+        white "#cdd6f4"    // Text
+        orange "#fab387"   // Peach
     }
 }
