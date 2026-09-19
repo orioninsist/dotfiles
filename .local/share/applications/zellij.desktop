@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 Name=Zellij
-Comment=Open a fresh Orion Zellij session in Foot
-Exec=/home/murat/.local/bin/foot-zellij
+Comment=Open Zellij in Foot
+Exec=/usr/local/bin/foot -e /usr/local/bin/zellij
 Icon=utilities-terminal
 Terminal=false
 Categories=System;TerminalEmulator;
