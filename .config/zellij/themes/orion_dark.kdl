@@ -1,16 +1,16 @@
 themes {
     orion_dark {
-        fg "#888888"
-        bg "#0a0a0a"
+        fg "#cdd6f4"
+        bg "#1e1e2e"
 
-        black "#0a0a0a"
-        red "#553333"
-        green "#445544"
-        yellow "#665f3a"
-        blue "#44556a"
-        magenta "#554466"
-        cyan "#446666"
-        white "#999999"
-        orange "#665044"
+        black "#45475a"
+        red "#f38ba8"
+        green "#a6e3a1"
+        yellow "#f9e2af"
+        blue "#89b4fa"
+        magenta "#cba6f7"
+        cyan "#94e2d5"
+        white "#bac2de"
+        orange "#fab387"
     }
 }

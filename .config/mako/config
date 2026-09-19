@@ -1,8 +1,9 @@
 font=monospace 10
 
-background-color=#111111
-text-color=#d8d8d8
-border-color=#666666
+# Catppuccin Mocha
+background-color=#1e1e2e
+text-color=#cdd6f4
+border-color=#89b4fa
 border-size=1
 border-radius=8
 padding=10
@@ -21,15 +22,15 @@ max-icon-size=32
 
 [urgency=low]
 default-timeout=3000
-border-color=#444444
+border-color=#6c7086
 
 [urgency=normal]
 default-timeout=5000
-border-color=#666666
+border-color=#89b4fa
 
 [urgency=critical]
 default-timeout=0
-border-color=#ff5555
+border-color=#f38ba8
 
 [mode=do-not-disturb]
 invisible=1
