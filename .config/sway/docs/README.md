@@ -69,6 +69,15 @@ Bu dizin artık tek bir güncel belge içerir. Amaç, Sway içindeki bütün kla
 | `Super + Shift + V` | Clipboard history | `shortcuts.conf` |
 | `Super + Y` | Yazi in Kitty | `shortcuts.conf` |
 | `Super + Ctrl + Return` | Alacritty | `shortcuts.conf` |
+| `Super + Ctrl + B` | Google Chrome | `shortcuts.conf` |
+| `Super + Ctrl + Shift + B` | Brave | `shortcuts.conf` |
+| `Super + Ctrl + M` | Microsoft Edge | `shortcuts.conf` |
+| `Super + Ctrl + Shift + Y` | Yandex Browser | `shortcuts.conf` |
+| `Super + Ctrl + F` | Firefox | `shortcuts.conf` |
+| `Super + Ctrl + Shift + F` | Firefox Developer Edition | `shortcuts.conf` |
+| `Super + Ctrl + T` | Tor Browser | `shortcuts.conf` |
+| `Super + Ctrl + Shift + M` | Mullvad Browser | `shortcuts.conf` |
+| `Super + Ctrl + Y` | Nautilus | `shortcuts.conf` |
 | `Super + F10` | Snapshot | `shortcuts.conf` |
 | `Super + P` | Flameshot GUI | `shortcuts.conf` |
 | `Super + Shift + A` | ASUS display mode | `shortcuts.conf` |
