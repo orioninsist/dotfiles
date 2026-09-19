@@ -34,6 +34,7 @@ impl ZellijPlugin for State {
         if pipe_message.name != "copy_scrollback" {
             return false;
         }
+
         if self.permissions_granted {
             self.copy_focused_scrollback();
         } else {
@@ -46,30 +47,23 @@ impl ZellijPlugin for State {
 impl State {
     fn copy_focused_scrollback(&mut self) {
         let Ok((_tab_index, pane_id)) = get_focused_pane_info() else {
-            copy_to_clipboard("ZELLIJ-DIAG: get_focused_pane_info failed");
             return;
         };
 
         let Ok(contents) = get_pane_scrollback(pane_id, true) else {
-            copy_to_clipboard(format!(
-                "ZELLIJ-DIAG: pane={pane_id:?}; get_pane_scrollback failed"
-            ));
             return;
         };
-
-        let above = contents.lines_above_viewport.len();
-        let viewport = contents.viewport.len();
-        let below = contents.lines_below_viewport.len();
-        let total = above + viewport + below;
 
         let mut lines = contents.lines_above_viewport;
         lines.extend(contents.viewport);
         lines.extend(contents.lines_below_viewport);
 
-        let body = lines.join("\n");
-        let diagnostic = format!(
-            "ZELLIJ-DIAG pane={pane_id:?} above={above} viewport={viewport} below={below} total={total} clipboard_call=yes\n{body}"
-        );
-        copy_to_clipboard(diagnostic);
+        let text = lines
+            .into_iter()
+            .map(|line| line.trim_end().to_string())
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        copy_to_clipboard(text);
     }
 }
