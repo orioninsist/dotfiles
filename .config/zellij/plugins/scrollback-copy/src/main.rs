@@ -58,12 +58,15 @@ impl State {
         lines.extend(contents.viewport);
         lines.extend(contents.lines_below_viewport);
 
-        let text = lines
+        let mut lines = lines
             .into_iter()
             .map(|line| line.trim_end().to_string())
-            .collect::<Vec<_>>()
-            .join("\n");
+            .collect::<Vec<_>>();
 
-        copy_to_clipboard(text);
+        while lines.last().is_some_and(|line| line.is_empty()) {
+            lines.pop();
+        }
+
+        copy_to_clipboard(lines.join("\n"));
     }
 }
