@@ -1,15 +1,122 @@
 themes {
     orion_dark {
-        bg "#585b70" // Surface2
-        fg "#cdd6f4" // Text
-        red "#f38ba8"
-        green "#a6e3a1"
-        blue "#89b4fa"
-        yellow "#f9e2af"
-        magenta "#f5c2e7" // Pink
-        orange "#fab387" // Peach
-        cyan "#89dceb" // Sky
-        black "#181825" // Mantle
-        white "#cdd6f4" // Text
+        // Catppuccin Mocha with low-glare semantic styling.
+        // Keep the palette recognizable while making Zellij ribbons calm and readable.
+        text_unselected {
+            base 205 214 244       // Text
+            background 30 30 46    // Base
+            emphasis_0 166 173 200 // Subtext0
+            emphasis_1 186 194 222 // Subtext1
+            emphasis_2 180 190 254 // Lavender
+            emphasis_3 137 180 250 // Blue
+        }
+        text_selected {
+            base 205 214 244       // Text
+            background 49 50 68    // Surface0
+            emphasis_0 166 173 200 // Subtext0
+            emphasis_1 186 194 222 // Subtext1
+            emphasis_2 180 190 254 // Lavender
+            emphasis_3 137 180 250 // Blue
+        }
+        ribbon_unselected {
+            base 205 214 244       // Text
+            background 49 50 68    // Surface0
+            emphasis_0 166 173 200 // Subtext0
+            emphasis_1 186 194 222 // Subtext1
+            emphasis_2 180 190 254 // Lavender
+            emphasis_3 166 173 200 // Subtext0
+        }
+        ribbon_selected {
+            base 205 214 244       // Text
+            background 69 71 90    // Surface1
+            emphasis_0 186 194 222 // Subtext1
+            emphasis_1 180 190 254 // Lavender
+            emphasis_2 166 173 200 // Subtext0
+            emphasis_3 137 180 250 // Blue
+        }
+        table_title {
+            base 180 190 254
+            background 30 30 46
+            emphasis_0 166 173 200
+            emphasis_1 186 194 222
+            emphasis_2 137 180 250
+            emphasis_3 205 214 244
+        }
+        table_cell_unselected {
+            base 205 214 244
+            background 30 30 46
+            emphasis_0 166 173 200
+            emphasis_1 186 194 222
+            emphasis_2 180 190 254
+            emphasis_3 137 180 250
+        }
+        table_cell_selected {
+            base 205 214 244
+            background 49 50 68
+            emphasis_0 166 173 200
+            emphasis_1 186 194 222
+            emphasis_2 180 190 254
+            emphasis_3 137 180 250
+        }
+        list_unselected {
+            base 205 214 244
+            background 30 30 46
+            emphasis_0 166 173 200
+            emphasis_1 186 194 222
+            emphasis_2 180 190 254
+            emphasis_3 137 180 250
+        }
+        list_selected {
+            base 205 214 244
+            background 49 50 68
+            emphasis_0 166 173 200
+            emphasis_1 186 194 222
+            emphasis_2 180 190 254
+            emphasis_3 137 180 250
+        }
+        frame_selected {
+            base 137 180 250
+            background 30 30 46
+            emphasis_0 180 190 254
+            emphasis_1 186 194 222
+            emphasis_2 166 173 200
+            emphasis_3 30 30 46
+        }
+        frame_highlight {
+            base 180 190 254
+            background 30 30 46
+            emphasis_0 137 180 250
+            emphasis_1 186 194 222
+            emphasis_2 180 190 254
+            emphasis_3 205 214 244
+        }
+        exit_code_success {
+            base 166 227 161
+            background 30 30 46
+            emphasis_0 137 220 235
+            emphasis_1 30 30 46
+            emphasis_2 180 190 254
+            emphasis_3 137 180 250
+        }
+        exit_code_error {
+            base 243 139 168
+            background 30 30 46
+            emphasis_0 249 226 175
+            emphasis_1 30 30 46
+            emphasis_2 30 30 46
+            emphasis_3 30 30 46
+        }
+        multiplayer_user_colors {
+            player_1 180 190 254
+            player_2 137 180 250
+            player_3 148 226 213
+            player_4 249 226 175
+            player_5 137 220 235
+            player_6 166 227 161
+            player_7 243 139 168
+            player_8 203 166 247
+            player_9 250 179 135
+            player_10 245 194 231
+        }
     }
 }
