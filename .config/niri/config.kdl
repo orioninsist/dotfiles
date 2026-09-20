@@ -87,60 +87,77 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 prefer-no-csd
 
-// Workspace 1: web, communication, creative tools.
+// Workspace routing: stable task domains for daily muscle memory.
+// 1 Web/Research/AI, 2 Terminal/Ops, 3 Development, 4 Work/Office,
+// 5 Communication/Business, 6 Creative/Design, 7 Media/Content,
+// 8 System/VM/Device, 9 Finance/Monitoring, 10 Free/Temporary.
+
+// Workspace 1: web, research and AI.
+// Browser windows start here. Chrome PWAs with a more specific task domain
+// are matched by later rules and routed to their dedicated workspace.
 window-rule {
-    match app-id=r#"^(google-chrome|chromium|firefox|firefox-developer-edition|microsoft-edge|yandex-browser|brave-browser|org\.gnome\.Nautilus|fr\.handbrake\.ghb|org\.inkscape\.Inkscape|gimp|org\.kde\.krita|wl-color-picker|org\.localsend\.localsend_app|signal|element)$"#
+    match app-id=r#"^(google-chrome|chromium|firefox|firefox-developer-edition|microsoft-edge|yandex-browser|brave-browser|Tor Browser|Mullvad Browser)$"#
     open-on-workspace "1"
 }
 
+// Research / AI PWAs.
 window-rule {
-    match app-id=r#"^chrome-(aghbiahbpaijignceidepookljebhfak|jbgdhngddinepfilfcmbcioimbgcolma|cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|pmcngklofgngifnoceehmchjlildnhkj|mpnpojknpmmopombnjdcgaaiekajbnjb|jkdlbdnmmndeckliookkkcbgindcjpme|mhpcpiccfiaoabcaedpafgjabjjheekk|eilembjdkfgodjkcjnpgpaenohkicgjd|kfgapjallbhpciobgmlhlhokknljkgho|kjfmejlnnfibknebffpdmphoiomckhdb|lbllnnflijadcmjbldbhljjoagkliklg|ncmjhecbjeaamljdfahankockkkdmedg|fhihpiojkbmbpdjeoajapmgkhlnakfjf|kefjledonklijopmnomlcbpllchaibag|okhfeehhillipaleckndoboggdkcebmo|cfkjhppcnjbkjoclfcjjkphpicbpoaeg|akpamiohjfcnimfljfndmaldlcfphjmp|hpfldicfbfomlpcikngkocigghgafkph|agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod|ihogecoockfifohcaikgaegbgfpbkipa|cdbijngggjkalinmffpblfekjekjjadf)-Default$"#
+    match app-id=r#"^chrome-(cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|kfgapjallbhpciobgmlhlhokknljkgho|kjfmejlnnfibknebffpdmphoiomckhdb|cdbijngggjkalinmffpblfekjekjjadf)-Default$"#
     open-on-workspace "1"
 }
 
-// Workspace 2: terminals and device tools.
+// Workspace 2: terminals and operations.
 window-rule {
-    match app-id=r#"^(kitty|Alacritty|foot|com\.gabm\.satty|scrcpy)$"#
+    match app-id=r#"^(kitty|Alacritty|foot|com\.gabm\.satty)$"#
     open-on-workspace "2"
 }
 
-// Workspace 3: development and virtualization.
+// Workspace 3: development.
 window-rule {
-    match app-id=r#"^(code|antigravity-ide|antigravity|dev\.zed\.Zed|github|jetbrains-studio|jetbrains-webstorm|jetbrains-pycharm|jetbrains-goland|jetbrains-clion|jetbrains-datagrip|jetbrains-dataspell|jetbrains-toolbox|virt-manager)$"#
+    match app-id=r#"^(code|antigravity-ide|antigravity|dev\.zed\.Zed|github|jetbrains-studio|jetbrains-webstorm|jetbrains-pycharm|jetbrains-goland|jetbrains-clion|jetbrains-datagrip|jetbrains-dataspell|jetbrains-toolbox)$"#
     open-on-workspace "3"
 }
 
-// Workspace 4: productivity.
+// Workspace 4: work and office.
 window-rule {
-    match app-id=r#"^(chrome-idkejijbjcgdnloelolopdemkebfadai-Default|calibre-gui|TradingView)$"#
+    match app-id=r#"^(calibre-gui|chrome-(aghbiahbpaijignceidepookljebhfak|pmcngklofgngifnoceehmchjlildnhkj|mpnpojknpmmopombnjdcgaaiekajbnjb|jkdlbdnmmndeckliookkkcbgindcjpme|eilembjdkfgodjkcjnpgpaenohkicgjd|fhihpiojkbmbpdjeoajapmgkhlnakfjf|kefjledonklijopmnomlcbpllchaibag|okhfeehhillipaleckndoboggdkcebmo|cfkjhppcnjbkjoclfcjjkphpicbpoaeg|idkejijbjcgdnloelolopdemkebfadai)-Default)$"#
     open-on-workspace "4"
 }
 
-// Workspace 5: media.
+// Workspace 5: communication and business.
 window-rule {
-    match app-id=r#"^(mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo)$"#
+    match app-id=r#"^(element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp)-Default)$"#
     open-on-workspace "5"
 }
 
-// XWayland applications.
-// Verify their actual app-id values after the first Niri login with:
-// niri msg windows
-
+// Workspace 6: creative and design.
 window-rule {
-    match app-id=r#"^(Tor Browser|Mullvad Browser)$"#
-    open-on-workspace "1"
+    match app-id=r#"^(org\.inkscape\.Inkscape|gimp|org\.kde\.krita|wl-color-picker|chrome-(jbgdhngddinepfilfcmbcioimbgcolma|cibiompobljlndhpedaajolhbifjinnk|jaecofbdpipjafphofeaceimgcclphin)-Default)$"#
+    open-on-workspace "6"
 }
 
+// Workspace 7: media and content.
 window-rule {
-    match app-id=r#"^(Chatgpt|jetbrains-webstorm|jetbrains-pycharm|jetbrains-goland|jetbrains-clion|jetbrains-datagrip|jetbrains-dataspell|jetbrains-toolbox)$"#
-    open-on-workspace "3"
+    match app-id=r#"^(mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|Spotify|fr\.handbrake\.ghb|chrome-(agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
+    open-on-workspace "7"
 }
 
+// Workspace 8: system, virtual machines and devices.
 window-rule {
-    match app-id=r#"^Spotify$"#
-    open-on-workspace "5"
+    match app-id=r#"^(virt-manager|scrcpy|org\.pulseaudio\.pavucontrol|com\.github\.wwmm\.easyeffects)$"#
+    open-on-workspace "8"
 }
 
+// Workspace 9: finance and monitoring.
+window-rule {
+    match app-id=r#"^TradingView$"#
+    open-on-workspace "9"
+}
+
+// Workspace 10 intentionally has no automatic window rules.
+// It remains a free/temporary workspace.
+
+// Firefox Picture-in-Picture stays floating wherever Firefox is routed.
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
