@@ -214,6 +214,7 @@ binds {
     Mod+Shift+0 { move-column-to-workspace "10"; }
 
     Mod+Tab { focus-workspace-previous; }
+    Mod+CapsLock { focus-workspace-previous; }
 
     // Audio.
     XF86AudioMute allow-when-locked=true {
@@ -297,9 +298,12 @@ binds {
 
     Mod+Ctrl+P { spawn "/usr/bin/wl-color-picker"; }
 
-    // Waybar / notifications.
+    // Clipboard / notifications / night light.
+    Mod+Shift+V { spawn "/home/murat/.config/sway/scripts/clipboard-history"; }
+
     Mod+C { spawn "/home/murat/.config/sway/scripts/waybar-visibility"; }
     Mod+N { spawn "/home/murat/.config/sway/scripts/mako-toggle"; }
+    Mod+Shift+N { spawn "/home/murat/.config/sway/scripts/wlsunset-toggle"; }
     Mod+Ctrl+N { spawn "/home/murat/.config/sway/scripts/notification-history"; }
     Mod+Ctrl+E { spawn "/home/murat/.config/sway/scripts/emoji-picker"; }
 
