@@ -214,7 +214,6 @@ binds {
     Mod+Shift+0 { move-column-to-workspace "10"; }
 
     Mod+Tab { focus-workspace-previous; }
-    Mod+CapsLock { focus-workspace-previous; }
 
     // Audio.
     XF86AudioMute allow-when-locked=true {
