@@ -1,0 +1,51 @@
+// Session, hardware, capture and compositor-independent utilities.
+binds {
+    Mod+Ctrl+Space { switch-layout "next"; }
+
+    XF86AudioMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"; }
+    XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioPause allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioPrev allow-when-locked=true { spawn "playerctl" "previous"; }
+    XF86AudioNext allow-when-locked=true { spawn "playerctl" "next"; }
+    XF86AudioStop allow-when-locked=true { spawn "playerctl" "stop"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "set" "5%+"; }
+
+    Mod+F1 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s performance && notify-send 'Power Profile' 'Performance mode enabled'"; }
+    Mod+F2 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s balanced && notify-send 'Power Profile' 'Balanced mode enabled'"; }
+    Mod+F3 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s power-saver && notify-send 'Power Profile' 'Battery saving mode enabled'"; }
+
+    Mod+T { spawn "/home/murat/.config/sway/scripts/bluetooth/bluetooth-toggle"; }
+    Mod+F4 { spawn "/home/murat/.config/sway/scripts/audio/audio-toggle"; }
+    Mod+F5 { spawn "/home/murat/.config/sway/scripts/input/mic-toggle"; }
+    Mod+F6 { spawn "/home/murat/.config/sway/scripts/input/camera-toggle"; }
+
+    Print { screenshot; }
+    Mod+Print { screenshot-screen; }
+    Mod+Ctrl+Print { screenshot-window; }
+
+    Mod+Ctrl+1 { spawn "/home/murat/.config/sway/scripts/sway-record" "1"; }
+    Mod+Ctrl+2 { spawn "/home/murat/.config/sway/scripts/sway-record" "2"; }
+    Mod+Ctrl+3 { spawn "/home/murat/.config/sway/scripts/sway-record" "3"; }
+    Mod+Ctrl+4 { spawn "/home/murat/.config/sway/scripts/sway-camera-record"; }
+    Mod+Ctrl+5 { spawn "/home/murat/.config/sway/scripts/sway-screen-camera-record"; }
+    Mod+Ctrl+Shift+Print { spawn "/home/murat/.config/sway/scripts/sway-ocr"; }
+
+    Mod+I { spawn "/home/murat/.local/bin/whisper-type.sh"; }
+    Mod+Shift+I { spawn "/home/murat/.local/bin/whisper-type.sh" "en"; }
+    Mod+Ctrl+P { spawn "/usr/bin/wl-color-picker"; }
+
+    Mod+Shift+V { spawn "/home/murat/.config/sway/scripts/clipboard-history"; }
+    Mod+C { spawn "/home/murat/.config/sway/scripts/waybar-visibility"; }
+    Mod+N { spawn "/home/murat/.config/sway/scripts/mako-toggle"; }
+    Mod+Shift+N { spawn "/home/murat/.config/sway/scripts/wlsunset-toggle"; }
+    Mod+Ctrl+N { spawn "/home/murat/.config/sway/scripts/notification-history"; }
+    Mod+Ctrl+E { spawn "/home/murat/.config/sway/scripts/emoji-picker"; }
+
+    Mod+Shift+S { spawn-sh "/usr/local/bin/swaylock -f -c 000000 && systemctl suspend"; }
+    Mod+Shift+Escape { quit; }
+    Ctrl+Alt+Delete { quit; }
+    Mod+Shift+P { power-off-monitors; }
+}
