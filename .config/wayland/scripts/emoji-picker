@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+emoji_data="$HOME/.config/wayland/scripts/emoji-test.txt"
+
+[[ -r "$emoji_data" ]] || exit 1
+
+selection="$(
+    awk '
+        /; fully-qualified[[:space:]]*#/ {
+            split($0, parts, "# ")
+            entry = parts[2]
+            sub(/ E[0-9.]+ /, "\t", entry)
+            print entry
+        }
+    ' "$emoji_data" |
+        fuzzel \
+            --dmenu \
+            --prompt="emoji > "
+)" || exit 0
+
+[[ -n "$selection" ]] || exit 0
+
+emoji="${selection%%$'\t'*}"
+
+[[ -n "$emoji" ]] || exit 0
+
+printf '%s' "$emoji" | wl-copy
+
+sleep 0.05
+
+wtype "$emoji"

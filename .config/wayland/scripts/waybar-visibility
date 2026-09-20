@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+state_file="$HOME/.cache/waybar-hidden"
+
+if [[ -f "$state_file" ]]; then
+    rm -f "$state_file"
+else
+    touch "$state_file"
+fi
+
+pkill -USR1 -x waybar

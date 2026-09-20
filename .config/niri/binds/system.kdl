@@ -17,36 +17,36 @@ binds {
     Mod+F2 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s balanced && notify-send 'Power Profile' 'Balanced mode enabled'"; }
     Mod+F3 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s power-saver && notify-send 'Power Profile' 'Battery saving mode enabled'"; }
 
-    Mod+T { spawn "/home/murat/.config/sway/scripts/bluetooth/bluetooth-toggle"; }
-    Mod+F4 { spawn "/home/murat/.config/sway/scripts/audio/audio-toggle"; }
-    Mod+F5 { spawn "/home/murat/.config/sway/scripts/input/mic-toggle"; }
-    Mod+F6 { spawn "/home/murat/.config/sway/scripts/input/camera-toggle"; }
+    Mod+T { spawn "bash" "/home/murat/.config/wayland/scripts/bluetooth-toggle"; }
+    Mod+F4 { spawn "bash" "/home/murat/.config/wayland/scripts/audio-toggle"; }
+    Mod+F5 { spawn "bash" "/home/murat/.config/wayland/scripts/mic-toggle"; }
+    Mod+F6 { spawn "bash" "/home/murat/.config/wayland/scripts/camera-toggle"; }
 
-    Mod+Shift+A { spawn "/home/murat/.config/niri/scripts/display-mode" "asus"; }
-    Mod+Shift+T { spawn "/home/murat/.config/niri/scripts/display-mode" "thinkpad"; }
-    Mod+Shift+D { spawn "/home/murat/.config/niri/scripts/display-mode" "dual"; }
+    Mod+Shift+A { spawn "bash" "/home/murat/.config/niri/scripts/display-mode" "asus"; }
+    Mod+Shift+T { spawn "bash" "/home/murat/.config/niri/scripts/display-mode" "thinkpad"; }
+    Mod+Shift+D { spawn "bash" "/home/murat/.config/niri/scripts/display-mode" "dual"; }
 
     Print { screenshot; }
     Mod+Print { screenshot-screen; }
     Mod+Ctrl+Print { screenshot-window; }
 
-    Mod+Ctrl+1 { spawn "/home/murat/.config/sway/scripts/sway-record" "1"; }
-    Mod+Ctrl+2 { spawn "/home/murat/.config/sway/scripts/sway-record" "2"; }
-    Mod+Ctrl+3 { spawn "/home/murat/.config/sway/scripts/sway-record" "3"; }
-    Mod+Ctrl+4 { spawn "/home/murat/.config/sway/scripts/sway-camera-record"; }
-    Mod+Ctrl+5 { spawn "/home/murat/.config/sway/scripts/sway-screen-camera-record"; }
-    Mod+Ctrl+Shift+Print { spawn "/home/murat/.config/sway/scripts/sway-ocr"; }
+    Mod+Ctrl+1 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-record" "1"; }
+    Mod+Ctrl+2 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-record" "2"; }
+    Mod+Ctrl+3 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-record" "3"; }
+    Mod+Ctrl+4 { spawn "bash" "/home/murat/.config/wayland/scripts/camera-record"; }
+    Mod+Ctrl+5 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-camera-record"; }
+    Mod+Ctrl+Shift+Print { spawn "bash" "/home/murat/.config/wayland/scripts/ocr"; }
 
     Mod+I { spawn "/home/murat/.local/bin/whisper-type.sh"; }
     Mod+Shift+I { spawn "/home/murat/.local/bin/whisper-type.sh" "en"; }
     Mod+Ctrl+P { spawn "/usr/bin/wl-color-picker"; }
 
-    Mod+Shift+V { spawn "/home/murat/.config/sway/scripts/clipboard-history"; }
-    Mod+C { spawn "/home/murat/.config/sway/scripts/waybar-visibility"; }
-    Mod+N { spawn "/home/murat/.config/sway/scripts/mako-toggle"; }
-    Mod+Shift+N { spawn "/home/murat/.config/sway/scripts/wlsunset-toggle"; }
-    Mod+Ctrl+N { spawn "/home/murat/.config/sway/scripts/notification-history"; }
-    Mod+Ctrl+E { spawn "/home/murat/.config/sway/scripts/emoji-picker"; }
+    Mod+Shift+V { spawn "bash" "/home/murat/.config/wayland/scripts/clipboard-history"; }
+    Mod+C { spawn "bash" "/home/murat/.config/wayland/scripts/waybar-visibility"; }
+    Mod+N { spawn "bash" "/home/murat/.config/wayland/scripts/mako-toggle"; }
+    Mod+Shift+N { spawn "bash" "/home/murat/.config/wayland/scripts/wlsunset-toggle"; }
+    Mod+Ctrl+N { spawn "bash" "/home/murat/.config/wayland/scripts/notification-history"; }
+    Mod+Ctrl+E { spawn "bash" "/home/murat/.config/wayland/scripts/emoji-picker"; }
 
     Mod+Shift+C { spawn-sh "niri msg action load-config-file"; }
     Mod+F11 { spawn "/usr/local/bin/foot" "/usr/local/bin/glow" "-p" "/home/murat/.config/niri/README.md"; }
