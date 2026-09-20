@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import html, json, os, re, secrets, signal, socket, tempfile, threading, webbrowser
+import html, json, os, re, secrets, signal, socket, subprocess, tempfile, threading, webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
 HOST, PORT = "127.0.0.1", 8765
 MATCH_FILE = Path.home() / ".config/espanso/match/base.yml"
-TOKEN = secrets.token_urlsafe(24)
+TOKEN = secrets.token_urlsafe(24)\nGIT_LOCK = threading.Lock()
 
 def parse_matches():
     if not MATCH_FILE.exists():
@@ -45,6 +45,29 @@ def write_matches(items):
     finally:
         if os.path.exists(name): os.unlink(name)
 
+def git_context():
+    target = MATCH_FILE.resolve() if MATCH_FILE.is_symlink() else MATCH_FILE
+    p = subprocess.run(['git','-C',str(target.parent),'rev-parse','--show-toplevel'], capture_output=True, text=True)
+    if p.returncode != 0:
+        raise RuntimeError('base.yml bir Git deposunda değil.')
+    repo = Path(p.stdout.strip())
+    return repo, target, os.path.relpath(target, repo)
+
+def git_status():
+    repo, target, rel = git_context()
+    p = subprocess.run(['git','-C',str(repo),'status','--porcelain','--',rel], capture_output=True, text=True)
+    return {'dirty': bool(p.stdout.strip())}
+
+def git_save():
+    with GIT_LOCK:
+        repo, target, rel = git_context()
+        subprocess.run(['git','-C',str(repo),'add','--',rel], check=True)
+        changed = subprocess.run(['git','-C',str(repo),'diff','--cached','--quiet','--',rel]).returncode != 0
+        if changed:
+            subprocess.run(['git','-C',str(repo),'commit','-m','Update Espanso snippets','--',rel], check=True)
+        subprocess.run(['git','-C',str(repo),'push','origin','HEAD'], check=True)
+        return {'ok': True, 'committed': changed}
+
 PAGE = r'''<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Espanso Snippets</title>
@@ -61,9 +84,9 @@ input,textarea{width:100%;background:#11141a;border:1px solid var(--line);color:
 dialog{width:min(560px,calc(100% - 28px));border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--text);padding:0;box-shadow:0 25px 100px #000b}dialog::backdrop{background:#05070aa8;backdrop-filter:blur(4px)}
 .modal{padding:22px}.modal h2{margin:0 0 18px}.field{margin:13px 0}.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
 .count{color:var(--muted);font-size:13px;margin:12px 3px}@media(max-width:700px){main{margin-top:25px}.card{grid-template-columns:1fr}.actions{justify-content:flex-end}.top{align-items:flex-start;flex-direction:column}}
-</style></head><body><main>
+.gitbar{display:flex;justify-content:flex-end;gap:9px;margin-bottom:14px}.clean{color:#a6e3a1}.dirty{color:#f9e2af}</style></head><body><main>
 <div class="top"><div><h1>Espanso Snippets</h1><div class="sub">Hızlı ekle, düzenle ve temizle.</div></div><button class="btn primary" onclick="openNew()">+ Yeni snippet</button></div>
-<div class="toolbar"><input id="search" placeholder="Trigger veya içerikte ara…" autofocus oninput="render()"></div>
+<div class="gitbar"><button id="gitbtn" class="btn" onclick="gitSave()">Git durumu…</button></div><div class="toolbar"><input id="search" placeholder="Trigger veya içerikte ara…" autofocus oninput="render()"></div>
 <div id="count" class="count"></div><section id="list"></section>
 </main>
 <dialog id="modal"><form class="modal" onsubmit="save(event)"><h2 id="title">Yeni snippet</h2>
@@ -73,7 +96,7 @@ dialog{width:min(560px,calc(100% - 28px));border:1px solid var(--line);border-ra
 </form></dialog>
 <script>
 let items=[], editing=null; const modal=document.querySelector('#modal');
-async function load(){items=await (await fetch('/api/snippets')).json();render()}
+async function load(){items=await (await fetch('/api/snippets')).json();render();await gitState()}\nasync function gitState(){const b=document.querySelector('#gitbtn');try{const s=await (await fetch('/api/git-status')).json();b.disabled=false;b.className='btn '+(s.dirty?'dirty':'clean');b.textContent=s.dirty?'● GitHub’a Kaydet':'✓ GitHub güncel'}catch(e){b.className='btn danger';b.textContent='Git durumu alınamadı'}}\nasync function gitSave(){const b=document.querySelector('#gitbtn');b.disabled=true;b.textContent='Kaydediliyor…';const r=await fetch('/api/git-save',{method:'POST',headers:{'X-Token':'__TOKEN__'}});if(!r.ok){alert(await r.text());b.disabled=false;await gitState();return}await gitState()}
 function render(){const q=document.querySelector('#search').value.toLocaleLowerCase('tr');const f=items.filter(x=>(x.trigger+' '+x.replace).toLocaleLowerCase('tr').includes(q));count.textContent=f.length+' snippet';list.innerHTML=f.length?f.map((x)=>{const i=items.indexOf(x);return '<article class="card"><div class="trigger">'+esc(x.trigger)+'</div><div class="replacement">'+esc(x.replace)+'</div><div class="actions"><button class="btn icon" onclick="edit('+i+')">Düzenle</button><button class="btn icon danger" onclick="del('+i+')">Sil</button></div></article>'}).join(''):'<div class="empty">Eşleşen snippet yok.</div>'}
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function openNew(){editing=null;title.textContent='Yeni snippet';trigger.value=':';replace.value='';modal.showModal();trigger.focus()}
@@ -91,7 +114,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         p=urlparse(self.path).path
         if p=="/": self.send(200, PAGE.replace("__TOKEN__",TOKEN), "text/html; charset=utf-8")
-        elif p=="/api/snippets": self.send(200,json.dumps(parse_matches(),ensure_ascii=False))
+        elif p=="/api/snippets": self.send(200,json.dumps(parse_matches(),ensure_ascii=False))\n        elif p=="/api/git-status":\n            try: self.send(200,json.dumps(git_status()))\n            except RuntimeError as e: self.send(500,str(e),"text/plain")
         else: self.send(404,"not found","text/plain")
     def mutate(self, method):
         if self.headers.get("X-Token") != TOKEN: return self.send(403,"forbidden","text/plain")
@@ -109,7 +132,7 @@ class Handler(BaseHTTPRequestHandler):
             else: items.pop(int(data["index"]))
             write_matches(items); self.send(200,'{"ok":true}')
         except (ValueError,KeyError,IndexError,json.JSONDecodeError) as e: self.send(400,str(e),"text/plain")
-    def do_POST(self): self.mutate("POST")
+    def do_POST(self):\n        if urlparse(self.path).path=="/api/git-save":\n            if self.headers.get("X-Token") != TOKEN: return self.send(403,"forbidden","text/plain")\n            try: self.send(200,json.dumps(git_save()))\n            except (RuntimeError, subprocess.CalledProcessError) as e: self.send(500,f"GitHub kaydı başarısız: {e}","text/plain")\n            return\n        self.mutate("POST")
     def do_PUT(self): self.mutate("PUT")
     def do_DELETE(self): self.mutate("DELETE")
     def log_message(self, fmt, *args): pass
