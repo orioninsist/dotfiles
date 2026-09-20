@@ -32,9 +32,16 @@ If this is your first time using Niri, do **not** try to memorize every shortcut
 
 | Shortcut | What it means in daily use |
 |---|---|
-| `Super+1` | Go to Web |
-| `Super+2` | Go to Terminals |
-| `Super+3` | Go to Development |
+| `Super+1` | Web / Research / AI |
+| `Super+2` | Terminal / Operations |
+| `Super+3` | Development |
+| `Super+4` | Work / Office |
+| `Super+5` | Communication / Business |
+| `Super+6` | Creative / Design |
+| `Super+7` | Media / Content |
+| `Super+8` | System / VM / Device |
+| `Super+9` | Finance / Monitoring |
+| `Super+0` | Free / temporary workspace; no automatic routing |
 | `Super+H / Super+L` | Move focus to the column on the left/right |
 | `Super+J / Super+K` | Move focus down/up **only when multiple windows are stacked in the same column** |
 | `Super+R` | Change the active column width |
@@ -81,7 +88,7 @@ J / K = up / down inside one stacked column
 3. Press `Super+M` to make the focused window large without leaving the normal Niri workflow.
 4. Press `Super+F` once to see true fullscreen, then press it again to return. Use fullscreen only when you really want one application to take over the screen.
 5. Press `Super+O` whenever you lose track of where a window is.
-6. Press `Super+2` for terminals and `Super+3` for development. Build the reflex: Web = 1, Terminal = 2, Development = 3.
+6. Build the core reflex first: Web = 1, Terminal = 2, Development = 3. Then learn the secondary domains: Office = 4, Communication = 5, Creative = 6, Media = 7, System/VM = 8, Finance = 9. Keep 0 free for temporary work.
 7. Only after H/L feels natural, create a multi-window column with `Super+,` (consume into column) and practice `Super+J / Super+K`.
 8. Use `Super+.` to expel a window from that column again.
 
@@ -163,9 +170,28 @@ Once these are automatic, then learn consume/expel, monitor movement, first/last
 | `Super+Wheel` | Navigate workspaces/columns |
 | `Super+Ctrl+Wheel` | Move columns across workspaces/columns |
 
-Workspace placement remains:
+Workspace placement:
 - HDMI-A-1: 1-5
 - eDP-1: 6-10
+
+The physical output preference is separate from task routing. Applications are routed by task domain, and a column can still be moved to another workspace or monitor whenever the current task needs it.
+
+### Stable workspace map
+
+| Key | Workspace | Purpose | Typical applications |
+|---|---:|---|---|
+| `Super+1` | 1 | Web / Research / AI | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, NotebookLM, GitHub, Colab |
+| `Super+2` | 2 | Terminal / Operations | Foot, Alacritty, Kitty and shell-driven operations |
+| `Super+3` | 3 | Development | VS Code, Zed, Antigravity, JetBrains IDEs and development tools |
+| `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Keep, Tasks, Forms, calibre |
+| `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Meta Business Suite, Instagram |
+| `Super+6` | 6 | Creative / Design | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw |
+| `Super+7` | 7 | Media / Content | OBS, mpv, Spotify, HandBrake, Folo, NewsFlash, YouTube/Studio/Music |
+| `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
+| `Super+9` | 9 | Finance / Monitoring | TradingView |
+| `Super+0` | 10 | Free / Temporary | No automatic routing; use for ad-hoc work |
+
+The first three are the primary muscle-memory anchors: **1 = Web, 2 = Terminal, 3 = Code**. Workspaces 4-9 are stable secondary domains. Workspace 10 is deliberately kept unassigned so temporary work never forces a permanent category change.
 
 ### System and utilities
 
@@ -196,7 +222,7 @@ The most productive way to use Niri is not to imitate a classic tiling manager. 
 A practical daily pattern with the current setup:
 
 1. **Start from Overview** with `Super+O`. Use it as the visual map of the session instead of hunting through windows one by one.
-2. **Use workspaces by activity**, not by application count. The current assignment already supports this: web/communication on 1, terminals/device tools on 2, development on 3, productivity on 4, media on 5, with 6-10 available on the laptop display.
+2. **Use workspaces by activity**, not by application count. The stable task map is: 1 Web/Research/AI, 2 Terminal/Ops, 3 Development, 4 Work/Office, 5 Communication/Business, 6 Creative/Design, 7 Media/Content, 8 System/VM/Device, 9 Finance/Monitoring, and 10 (accessed with `Super+0`) Free/Temporary. Workspace 10 intentionally has no automatic application routing.
 3. **Navigate with H/J/K/L**. Horizontal H/L changes columns; J/K moves inside a multi-window column. This matches Niri's data model and keeps navigation predictable.
 4. **Build columns deliberately**. Use `Super+[` / `Super+]` or `Super+,` / `Super+.` to combine related windows. For example, keep a terminal and its monitoring/log window in one vertical column instead of consuming two horizontal positions.
 5. **Size by role, not by pixel chasing**. `Super+R` cycles useful preset widths. Use `Super+-/+` only for exceptions. This is faster than continually fine-tuning every window.
@@ -208,7 +234,7 @@ A practical daily pattern with the current setup:
 
 ### Coding + research
 
-Example: VS Code/Zed/JetBrains on workspace 3, Chrome/Firefox on workspace 1, terminals on workspace 2.
+Example: VS Code/Zed/JetBrains on workspace 3, Chrome/Firefox/research on workspace 1, and terminals on workspace 2. Office work belongs on 4, communication on 5, creative tools on 6, media/content on 7, system/VM/device tools on 8, and finance/monitoring on 9.
 
 Use `Super+Tab` to jump between development and the last research workspace. When documentation needs to stay visible, move the browser column to the other monitor with `Super+Ctrl+Shift+H/L`. Keep terminal output grouped vertically with another terminal using consume/expel rather than opening many narrow columns.
 
@@ -236,7 +262,7 @@ For a distraction-free writing pass, use `Super+F`. When you still need surround
 
 ### Two-monitor workflow
 
-The current workspace map already separates 1-5 to HDMI-A-1 and 6-10 to eDP-1. In daily use, do not think of this as a hard wall. Niri can move the active column between monitors with `Super+Ctrl+Shift+H/J/K/L`.
+The output preference places workspaces 1-5 on HDMI-A-1 and 6-10 on eDP-1 by default. This is only the starting physical placement; the task-domain map above remains the mental model. In daily use, do not think of the monitor split as a hard wall. Niri can move the active column between monitors with `Super+Ctrl+Shift+H/J/K/L`.
 
 A strong two-monitor pattern is:
 - primary monitor: the thing being edited or controlled;
@@ -260,14 +286,9 @@ This is usually faster than manually dragging and resizing every window.
 
 Application launchers are intentionally isolated in `binds/applications.kdl`. Chrome, Firefox, terminals, file manager and other launchers are personal workflow choices, not Niri window-management policy.
 
-The applications currently referenced by the config can still be used as workflow anchors:
+The applications referenced by the config follow the stable task-domain map above. Browser/research/AI starts on 1; terminals on 2; development on 3; office on 4; communication/business on 5; creative/design on 6; media/content on 7; system/VM/device tools on 8; and finance/monitoring on 9.
 
-- Browser/research: Chrome, Firefox, Firefox Developer Edition, Brave, Edge, Yandex, Tor, Mullvad.
-- Development: VS Code, Zed, JetBrains applications and virtualization tools through workspace rules.
-- Terminals: Foot, Alacritty, Kitty/Yazi.
-- Files: Nautilus.
-- Capture/media: Snapshot, Flameshot, OBS/mpv-related workspace rules.
-- Communication/productivity windows are assigned through the existing window rules.
+Helper applications such as Nautilus are intentionally not forced to a permanent workspace because they are useful inside many different task contexts. Workspace 10 is also intentionally excluded from automatic routing.
 
 The goal is not to memorize an application shortcut for every task. Use application launchers to start work, then rely on Niri's window/workspace navigation for the rest of the session.
 
