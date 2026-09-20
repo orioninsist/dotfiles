@@ -102,7 +102,7 @@ window-rule {
 
 // Research / AI PWAs.
 window-rule {
-    match app-id=r#"^chrome-(cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|kfgapjallbhpciobgmlhlhokknljkgho|kjfmejlnnfibknebffpdmphoiomckhdb|cdbijngggjkalinmffpblfekjekjjadf)-Default$"#
+    match app-id=r#"^chrome-(cechoboadpfjgoaooidphlandgelehhi|cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|kjfmejlnnfibknebffpdmphoiomckhdb|cdbijngggjkalinmffpblfekjekjjadf|ggjocahimgaohmigbfhghnlfcnjemagj|hjopciijjmfioojmkkdhpmeobcmldadc|fkdjgkemkhimagkhabgcnhjoogaiikml|lgnggepjiihbfdbedefdhcffnmhcahbm|ajinkohnfhbdebdnggdbjkgjflfhcnkk|edanbjnaiofggfmimiidpfmhggkbokck)-Default$"#
     open-on-workspace "1"
 }
 
@@ -120,13 +120,13 @@ window-rule {
 
 // Workspace 4: work and office.
 window-rule {
-    match app-id=r#"^(calibre-gui|chrome-(aghbiahbpaijignceidepookljebhfak|pmcngklofgngifnoceehmchjlildnhkj|mpnpojknpmmopombnjdcgaaiekajbnjb|jkdlbdnmmndeckliookkkcbgindcjpme|eilembjdkfgodjkcjnpgpaenohkicgjd|fhihpiojkbmbpdjeoajapmgkhlnakfjf|kefjledonklijopmnomlcbpllchaibag|okhfeehhillipaleckndoboggdkcebmo|cfkjhppcnjbkjoclfcjjkphpicbpoaeg|idkejijbjcgdnloelolopdemkebfadai)-Default)$"#
+    match app-id=r#"^(calibre-gui|chrome-(aghbiahbpaijignceidepookljebhfak|pmcngklofgngifnoceehmchjlildnhkj|mpnpojknpmmopombnjdcgaaiekajbnjb|jkdlbdnmmndeckliookkkcbgindcjpme|eilembjdkfgodjkcjnpgpaenohkicgjd|fhihpiojkbmbpdjeoajapmgkhlnakfjf|kefjledonklijopmnomlcbpllchaibag|okhfeehhillipaleckndoboggdkcebmo|cfkjhppcnjbkjoclfcjjkphpicbpoaeg|idkejijbjcgdnloelolopdemkebfadai|lbllnnflijadcmjbldbhljjoagkliklg|ncmjhecbjeaamljdfahankockkkdmedg)-Default)$"#
     open-on-workspace "4"
 }
 
 // Workspace 5: communication and business.
 window-rule {
-    match app-id=r#"^(element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp)-Default)$"#
+    match app-id=r#"^(element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp|kippjfofjhjlffjecoapiogbkgbpmgej|edoaadjopjhjcbcpgabbjjngnkongjhe)-Default)$"#
     open-on-workspace "5"
 }
 
@@ -138,7 +138,7 @@ window-rule {
 
 // Workspace 7: media and content.
 window-rule {
-    match app-id=r#"^(mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|Spotify|fr\.handbrake\.ghb|chrome-(agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
+    match app-id=r#"^(mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|Spotify|fr\.handbrake\.ghb|chrome-(agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod|kfgapjallbhpciobgmlhlhokknljkgho|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
     open-on-workspace "7"
 }
 
@@ -150,7 +150,7 @@ window-rule {
 
 // Workspace 9: finance and monitoring.
 window-rule {
-    match app-id=r#"^TradingView$"#
+    match app-id=r#"^(TradingView|chrome-jlbpkmajnjbdjhljconcamegjengfomg-Default)$"#
     open-on-workspace "9"
 }
 
