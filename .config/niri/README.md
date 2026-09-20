@@ -60,7 +60,6 @@ This file documents the keyboard workflow used by `.config/niri/config.kdl`.
 | `Super+Shift+1..9` | Move column to workspace 1..9 |
 | `Super+Shift+0` | Move column to workspace 10 |
 | `Super+Tab` | Focus previous workspace |
-| `Super+CapsLock` | Focus previous workspace, matching Sway's back-and-forth muscle memory |
 
 Workspace placement:
 - HDMI-A-1: workspaces 1-5
@@ -148,3 +147,5 @@ Not copied from Sway on purpose:
 - Sway layout-only bindings such as split/stacking/container hierarchy/scratchpad are not mapped directly because Niri has a different window model.
 
 The goal is consistent muscle memory without forcing Sway's window model onto Niri.
+
+Super+CapsLock is intentionally not configured: Niri 26.04 rejects CapsLock as an invalid key name in this bind syntax, so the valid Super+Tab previous-workspace binding remains the safe equivalent.
