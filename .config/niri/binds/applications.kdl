@@ -1,0 +1,21 @@
+// Personal application launchers.
+// Kept separate from Niri-native window management.
+binds {
+    Mod+Return { spawn "/usr/local/bin/foot"; }
+    Mod+D { spawn "wmenu-run"; }
+    Mod+Ctrl+Return { spawn "alacritty"; }
+    Mod+Y { spawn "/usr/local/bin/kitty" "/home/murat/.local/bin/yazi"; }
+
+    Mod+Ctrl+B { spawn "google-chrome-stable"; }
+    Mod+Ctrl+Shift+B { spawn "brave"; }
+    Mod+Ctrl+M { spawn "microsoft-edge-stable"; }
+    Mod+Ctrl+Shift+Y { spawn "yandex-browser-stable"; }
+    Mod+Ctrl+F { spawn "firefox"; }
+    Mod+Ctrl+Shift+F { spawn "firefox-developer-edition"; }
+    Mod+Ctrl+T { spawn "tor-browser"; }
+    Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
+    Mod+Ctrl+Y { spawn "nautilus"; }
+
+    Mod+F10 { spawn "/usr/local/bin/snapshot"; }
+    Mod+P { spawn "/usr/local/bin/flameshot" "gui"; }
+}
