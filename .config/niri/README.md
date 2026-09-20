@@ -5,10 +5,10 @@ Modular Niri configuration for the daily Wayland session.
 ## Table of contents
 
 - [Structure](#structure)
-- [Window management](#window-management)
-- [Workspaces](#workspaces)
+- [Shortcut reference](#shortcut-reference)
+- [Daily workflow](#daily-workflow)
+- [Professional productivity patterns](#professional-productivity-patterns)
 - [Personal applications](#personal-applications)
-- [System and utilities](#system-and-utilities)
 - [Conflict policy](#conflict-policy)
 - [Validation](#validation)
 
@@ -24,9 +24,9 @@ Modular Niri configuration for the daily Wayland session.
 
 Niri 26.04 supports `include`, so the main config stays small while each binding domain remains independently maintainable.
 
-## Window management
+## Shortcut reference
 
-The window-management module follows Niri's upstream model: columns scroll horizontally, multiple windows may live vertically in a column, and monitors/workspaces are first-class navigation targets.
+### Window management
 
 | Shortcut | Action |
 |---|---|
@@ -36,7 +36,7 @@ The window-management module follows Niri's upstream model: columns scroll horiz
 | `Super+H/J/K/L` or arrows | Focus columns/windows |
 | `Super+Shift+H/J/K/L` or arrows | Move columns/windows; retained muscle memory |
 | `Super+Ctrl+H/J/K/L` or arrows | Niri upstream-style move columns/windows |
-| `Super+Home/End` | First/last column |
+| `Super+Home/End` | Focus first/last column |
 | `Super+Ctrl+Home/End` | Move column to first/last |
 | `Super+Ctrl+Shift+H/J/K/L` or arrows | Move column between monitors |
 | `Super+[/]` | Consume/expel window left/right |
@@ -57,7 +57,7 @@ The window-management module follows Niri's upstream model: columns scroll horiz
 | `Super+W` | Toggle tabbed column display |
 | `Super+Escape` | Toggle keyboard-shortcut inhibition escape hatch |
 
-## Workspaces
+### Workspaces
 
 | Shortcut | Action |
 |---|---|
@@ -77,13 +77,109 @@ Workspace placement remains:
 - HDMI-A-1: 1-5
 - eDP-1: 6-10
 
+### System and utilities
+
+| Shortcut | Action |
+|---|---|
+| `Super+Ctrl+Space` | Switch US/TR keyboard layout |
+| `Super+Shift+V` | Clipboard history |
+| `Super+C` | Toggle Waybar |
+| `Super+N` | Toggle Mako |
+| `Super+Shift+N` | Toggle wlsunset / night light |
+| `Super+Ctrl+N` | Notification history |
+| `Super+Ctrl+E` | Emoji picker |
+| `Super+I` | Whisper typing |
+| `Super+Shift+I` | Whisper typing in English |
+| `Super+Ctrl+P` | Color picker |
+| `Print` | Screenshot |
+| `Super+Print` | Screenshot screen |
+| `Super+Ctrl+Print` | Screenshot window |
+| `Super+Ctrl+1..5` | Recording helpers |
+| `Super+Shift+S` | Lock, then suspend |
+| `Super+Shift+Escape` | Quit Niri |
+| `Super+Shift+P` | Power off monitors |
+
+## Daily workflow
+
+The most productive way to use Niri is not to imitate a classic tiling manager. Treat each workspace as a horizontal strip of related columns. Keep only the current task visible, then move left/right through context instead of constantly resizing every window.
+
+A practical daily pattern with the current setup:
+
+1. **Start from Overview** with `Super+O`. Use it as the visual map of the session instead of hunting through windows one by one.
+2. **Use workspaces by activity**, not by application count. The current assignment already supports this: web/communication on 1, terminals/device tools on 2, development on 3, productivity on 4, media on 5, with 6-10 available on the laptop display.
+3. **Navigate with H/J/K/L**. Horizontal H/L changes columns; J/K moves inside a multi-window column. This matches Niri's data model and keeps navigation predictable.
+4. **Build columns deliberately**. Use `Super+[` / `Super+]` or `Super+,` / `Super+.` to combine related windows. For example, keep a terminal and its monitoring/log window in one vertical column instead of consuming two horizontal positions.
+5. **Size by role, not by pixel chasing**. `Super+R` cycles useful preset widths. Use `Super+-/+` only for exceptions. This is faster than continually fine-tuning every window.
+6. **Use fullscreen only for real focus** with `Super+F`. For a large working window that should still remain in the Niri flow, `Super+M` or `Super+Alt+F` is usually more useful than fullscreen.
+7. **Use `Super+Tab` for context switching** between the current and previous workspace. It is ideal for repeatedly jumping between code and browser/research without remembering workspace numbers.
+8. **Use the second monitor as capacity, not duplication**. Move an entire active column with `Super+Ctrl+Shift+H/J/K/L`; keep the main editing column on one display and reference/monitoring material on the other.
+
+## Professional productivity patterns
+
+### Coding + research
+
+Example: VS Code/Zed/JetBrains on workspace 3, Chrome/Firefox on workspace 1, terminals on workspace 2.
+
+Use `Super+Tab` to jump between development and the last research workspace. When documentation needs to stay visible, move the browser column to the other monitor with `Super+Ctrl+Shift+H/L`. Keep terminal output grouped vertically with another terminal using consume/expel rather than opening many narrow columns.
+
+A useful rhythm is:
+
+`Super+O` → choose context → `H/L` to move between columns → `J/K` within a stacked column → `Super+R` to normalize width.
+
+### Browser-heavy research
+
+For many Chrome/Firefox windows, avoid maximizing everything. Give the active article or ChatGPT/research page a larger column with `Super+R` or `Super+Alt+F`, keep supporting pages in neighboring columns, and use `Super+Home/End` to jump to the edges of a long research strip.
+
+If several pages belong to one subtopic, combine them into one column and use J/K vertically. This prevents a 10-window research session from becoming a 10-column horizontal hunt.
+
+### Terminal and operations work
+
+Workspace 2 is a good place for shells, logs and device tools. A productive Niri layout is one main shell column plus a stacked monitoring column. Use `Super+Ctrl+Home/End` when you want a permanent “anchor” column at the beginning or end of the workspace.
+
+For remote desktop, KVM or applications that capture shortcuts, `Super+Escape` is the escape hatch for keyboard-shortcut inhibition.
+
+### Writing / productivity
+
+Keep the main editor or document in the center and reference material adjacent. `Super+Alt+C` recenters the working column after moving through references. `Super+Alt+Ctrl+C` is useful after opening several supporting columns and wanting the visible group centered again.
+
+For a distraction-free writing pass, use `Super+F`. When you still need surrounding context, prefer `Super+M` or `Super+Alt+F`.
+
+### Two-monitor workflow
+
+The current workspace map already separates 1-5 to HDMI-A-1 and 6-10 to eDP-1. In daily use, do not think of this as a hard wall. Niri can move the active column between monitors with `Super+Ctrl+Shift+H/J/K/L`.
+
+A strong two-monitor pattern is:
+- primary monitor: the thing being edited or controlled;
+- secondary monitor: browser/reference, logs, video, monitoring or communication;
+- move columns, not individual windows, when the whole context belongs together.
+
+### Fast recovery when the session feels messy
+
+When too many windows accumulate:
+
+1. `Super+O` to see the whole state.
+2. Move unrelated work to its numbered workspace.
+3. Group related windows into columns with consume/expel.
+4. Normalize widths with `Super+R`.
+5. Use `Super+Home/End` to find edge columns quickly.
+6. Center the active work with `Super+Alt+C`.
+
+This is usually faster than manually dragging and resizing every window.
+
 ## Personal applications
 
-Application launchers are intentionally isolated in `binds/applications.kdl`. Chrome, Firefox, terminal, file-manager and other launcher choices are personal policy, not Niri window-management policy.
+Application launchers are intentionally isolated in `binds/applications.kdl`. Chrome, Firefox, terminals, file manager and other launchers are personal workflow choices, not Niri window-management policy.
 
-## System and utilities
+The applications currently referenced by the config can still be used as workflow anchors:
 
-`binds/system.kdl` contains the existing working audio/media/brightness controls, power profiles, hardware toggles, native Niri screenshots, recording/OCR helpers, clipboard history, Waybar/Mako/wlsunset utilities, lock/suspend and session exit.
+- Browser/research: Chrome, Firefox, Firefox Developer Edition, Brave, Edge, Yandex, Tor, Mullvad.
+- Development: VS Code, Zed, JetBrains applications and virtualization tools through workspace rules.
+- Terminals: Foot, Alacritty, Kitty/Yazi.
+- Files: Nautilus.
+- Capture/media: Snapshot, Flameshot, OBS/mpv-related workspace rules.
+- Communication/productivity windows are assigned through the existing window rules.
+
+The goal is not to memorize an application shortcut for every task. Use application launchers to start work, then rely on Niri's window/workspace navigation for the rest of the session.
 
 ## Conflict policy
 
@@ -106,7 +202,7 @@ After updating locally:
 niri validate -c ~/.config/niri/config.kdl
 ```
 
-When running inside Niri, the configuration can be reloaded with:
+When running inside Niri:
 
 ```sh
 niri msg action load-config-file
