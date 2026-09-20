@@ -48,7 +48,7 @@ binds {
     Mod+Ctrl+N { spawn "/home/murat/.config/sway/scripts/notification-history"; }
     Mod+Ctrl+E { spawn "/home/murat/.config/sway/scripts/emoji-picker"; }
 
-    Mod+Shift+C { load-config-file; }
+    Mod+Shift+C { spawn-sh "niri msg action load-config-file"; }
     Mod+F11 { spawn "/usr/local/bin/foot" "/usr/local/bin/glow" "-p" "/home/murat/.config/niri/README.md"; }
 
     Mod+Shift+S { spawn-sh "/usr/local/bin/swaylock -f -c 000000 && systemctl suspend"; }
