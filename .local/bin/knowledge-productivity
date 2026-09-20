@@ -2,11 +2,11 @@
 set -euo pipefail
 
 repo="/mnt/local/projects/knowledge"
-binary="$repo/src-tauri/target/debug/knowledge-productivity"
+binary="$repo/src-tauri/target/release/knowledge-productivity"
 
 if [[ ! -x "$binary" ]]; then
     cd "$repo"
-    cargo build --manifest-path src-tauri/Cargo.toml --no-default-features
+    bun run productivity:build
 fi
 
 exec "$binary"
