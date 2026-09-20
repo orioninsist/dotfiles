@@ -180,15 +180,15 @@ The physical output preference is separate from task routing. Applications are r
 
 | Key | Workspace | Purpose | Typical applications |
 |---|---:|---|---|
-| `Super+1` | 1 | Web / Research / AI | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, NotebookLM, GitHub, Colab |
+| `Super+1` | 1 | Web / Research / AI | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, Grok, NotebookLM, GitHub, Stack Overflow, Reddit, Quora, Pinterest, Google Translate, Knowledge, Colab |
 | `Super+2` | 2 | Terminal / Operations | Foot, Alacritty, Kitty and shell-driven operations |
 | `Super+3` | 3 | Development | VS Code, Zed, Antigravity, JetBrains IDEs and development tools |
-| `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Keep, Tasks, Forms, calibre |
-| `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Meta Business Suite, Instagram |
+| `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Contacts, Keep, Tasks, Forms, Google Password Manager, Google Photos, Google Vids, calibre |
+| `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Facebook, Instagram, Meta Business Suite, Google AdSense |
 | `Super+6` | 6 | Creative / Design | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw |
-| `Super+7` | 7 | Media / Content | OBS, mpv, Spotify, HandBrake, Folo, NewsFlash, YouTube/Studio/Music |
+| `Super+7` | 7 | Media / Content | OBS, mpv, Spotify, HandBrake, Folo, NewsFlash, YouTube, YouTube Music, Google News |
 | `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
-| `Super+9` | 9 | Finance / Monitoring | TradingView |
+| `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
 | `Super+0` | 10 | Free / Temporary | No automatic routing; use for ad-hoc work |
 
 The first three are the primary muscle-memory anchors: **1 = Web, 2 = Terminal, 3 = Code**. Workspaces 4-9 are stable secondary domains. Workspace 10 is deliberately kept unassigned so temporary work never forces a permanent category change.
