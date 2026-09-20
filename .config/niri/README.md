@@ -24,6 +24,96 @@ Modular Niri configuration for the daily Wayland session.
 
 Niri 26.04 supports `include`, so the main config stays small while each binding domain remains independently maintainable.
 
+## First-time daily use: build muscle memory first
+
+If this is your first time using Niri, do **not** try to memorize every shortcut. Start with the small set below and use only these for the first few days.
+
+### The 8 shortcuts to learn first
+
+| Shortcut | What it means in daily use |
+|---|---|
+| `Super+1` | Go to Web |
+| `Super+2` | Go to Terminals |
+| `Super+3` | Go to Development |
+| `Super+H / Super+L` | Move focus to the column on the left/right |
+| `Super+J / Super+K` | Move focus down/up **only when multiple windows are stacked in the same column** |
+| `Super+R` | Change the active column width |
+| `Super+M` | Make the active window large while staying in the Niri flow |
+| `Super+O` | Open Overview when you feel lost |
+
+### Important: why J/K may appear to do nothing
+
+Niri is column-based. If Chrome and another browser window are each in their own column, the layout looks like this:
+
+```text
+[ Chrome ] [ Mullvad ] [ Firefox ]
+```
+
+In that case:
+
+- `Super+H` goes to the column on the left.
+- `Super+L` goes to the column on the right.
+- `Super+J` and `Super+K` do nothing because there is no window above or below the focused window.
+
+`Super+J / Super+K` become useful only after two or more windows are placed inside the same column:
+
+```text
+[ Chrome ] [ Terminal ]
+           [ Logs     ]
+```
+
+Now, while the second column is focused:
+
+- `Super+J` moves from Terminal to Logs.
+- `Super+K` moves from Logs back to Terminal.
+
+So for a new user, remember this simple rule:
+
+```text
+H / L = left / right between columns
+J / K = up / down inside one stacked column
+```
+
+### First 30-minute practice
+
+1. Press `Super+1` and open two browser windows. Use `Super+H` and `Super+L` until left/right navigation feels automatic.
+2. Press `Super+R` a few times. Notice how the focused column cycles through useful widths.
+3. Press `Super+M` to make the focused window large without leaving the normal Niri workflow.
+4. Press `Super+F` once to see true fullscreen, then press it again to return. Use fullscreen only when you really want one application to take over the screen.
+5. Press `Super+O` whenever you lose track of where a window is.
+6. Press `Super+2` for terminals and `Super+3` for development. Build the reflex: Web = 1, Terminal = 2, Development = 3.
+7. Only after H/L feels natural, create a multi-window column with `Super+,` (consume into column) and practice `Super+J / Super+K`.
+8. Use `Super+.` to expel a window from that column again.
+
+### Daily mental model
+
+Do not think of Niri as “a screen split into boxes.” Think of each workspace as a horizontal strip of columns:
+
+```text
+... [ docs ] [ editor ] [ terminal ] [ browser ] [ chat ] ...
+                    <---- H / L ---->
+```
+
+A column can contain one window, or several windows stacked vertically:
+
+```text
+[ editor ] [ terminal ]
+           [ logs     ]
+           [ tests    ]
+               ^
+              J/K
+```
+
+The goal is to stop arranging every window manually. Use:
+
+- workspace numbers to choose the kind of work;
+- H/L to move through that work horizontally;
+- J/K only inside stacked columns;
+- R to normalize width;
+- O to recover visually when the session gets busy.
+
+Once these are automatic, then learn consume/expel, monitor movement, first/last-column jumps and the rest of the reference below.
+
 ## Shortcut reference
 
 ### Window management
