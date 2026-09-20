@@ -6,7 +6,8 @@ from urllib.parse import urlparse
 
 HOST, PORT = "127.0.0.1", 8765
 MATCH_FILE = Path.home() / ".config/espanso/match/base.yml"
-TOKEN = secrets.token_urlsafe(24)\nGIT_LOCK = threading.Lock()
+TOKEN = secrets.token_urlsafe(24)
+GIT_LOCK = threading.Lock()
 
 def parse_matches():
     if not MATCH_FILE.exists():
