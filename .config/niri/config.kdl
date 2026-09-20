@@ -102,7 +102,7 @@ window-rule {
 
 // Research / AI PWAs.
 window-rule {
-    match app-id=r#"^chrome-(cechoboadpfjgoaooidphlandgelehhi|cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|kjfmejlnnfibknebffpdmphoiomckhdb|cdbijngggjkalinmffpblfekjekjjadf|ggjocahimgaohmigbfhghnlfcnjemagj|hjopciijjmfioojmkkdhpmeobcmldadc|fkdjgkemkhimagkhabgcnhjoogaiikml|lgnggepjiihbfdbedefdhcffnmhcahbm|ajinkohnfhbdebdnggdbjkgjflfhcnkk|edanbjnaiofggfmimiidpfmhggkbokck)-Default$"#
+    match app-id=r#"^chrome-(cechoboadpfjgoaooidphlandgelehhi|cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|kjfmejlnnfibknebffpdmphoiomckhdb|cdbijngggjkalinmffpblfekjekjjadf|ggjocahimgaohmigbfhghnlfcnjemagj|hjopciijjmfioojmkkdhpmeobcmldadc|fkdjgkemkhimagkhabgcnhjoogaiikml|lgnggepjiihbfdbedefdhcffnmhcahbm|ajinkohnfhbdebdnggdbjkgjflfhcnkk|edanbjnaiofggfmimiidpfmhggkbokck|lodlkdfmihgonocnmddehnfgiljnadcf)-Default$"#
     open-on-workspace "1"
 }
 
