@@ -24,6 +24,7 @@ binds {
     Mod+Shift+0 { move-column-to-workspace "10"; }
 
     Mod+Tab { focus-workspace-previous; }
+    Mod+Caps_Lock { focus-workspace-previous; }
 
     // Up/down navigation from the upstream Niri default.
     Mod+Page_Down { focus-workspace-down; }
