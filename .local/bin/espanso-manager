@@ -33,14 +33,15 @@ def q(s):
 
 def write_matches(items):
     MATCH_FILE.parent.mkdir(parents=True, exist_ok=True)
+    target = MATCH_FILE.resolve() if MATCH_FILE.is_symlink() else MATCH_FILE
     body = "matches:\n" + "".join(f"  - trigger: {q(x['trigger'])}\n    replace: {q(x['replace'])}\n\n" for x in items)
-    fd, name = tempfile.mkstemp(prefix=".base.", suffix=".yml", dir=MATCH_FILE.parent)
+    fd, name = tempfile.mkstemp(prefix=".base.", suffix=".yml", dir=target.parent)
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             f.write(body)
             f.flush()
             os.fsync(f.fileno())
-        os.replace(name, MATCH_FILE)
+        os.replace(name, target)
     finally:
         if os.path.exists(name): os.unlink(name)
 
