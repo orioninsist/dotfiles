@@ -16,6 +16,7 @@ binds {
     Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
     Mod+Ctrl+Y { spawn "nautilus"; }
 
+    Mod+F9 { spawn "/home/murat/.local/bin/espanso-manager"; }
     Mod+F10 { spawn "/usr/local/bin/snapshot"; }
     Mod+P { spawn "/usr/local/bin/flameshot" "gui"; }
 }
