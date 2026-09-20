@@ -1,3 +1,5 @@
 matches:
 - trigger: :openai
   replace: test 2
+- trigger: :test
+  replace: ' → 123'
