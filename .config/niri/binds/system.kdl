@@ -22,6 +22,10 @@ binds {
     Mod+F5 { spawn "/home/murat/.config/sway/scripts/input/mic-toggle"; }
     Mod+F6 { spawn "/home/murat/.config/sway/scripts/input/camera-toggle"; }
 
+    Mod+Shift+A { spawn "/home/murat/.config/niri/scripts/display-mode" "asus"; }
+    Mod+Shift+T { spawn "/home/murat/.config/niri/scripts/display-mode" "thinkpad"; }
+    Mod+Shift+D { spawn "/home/murat/.config/niri/scripts/display-mode" "dual"; }
+
     Print { screenshot; }
     Mod+Print { screenshot-screen; }
     Mod+Ctrl+Print { screenshot-window; }
@@ -43,6 +47,9 @@ binds {
     Mod+Shift+N { spawn "/home/murat/.config/sway/scripts/wlsunset-toggle"; }
     Mod+Ctrl+N { spawn "/home/murat/.config/sway/scripts/notification-history"; }
     Mod+Ctrl+E { spawn "/home/murat/.config/sway/scripts/emoji-picker"; }
+
+    Mod+Shift+C { load-config-file; }
+    Mod+F11 { spawn "/usr/local/bin/foot" "/usr/local/bin/glow" "-p" "/home/murat/.config/niri/README.md"; }
 
     Mod+Shift+S { spawn-sh "/usr/local/bin/swaylock -f -c 000000 && systemctl suspend"; }
     Mod+Shift+Escape { quit; }
