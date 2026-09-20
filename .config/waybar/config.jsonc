@@ -5,7 +5,7 @@
     "spacing": 4,
 
     "modules-left": [
-        "sway/workspaces"
+        "niri/workspaces"
     ],
 
     "modules-center": [],
@@ -19,7 +19,7 @@
         "temperature#pch",
         "temperature#wifi",
         "bluetooth",
-        "sway/language",
+        "niri/language",
         "wireplumber#source",
         "power-profiles-daemon",
         "custom/system",
@@ -34,7 +34,7 @@
         "spacing": 6
     },
 
-    "sway/workspaces": {
+    "niri/workspaces": {
         "disable-scroll": false,
         "all-outputs": false,
         "format": "{name}"
@@ -105,7 +105,7 @@
         "tooltip-format-enumerate-connected-battery": "{device_alias} {device_battery_percentage}%"
     },
 
-    "sway/language": {
+    "niri/language": {
         "keyboard-name": "Razer Razer Ornata V3 X",
         "format": "󰌌 {short}",
         "tooltip": false
