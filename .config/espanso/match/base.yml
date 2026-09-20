@@ -1,3 +1,3 @@
 matches:
-  - trigger: ":anil"
-    replace: "Anıl"
+- trigger: :openai
+  replace: test 1
