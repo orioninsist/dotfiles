@@ -7,7 +7,7 @@ install_dir="$HOME/.local/libexec"
 binary="$install_dir/knowledge-productivity"
 stamp="$install_dir/.knowledge-productivity-source"
 
-mkdir -p "$install_dir"
+mkdir -p "$install_dir" "$HOME/.local/state"
 cd "$repo"
 
 # Only files that affect the desktop shell invalidate the installed binary.
