@@ -124,9 +124,9 @@ window-rule {
     open-on-workspace "4"
 }
 
-// Workspace 5: communication and business.
+// Workspace 5: communication, business and productivity.
 window-rule {
-    match app-id=r#"^(element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp|kippjfofjhjlffjecoapiogbkgbpmgej|edoaadjopjhjcbcpgabbjjngnkongjhe)-Default)$"#
+    match app-id=r#"^(knowledge-productivity|element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp|kippjfofjhjlffjecoapiogbkgbpmgej|edoaadjopjhjcbcpgabbjjngnkongjhe)-Default)$"#
     open-on-workspace "5"
 }
 
