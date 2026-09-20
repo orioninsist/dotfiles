@@ -16,7 +16,7 @@ binds {
     Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
     Mod+Ctrl+Y { spawn "nautilus"; }
 
-    Mod+F8 { spawn-sh "niri msg action focus-workspace 5; /mnt/local/projects/knowledge/src-tauri/target/debug/knowledge-productivity"; }
+    Mod+F8 { spawn-sh "niri msg action focus-workspace 5; /home/murat/.local/bin/knowledge-productivity"; }
     Mod+F9 { spawn-sh "niri msg action focus-workspace 10; /home/murat/.local/bin/espanso-manager"; }
     Mod+F10 { spawn "/usr/local/bin/snapshot"; }
     Mod+P { spawn "/usr/local/bin/flameshot" "gui"; }
