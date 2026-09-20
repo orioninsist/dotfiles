@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal Arch Linux / Sway configuration repository.
+Personal Arch Linux / Niri configuration repository.
 
 The active configuration is managed from `/mnt/local/projects/dotfiles` and linked into `$HOME` with symbolic links. This keeps the Git repository and the live configuration in sync.
 
@@ -22,7 +22,8 @@ Desktop and applications:
 - `gtk-4.0`
 - `mako`
 - `nvim`
-- `sway`
+- `niri`
+- `wayland`
 - `systemd`
 - `waybar`
 - `xdg-desktop-portal`
@@ -45,7 +46,8 @@ Examples:
 ~/.config/eza    -> /mnt/local/projects/dotfiles/.config/eza
 ~/.config/foot   -> /mnt/local/projects/dotfiles/.config/foot
 ~/.config/nvim   -> /mnt/local/projects/dotfiles/.config/nvim
-~/.config/sway   -> /mnt/local/projects/dotfiles/.config/sway
+~/.config/niri   -> /mnt/local/projects/dotfiles/.config/niri
+~/.config/wayland -> /mnt/local/projects/dotfiles/.config/wayland
 ~/.config/waybar -> /mnt/local/projects/dotfiles/.config/waybar
 ~/.config/yazi   -> /mnt/local/projects/dotfiles/.config/yazi
 ```
