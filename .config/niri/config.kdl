@@ -154,8 +154,13 @@ window-rule {
     open-on-workspace "9"
 }
 
-// Workspace 10 intentionally has no automatic window rules.
-// It remains a free/temporary workspace.
+// Workspace 10: Espanso Manager and temporary utilities.
+window-rule {
+    match app-id=r#"^espanso-manager$"#
+    open-on-workspace "10"
+}
+
+// Workspace 10 otherwise remains free for temporary windows.
 
 // Firefox Picture-in-Picture stays floating wherever Firefox is routed.
 window-rule {
