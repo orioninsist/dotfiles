@@ -3,8 +3,6 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 # Desktop session
-export XDG_CURRENT_DESKTOP=sway
-export XDG_SESSION_DESKTOP=sway
 
 # Qt / Wayland
 export QT_QPA_PLATFORM='wayland;xcb'
