@@ -3,10 +3,24 @@ set -euo pipefail
 
 repo="/mnt/local/projects/knowledge"
 binary="$repo/src-tauri/target/release/knowledge-productivity"
+stamp="$repo/src-tauri/target/release/.knowledge-productivity-head"
 
-if [[ ! -x "$binary" ]]; then
-    cd "$repo"
+cd "$repo"
+head="$(git rev-parse HEAD)"
+built=""
+[[ -f "$stamp" ]] && built="$(cat "$stamp")"
+
+if [[ ! -x "$binary" || "$built" != "$head" ]]; then
     bun run productivity:build
+    printf '%s\n' "$head" > "$stamp"
+
+    # A running Tauri process still maps the old executable after a rebuild.
+    # Stop only that exact release process so the new binary becomes active.
+    pkill -f "^${binary}$" 2>/dev/null || true
+    for _ in {1..20}; do
+        pgrep -f "^${binary}$" >/dev/null || break
+        sleep 0.1
+    done
 fi
 
 exec "$binary"
