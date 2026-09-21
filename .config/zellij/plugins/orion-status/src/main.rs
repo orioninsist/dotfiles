@@ -69,7 +69,7 @@ impl ZellijPlugin for State {
     fn render(&mut self, _rows: usize, cols: usize) {
         let temps = temperatures();
 
-        let bluetooth = bluetooth_status();
+        let bluetooth = bluetooth_status(&self.home);
         let keyboard = keyboard_layout(&self.home);
         let microphone = microphone_status(&self.home);
         let volume = volume_status(&self.home);
@@ -165,18 +165,32 @@ fn memory_percent() -> Option<u64> {
 }
 
 fn network_sample() -> Option<(u64, u64)> {
+    let routes = fs::read_to_string("/host/proc/net/route").ok()?;
+    let interface = routes
+        .lines()
+        .skip(1)
+        .filter_map(|line| {
+            let fields = line.split_whitespace().collect::<Vec<_>>();
+            if fields.len() > 1 && fields[1] == "00000000" {
+                Some(fields[0])
+            } else {
+                None
+            }
+        })
+        .next()?;
+
     let s = fs::read_to_string("/host/proc/net/dev").ok()?;
-    let mut rx = 0;
-    let mut tx = 0;
     for line in s.lines().skip(2) {
         let (name, rest) = line.split_once(':')?;
-        let name = name.trim();
-        if name == "lo" { continue; }
+        if name.trim() != interface {
+            continue;
+        }
         let v = rest.split_whitespace().collect::<Vec<_>>();
-        rx += v.get(0)?.parse::<u64>().ok()?;
-        tx += v.get(8)?.parse::<u64>().ok()?;
+        let rx = v.first()?.parse::<u64>().ok()?;
+        let tx = v.get(8)?.parse::<u64>().ok()?;
+        return Some((rx, tx));
     }
-    Some((rx, tx))
+    None
 }
 
 fn human_rate(v: u64) -> String {
@@ -264,42 +278,12 @@ fn temperatures() -> String {
 }
 
 
-fn bluetooth_status() -> String {
-    let mut powered = None;
-
-    if let Ok(entries) = fs::read_dir("/host/sys/class/rfkill") {
-        for entry in entries.flatten() {
-            let base = entry.path();
-            let kind = fs::read_to_string(base.join("type")).unwrap_or_default();
-            if kind.trim() != "bluetooth" {
-                continue;
-            }
-            let soft = fs::read_to_string(base.join("soft")).unwrap_or_default();
-            let hard = fs::read_to_string(base.join("hard")).unwrap_or_default();
-            powered = Some(soft.trim() == "0" && hard.trim() == "0");
-            break;
-        }
-    }
-
-    let Some(true) = powered else {
-        return "󰂲".to_string();
-    };
-
-    let mut connections = 0usize;
-    if let Ok(entries) = fs::read_dir("/host/sys/class/bluetooth") {
-        for entry in entries.flatten() {
-            let name = entry.file_name();
-            let name = name.to_string_lossy();
-            if name.starts_with("hci") && name.contains(':') {
-                connections += 1;
-            }
-        }
-    }
-
-    if connections > 0 {
-        format!("󰂯 {connections}")
-    } else {
-        "󰂯".to_string()
+fn bluetooth_status(home: &str) -> String {
+    let path = format!("/host{home}/.cache/orion-status/bluetooth");
+    match fs::read_to_string(path).ok().as_deref().map(str::trim) {
+        Some("off") => "󰂲".to_string(),
+        Some("on") => "󰂯".to_string(),
+        _ => "󰂯".to_string(),
     }
 }
 
