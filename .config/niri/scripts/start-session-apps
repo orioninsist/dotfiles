@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -u
 
-state_file="${XDG_CONFIG_HOME:-$HOME/.config}/niri/session/enabled"
+state_file="${XDG_STATE_HOME:-$HOME/.local/state}/niri-session/enabled"
 
 # Global kill switch: unless explicitly enabled, startup orchestration does nothing.
 if [[ ! -f "$state_file" ]] || ! grep -qx 'on' "$state_file"; then

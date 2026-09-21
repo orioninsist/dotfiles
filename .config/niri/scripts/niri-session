@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-state_dir="${XDG_CONFIG_HOME:-$HOME/.config}/niri/session"
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/niri-session"
 state_file="$state_dir/enabled"
 
 mkdir -p "$state_dir"

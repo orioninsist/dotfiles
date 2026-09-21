@@ -269,7 +269,7 @@ niri msg action load-config-file
 
 ## Automatic startup layout control
 
-The startup layout is opt-in and persistent.
+The startup layout is opt-in and persistent. Its runtime state lives outside the dotfiles tree at `${XDG_STATE_HOME:-~/.local/state}/niri-session/enabled`, so toggling it never dirties the repository.
 
 ```sh
 ~/.config/niri/scripts/niri-session on
