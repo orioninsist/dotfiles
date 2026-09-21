@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_dir="${XDG_CACHE_HOME:-$HOME/.cache}/orion-status"
+state_file="$state_dir/keyboard-layout"
+mkdir -p "$state_dir"
+
+write_layout() {
+    local value tmp
+    value="$(niri msg --json keyboard-layouts 2>/dev/null | jq -r '.names[.current_idx] // empty' 2>/dev/null || true)"
+    [[ -n "$value" ]] || return 0
+    case "$value" in
+        *English*|*US*) value="us" ;;
+        *Turkish*|*TR*) value="tr" ;;
+        *) value="${value,,}"; value="${value%% *}" ;;
+    esac
+    tmp="${state_file}.tmp"
+    printf '%s\n' "$value" > "$tmp"
+    mv "$tmp" "$state_file"
+}
+
+write_layout
+niri msg --json event-stream 2>/dev/null |
+while IFS= read -r event; do
+    case "$event" in
+        *KeyboardLayoutSwitched*|*KeyboardLayoutsChanged*) write_layout ;;
+    esac
+done
