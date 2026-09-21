@@ -26,18 +26,19 @@ The task map is stable and intended for muscle memory:
 | `Super+3` | 3 | Development | VS Code, Zed, Antigravity, JetBrains IDEs and development tools |
 | `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Contacts, Keep, Tasks, Forms, Password Manager, Photos, Vids, calibre |
 | `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Facebook, Instagram, Meta Business Suite, Google AdSense |
-| `Super+6` | 6 | Creative / Design / YouTube | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw, YouTube |
-| `Super+7` | 7 | Productivity / Content | Knowledge Productivity, Knowledge webapp, OBS, mpv, Spotify, HandBrake, Folo, NewsFlash, YouTube Music, Google News |
+| `Super+6` | 6 | Creative / Design / Media | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw, YouTube, YouTube Music, Mullvad Browser, Spotify |
+| `Super+7` | 7 | Productivity / Content | Knowledge Productivity, Knowledge webapp, OBS, mpv, HandBrake, Folo, NewsFlash, Google News |
 | `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
 | `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
 | `Super+0` | 10 | Free / Temporary | Espanso Manager plus ad-hoc temporary work |
 
-Startup set:
-- Workspace 1: Chrome, ChatGPT, GitHub, Gemini and Nautilus.
+Startup set (deterministic left-to-right order where applicable):
+- Workspace 1: Chrome, ChatGPT, GitHub, Gemini and Nautilus, opened in that order.
 - Workspace 2: Foot.
 - Workspace 3: VS Code.
-- Workspace 6: YouTube, YouTube Music, Spotify and Mullvad Browser, opened in that order.
+- Workspace 6: YouTube, YouTube Music, Mullvad Browser and Spotify, opened in that order.
 - Workspace 7: Knowledge Productivity and Knowledge webapp.
+- Daily startup windows open at full column width by default; this is not fullscreen.
 
 Physical placement:
 - Workspaces 1-5 prefer `HDMI-A-1` (ASUS).
