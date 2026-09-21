@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
 state=$(bluetoothctl show 2>/dev/null | awk '/Powered:/ {print $2}')
+state_dir="$HOME/.cache/orion-status"
+state_file="$state_dir/bluetooth"
+
+mkdir -p "$state_dir"
 
 if [[ "$state" == "yes" ]]; then
-    bluetoothctl power off
+    if bluetoothctl power off >/dev/null; then
+        printf 'off\n' > "$state_file"
+    fi
 else
-    bluetoothctl power on
+    if bluetoothctl power on >/dev/null; then
+        printf 'on\n' > "$state_file"
+    fi
 fi
