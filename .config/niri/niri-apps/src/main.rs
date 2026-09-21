@@ -78,7 +78,21 @@ fn find_in_path(name: &str) -> Option<String> {
         .find(|p| p.is_file())
         .map(|p| p.to_string_lossy().into_owned())
 }
-fn live_windows() -> Vec<(String, String)> {
+fn exec_from_pid(pid: u64) -> Vec<String> {
+    let proc = PathBuf::from(format!("/proc/{pid}"));
+    if let Ok(bytes) = fs::read(proc.join("cmdline")) {
+        let args: Vec<String> = bytes.split(|b| *b == 0)
+            .filter(|s| !s.is_empty())
+            .filter_map(|s| String::from_utf8(s.to_vec()).ok())
+            .collect();
+        if !args.is_empty() { return args; }
+    }
+    fs::read_link(proc.join("exe"))
+        .ok()
+        .map(|p| vec![p.to_string_lossy().into_owned()])
+        .unwrap_or_default()
+}
+fn live_windows() -> Vec<(String, String, u64)> {
     let Ok(output) = Command::new("niri").args(["msg", "--json", "windows"]).output() else { return Vec::new() };
     let Ok(value) = serde_json::from_slice::<serde_json::Value>(&output.stdout) else { return Vec::new() };
     let Some(windows) = value.as_array() else { return Vec::new() };
@@ -88,7 +102,8 @@ fn live_windows() -> Vec<(String, String)> {
         if app_id == APP_ID { continue; }
         let title = w.get("title").and_then(|v| v.as_str()).unwrap_or("");
         let name = if title.trim().is_empty() { app_id } else { title };
-        out.push((name.to_string(), app_id.to_string()));
+        let pid = w.get("pid").and_then(|v| v.as_u64()).unwrap_or(0);
+        out.push((name.to_string(), app_id.to_string(), pid));
     }
     out.sort();
     out.dedup_by(|a,b| a.1 == b.1);
@@ -109,7 +124,7 @@ fn build_catalog() -> Vec<AppEntry> {
             let stem = path.file_stem().and_then(|x| x.to_str()).unwrap_or(&name);
             let mut app_id = app_id_from_exec(&exec, desktop_value(&path, "StartupWMClass"), stem);
             let needle = name.to_lowercase();
-            let matches: Vec<_> = live.iter().filter(|(title,id)| {
+            let matches: Vec<_> = live.iter().filter(|(title,id,_)| {
                 let hay = format!("{title} {id}").to_lowercase();
                 hay.contains(&needle) || needle.contains(&id.to_lowercase())
             }).collect();
@@ -120,9 +135,10 @@ fn build_catalog() -> Vec<AppEntry> {
     // Open Niri windows are a second discovery source. This catches local/Tauri
     // apps without a desktop file. If their app-id is also an executable name,
     // resolve it from PATH so ACTIVE startup can launch it later.
-    for (title, app_id) in live {
+    for (title, app_id, pid) in live {
         if out.iter().any(|a| a.app_id == app_id) { continue; }
-        let exec = find_in_path(&app_id).map(|p| vec![p]).unwrap_or_default();
+        let mut exec = if pid > 0 { exec_from_pid(pid) } else { Vec::new() };
+        if exec.is_empty() { exec = find_in_path(&app_id).map(|p| vec![p]).unwrap_or_default(); }
         let startup = !exec.is_empty();
         out.push(AppEntry { name: title, app_id, exec, startup });
     }
