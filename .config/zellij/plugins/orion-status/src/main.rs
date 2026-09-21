@@ -72,16 +72,17 @@ impl ZellijPlugin for State {
         let bluetooth = bluetooth_status();
         let keyboard = keyboard_layout(&self.home);
         let microphone = microphone_status(&self.home);
+        let volume = volume_status(&self.home);
         let power_profile = power_profile_status(&self.home);
         let battery = battery();
         let notify = state_icon(
-            &format!("{}/.cache/mako-popup-state", self.home),
+            &format!("/host{}/.cache/mako-popup-state", self.home),
             "disabled",
             "󰂛",
             "󰂚",
         );
         let camera = state_icon(
-            &format!("{}/.cache/camera-state", self.home),
+            &format!("/host{}/.cache/camera-state", self.home),
             "off",
             "󰗟",
             "󰖠",
@@ -89,7 +90,7 @@ impl ZellijPlugin for State {
         let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
-            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}   {}   {}   {}   {}",
+            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}   {}   {}   {}   {}   {}",
             human_rate(self.down),
             human_rate(self.up),
             self.cpu,
@@ -98,6 +99,7 @@ impl ZellijPlugin for State {
             bluetooth,
             keyboard,
             microphone,
+            volume,
             power_profile,
             notify,
             camera,
@@ -329,4 +331,25 @@ fn power_profile_status(home: &str) -> String {
         Some("power-saver") => "󰌪".to_string(),
         _ => String::new(),
     }
+}
+
+
+fn volume_status(home: &str) -> String {
+    let path = format!("/host{home}/.cache/orion-status/volume");
+    let Ok(raw) = fs::read_to_string(path) else {
+        return String::new();
+    };
+    let mut parts = raw.split_whitespace();
+    let state = parts.next().unwrap_or("");
+    let volume = parts.next().unwrap_or("0");
+    if state == "muted" {
+        return format!("󰖁 {volume}%");
+    }
+    let value = volume.parse::<u64>().unwrap_or(0);
+    let icon = match value {
+        0..=33 => "󰕿",
+        34..=66 => "󰖀",
+        _ => "󰕾",
+    };
+    format!("{icon} {volume}%")
 }
