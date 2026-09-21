@@ -7,7 +7,7 @@ mkdir -p "$state_dir"
 
 write_state() {
     local value tmp
-    value="$(/usr/bin/wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
+    value="$(/usr/sbin/wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
     [[ -n "$value" ]] || return 0
     if [[ "$value" == *"[MUTED]"* ]]; then
         value="muted"
@@ -22,7 +22,7 @@ write_state() {
 write_state
 
 # pw-mon blocks on PipeWire events; no interval polling.
-/usr/bin/pw-mon 2>/dev/null |
+/usr/sbin/pw-mon 2>/dev/null |
 while IFS= read -r _; do
     write_state
 done
