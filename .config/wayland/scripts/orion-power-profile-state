@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_dir="${XDG_CACHE_HOME:-$HOME/.cache}/orion-status"
+state_file="$state_dir/power-profile"
+mkdir -p "$state_dir"
+
+BUSCTL="$(command -v busctl || true)"
+DBUS_MONITOR="$(command -v dbus-monitor || true)"
+[[ -n "$BUSCTL" && -n "$DBUS_MONITOR" ]] || exit 127
+
+write_state() {
+    local raw value current tmp
+    raw="$("$BUSCTL" get-property \
+        org.freedesktop.UPower.PowerProfiles \
+        /org/freedesktop/UPower/PowerProfiles \
+        org.freedesktop.UPower.PowerProfiles \
+        ActiveProfile 2>/dev/null || true)"
+    value="${raw#s \"}"
+    value="${value%\"}"
+    case "$value" in
+        performance|balanced|power-saver) ;;
+        *) return 0 ;;
+    esac
+    current="$(cat "$state_file" 2>/dev/null || true)"
+    [[ "$current" == "$value" ]] && return 0
+    tmp="${state_file}.tmp"
+    printf '%s\n' "$value" > "$tmp"
+    mv "$tmp" "$state_file"
+}
+
+write_state
+
+"$DBUS_MONITOR" --system \
+  "type='signal',path='/org/freedesktop/UPower/PowerProfiles',interface='org.freedesktop.DBus.Properties',member='PropertiesChanged'" 2>/dev/null |
+while IFS= read -r line; do
+    case "$line" in
+        *'string "ActiveProfile"'*)
+            write_state
+            ;;
+    esac
+done
