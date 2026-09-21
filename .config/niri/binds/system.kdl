@@ -13,9 +13,7 @@ binds {
     XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
     XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "set" "5%+"; }
 
-    Mod+F1 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s performance && notify-send 'Power Profile' 'Performance mode enabled'"; }
-    Mod+F2 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s balanced && notify-send 'Power Profile' 'Balanced mode enabled'"; }
-    Mod+F3 { spawn-sh "busctl set-property net.hadess.PowerProfiles /net/hadess/PowerProfiles net.hadess.PowerProfiles ActiveProfile s power-saver && notify-send 'Power Profile' 'Battery saving mode enabled'"; }
+    Mod+F1 { spawn-sh "current=$(busctl get-property org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.UPower.PowerProfiles ActiveProfile | sed -E 's/^s \"(.*)\"$/\\1/'); case \"$current\" in performance) next=balanced ;; balanced) next=power-saver ;; *) next=performance ;; esac; busctl set-property org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.UPower.PowerProfiles ActiveProfile s \"$next\""; }
 
     Mod+T { spawn "bash" "/home/murat/.config/wayland/scripts/bluetooth-toggle"; }
     Mod+F4 { spawn "bash" "/home/murat/.config/wayland/scripts/audio-toggle"; }
