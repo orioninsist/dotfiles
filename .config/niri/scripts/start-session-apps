@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -u
+
+# Daily Niri session. Window rules in config.kdl perform workspace routing.
+# Avoid duplicate windows if this helper is run manually more than once.
+
+run_unless() {
+    local pattern="$1"
+    shift
+    pgrep -f "$pattern" >/dev/null 2>&1 || "$@" >/dev/null 2>&1 &
+}
+
+run_unless 'google-chrome.*--app-id=cadlkienfkclaiaibeoongdcgmdikeeg' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg
+run_unless 'google-chrome.*--app-id=mjoklplbddabcmpepnokjaffbmgbkkgg' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mjoklplbddabcmpepnokjaffbmgbkkgg
+run_unless 'google-chrome.*--app-id=mhpcpiccfiaoabcaedpafgjabjjheekk' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mhpcpiccfiaoabcaedpafgjabjjheekk
+run_unless 'google-chrome.*--app-id=agimnkijcaahngcdmfeangaknmldooml' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=agimnkijcaahngcdmfeangaknmldooml
+run_unless 'google-chrome.*--app-id=idkejijbjcgdnloelolopdemkebfadai' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai
+
+pgrep -x google-chrome >/dev/null 2>&1 || google-chrome-stable >/dev/null 2>&1 &
+pgrep -x foot >/dev/null 2>&1 || /usr/local/bin/foot >/dev/null 2>&1 &
+pgrep -x nautilus >/dev/null 2>&1 || nautilus --new-window >/dev/null 2>&1 &
+pgrep -x code >/dev/null 2>&1 || code >/dev/null 2>&1 &
+pgrep -f '/home/murat/.local/bin/knowledge-productivity' >/dev/null 2>&1 || /home/murat/.local/bin/knowledge-productivity >/dev/null 2>&1 &

@@ -11,6 +11,7 @@ Modular Niri configuration for the daily Wayland session.
 | `binds/workspaces.kdl` | Workspace navigation, movement and wheel navigation |
 | `binds/system.kdl` | Audio, media, brightness, capture, hardware, notifications and session |
 | `binds/applications.kdl` | Personal application launchers only |
+| `scripts/start-session-apps` | Daily application set launched once when Niri starts |
 
 Niri 26.04 supports `include`, so the main config stays small while each binding domain remains independently maintainable.
 
@@ -20,16 +21,23 @@ The task map is stable and intended for muscle memory:
 
 | Key | Workspace | Purpose | Typical applications |
 |---|---:|---|---|
-| `Super+1` | 1 | Web / Research / AI | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, Grok, NotebookLM, GitHub, Stack Overflow, Reddit, Quora, Pinterest, Translate, Knowledge, Colab |
+| `Super+1` | 1 | Web / Research / AI / Files | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, Grok, NotebookLM, GitHub, Stack Overflow, Reddit, Quora, Pinterest, Translate, Colab, Nautilus |
 | `Super+2` | 2 | Terminal / Operations | Foot, Alacritty, Kitty, shell-driven operations |
 | `Super+3` | 3 | Development | VS Code, Zed, Antigravity, JetBrains IDEs and development tools |
 | `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Contacts, Keep, Tasks, Forms, Password Manager, Photos, Vids, calibre |
-| `Super+5` | 5 | Communication / Business / Productivity | Element, Signal, Messages, Facebook, Instagram, Meta Business Suite, Google AdSense, Knowledge Productivity |
-| `Super+6` | 6 | Creative / Design | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw |
-| `Super+7` | 7 | Media / Content | OBS, mpv, Spotify, HandBrake, Folo, NewsFlash, YouTube, YouTube Music, Google News |
+| `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Facebook, Instagram, Meta Business Suite, Google AdSense |
+| `Super+6` | 6 | Creative / Design / YouTube | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw, YouTube |
+| `Super+7` | 7 | Productivity / Content | Knowledge Productivity, Knowledge webapp, OBS, mpv, Spotify, HandBrake, Folo, NewsFlash, YouTube Music, Google News |
 | `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
 | `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
 | `Super+0` | 10 | Free / Temporary | Espanso Manager plus ad-hoc temporary work |
+
+Startup set:
+- Workspace 1: Chrome, ChatGPT, GitHub, Gemini and Nautilus.
+- Workspace 2: Foot.
+- Workspace 3: VS Code.
+- Workspace 6: YouTube.
+- Workspace 7: Knowledge Productivity and Knowledge webapp.
 
 Physical placement:
 - Workspaces 1-5 prefer `HDMI-A-1` (ASUS).
@@ -125,7 +133,7 @@ Physical placement:
 | `Super+Ctrl+T` | Tor Browser |
 | `Super+Ctrl+Shift+M` | Mullvad Browser |
 | `Super+Ctrl+Y` | Nautilus |
-| `Super+F8` | Focus workspace 5 and launch Knowledge Productivity |
+| `Super+F8` | Focus workspace 7 and launch Knowledge Productivity |
 | `Super+F9` | Focus workspace 10 and launch Espanso Manager |
 | `Super+F10` | Snapshot |
 | `Super+P` | Flameshot GUI |

@@ -75,6 +75,7 @@ spawn-sh-at-startup "pkill -x waybar 2>/dev/null || true; exec waybar -c ~/.conf
 spawn-at-startup "/usr/local/bin/mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
+spawn-at-startup "/home/murat/.config/niri/scripts/start-session-apps"
 
 // Wallpaper. swaybg is compositor-independent.
 spawn-at-startup "swaybg" "-i" "/home/murat/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg" "-m" "fill"
@@ -88,15 +89,15 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
 
 // Workspace routing: stable task domains for daily muscle memory.
-// 1 Web/Research/AI, 2 Terminal/Ops, 3 Development, 4 Work/Office,
-// 5 Communication/Business, 6 Creative/Design, 7 Media/Content,
+// 1 Web/Research/AI + Files, 2 Terminal/Ops, 3 Development, 4 Work/Office,
+// 5 Communication/Business, 6 Creative/Design + YouTube, 7 Productivity/Content,
 // 8 System/VM/Device, 9 Finance/Monitoring, 10 Free/Temporary.
 
 // Workspace 1: web, research and AI.
 // Browser windows start here. Chrome PWAs with a more specific task domain
 // are matched by later rules and routed to their dedicated workspace.
 window-rule {
-    match app-id=r#"^(google-chrome|chromium|firefox|firefox-developer-edition|microsoft-edge|yandex-browser|brave-browser|Tor Browser|Mullvad Browser)$"#
+    match app-id=r#"^(google-chrome|chromium|firefox|firefox-developer-edition|microsoft-edge|yandex-browser|brave-browser|Tor Browser|Mullvad Browser|org\.gnome\.Nautilus)$"#
     open-on-workspace "1"
 }
 
@@ -120,25 +121,25 @@ window-rule {
 
 // Workspace 4: work and office.
 window-rule {
-    match app-id=r#"^(calibre-gui|chrome-(aghbiahbpaijignceidepookljebhfak|pmcngklofgngifnoceehmchjlildnhkj|mpnpojknpmmopombnjdcgaaiekajbnjb|jkdlbdnmmndeckliookkkcbgindcjpme|eilembjdkfgodjkcjnpgpaenohkicgjd|fhihpiojkbmbpdjeoajapmgkhlnakfjf|kefjledonklijopmnomlcbpllchaibag|okhfeehhillipaleckndoboggdkcebmo|cfkjhppcnjbkjoclfcjjkphpicbpoaeg|idkejijbjcgdnloelolopdemkebfadai|lbllnnflijadcmjbldbhljjoagkliklg|ncmjhecbjeaamljdfahankockkkdmedg)-Default)$"#
+    match app-id=r#"^(calibre-gui|chrome-(aghbiahbpaijignceidepookljebhfak|pmcngklofgngifnoceehmchjlildnhkj|mpnpojknpmmopombnjdcgaaiekajbnjb|jkdlbdnmmndeckliookkkcbgindcjpme|eilembjdkfgodjkcjnpgpaenohkicgjd|fhihpiojkbmbpdjeoajapmgkhlnakfjf|kefjledonklijopmnomlcbpllchaibag|okhfeehhillipaleckndoboggdkcebmo|cfkjhppcnjbkjoclfcjjkphpicbpoaeg|lbllnnflijadcmjbldbhljjoagkliklg|ncmjhecbjeaamljdfahankockkkdmedg)-Default)$"#
     open-on-workspace "4"
 }
 
-// Workspace 5: communication, business and productivity.
+// Workspace 5: communication and business.
 window-rule {
-    match app-id=r#"^(knowledge-productivity|element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp|kippjfofjhjlffjecoapiogbkgbpmgej|edoaadjopjhjcbcpgabbjjngnkongjhe)-Default)$"#
+    match app-id=r#"^(element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp|kippjfofjhjlffjecoapiogbkgbpmgej|edoaadjopjhjcbcpgabbjjngnkongjhe)-Default)$"#
     open-on-workspace "5"
 }
 
 // Workspace 6: creative and design.
 window-rule {
-    match app-id=r#"^(org\.inkscape\.Inkscape|gimp|org\.kde\.krita|wl-color-picker|chrome-(jbgdhngddinepfilfcmbcioimbgcolma|cibiompobljlndhpedaajolhbifjinnk|jaecofbdpipjafphofeaceimgcclphin)-Default)$"#
+    match app-id=r#"^(org\.inkscape\.Inkscape|gimp|org\.kde\.krita|wl-color-picker|chrome-(jbgdhngddinepfilfcmbcioimbgcolma|cibiompobljlndhpedaajolhbifjinnk|jaecofbdpipjafphofeaceimgcclphin|agimnkijcaahngcdmfeangaknmldooml)-Default)$"#
     open-on-workspace "6"
 }
 
-// Workspace 7: media and content.
+// Workspace 7: productivity and content.
 window-rule {
-    match app-id=r#"^(mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|Spotify|fr\.handbrake\.ghb|chrome-(agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod|kfgapjallbhpciobgmlhlhokknljkgho|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
+    match app-id=r#"^(knowledge-productivity|mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|Spotify|fr\.handbrake\.ghb|chrome-(idkejijbjcgdnloelolopdemkebfadai|cinhimbnkkaeohfgghhklpknlkffjgod|kfgapjallbhpciobgmlhlhokknljkgho|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
     open-on-workspace "7"
 }
 
