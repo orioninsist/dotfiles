@@ -33,10 +33,10 @@ launch_window() {
 }
 
 # Workspace 1: exact left-to-right order.
-# Ordinary Chrome uses a dedicated clean startup profile so restored tabs/profile chooser
-# cannot inject extra windows and disturb the requested layout.
+# Ordinary Chrome uses the real Default profile, but an explicit new window.
+# This keeps the signed-in profile instead of creating an isolated guest-like profile.
 launch_window "google-chrome" /opt/google/chrome/google-chrome \
-    --user-data-dir="$HOME/.local/share/niri-startup/chrome-main" \
+    --profile-directory=Default \
     --no-first-run \
     --no-default-browser-check \
     --disable-session-crashed-bubble \
