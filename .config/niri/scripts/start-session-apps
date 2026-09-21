@@ -1,35 +1,50 @@
 #!/usr/bin/env bash
 set -u
 
-# Daily Niri session. Window rules in config.kdl perform workspace routing.
-# Avoid duplicate windows if this helper is run manually more than once.
+# Deterministic daily Niri session.
+# Launch one window at a time and wait until Niri sees it before continuing.
 
-run_unless() {
-    local pattern="$1"
-    shift
-    pgrep -f "$pattern" >/dev/null 2>&1 || "$@" >/dev/null 2>&1 &
+has_window() {
+    niri msg windows 2>/dev/null | grep -Fq "App ID: \"$1\""
 }
 
-# Workspace 1: browser / AI / files.
-run_unless 'google-chrome.*--app-id=cadlkienfkclaiaibeoongdcgmdikeeg' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg
-run_unless 'google-chrome.*--app-id=mjoklplbddabcmpepnokjaffbmgbkkgg' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mjoklplbddabcmpepnokjaffbmgbkkgg
-run_unless 'google-chrome.*--app-id=mhpcpiccfiaoabcaedpafgjabjjheekk' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mhpcpiccfiaoabcaedpafgjabjjheekk
+wait_window() {
+    local app_id="$1"
+    local i
+    for i in $(seq 1 100); do
+        has_window "$app_id" && return 0
+        sleep 0.1
+    done
+    return 1
+}
 
-# Workspace 6: fixed media strip, opened in left-to-right order.
-# YouTube -> YouTube Music -> Spotify -> Mullvad Browser.
-run_unless 'google-chrome.*--app-id=agimnkijcaahngcdmfeangaknmldooml' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=agimnkijcaahngcdmfeangaknmldooml
-sleep 0.35
-run_unless 'google-chrome.*--app-id=cinhimbnkkaeohfgghhklpknlkffjgod' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cinhimbnkkaeohfgghhklpknlkffjgod
-sleep 0.35
-pgrep -x Spotify >/dev/null 2>&1 || Spotify >/dev/null 2>&1 &
-sleep 0.35
-pgrep -f 'mullvad-browser' >/dev/null 2>&1 || mullvad-browser >/dev/null 2>&1 &
+launch_window() {
+    local app_id="$1"
+    shift
 
-# Workspace 7: knowledge / productivity.
-run_unless 'google-chrome.*--app-id=idkejijbjcgdnloelolopdemkebfadai' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai
+    if ! has_window "$app_id"; then
+        "$@" >/dev/null 2>&1 &
+        wait_window "$app_id" || true
+    fi
+}
 
-pgrep -x google-chrome >/dev/null 2>&1 || google-chrome-stable >/dev/null 2>&1 &
-pgrep -x foot >/dev/null 2>&1 || /usr/local/bin/foot >/dev/null 2>&1 &
-pgrep -x nautilus >/dev/null 2>&1 || nautilus --new-window >/dev/null 2>&1 &
-pgrep -x code >/dev/null 2>&1 || code >/dev/null 2>&1 &
-pgrep -f '/home/murat/.local/bin/knowledge-productivity' >/dev/null 2>&1 || /home/murat/.local/bin/knowledge-productivity >/dev/null 2>&1 &
+# Workspace 1: exact left-to-right order.
+launch_window "google-chrome" google-chrome-stable --new-window
+launch_window "chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg
+launch_window "chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mjoklplbddabcmpepnokjaffbmgbkkgg
+launch_window "chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mhpcpiccfiaoabcaedpafgjabjjheekk
+launch_window "org.gnome.Nautilus" nautilus --new-window
+
+# Workspace 2 and 3.
+launch_window "foot" /usr/local/bin/foot
+launch_window "code" code
+
+# Workspace 6: exact left-to-right order.
+launch_window "chrome-agimnkijcaahngcdmfeangaknmldooml-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=agimnkijcaahngcdmfeangaknmldooml
+launch_window "chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cinhimbnkkaeohfgghhklpknlkffjgod
+launch_window "Mullvad Browser" mullvad-browser
+launch_window "Spotify" /usr/sbin/spotify
+
+# Workspace 7.
+launch_window "knowledge-productivity" /home/murat/.local/bin/knowledge-productivity
+launch_window "chrome-idkejijbjcgdnloelolopdemkebfadai-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai
