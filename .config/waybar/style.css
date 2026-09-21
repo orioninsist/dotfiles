@@ -29,6 +29,7 @@ window#waybar {
     text-shadow: none;
 }
 
+#custom-startup-layout,
 #network,
 #cpu,
 #memory,
@@ -81,4 +82,10 @@ window#waybar {
 #clock {
     color: #bac2de;
     font-weight: 500;
+}
+
+
+#custom-startup-layout {
+    min-width: 18px;
+    padding: 0 5px;
 }
