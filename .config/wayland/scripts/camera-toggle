@@ -13,4 +13,3 @@ else
     notify-send "Camera" "Camera ON"
 fi
 
-pkill -RTMIN+8 waybar 2>/dev/null || true
