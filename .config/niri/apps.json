@@ -86,6 +86,14 @@
             "--app-id=idkejijbjcgdnloelolopdemkebfadai"
           ],
           "startup": true
+        },
+        {
+          "name": "Knowledge Productivity",
+          "app_id": "knowledge-productivity",
+          "exec": [
+            "/home/murat/.local/bin/knowledge-productivity"
+          ],
+          "startup": true
         }
       ]
     },
