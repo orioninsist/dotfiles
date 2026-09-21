@@ -71,7 +71,6 @@ workspace "9"  { open-on-output "eDP-1"; }
 workspace "10" { open-on-output "eDP-1"; }
 
 // Session applications.
-spawn-sh-at-startup "pkill -x waybar 2>/dev/null || true; exec waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css"
 spawn-at-startup "/usr/local/bin/mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
