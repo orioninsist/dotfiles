@@ -186,7 +186,7 @@ fn build_ui(app:&Application) {
                 let cards=GtkBox::new(Orientation::Horizontal,8);
                 let entries=model.borrow().workspaces.iter().find(|w|w.id==wid).map(|w|w.apps.clone()).unwrap_or_default();
                 for (idx,entry) in entries.into_iter().enumerate() {
-                    let card=Button::with_label(&entry.name);card.add_css_class("pill");
+                    let card=Button::with_label(&entry.name);card.add_css_class("pill");card.set_tooltip_text(Some("Click: edit/delete · Drag: reorder or move TAG"));
                     let e=entry.clone();let m=model.clone();let w=window.clone();let s=slot.clone();
                     card.connect_clicked(move |_|{if let Some(r)=s.borrow().clone(){edit_dialog(&w,e.clone(),m.clone(),r);}});
                     let source=gtk::DragSource::builder().actions(gdk::DragAction::MOVE).build();
@@ -199,7 +199,7 @@ fn build_ui(app:&Application) {
                         if let Some(e)=found{insert_app(&mut c,wid,idx,e);save_config(&c);drop(c);if let Some(r)=s.borrow().clone(){r();}true}else{false}
                     });card.add_controller(target);cards.append(&card);
                 }
-                let add=Button::with_label("+");let m=model.clone();let w=window.clone();let s=slot.clone();
+                let add=Button::with_label("+");add.set_tooltip_text(Some("Add installed application"));let m=model.clone();let w=window.clone();let s=slot.clone();
                 add.connect_clicked(move |_|{if let Some(r)=s.borrow().clone(){add_dialog(&w,wid,m.clone(),r);}});
                 let end_target=gtk::DropTarget::new(String::static_type(),gdk::DragAction::MOVE);let m=model.clone();let s=slot.clone();
                 end_target.connect_drop(move|_,value,_,_|{let Ok(id)=value.get::<String>()else{return false};let mut c=m.borrow_mut();let found=c.workspaces.iter().flat_map(|w|w.apps.iter()).find(|a|a.app_id==id).cloned();if let Some(e)=found{let i=c.workspaces.iter().find(|w|w.id==wid).map(|w|w.apps.len()).unwrap_or(0);insert_app(&mut c,wid,i,e);save_config(&c);drop(c);if let Some(r)=s.borrow().clone(){r();}true}else{false}});
