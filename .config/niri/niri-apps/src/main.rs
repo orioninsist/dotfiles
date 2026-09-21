@@ -37,7 +37,6 @@ fn startup_enabled() -> bool { fs::read_to_string(state_path()).map(|v| v.trim()
 fn set_startup(enabled: bool) {
     let mode = if enabled { "on" } else { "off" };
     let _ = Command::new(home().join(".config/niri/scripts/niri-session")).arg(mode).status();
-    let _ = Command::new("pkill").args(["-RTMIN+8", "waybar"]).status();
 }
 fn desktop_dirs() -> Vec<PathBuf> {
     vec![home().join(".local/share/applications"), PathBuf::from("/usr/local/share/applications"), PathBuf::from("/usr/share/applications")]
