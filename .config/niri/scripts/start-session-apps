@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 set -u
 
-# Deterministic daily Niri session.
-# Launch one window at a time and wait until Niri sees it before continuing.
+state_file="${XDG_CONFIG_HOME:-$HOME/.config}/niri/session/enabled"
+
+# Global kill switch: unless explicitly enabled, startup orchestration does nothing.
+if [[ ! -f "$state_file" ]] || ! grep -qx 'on' "$state_file"; then
+    exit 0
+fi
 
 has_window() {
     niri msg windows 2>/dev/null | grep -Fq "App ID: \"$1\""
@@ -11,7 +15,7 @@ has_window() {
 wait_window() {
     local app_id="$1"
     local i
-    for i in $(seq 1 100); do
+    for i in $(seq 1 120); do
         has_window "$app_id" && return 0
         sleep 0.1
     done
@@ -29,7 +33,16 @@ launch_window() {
 }
 
 # Workspace 1: exact left-to-right order.
-launch_window "google-chrome" google-chrome-stable --new-window
+# Ordinary Chrome uses a dedicated clean startup profile so restored tabs/profile chooser
+# cannot inject extra windows and disturb the requested layout.
+launch_window "google-chrome" /opt/google/chrome/google-chrome \
+    --user-data-dir="$HOME/.local/share/niri-startup/chrome-main" \
+    --no-first-run \
+    --no-default-browser-check \
+    --disable-session-crashed-bubble \
+    --new-window \
+    about:blank
+
 launch_window "chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg
 launch_window "chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mjoklplbddabcmpepnokjaffbmgbkkgg
 launch_window "chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default" /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mhpcpiccfiaoabcaedpafgjabjjheekk
