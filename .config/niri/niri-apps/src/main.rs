@@ -115,7 +115,7 @@ fn add_dialog(parent: &ApplicationWindow, workspace: u8, model: Rc<RefCell<Confi
                 let found2=found.clone(); let model2=model.clone(); let refresh2=refresh.clone(); let dialog2=dialog.clone();
                 button.connect_clicked(move |_| {
                     let mut c=model2.borrow_mut(); let index=c.workspaces.iter().find(|w|w.id==workspace).map(|w|w.apps.len()).unwrap_or(0);
-                    insert_app(&mut c,workspace,index,found2.clone()); save_config(&c); refresh2(); dialog2.close();
+                    insert_app(&mut c,workspace,index,found2.clone()); save_config(&c); drop(c); refresh2(); dialog2.close();
                 });
                 results.append(&button);
             }
@@ -129,8 +129,8 @@ fn edit_dialog(parent:&ApplicationWindow, entry:AppEntry, model:Rc<RefCell<Confi
     dialog.add_button("Cancel",ResponseType::Cancel); dialog.add_button("Delete",ResponseType::Reject); dialog.add_button("Save",ResponseType::Accept);
     let name=Entry::new(); name.set_text(&entry.name); dialog.content_area().append(&Label::new(Some("Name"))); dialog.content_area().append(&name);
     dialog.connect_response(move |d,r| {
-        if r==ResponseType::Reject { let mut c=model.borrow_mut(); remove_app(&mut c,&entry.app_id); save_config(&c); refresh(); }
-        else if r==ResponseType::Accept { let mut c=model.borrow_mut(); for ws in &mut c.workspaces { if let Some(a)=ws.apps.iter_mut().find(|a|a.app_id==entry.app_id) { a.name=name.text().to_string(); } } save_config(&c); refresh(); }
+        if r==ResponseType::Reject { let mut c=model.borrow_mut(); remove_app(&mut c,&entry.app_id); save_config(&c); drop(c); refresh(); }
+        else if r==ResponseType::Accept { let mut c=model.borrow_mut(); for ws in &mut c.workspaces { if let Some(a)=ws.apps.iter_mut().find(|a|a.app_id==entry.app_id) { a.name=name.text().to_string(); } } save_config(&c); drop(c); refresh(); }
         d.close();
     }); dialog.present();
 }
@@ -166,13 +166,13 @@ fn build_ui(app:&Application) {
                     target.connect_drop(move|_,value,_,_|{
                         let Ok(id)=value.get::<String>() else{return false}; let mut c=m.borrow_mut();
                         let found=c.workspaces.iter().flat_map(|w|w.apps.iter()).find(|a|a.app_id==id).cloned();
-                        if let Some(e)=found{insert_app(&mut c,wid,idx,e);save_config(&c);if let Some(r)=s.borrow().clone(){r();}true}else{false}
+                        if let Some(e)=found{insert_app(&mut c,wid,idx,e);save_config(&c);drop(c);if let Some(r)=s.borrow().clone(){r();}true}else{false}
                     });card.add_controller(target);cards.append(&card);
                 }
                 let add=Button::with_label("+");let m=model.clone();let w=window.clone();let s=slot.clone();
                 add.connect_clicked(move |_|{if let Some(r)=s.borrow().clone(){add_dialog(&w,wid,m.clone(),r);}});
                 let end_target=gtk::DropTarget::new(String::static_type(),gdk::DragAction::MOVE);let m=model.clone();let s=slot.clone();
-                end_target.connect_drop(move|_,value,_,_|{let Ok(id)=value.get::<String>()else{return false};let mut c=m.borrow_mut();let found=c.workspaces.iter().flat_map(|w|w.apps.iter()).find(|a|a.app_id==id).cloned();if let Some(e)=found{let i=c.workspaces.iter().find(|w|w.id==wid).map(|w|w.apps.len()).unwrap_or(0);insert_app(&mut c,wid,i,e);save_config(&c);if let Some(r)=s.borrow().clone(){r();}true}else{false}});
+                end_target.connect_drop(move|_,value,_,_|{let Ok(id)=value.get::<String>()else{return false};let mut c=m.borrow_mut();let found=c.workspaces.iter().flat_map(|w|w.apps.iter()).find(|a|a.app_id==id).cloned();if let Some(e)=found{let i=c.workspaces.iter().find(|w|w.id==wid).map(|w|w.apps.len()).unwrap_or(0);insert_app(&mut c,wid,i,e);save_config(&c);drop(c);if let Some(r)=s.borrow().clone(){r();}true}else{false}});
                 add.add_controller(end_target);cards.append(&add);
                 let horizontal=ScrolledWindow::new();horizontal.set_policy(gtk::PolicyType::Automatic,gtk::PolicyType::Never);horizontal.set_hexpand(true);horizontal.set_child(Some(&cards));row.append(&horizontal);rows.append(&row);
             }
