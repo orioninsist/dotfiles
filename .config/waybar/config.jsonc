@@ -5,6 +5,7 @@
     "spacing": 4,
 
     "modules-left": [
+        "custom/startup-layout",
         "niri/workspaces"
     ],
 
@@ -28,6 +29,15 @@
         "clock",
         "tray"
     ],
+
+    "custom/startup-layout": {
+        "exec": "~/.config/waybar/scripts/niri-startup-status.sh",
+        "return-type": "json",
+        "interval": 2,
+        "signal": 8,
+        "tooltip": true,
+        "on-click": "~/.config/waybar/scripts/niri-startup-toggle.sh"
+    },
 
     "tray": {
         "icon-size": 18,
