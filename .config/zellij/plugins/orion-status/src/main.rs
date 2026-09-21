@@ -72,6 +72,7 @@ impl ZellijPlugin for State {
         let bluetooth = bluetooth_status();
         let keyboard = keyboard_layout(&self.home);
         let microphone = microphone_status(&self.home);
+        let power_profile = power_profile_status(&self.home);
         let battery = battery();
         let notify = state_icon(
             &format!("{}/.cache/mako-popup-state", self.home),
@@ -97,6 +98,7 @@ impl ZellijPlugin for State {
             bluetooth,
             keyboard,
             microphone,
+            power_profile,
             notify,
             camera,
             battery,
@@ -315,5 +317,16 @@ fn microphone_status(home: &str) -> String {
         Some("muted") => "󰍭".to_string(),
         Some("on") => "󰍬".to_string(),
         _ => "󰍭".to_string(),
+    }
+}
+
+
+fn power_profile_status(home: &str) -> String {
+    let path = format!("/host{home}/.cache/orion-status/power-profile");
+    match fs::read_to_string(path).ok().as_deref().map(str::trim) {
+        Some("performance") => "󰓅".to_string(),
+        Some("balanced") => "󰾅".to_string(),
+        Some("power-saver") => "󰌪".to_string(),
+        _ => String::new(),
     }
 }
