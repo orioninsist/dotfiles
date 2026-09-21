@@ -281,4 +281,4 @@ The startup layout is opt-in and persistent.
 - `off`: Niri starts normally and none of the managed daily applications are opened.
 - `on`: the ordered startup layout runs on the next Niri login.
 - `Super+F12`: toggles the same persistent state.
-- Workspace 1 uses a dedicated clean Chrome startup profile for the ordinary Chrome window. This isolates it from the normal Chrome profile chooser and saved-session restore, so extra tabs/windows do not break the requested column order. Chrome PWAs continue to use the normal `Default` profile.
+- Workspace 1 opens ordinary Chrome explicitly with the real `Default` profile and a new blank window. This preserves the signed-in Chrome profile instead of creating an isolated guest-like profile. Chrome PWAs use the same `Default` profile.
