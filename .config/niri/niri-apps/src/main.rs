@@ -123,7 +123,8 @@ fn build_catalog() -> Vec<AppEntry> {
     for (title, app_id) in live {
         if out.iter().any(|a| a.app_id == app_id) { continue; }
         let exec = find_in_path(&app_id).map(|p| vec![p]).unwrap_or_default();
-        out.push(AppEntry { name: title, app_id, exec, startup: !exec.is_empty() });
+        let startup = !exec.is_empty();
+        out.push(AppEntry { name: title, app_id, exec, startup });
     }
     out.sort_by(|a,b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
     out.dedup_by(|a,b| a.app_id == b.app_id || (!a.exec.is_empty() && a.exec == b.exec));
