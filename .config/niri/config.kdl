@@ -107,6 +107,12 @@ window-rule {
     open-on-workspace "1"
 }
 
+// Daily startup windows use a full-width column by default (Super+M-like, not fullscreen).
+window-rule {
+    match app-id=r#"^(google-chrome|org\.gnome\.Nautilus|foot|code|Mullvad Browser|Spotify|knowledge-productivity|chrome-(cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod|idkejijbjcgdnloelolopdemkebfadai)-Default)$"#
+    default-column-width { proportion 1.0; }
+}
+
 // Workspace 2: terminals and operations.
 window-rule {
     match app-id=r#"^(kitty|Alacritty|foot|com\.gabm\.satty)$"#
