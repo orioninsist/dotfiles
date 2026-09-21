@@ -6,7 +6,7 @@ PartOf=graphical-session.target
 
 [Service]
 Type=simple
-ExecStartPre=/bin/bash -c 'target="$(sed -n "s/^outputDevice=//p" "$HOME/.config/easyeffects/db/easyeffectsrc")"; for _ in $(seq 1 30); do if pactl list short sinks 2>/dev/null | cut -f2 | grep -Fxq "$target"; then exit 0; fi; sleep 1; done; echo "EasyEffects output not available: $target" >&2; exit 1'
+ExecStartPre=/bin/bash -c 'for _ in $(seq 1 30); do pactl list short sinks 2>/dev/null | cut -f2 | grep -Eq "^alsa_output\\." && exit 0; sleep 1; done; echo "No physical audio sink available" >&2; exit 1'
 ExecStart=/usr/local/bin/easyeffects --service-mode --hide-window --load-preset Laptop-Speakers
 Restart=on-failure
 RestartSec=2
