@@ -88,86 +88,9 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 prefer-no-csd
 
-// Workspace routing: stable task domains for daily muscle memory.
-// 1 Web/Research/AI + Files, 2 Terminal/Ops, 3 Development, 4 Work/Office,
-// 5 Communication/Business, 6 Creative/Design + YouTube, 7 Productivity/Content,
-// 8 System/VM/Device, 9 Finance/Monitoring, 10 Free/Temporary.
-
-// Workspace 1: web, research and AI.
-// Browser windows start here. Chrome PWAs with a more specific task domain
-// are matched by later rules and routed to their dedicated workspace.
-window-rule {
-    match app-id=r#"^(google-chrome|chromium|firefox|firefox-developer-edition|microsoft-edge|yandex-browser|brave-browser|Tor Browser|org\.gnome\.Nautilus)$"#
-    open-on-workspace "1"
-}
-
-// Research / AI PWAs.
-window-rule {
-    match app-id=r#"^chrome-(cechoboadpfjgoaooidphlandgelehhi|cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|kjfmejlnnfibknebffpdmphoiomckhdb|cdbijngggjkalinmffpblfekjekjjadf|ggjocahimgaohmigbfhghnlfcnjemagj|hjopciijjmfioojmkkdhpmeobcmldadc|fkdjgkemkhimagkhabgcnhjoogaiikml|lgnggepjiihbfdbedefdhcffnmhcahbm|ajinkohnfhbdebdnggdbjkgjflfhcnkk|edanbjnaiofggfmimiidpfmhggkbokck|lodlkdfmihgonocnmddehnfgiljnadcf)-Default$"#
-    open-on-workspace "1"
-}
-
-// Daily startup windows use a full-width column by default (Super+M-like, not fullscreen).
-window-rule {
-    match app-id=r#"^(google-chrome|org\.gnome\.Nautilus|foot|code|Mullvad Browser|Spotify|knowledge-productivity|chrome-(cadlkienfkclaiaibeoongdcgmdikeeg|mjoklplbddabcmpepnokjaffbmgbkkgg|mhpcpiccfiaoabcaedpafgjabjjheekk|agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod|idkejijbjcgdnloelolopdemkebfadai)-Default)$"#
-    default-column-width { proportion 1.0; }
-}
-
-// Workspace 2: terminals and operations.
-window-rule {
-    match app-id=r#"^(kitty|Alacritty|foot|com\.gabm\.satty)$"#
-    open-on-workspace "2"
-}
-
-// Workspace 3: development.
-window-rule {
-    match app-id=r#"^(code|antigravity-ide|antigravity|dev\.zed\.Zed|github|jetbrains-studio|jetbrains-webstorm|jetbrains-pycharm|jetbrains-goland|jetbrains-clion|jetbrains-datagrip|jetbrains-dataspell|jetbrains-toolbox)$"#
-    open-on-workspace "3"
-}
-
-// Workspace 4: work and office.
-window-rule {
-    match app-id=r#"^(calibre-gui|chrome-(aghbiahbpaijignceidepookljebhfak|pmcngklofgngifnoceehmchjlildnhkj|mpnpojknpmmopombnjdcgaaiekajbnjb|jkdlbdnmmndeckliookkkcbgindcjpme|eilembjdkfgodjkcjnpgpaenohkicgjd|fhihpiojkbmbpdjeoajapmgkhlnakfjf|kefjledonklijopmnomlcbpllchaibag|okhfeehhillipaleckndoboggdkcebmo|cfkjhppcnjbkjoclfcjjkphpicbpoaeg|lbllnnflijadcmjbldbhljjoagkliklg|ncmjhecbjeaamljdfahankockkkdmedg)-Default)$"#
-    open-on-workspace "4"
-}
-
-// Workspace 5: communication and business.
-window-rule {
-    match app-id=r#"^(element|signal|chrome-(hpfldicfbfomlpcikngkocigghgafkph|nhmeiejgcaoljgefhkcngcfenapojjmi|akpamiohjfcnimfljfndmaldlcfphjmp|kippjfofjhjlffjecoapiogbkgbpmgej|edoaadjopjhjcbcpgabbjjngnkongjhe)-Default)$"#
-    open-on-workspace "5"
-}
-
-// Workspace 6: creative, design and daily media strip.
-window-rule {
-    match app-id=r#"^(org\.inkscape\.Inkscape|gimp|org\.kde\.krita|wl-color-picker|Mullvad Browser|Spotify|chrome-(jbgdhngddinepfilfcmbcioimbgcolma|cibiompobljlndhpedaajolhbifjinnk|jaecofbdpipjafphofeaceimgcclphin|agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod)-Default)$"#
-    open-on-workspace "6"
-}
-
-// Workspace 7: productivity and content.
-window-rule {
-    match app-id=r#"^(knowledge-productivity|mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|fr\.handbrake\.ghb|chrome-(idkejijbjcgdnloelolopdemkebfadai|kfgapjallbhpciobgmlhlhokknljkgho|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
-    open-on-workspace "7"
-}
-
-// Workspace 8: system, virtual machines and devices.
-window-rule {
-    match app-id=r#"^(virt-manager|scrcpy|org\.pulseaudio\.pavucontrol|com\.github\.wwmm\.easyeffects)$"#
-    open-on-workspace "8"
-}
-
-// Workspace 9: finance and monitoring.
-window-rule {
-    match app-id=r#"^(TradingView|chrome-jlbpkmajnjbdjhljconcamegjengfomg-Default)$"#
-    open-on-workspace "9"
-}
-
-// Workspace 10: local Niri utilities and temporary windows.
-window-rule {
-    match app-id=r#"^(espanso-manager|dev\.orioninsist\.NiriApps)$"#
-    open-on-workspace "10"
-}
-
-// Workspace 10 otherwise remains free for temporary windows.
+// Application workspace placement is managed explicitly by Niri Apps (apps.json).
+// Keep ordinary launcher-opened applications on the workspace where the user opened them.
+// No global open-on-workspace application routing lives here.
 
 // Firefox Picture-in-Picture stays floating wherever Firefox is routed.
 window-rule {
