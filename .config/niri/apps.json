@@ -165,7 +165,16 @@
     },
     {
       "id": 10,
-      "apps": []
+      "apps": [
+        {
+          "name": "Niri Apps",
+          "app_id": "dev.orioninsist.NiriApps",
+          "exec": [
+            "/home/murat/.config/niri/scripts/niri-apps"
+          ],
+          "startup": false
+        }
+      ]
     }
   ]
 }
