@@ -9,6 +9,7 @@ without spawning shell commands:
 - CPU
 - memory
 - CPU/NVMe/PCH/Wi-Fi hwmon temperatures
+- ThinkPad fan RPM via dynamic hwmon discovery
 - notification state
 - camera state
 - battery
