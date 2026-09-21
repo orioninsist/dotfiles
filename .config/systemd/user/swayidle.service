@@ -5,8 +5,8 @@ After=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/swayidle -w \
-    timeout 1800 "/usr/local/bin/swaylock -f -c 000000"
+ExecStart=/usr/bin/swayidle -w \
+    timeout 1800 "/usr/bin/swaylock -f -c 000000"
 Restart=on-failure
 
 [Install]
