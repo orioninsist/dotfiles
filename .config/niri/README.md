@@ -11,7 +11,7 @@ Modular Niri configuration for the daily Wayland session.
 | `binds/workspaces.kdl` | Workspace navigation, movement and wheel navigation |
 | `binds/system.kdl` | Audio, media, brightness, capture, hardware, notifications and session |
 | `binds/applications.kdl` | Personal application launchers only |
-| `scripts/start-session-apps` | Daily application set launched once when Niri starts |
+| `scripts/start-session-apps` | Ordered daily application set, gated by a persistent on/off switch |
 
 Niri 26.04 supports `include`, so the main config stays small while each binding domain remains independently maintainable.
 
@@ -32,7 +32,7 @@ The task map is stable and intended for muscle memory:
 | `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
 | `Super+0` | 10 | Free / Temporary | Espanso Manager plus ad-hoc temporary work |
 
-Startup set (deterministic left-to-right order where applicable):
+Startup set (deterministic left-to-right order where applicable). The module runs only when explicitly enabled:
 - Workspace 1: Chrome, ChatGPT, GitHub, Gemini and Nautilus, opened in that order.
 - Workspace 2: Foot.
 - Workspace 3: VS Code.
@@ -137,6 +137,7 @@ Physical placement:
 | `Super+F8` | Focus workspace 7 and launch Knowledge Productivity |
 | `Super+F9` | Focus workspace 10 and launch Espanso Manager |
 | `Super+F10` | Snapshot |
+| `Super+F12` | Toggle automatic startup layout on/off |
 | `Super+P` | Flameshot GUI |
 
 ### Display, power profile and hardware
@@ -264,3 +265,20 @@ To reload while Niri is running:
 ```sh
 niri msg action load-config-file
 ```
+
+
+## Automatic startup layout control
+
+The startup layout is opt-in and persistent.
+
+```sh
+~/.config/niri/scripts/niri-session on
+~/.config/niri/scripts/niri-session off
+~/.config/niri/scripts/niri-session toggle
+~/.config/niri/scripts/niri-session status
+```
+
+- `off`: Niri starts normally and none of the managed daily applications are opened.
+- `on`: the ordered startup layout runs on the next Niri login.
+- `Super+F12`: toggles the same persistent state.
+- Workspace 1 uses a dedicated clean Chrome startup profile for the ordinary Chrome window. This isolates it from the normal Chrome profile chooser and saved-session restore, so extra tabs/windows do not break the requested column order. Chrome PWAs continue to use the normal `Default` profile.
