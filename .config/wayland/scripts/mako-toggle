@@ -19,6 +19,5 @@ else
     echo disabled > "$STATE_FILE"
 fi
 
-pkill -RTMIN+8 waybar 2>/dev/null || true
 
 echo "END $(date)"
