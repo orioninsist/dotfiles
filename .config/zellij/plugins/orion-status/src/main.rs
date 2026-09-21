@@ -69,6 +69,7 @@ impl ZellijPlugin for State {
     fn render(&mut self, _rows: usize, cols: usize) {
         let temps = temperatures();
 
+        let bluetooth = bluetooth_status();
         let battery = battery();
         let notify = state_icon(
             &format!("{}/.cache/mako-popup-state", self.home),
@@ -85,12 +86,13 @@ impl ZellijPlugin for State {
         let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
-            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}  {}   {}",
+            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}  {}   {}",
             human_rate(self.down),
             human_rate(self.up),
             self.cpu,
             self.mem,
             temps,
+            bluetooth,
             notify,
             camera,
             battery,
@@ -251,4 +253,44 @@ fn temperatures() -> String {
     .flatten()
     .collect::<Vec<_>>()
     .join("   ")
+}
+
+
+fn bluetooth_status() -> String {
+    let mut powered = None;
+
+    if let Ok(entries) = fs::read_dir("/host/sys/class/rfkill") {
+        for entry in entries.flatten() {
+            let base = entry.path();
+            let kind = fs::read_to_string(base.join("type")).unwrap_or_default();
+            if kind.trim() != "bluetooth" {
+                continue;
+            }
+            let soft = fs::read_to_string(base.join("soft")).unwrap_or_default();
+            let hard = fs::read_to_string(base.join("hard")).unwrap_or_default();
+            powered = Some(soft.trim() == "0" && hard.trim() == "0");
+            break;
+        }
+    }
+
+    let Some(true) = powered else {
+        return "󰂲".to_string();
+    };
+
+    let mut connections = 0usize;
+    if let Ok(entries) = fs::read_dir("/host/sys/class/bluetooth") {
+        for entry in entries.flatten() {
+            let name = entry.file_name();
+            let name = name.to_string_lossy();
+            if name.starts_with("hci") && name.contains(':') {
+                connections += 1;
+            }
+        }
+    }
+
+    if connections > 0 {
+        format!("󰂯 {connections}")
+    } else {
+        "󰂯".to_string()
+    }
 }
