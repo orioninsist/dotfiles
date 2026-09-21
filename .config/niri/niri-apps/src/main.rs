@@ -45,7 +45,7 @@ fn build_ui(app: &Application) {
     state.connect_state_set(move |_, enabled| {
         set_startup(enabled);
         state_text.set_text(if enabled { "ACTIVE" } else { "PASSIVE" });
-        glib::Propagation::Proceed
+        gtk::glib::Propagation::Proceed
     });
     header.append(&title); header.append(&state_label); header.append(&state); root.append(&header);
 
