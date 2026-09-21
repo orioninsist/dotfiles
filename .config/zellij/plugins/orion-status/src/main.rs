@@ -1,4 +1,5 @@
-use chrono::Local;
+use chrono::Utc;
+use chrono_tz::Europe::Istanbul;
 use std::{collections::BTreeMap, fs};
 use zellij_tile::prelude::*;
 
@@ -40,16 +41,7 @@ impl ZellijPlugin for State {
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
-        let temps = [
-            ("󰔏", "/sys/class/hwmon/hwmon8/temp1_input"),
-            ("󰋊", "/sys/class/hwmon/hwmon3/temp1_input"),
-            ("󰛵", "/sys/class/hwmon/hwmon5/temp1_input"),
-            ("󰖩", "/sys/class/hwmon/hwmon7/temp1_input"),
-        ]
-        .into_iter()
-        .filter_map(|(icon, path)| read_num(path).map(|v| format!("{icon} {}°", v / 1000)))
-        .collect::<Vec<_>>()
-        .join(" ");
+        let temps = temperatures();
 
         let battery = battery();
         let notify = state_icon(
@@ -64,7 +56,7 @@ impl ZellijPlugin for State {
             "󰗟",
             "󰖠",
         );
-        let clock = Local::now().format("󰃭 %a %m/%d/%Y %H:%M:%S");
+        let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
             "D{:>7} U{:>7}  󰻠 {:>3}%  󰍛 {:>3}%  {}  {} {}  {}",
@@ -187,4 +179,32 @@ fn battery() -> String {
         }
         None => String::new(),
     }
+}
+
+
+fn temperatures() -> String {
+    let Ok(entries) = fs::read_dir("/sys/class/hwmon") else { return String::new(); };
+    let mut values = Vec::new();
+    for entry in entries.flatten() {
+        let base = entry.path();
+        let name = fs::read_to_string(base.join("name")).unwrap_or_default();
+        let name = name.trim().to_ascii_lowercase();
+        let icon = if name.contains("nvme") {
+            "󰋊"
+        } else if name.contains("wifi") || name.contains("iwlwifi") {
+            "󰖩"
+        } else if name.contains("pch") {
+            "󰛵"
+        } else if name.contains("coretemp") || name.contains("k10temp") || name.contains("zenpower") {
+            "󰔏"
+        } else {
+            continue;
+        };
+        if let Ok(raw) = fs::read_to_string(base.join("temp1_input")) {
+            if let Ok(v) = raw.trim().parse::<i64>() {
+                values.push(format!("{icon}{}°", v / 1000));
+            }
+        }
+    }
+    values.join(" ")
 }
