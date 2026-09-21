@@ -71,6 +71,7 @@ impl ZellijPlugin for State {
 
         let bluetooth = bluetooth_status();
         let keyboard = keyboard_layout(&self.home);
+        let microphone = microphone_status(&self.home);
         let battery = battery();
         let notify = state_icon(
             &format!("{}/.cache/mako-popup-state", self.home),
@@ -87,7 +88,7 @@ impl ZellijPlugin for State {
         let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
-            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}  {}   {}",
+            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}   {}  {}   {}",
             human_rate(self.down),
             human_rate(self.up),
             self.cpu,
@@ -95,6 +96,7 @@ impl ZellijPlugin for State {
             temps,
             bluetooth,
             keyboard,
+            microphone,
             notify,
             camera,
             battery,
@@ -303,5 +305,15 @@ fn keyboard_layout(home: &str) -> String {
     match fs::read_to_string(path) {
         Ok(value) if !value.trim().is_empty() => format!("󰌌 {}", value.trim()),
         _ => "󰌌 ?".to_string(),
+    }
+}
+
+
+fn microphone_status(home: &str) -> String {
+    let path = format!("/host{home}/.cache/orion-status/microphone");
+    match fs::read_to_string(path).ok().as_deref().map(str::trim) {
+        Some("muted") => "󰍭".to_string(),
+        Some("on") => "󰍬".to_string(),
+        _ => "󰍭".to_string(),
     }
 }
