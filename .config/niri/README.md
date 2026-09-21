@@ -12,6 +12,8 @@ Modular Niri configuration for the daily Wayland session.
 | `binds/system.kdl` | Audio, media, brightness, capture, hardware, notifications and session |
 | `binds/applications.kdl` | Personal application launchers only |
 | `scripts/start-session-apps` | Ordered daily application set, gated by a persistent on/off switch |
+| `window-order.conf` | Editable persistent relative order for daily managed windows |
+| `scripts/niri-window-order` | Event-driven manager that keeps managed apps in the order above |
 
 Niri 26.04 supports `include`, so the main config stays small while each binding domain remains independently maintainable.
 
@@ -283,3 +285,20 @@ The startup layout is opt-in and persistent. Its runtime state lives outside the
 - `Super+F12`: toggles the same persistent state.
 - Waybar left side shows a startup-layout status icon; clicking it toggles ON/OFF.
 - Workspace 1 opens ordinary Chrome explicitly with the real `Default` profile and a new blank window. This preserves the signed-in Chrome profile instead of creating an isolated guest-like profile. Chrome PWAs use the same `Default` profile.
+
+
+## Persistent window order
+
+Daily managed apps keep the same relative left-to-right order even when one is closed and reopened. This is independent from the automatic-startup ON/OFF switch: startup decides whether apps are launched at login; window ordering applies whenever a managed app is open.
+
+Edit `~/.config/niri/window-order.conf` to change the order. The format is one `workspace|app-id` entry per line. Lines are read top-to-bottom within each workspace.
+
+Example:
+
+```text
+1|google-chrome
+1|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default
+1|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default
+```
+
+Move a line up/down to change its preferred relative position. Delete a line to stop managing that app. Add `WORKSPACE|APP_ID` to manage another app; get its exact App ID with `niri msg windows`. After editing, restart the ordering manager or log in again.
