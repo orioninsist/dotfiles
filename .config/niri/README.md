@@ -187,7 +187,6 @@ Physical placement:
 | `Super+Shift+I` | Whisper typing in English |
 | `Super+Ctrl+P` | Color picker |
 | `Super+Shift+V` | Clipboard history |
-| `Super+C` | Toggle Waybar visibility |
 | `Super+N` | Toggle Mako |
 | `Super+Shift+N` | Toggle wlsunset / night light |
 | `Super+Ctrl+N` | Notification history |
@@ -246,7 +245,7 @@ Useful recovery flow when a session gets messy:
 Upstream Niri defaults are used where they do not break established personal shortcuts.
 
 Deliberate differences:
-- Upstream `Super+C` is center-column; this setup keeps `Super+C` for Waybar and uses `Super+Alt+C`.
+- `Super+C` is free; `Super+Alt+C` remains the center-column shortcut.
 - Upstream `Super+Ctrl+F` expands a column; this setup keeps it for Firefox and uses `Super+Alt+F`.
 - Upstream `Super+Shift+V` switches floating/tiling focus; this setup keeps clipboard history there and uses `Super+Space`.
 - `Super+I` and `Super+Shift+I` are reserved for Whisper.
@@ -281,7 +280,6 @@ The startup layout is opt-in and persistent. Its runtime state lives outside the
 - `off`: Niri starts normally and none of the managed daily applications are opened.
 - `on`: the ordered startup layout runs on the next Niri login.
 - `Super+F12`: toggles the same persistent state.
-- Waybar left side shows a startup-layout status icon; clicking it toggles ON/OFF.
 - Workspace 1 opens ordinary Chrome explicitly with the real `Default` profile and a new blank window. This preserves the signed-in Chrome profile instead of creating an isolated guest-like profile. Chrome PWAs use the same `Default` profile.
 
 
