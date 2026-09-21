@@ -5,7 +5,7 @@ PartOf=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=%h/.config/wayland/scripts/orion-audio-state
+ExecStart=/usr/bin/bash %h/.config/wayland/scripts/orion-audio-state
 Restart=on-failure
 RestartSec=1
 
