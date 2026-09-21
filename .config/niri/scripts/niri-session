@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_dir="${XDG_CONFIG_HOME:-$HOME/.config}/niri/session"
+state_file="$state_dir/enabled"
+
+mkdir -p "$state_dir"
+
+case "${1:-status}" in
+  on|enable)
+    printf 'on\n' > "$state_file"
+    echo "niri-session: on"
+    ;;
+  off|disable)
+    printf 'off\n' > "$state_file"
+    echo "niri-session: off"
+    ;;
+  toggle)
+    if [[ -f "$state_file" ]] && grep -qx 'on' "$state_file"; then
+      printf 'off\n' > "$state_file"
+      echo "niri-session: off"
+    else
+      printf 'on\n' > "$state_file"
+      echo "niri-session: on"
+    fi
+    ;;
+  status)
+    if [[ -f "$state_file" ]] && grep -qx 'on' "$state_file"; then
+      echo "niri-session: on"
+    else
+      echo "niri-session: off"
+    fi
+    ;;
+  *)
+    echo "usage: niri-session {on|off|toggle|status}" >&2
+    exit 2
+    ;;
+esac
