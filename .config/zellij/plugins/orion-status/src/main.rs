@@ -15,6 +15,7 @@ struct State {
     up: u64,
     tick: u64,
     home: String,
+    host_ready: bool,
 }
 
 impl ZellijPlugin for State {
@@ -25,19 +26,33 @@ impl ZellijPlugin for State {
             .unwrap_or_else(|| "/home/murat".to_string());
         set_selectable(true);
         request_permission(&[PermissionType::FullHdAccess]);
-        subscribe(&[EventType::Timer, EventType::PermissionRequestResult]);
-        self.refresh();
+        subscribe(&[
+            EventType::Timer,
+            EventType::PermissionRequestResult,
+            EventType::HostFolderChanged,
+            EventType::FailedToChangeHostFolder,
+        ]);
         set_timeout(1.0);
     }
 
     fn update(&mut self, event: Event) -> bool {
         match event {
             Event::PermissionRequestResult(PermissionStatus::Granted) => {
+                change_host_folder("/".into());
+                true
+            }
+            Event::PermissionRequestResult(PermissionStatus::Denied) => {
+                set_selectable(false);
+                true
+            }
+            Event::HostFolderChanged(_) => {
+                self.host_ready = true;
                 set_selectable(false);
                 self.refresh();
                 true
             }
-            Event::PermissionRequestResult(PermissionStatus::Denied) => {
+            Event::FailedToChangeHostFolder(_) => {
+                self.host_ready = false;
                 set_selectable(false);
                 true
             }
@@ -116,7 +131,7 @@ fn read_num(path: &str) -> Option<u64> {
 }
 
 fn cpu_sample() -> Option<(u64, u64)> {
-    let s = fs::read_to_string("/proc/stat").ok()?;
+    let s = fs::read_to_string("/host/proc/stat").ok()?;
     let mut p = s.lines().next()?.split_whitespace();
     if p.next()? != "cpu" { return None; }
     let nums = p.map(|x| x.parse::<u64>().unwrap_or(0)).collect::<Vec<_>>();
@@ -126,7 +141,7 @@ fn cpu_sample() -> Option<(u64, u64)> {
 }
 
 fn memory_percent() -> Option<u64> {
-    let s = fs::read_to_string("/proc/meminfo").ok()?;
+    let s = fs::read_to_string("/host/proc/meminfo").ok()?;
     let mut total = 0;
     let mut avail = 0;
     for line in s.lines() {
@@ -140,7 +155,7 @@ fn memory_percent() -> Option<u64> {
 }
 
 fn network_sample() -> Option<(u64, u64)> {
-    let s = fs::read_to_string("/proc/net/dev").ok()?;
+    let s = fs::read_to_string("/host/proc/net/dev").ok()?;
     let mut rx = 0;
     let mut tx = 0;
     for line in s.lines().skip(2) {
@@ -172,8 +187,8 @@ fn state_icon(path: &str, off_value: &str, off: &str, on: &str) -> String {
 }
 
 fn battery() -> String {
-    let cap = read_num("/sys/class/power_supply/BAT0/capacity");
-    let status = fs::read_to_string("/sys/class/power_supply/BAT0/status").unwrap_or_default();
+    let cap = read_num("/host/sys/class/power_supply/BAT0/capacity");
+    let status = fs::read_to_string("/host/sys/class/power_supply/BAT0/status").unwrap_or_default();
     match cap {
         Some(c) if status.trim() == "Charging" => format!("󰂄{}%", c),
         Some(c) => {
@@ -194,7 +209,7 @@ fn battery() -> String {
 
 
 fn temperatures() -> String {
-    let Ok(entries) = fs::read_dir("/sys/class/hwmon") else { return String::new(); };
+    let Ok(entries) = fs::read_dir("/host/sys/class/hwmon") else { return String::new(); };
     let mut values = Vec::new();
     for entry in entries.flatten() {
         let base = entry.path();
