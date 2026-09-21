@@ -93,7 +93,10 @@ fn remove_app(config: &mut Config, app_id: &str) {
     for ws in &mut config.workspaces { ws.apps.retain(|a| a.app_id != app_id); }
 }
 fn insert_app(config: &mut Config, workspace: u8, index: usize, entry: AppEntry) {
-    remove_app(config, &entry.app_id);
+    let exec = entry.exec.clone();
+    for ws in &mut config.workspaces {
+        ws.apps.retain(|a| a.app_id != entry.app_id && (exec.is_empty() || a.exec != exec));
+    }
     if let Some(ws) = config.workspaces.iter_mut().find(|w| w.id == workspace) {
         let at = index.min(ws.apps.len()); ws.apps.insert(at, entry);
     }
