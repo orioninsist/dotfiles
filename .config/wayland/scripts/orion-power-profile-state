@@ -6,8 +6,8 @@ state_file="$state_dir/power-profile"
 mkdir -p "$state_dir"
 
 BUSCTL="$(command -v busctl || true)"
-DBUS_MONITOR="$(command -v dbus-monitor || true)"
-[[ -n "$BUSCTL" && -n "$DBUS_MONITOR" ]] || exit 127
+GDBUS="$(command -v gdbus || true)"
+[[ -n "$BUSCTL" && -n "$GDBUS" ]] || exit 127
 
 write_state() {
     local raw value current tmp
@@ -31,8 +31,9 @@ write_state() {
 
 write_state
 
-"$DBUS_MONITOR" --system \
-  "type='signal',path='/org/freedesktop/UPower/PowerProfiles',interface='org.freedesktop.DBus.Properties',member='PropertiesChanged'" 2>/dev/null |
+"$GDBUS" monitor --system \
+  --dest org.freedesktop.UPower.PowerProfiles \
+  --object-path /org/freedesktop/UPower/PowerProfiles 2>/dev/null |
 while IFS= read -r line; do
     case "$line" in
         *'string "ActiveProfile"'*)
