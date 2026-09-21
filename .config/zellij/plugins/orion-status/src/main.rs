@@ -89,7 +89,7 @@ impl ZellijPlugin for State {
         let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
-            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}   {}   {}   {}  {}   {}",
+            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}   {}   {}   {}   {}",
             human_rate(self.down),
             human_rate(self.up),
             self.cpu,
