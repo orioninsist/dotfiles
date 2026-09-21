@@ -56,7 +56,11 @@ fn desktop_value(path: &Path, key: &str) -> Option<String> {
 }
 fn clean_exec(exec: &str) -> Vec<String> {
     shlex::split(exec).unwrap_or_default().into_iter()
-        .filter(|x| !x.starts_with('%')).collect()
+        .filter_map(|arg| {
+            if arg.starts_with('%') { return None; }
+            if arg.contains('%') { return None; }
+            Some(arg)
+        }).collect()
 }
 fn app_id_from_exec(exec: &[String], startup_wm_class: Option<String>, desktop_stem: &str) -> String {
     let app = exec.iter().find_map(|x| x.strip_prefix("--app-id="));
@@ -65,6 +69,22 @@ fn app_id_from_exec(exec: &[String], startup_wm_class: Option<String>, desktop_s
         return format!("chrome-{id}-{profile}");
     }
     startup_wm_class.unwrap_or_else(|| desktop_stem.to_string())
+}
+fn resolve_live_app_id(entry: &mut AppEntry) {
+    let Ok(output) = Command::new("niri").args(["msg", "--json", "windows"]).output() else { return };
+    let Ok(value) = serde_json::from_slice::<serde_json::Value>(&output.stdout) else { return };
+    let Some(windows) = value.as_array() else { return };
+
+    let needle = entry.name.to_lowercase();
+    let mut matches = windows.iter().filter_map(|w| {
+        let app_id = w.get("app_id")?.as_str()?;
+        let title = w.get("title").and_then(|v| v.as_str()).unwrap_or("");
+        let hay = format!("{app_id} {title}").to_lowercase();
+        if hay.contains(&needle) || needle.contains(&app_id.to_lowercase()) { Some(app_id.to_string()) } else { None }
+    });
+    if let Some(first) = matches.next() {
+        if matches.next().is_none() { entry.app_id = first; }
+    }
 }
 fn discover(query: &str) -> Vec<AppEntry> {
     let q = query.to_lowercase();
@@ -81,11 +101,13 @@ fn discover(query: &str) -> Vec<AppEntry> {
             if exec.is_empty() { continue; }
             let stem = path.file_stem().and_then(|x| x.to_str()).unwrap_or(&name);
             let app_id = app_id_from_exec(&exec, desktop_value(&path, "StartupWMClass"), stem);
-            out.push(AppEntry { name, app_id, exec, startup: true });
+            let mut entry = AppEntry { name, app_id, exec, startup: true };
+            resolve_live_app_id(&mut entry);
+            out.push(entry);
         }
     }
     out.sort_by(|a,b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
-    out.dedup_by(|a,b| a.name == b.name && a.exec == b.exec);
+    out.dedup_by(|a,b| a.app_id == b.app_id || a.exec == b.exec);
     out.truncate(30);
     out
 }
@@ -130,10 +152,15 @@ fn add_dialog(parent: &ApplicationWindow, workspace: u8, model: Rc<RefCell<Confi
 fn edit_dialog(parent:&ApplicationWindow, entry:AppEntry, model:Rc<RefCell<Config>>, refresh:Rc<dyn Fn()>) {
     let dialog=Dialog::builder().transient_for(parent).modal(true).title(&entry.name).build();
     dialog.add_button("Cancel",ResponseType::Cancel); dialog.add_button("Delete",ResponseType::Reject); dialog.add_button("Save",ResponseType::Accept);
-    let name=Entry::new(); name.set_text(&entry.name); dialog.content_area().append(&Label::new(Some("Name"))); dialog.content_area().append(&name);
+    let name=Entry::new(); name.set_text(&entry.name);
+    dialog.content_area().append(&Label::new(Some("Name"))); dialog.content_area().append(&name);
+    let startup_row=GtkBox::new(Orientation::Horizontal,12);
+    let startup_label=Label::new(Some("Open automatically when ACTIVE")); startup_label.set_hexpand(true); startup_label.set_xalign(0.0);
+    let startup=Switch::new(); startup.set_active(entry.startup);
+    startup_row.append(&startup_label); startup_row.append(&startup); dialog.content_area().append(&startup_row);
     dialog.connect_response(move |d,r| {
         if r==ResponseType::Reject { let mut c=model.borrow_mut(); remove_app(&mut c,&entry.app_id); save_config(&c); drop(c); refresh(); }
-        else if r==ResponseType::Accept { let mut c=model.borrow_mut(); for ws in &mut c.workspaces { if let Some(a)=ws.apps.iter_mut().find(|a|a.app_id==entry.app_id) { a.name=name.text().to_string(); } } save_config(&c); drop(c); refresh(); }
+        else if r==ResponseType::Accept { let mut c=model.borrow_mut(); for ws in &mut c.workspaces { if let Some(a)=ws.apps.iter_mut().find(|a|a.app_id==entry.app_id) { a.name=name.text().to_string(); a.startup=startup.is_active(); } } save_config(&c); drop(c); refresh(); }
         d.close();
     }); dialog.present();
 }
