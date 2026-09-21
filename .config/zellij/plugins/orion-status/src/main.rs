@@ -299,7 +299,7 @@ fn bluetooth_status() -> String {
 
 
 fn keyboard_layout(home: &str) -> String {
-    let path = format!("{home}/.cache/orion-status/keyboard-layout");
+    let path = format!("/host{home}/.cache/orion-status/keyboard-layout");
     match fs::read_to_string(path) {
         Ok(value) if !value.trim().is_empty() => format!("󰌌 {}", value.trim()),
         _ => "󰌌 ?".to_string(),
