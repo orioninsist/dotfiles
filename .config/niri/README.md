@@ -146,9 +146,7 @@ Physical placement:
 
 | Shortcut | Action |
 |---|---|
-| `Super+F1` | Power profile: Performance |
-| `Super+F2` | Power profile: Balanced |
-| `Super+F3` | Power profile: Power Saver |
+| `Super+F1` | Cycle power profile: Performance → Balanced → Power Saver |
 | `Super+T` | Toggle Bluetooth |
 | `Super+F4` | Toggle audio output |
 | `Super+F5` | Toggle microphone |
