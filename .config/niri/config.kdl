@@ -97,7 +97,7 @@ prefer-no-csd
 // Browser windows start here. Chrome PWAs with a more specific task domain
 // are matched by later rules and routed to their dedicated workspace.
 window-rule {
-    match app-id=r#"^(google-chrome|chromium|firefox|firefox-developer-edition|microsoft-edge|yandex-browser|brave-browser|Tor Browser|Mullvad Browser|org\.gnome\.Nautilus)$"#
+    match app-id=r#"^(google-chrome|chromium|firefox|firefox-developer-edition|microsoft-edge|yandex-browser|brave-browser|Tor Browser|org\.gnome\.Nautilus)$"#
     open-on-workspace "1"
 }
 
@@ -131,15 +131,15 @@ window-rule {
     open-on-workspace "5"
 }
 
-// Workspace 6: creative and design.
+// Workspace 6: creative, design and daily media strip.
 window-rule {
-    match app-id=r#"^(org\.inkscape\.Inkscape|gimp|org\.kde\.krita|wl-color-picker|chrome-(jbgdhngddinepfilfcmbcioimbgcolma|cibiompobljlndhpedaajolhbifjinnk|jaecofbdpipjafphofeaceimgcclphin|agimnkijcaahngcdmfeangaknmldooml)-Default)$"#
+    match app-id=r#"^(org\.inkscape\.Inkscape|gimp|org\.kde\.krita|wl-color-picker|Mullvad Browser|Spotify|chrome-(jbgdhngddinepfilfcmbcioimbgcolma|cibiompobljlndhpedaajolhbifjinnk|jaecofbdpipjafphofeaceimgcclphin|agimnkijcaahngcdmfeangaknmldooml|cinhimbnkkaeohfgghhklpknlkffjgod)-Default)$"#
     open-on-workspace "6"
 }
 
 // Workspace 7: productivity and content.
 window-rule {
-    match app-id=r#"^(knowledge-productivity|mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|Spotify|fr\.handbrake\.ghb|chrome-(idkejijbjcgdnloelolopdemkebfadai|cinhimbnkkaeohfgghhklpknlkffjgod|kfgapjallbhpciobgmlhlhokknljkgho|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
+    match app-id=r#"^(knowledge-productivity|mpv|com\.obsproject\.Studio|io\.gitlab\.news_flash\.NewsFlash|folo|fr\.handbrake\.ghb|chrome-(idkejijbjcgdnloelolopdemkebfadai|kfgapjallbhpciobgmlhlhokknljkgho|ihogecoockfifohcaikgaegbgfpbkipa)-Default)$"#
     open-on-workspace "7"
 }
 
