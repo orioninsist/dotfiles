@@ -1,47 +1,37 @@
 #!/usr/bin/env bash
 set -u
 
-order_file="${NIRI_WINDOW_ORDER_FILE:-$HOME/.config/niri/window-order.conf}"
-lock_dir="${XDG_RUNTIME_DIR:-/tmp}/niri-window-order.lock"
+apps_file="${NIRI_APPS_FILE:-$HOME/.config/niri/apps.json}"
+lock_dir="${XDG_RUNTIME_DIR:-/tmp}/niri-apps-order.lock"
 
 command -v jq >/dev/null 2>&1 || exit 0
-[[ -r "$order_file" ]] || exit 0
+[[ -r "$apps_file" ]] || exit 0
 
 apply_order() {
     mkdir "$lock_dir" 2>/dev/null || return 0
     trap 'rmdir "$lock_dir" 2>/dev/null || true' RETURN
 
-    local windows workspaces
+    local windows workspaces focused
     windows="$(niri msg --json windows 2>/dev/null)" || return 0
     workspaces="$(niri msg --json workspaces 2>/dev/null)" || return 0
+    focused="$(jq -r '.[] | select(.is_focused == true) | .id' <<<"$windows" | head -n1)"
 
-    while IFS= read -r ws; do
-        [[ -n "$ws" ]] || continue
-
-        local wsid target app id
+    while IFS=$'\t' read -r ws app; do
+        [[ -n "$ws" && -n "$app" ]] || continue
+        local wsid id index
         wsid="$(jq -r --arg ws "$ws" '.[] | select(.name == $ws) | .id' <<<"$workspaces" | head -n1)"
         [[ -n "$wsid" && "$wsid" != "null" ]] || continue
+        index="$(jq -r --argjson wid "$ws" --arg app "$app" '.workspaces[] | select(.id == $wid) | .apps | to_entries[] | select(.value.app_id == $app) | .key + 1' "$apps_file" | head -n1)"
+        id="$(jq -r --argjson wsid "$wsid" --arg app "$app" '[.[] | select(.workspace_id == $wsid and .app_id == $app)] | sort_by(.id) | .[0].id // empty' <<<"$windows")"
+        [[ -n "$id" && -n "$index" ]] || continue
+        niri msg action focus-window --id "$id" >/dev/null 2>&1 || continue
+        niri msg action move-column-to-index "$index" >/dev/null 2>&1 || true
+    done < <(jq -r '.workspaces[] as $w | $w.apps[] | [$w.id, .app_id] | @tsv' "$apps_file")
 
-        target=1
-        while IFS='|' read -r _ app; do
-            [[ -n "$app" ]] || continue
-
-            # Manage the oldest matching window. The daily layout intentionally
-            # expects one window per managed app ID.
-            id="$(jq -r --argjson wsid "$wsid" --arg app "$app"                 '[.[] | select(.workspace_id == $wsid and .app_id == $app)] | sort_by(.id) | .[0].id // empty'                 <<<"$windows")"
-            [[ -n "$id" ]] || continue
-
-            niri msg action focus-window --id "$id" >/dev/null 2>&1 || continue
-            niri msg action move-column-to-index "$target" >/dev/null 2>&1 || true
-            target=$((target + 1))
-        done < <(awk -F'|' -v ws="$ws" '$0 !~ /^[[:space:]]*#/ && NF >= 2 && $1 == ws {print}' "$order_file")
-    done < <(awk -F'|' '$0 !~ /^[[:space:]]*#/ && NF >= 2 {print $1}' "$order_file" | awk '!seen[$0]++')
+    [[ -n "$focused" ]] && niri msg action focus-window --id "$focused" >/dev/null 2>&1 || true
 }
 
 apply_order
-
-# Re-apply after window changes. Debounce briefly so routing rules have time to
-# put a newly opened window on its target workspace before ordering columns.
 niri msg --json event-stream 2>/dev/null |
 while IFS= read -r event; do
     if jq -e '.WindowOpenedOrChanged // .WindowClosed' >/dev/null 2>&1 <<<"$event"; then
