@@ -6,18 +6,23 @@ state_file="$state_dir/microphone"
 mkdir -p "$state_dir"
 
 WPCTL="$(command -v wpctl || true)"
-PWMON="$(command -v pw-mon || true)"
-[[ -n "$WPCTL" && -n "$PWMON" ]] || exit 127
+PACTL="$(command -v pactl || true)"
+[[ -n "$WPCTL" && -n "$PACTL" ]] || exit 127
 
 write_state() {
-    local value tmp
-    value="$("$WPCTL" get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
-    [[ -n "$value" ]] || return 0
-    if [[ "$value" == *"[MUTED]"* ]]; then
+    local raw value current tmp
+    raw="$("$WPCTL" get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
+    [[ -n "$raw" ]] || return 0
+
+    if [[ "$raw" == *"[MUTED]"* ]]; then
         value="muted"
     else
         value="on"
     fi
+
+    current="$(cat "$state_file" 2>/dev/null || true)"
+    [[ "$current" == "$value" ]] && return 0
+
     tmp="${state_file}.tmp"
     printf '%s\n' "$value" > "$tmp"
     mv "$tmp" "$state_file"
@@ -25,8 +30,13 @@ write_state() {
 
 write_state
 
-# pw-mon blocks on PipeWire events; no interval polling.
-"$PWMON" 2>/dev/null |
-while IFS= read -r _; do
-    write_state
+# pipewire-pulse emits one subscription line per object event. React only to
+# source/server changes instead of parsing pw-mon's multi-line graph dump.
+"$PACTL" subscribe |
+while IFS= read -r event; do
+    case "$event" in
+        *" on source "*|*" on server")
+            write_state
+            ;;
+    esac
 done
