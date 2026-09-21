@@ -75,7 +75,6 @@ spawn-sh-at-startup "pkill -x waybar 2>/dev/null || true; exec waybar -c ~/.conf
 spawn-at-startup "/usr/local/bin/mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
-spawn-at-startup "/home/murat/.config/niri/scripts/niri-window-order"
 spawn-at-startup "/home/murat/.config/niri/scripts/start-session-apps"
 
 // Wallpaper. swaybg is compositor-independent.
@@ -162,9 +161,9 @@ window-rule {
     open-on-workspace "9"
 }
 
-// Workspace 10: Espanso Manager and temporary utilities.
+// Workspace 10: local Niri utilities and temporary windows.
 window-rule {
-    match app-id=r#"^espanso-manager$"#
+    match app-id=r#"^(espanso-manager|dev\.orioninsist\.NiriApps)$"#
     open-on-workspace "10"
 }
 
