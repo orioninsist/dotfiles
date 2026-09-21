@@ -85,7 +85,7 @@ impl ZellijPlugin for State {
         let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
-            "D{:>7} U{:>7}  󰻠 {:>3}%  󰍛 {:>3}%  {}  {} {}  {}",
+            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}  {}   {}",
             human_rate(self.down),
             human_rate(self.up),
             self.cpu,
@@ -190,7 +190,7 @@ fn battery() -> String {
     let cap = read_num("/host/sys/class/power_supply/BAT0/capacity");
     let status = fs::read_to_string("/host/sys/class/power_supply/BAT0/status").unwrap_or_default();
     match cap {
-        Some(c) if status.trim() == "Charging" => format!("󰂄{}%", c),
+        Some(c) if status.trim() == "Charging" => format!("󰂄 {}%", c),
         Some(c) => {
             let icon = match c {
                 0..=14 => "󰁺",
@@ -201,7 +201,7 @@ fn battery() -> String {
                 75..=89 => "󰂂",
                 _ => "󰁹",
             };
-            format!("{icon}{}%", c)
+            format!("{icon} {}%", c)
         }
         None => String::new(),
     }
@@ -209,28 +209,46 @@ fn battery() -> String {
 
 
 fn temperatures() -> String {
-    let Ok(entries) = fs::read_dir("/host/sys/class/hwmon") else { return String::new(); };
-    let mut values = Vec::new();
+    let Ok(entries) = fs::read_dir("/host/sys/class/hwmon") else {
+        return String::new();
+    };
+
+    let mut cpu = None;
+    let mut nvme = None;
+    let mut pch = None;
+    let mut wifi = None;
+
     for entry in entries.flatten() {
         let base = entry.path();
         let name = fs::read_to_string(base.join("name")).unwrap_or_default();
         let name = name.trim().to_ascii_lowercase();
-        let icon = if name.contains("nvme") {
-            "󰋊"
-        } else if name.contains("wifi") || name.contains("iwlwifi") {
-            "󰖩"
-        } else if name.contains("pch") {
-            "󰛵"
-        } else if name.contains("coretemp") || name.contains("k10temp") || name.contains("zenpower") {
-            "󰔏"
-        } else {
+        let Ok(raw) = fs::read_to_string(base.join("temp1_input")) else {
             continue;
         };
-        if let Ok(raw) = fs::read_to_string(base.join("temp1_input")) {
-            if let Ok(v) = raw.trim().parse::<i64>() {
-                values.push(format!("{icon}{}°", v / 1000));
-            }
+        let Ok(value) = raw.trim().parse::<i64>() else {
+            continue;
+        };
+        let value = value / 1000;
+
+        if name.contains("coretemp") || name.contains("k10temp") || name.contains("zenpower") {
+            cpu.get_or_insert(value);
+        } else if name.contains("nvme") {
+            nvme.get_or_insert(value);
+        } else if name.contains("pch") {
+            pch.get_or_insert(value);
+        } else if name.contains("wifi") || name.contains("iwlwifi") {
+            wifi.get_or_insert(value);
         }
     }
-    values.join(" ")
+
+    [
+        cpu.map(|v| format!("󰔏 {v}°")),
+        nvme.map(|v| format!("󰋊 {v}°")),
+        pch.map(|v| format!("󰛵 {v}°")),
+        wifi.map(|v| format!("󰖩 {v}°")),
+    ]
+    .into_iter()
+    .flatten()
+    .collect::<Vec<_>>()
+    .join("   ")
 }
