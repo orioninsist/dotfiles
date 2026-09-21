@@ -2,40 +2,46 @@
 set -euo pipefail
 
 state_dir="${XDG_CACHE_HOME:-$HOME/.cache}/orion-status"
-state_file="$state_dir/microphone"
+mic_file="$state_dir/microphone"
+volume_file="$state_dir/volume"
 mkdir -p "$state_dir"
 
 WPCTL="$(command -v wpctl || true)"
 PACTL="$(command -v pactl || true)"
 [[ -n "$WPCTL" && -n "$PACTL" ]] || exit 127
 
-write_state() {
-    local raw value current tmp
-    raw="$("$WPCTL" get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
-    [[ -n "$raw" ]] || return 0
+write_if_changed() {
+    local file="$1" value="$2" current tmp
+    current="$(cat "$file" 2>/dev/null || true)"
+    [[ "$current" == "$value" ]] && return 0
+    tmp="${file}.tmp"
+    printf '%s\n' "$value" > "$tmp"
+    mv "$tmp" "$file"
+}
 
-    if [[ "$raw" == *"[MUTED]"* ]]; then
-        value="muted"
-    else
-        value="on"
+write_state() {
+    local source sink mic volume muted
+    source="$("$WPCTL" get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
+    sink="$("$WPCTL" get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null || true)"
+
+    if [[ -n "$source" ]]; then
+        if [[ "$source" == *"[MUTED]"* ]]; then mic="muted"; else mic="on"; fi
+        write_if_changed "$mic_file" "$mic"
     fi
 
-    current="$(cat "$state_file" 2>/dev/null || true)"
-    [[ "$current" == "$value" ]] && return 0
-
-    tmp="${state_file}.tmp"
-    printf '%s\n' "$value" > "$tmp"
-    mv "$tmp" "$state_file"
+    if [[ -n "$sink" ]]; then
+        volume="$(awk '{printf "%d", $2 * 100}' <<<"$sink")"
+        if [[ "$sink" == *"[MUTED]"* ]]; then muted="muted"; else muted="on"; fi
+        write_if_changed "$volume_file" "$muted $volume"
+    fi
 }
 
 write_state
 
-# pipewire-pulse emits one subscription line per object event. React only to
-# source/server changes instead of parsing pw-mon's multi-line graph dump.
 stdbuf -oL "$PACTL" subscribe |
 while IFS= read -r event; do
     case "$event" in
-        *" on source "*|*" on server")
+        *" on sink "*|*" on source "*|*" on server"|*" on card "*)
             write_state
             ;;
     esac
