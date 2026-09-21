@@ -32,7 +32,7 @@ write_state
 
 # pipewire-pulse emits one subscription line per object event. React only to
 # source/server changes instead of parsing pw-mon's multi-line graph dump.
-"$PACTL" subscribe |
+stdbuf -oL "$PACTL" subscribe |
 while IFS= read -r event; do
     case "$event" in
         *" on source "*|*" on server")
