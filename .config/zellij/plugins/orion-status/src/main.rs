@@ -23,21 +23,32 @@ impl ZellijPlugin for State {
             .get("home")
             .cloned()
             .unwrap_or_else(|| "/home/murat".to_string());
-        set_selectable(false);
+        set_selectable(true);
         request_permission(&[PermissionType::FullHdAccess]);
-        subscribe(&[EventType::Timer]);
+        subscribe(&[EventType::Timer, EventType::PermissionRequestResult]);
         self.refresh();
         set_timeout(1.0);
     }
 
     fn update(&mut self, event: Event) -> bool {
-        if matches!(event, Event::Timer(_)) {
-            self.tick += 1;
-            self.refresh();
-            set_timeout(1.0);
-            return true;
+        match event {
+            Event::PermissionRequestResult(PermissionStatus::Granted) => {
+                set_selectable(false);
+                self.refresh();
+                true
+            }
+            Event::PermissionRequestResult(PermissionStatus::Denied) => {
+                set_selectable(false);
+                true
+            }
+            Event::Timer(_) => {
+                self.tick += 1;
+                self.refresh();
+                set_timeout(1.0);
+                true
+            }
+            _ => false,
         }
-        false
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
