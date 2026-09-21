@@ -70,6 +70,7 @@ impl ZellijPlugin for State {
         let temps = temperatures();
 
         let bluetooth = bluetooth_status();
+        let keyboard = keyboard_layout(&self.home);
         let battery = battery();
         let notify = state_icon(
             &format!("{}/.cache/mako-popup-state", self.home),
@@ -86,13 +87,14 @@ impl ZellijPlugin for State {
         let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
-            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}  {}   {}",
+            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}  {}   {}",
             human_rate(self.down),
             human_rate(self.up),
             self.cpu,
             self.mem,
             temps,
             bluetooth,
+            keyboard,
             notify,
             camera,
             battery,
@@ -292,5 +294,14 @@ fn bluetooth_status() -> String {
         format!("󰂯 {connections}")
     } else {
         "󰂯".to_string()
+    }
+}
+
+
+fn keyboard_layout(home: &str) -> String {
+    let path = format!("{home}/.cache/orion-status/keyboard-layout");
+    match fs::read_to_string(path) {
+        Ok(value) if !value.trim().is_empty() => format!("󰌌 {}", value.trim()),
+        _ => "󰌌 ?".to_string(),
     }
 }
