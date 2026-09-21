@@ -70,24 +70,32 @@ fn app_id_from_exec(exec: &[String], startup_wm_class: Option<String>, desktop_s
     }
     startup_wm_class.unwrap_or_else(|| desktop_stem.to_string())
 }
-fn resolve_live_app_id(entry: &mut AppEntry) {
-    let Ok(output) = Command::new("niri").args(["msg", "--json", "windows"]).output() else { return };
-    let Ok(value) = serde_json::from_slice::<serde_json::Value>(&output.stdout) else { return };
-    let Some(windows) = value.as_array() else { return };
-
-    let needle = entry.name.to_lowercase();
-    let mut matches = windows.iter().filter_map(|w| {
-        let app_id = w.get("app_id")?.as_str()?;
-        let title = w.get("title").and_then(|v| v.as_str()).unwrap_or("");
-        let hay = format!("{app_id} {title}").to_lowercase();
-        if hay.contains(&needle) || needle.contains(&app_id.to_lowercase()) { Some(app_id.to_string()) } else { None }
-    });
-    if let Some(first) = matches.next() {
-        if matches.next().is_none() { entry.app_id = first; }
-    }
+fn find_in_path(name: &str) -> Option<String> {
+    if name.contains('/') { return Path::new(name).is_file().then(|| name.to_string()); }
+    let path = std::env::var_os("PATH")?;
+    std::env::split_paths(&path)
+        .map(|dir| dir.join(name))
+        .find(|p| p.is_file())
+        .map(|p| p.to_string_lossy().into_owned())
 }
-fn discover(query: &str) -> Vec<AppEntry> {
-    let q = query.to_lowercase();
+fn live_windows() -> Vec<(String, String)> {
+    let Ok(output) = Command::new("niri").args(["msg", "--json", "windows"]).output() else { return Vec::new() };
+    let Ok(value) = serde_json::from_slice::<serde_json::Value>(&output.stdout) else { return Vec::new() };
+    let Some(windows) = value.as_array() else { return Vec::new() };
+    let mut out = Vec::new();
+    for w in windows {
+        let Some(app_id) = w.get("app_id").and_then(|v| v.as_str()).filter(|s| !s.is_empty()) else { continue };
+        if app_id == APP_ID { continue; }
+        let title = w.get("title").and_then(|v| v.as_str()).unwrap_or("");
+        let name = if title.trim().is_empty() { app_id } else { title };
+        out.push((name.to_string(), app_id.to_string()));
+    }
+    out.sort();
+    out.dedup_by(|a,b| a.1 == b.1);
+    out
+}
+fn build_catalog() -> Vec<AppEntry> {
+    let live = live_windows();
     let mut out = Vec::new();
     for dir in desktop_dirs() {
         let Ok(entries) = fs::read_dir(dir) else { continue };
@@ -95,21 +103,38 @@ fn discover(query: &str) -> Vec<AppEntry> {
             let path = file.path();
             if path.extension().and_then(|x| x.to_str()) != Some("desktop") { continue; }
             let Some(name) = desktop_value(&path, "Name") else { continue };
-            if !q.is_empty() && !name.to_lowercase().contains(&q) { continue; }
             let Some(exec_text) = desktop_value(&path, "Exec") else { continue };
             let exec = clean_exec(&exec_text);
             if exec.is_empty() { continue; }
             let stem = path.file_stem().and_then(|x| x.to_str()).unwrap_or(&name);
-            let app_id = app_id_from_exec(&exec, desktop_value(&path, "StartupWMClass"), stem);
-            let mut entry = AppEntry { name, app_id, exec, startup: true };
-            resolve_live_app_id(&mut entry);
-            out.push(entry);
+            let mut app_id = app_id_from_exec(&exec, desktop_value(&path, "StartupWMClass"), stem);
+            let needle = name.to_lowercase();
+            let matches: Vec<_> = live.iter().filter(|(title,id)| {
+                let hay = format!("{title} {id}").to_lowercase();
+                hay.contains(&needle) || needle.contains(&id.to_lowercase())
+            }).collect();
+            if matches.len() == 1 { app_id = matches[0].1.clone(); }
+            out.push(AppEntry { name, app_id, exec, startup: true });
         }
     }
+    // Open Niri windows are a second discovery source. This catches local/Tauri
+    // apps without a desktop file. If their app-id is also an executable name,
+    // resolve it from PATH so ACTIVE startup can launch it later.
+    for (title, app_id) in live {
+        if out.iter().any(|a| a.app_id == app_id) { continue; }
+        let exec = find_in_path(&app_id).map(|p| vec![p]).unwrap_or_default();
+        out.push(AppEntry { name: title, app_id, exec, startup: !exec.is_empty() });
+    }
     out.sort_by(|a,b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
-    out.dedup_by(|a,b| a.app_id == b.app_id || a.exec == b.exec);
-    out.truncate(30);
+    out.dedup_by(|a,b| a.app_id == b.app_id || (!a.exec.is_empty() && a.exec == b.exec));
     out
+}
+fn filter_catalog(catalog: &[AppEntry], query: &str) -> Vec<AppEntry> {
+    let q = query.trim().to_lowercase();
+    if q.is_empty() { return Vec::new(); }
+    catalog.iter()
+        .filter(|a| a.name.to_lowercase().contains(&q) || a.app_id.to_lowercase().contains(&q))
+        .take(30).cloned().collect()
 }
 fn remove_app(config: &mut Config, app_id: &str) {
     for ws in &mut config.workspaces { ws.apps.retain(|a| a.app_id != app_id); }
@@ -129,13 +154,14 @@ fn add_dialog(parent: &ApplicationWindow, workspace: u8, model: Rc<RefCell<Confi
     let content = dialog.content_area();
     let search = Entry::new(); search.set_placeholder_text(Some("Type an installed application name…")); content.append(&search);
     let results = GtkBox::new(Orientation::Vertical, 6);
+    let catalog = Rc::new(build_catalog());
     let scroll = ScrolledWindow::new(); scroll.set_vexpand(true); scroll.set_child(Some(&results)); content.append(&scroll);
     let render: Rc<dyn Fn(String)> = {
-        let results=results.clone(); let dialog=dialog.clone(); let model=model.clone(); let refresh=refresh.clone();
+        let results=results.clone(); let dialog=dialog.clone(); let model=model.clone(); let refresh=refresh.clone(); let catalog=catalog.clone();
         Rc::new(move |text: String| {
             while let Some(child)=results.first_child() { results.remove(&child); }
             if text.trim().is_empty() { return; }
-            for found in discover(&text) {
+            for found in filter_catalog(&catalog, &text) {
                 let button=Button::with_label(&found.name);
                 let found2=found.clone(); let model2=model.clone(); let refresh2=refresh.clone(); let dialog2=dialog.clone();
                 button.connect_clicked(move |_| {
