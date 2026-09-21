@@ -22,14 +22,9 @@ apply_order() {
         wsid="$(jq -r --arg ws "$ws" '.[] | select(.name == $ws) | .id' <<<"$workspaces" | head -n1)"
         [[ -n "$wsid" && "$wsid" != "null" ]] || continue
         index="$(jq -r --argjson wid "$ws" --arg app "$app" '.workspaces[] | select(.id == $wid) | .apps | to_entries[] | select(.value.app_id == $app) | .key + 1' "$apps_file" | head -n1)"
-        id="$(jq -r --arg app "$app" '[.[] | select(.app_id == $app)] | sort_by(.id) | .[0].id // empty' <<<"$windows")"
+        id="$(jq -r --argjson wsid "$wsid" --arg app "$app" '[.[] | select(.workspace_id == $wsid and .app_id == $app)] | sort_by(.id) | .[0].id // empty' <<<"$windows")"
         [[ -n "$id" && -n "$index" ]] || continue
         niri msg action focus-window --id "$id" >/dev/null 2>&1 || continue
-
-        current_wsid="$(jq -r --argjson id "$id" '.[] | select(.id == $id) | .workspace_id // empty' <<<"$windows")"
-        if [[ "$current_wsid" != "$wsid" ]]; then
-            niri msg action move-window-to-workspace "$ws" >/dev/null 2>&1 || continue
-        fi
         niri msg action move-column-to-index "$index" >/dev/null 2>&1 || true
     done < <(jq -r '.workspaces[] as $w | $w.apps[] | [$w.id, .app_id] | @tsv' "$apps_file")
 
