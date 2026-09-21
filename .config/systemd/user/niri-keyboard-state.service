@@ -1,0 +1,13 @@
+[Unit]
+Description=Niri keyboard layout state bridge
+PartOf=niri.service
+After=niri.service
+
+[Service]
+Type=simple
+ExecStart=%h/.config/niri/scripts/niri-keyboard-state
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=niri.service
