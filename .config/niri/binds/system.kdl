@@ -40,7 +40,6 @@ binds {
     Mod+Ctrl+P { spawn "/usr/bin/wl-color-picker"; }
 
     Mod+Shift+V { spawn "bash" "/home/murat/.config/wayland/scripts/clipboard-history"; }
-    Mod+C { spawn "bash" "/home/murat/.config/wayland/scripts/waybar-visibility"; }
     Mod+N { spawn "bash" "/home/murat/.config/wayland/scripts/mako-toggle"; }
     Mod+Shift+N { spawn "bash" "/home/murat/.config/wayland/scripts/wlsunset-toggle"; }
     Mod+Ctrl+N { spawn "bash" "/home/murat/.config/wayland/scripts/notification-history"; }
