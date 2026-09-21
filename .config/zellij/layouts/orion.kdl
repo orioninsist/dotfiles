@@ -5,7 +5,7 @@ layout {
         }
         children
         pane size=1 borderless=true {
-            plugin location="file:/mnt/local/projects/dotfiles/.config/zellij/plugins/orion-status/target/wasm32-wasip1/release/orion_status.wasm" {
+            plugin location="file:/mnt/local/projects/dotfiles/.config/zellij/plugins/orion-status/target/wasm32-wasip1/release/orion-status.wasm" {
                 home "/home/murat"
             }
         }
