@@ -36,7 +36,7 @@ Startup set:
 - Workspace 1: Chrome, ChatGPT, GitHub, Gemini and Nautilus.
 - Workspace 2: Foot.
 - Workspace 3: VS Code.
-- Workspace 6: YouTube.
+- Workspace 6: YouTube, YouTube Music, Spotify and Mullvad Browser, opened in that order.
 - Workspace 7: Knowledge Productivity and Knowledge webapp.
 
 Physical placement:
