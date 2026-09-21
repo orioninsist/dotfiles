@@ -1,0 +1,13 @@
+[Unit]
+Description=PipeWire audio state bridge
+After=pipewire.service wireplumber.service
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/wayland/scripts/orion-audio-state
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=graphical-session.target
