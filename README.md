@@ -25,7 +25,6 @@ Desktop and applications:
 - `niri`
 - `wayland`
 - `systemd`
-- `waybar`
 - `xdg-desktop-portal`
 - `yazi`
 
@@ -48,7 +47,6 @@ Examples:
 ~/.config/nvim   -> /mnt/local/projects/dotfiles/.config/nvim
 ~/.config/niri   -> /mnt/local/projects/dotfiles/.config/niri
 ~/.config/wayland -> /mnt/local/projects/dotfiles/.config/wayland
-~/.config/waybar -> /mnt/local/projects/dotfiles/.config/waybar
 ~/.config/yazi   -> /mnt/local/projects/dotfiles/.config/yazi
 ```
 
