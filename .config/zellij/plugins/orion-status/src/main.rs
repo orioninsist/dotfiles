@@ -69,6 +69,7 @@ impl ZellijPlugin for State {
     fn render(&mut self, _rows: usize, cols: usize) {
         let temps = temperatures();
 
+        let fan = fan_speed();
         let bluetooth = bluetooth_status(&self.home);
         let keyboard = keyboard_layout(&self.home);
         let microphone = microphone_status(&self.home);
@@ -90,12 +91,13 @@ impl ZellijPlugin for State {
         let clock = Utc::now().with_timezone(&Istanbul).format("󰃭 %a %m/%d/%Y %H:%M:%S");
 
         let line = format!(
-            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}   {}   {}   {}   {}   {}",
+            "D {:>6}   U {:>6}   󰻠 {:>3}%   󰍛 {:>3}%   {}   {}   {}   {}   {}   {}   {}   {}   {}   {}",
             human_rate(self.down),
             human_rate(self.up),
             self.cpu,
             self.mem,
             temps,
+            fan,
             bluetooth,
             keyboard,
             microphone,
@@ -275,6 +277,27 @@ fn temperatures() -> String {
     .flatten()
     .collect::<Vec<_>>()
     .join("   ")
+}
+
+
+fn fan_speed() -> String {
+    let Ok(entries) = fs::read_dir("/host/sys/class/hwmon") else {
+        return String::new();
+    };
+
+    for entry in entries.flatten() {
+        let base = entry.path();
+        let name = fs::read_to_string(base.join("name")).unwrap_or_default();
+        if name.trim().eq_ignore_ascii_case("thinkpad") {
+            if let Ok(raw) = fs::read_to_string(base.join("fan1_input")) {
+                if let Ok(rpm) = raw.trim().parse::<u64>() {
+                    return format!("󰈐 {rpm} RPM");
+                }
+            }
+        }
+    }
+
+    String::new()
 }
 
 
