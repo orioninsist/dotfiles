@@ -25,19 +25,9 @@
         "custom/system",
         "wireplumber",
         "battery",
-        "custom/startup-layout",
         "clock",
         "tray"
     ],
-
-    "custom/startup-layout": {
-        "exec": "~/.config/waybar/scripts/niri-startup-status.sh",
-        "return-type": "json",
-        "interval": 2,
-        "signal": 8,
-        "tooltip": true,
-        "on-click": "~/.config/waybar/scripts/niri-startup-toggle.sh"
-    },
 
     "tray": {
         "icon-size": 18,
