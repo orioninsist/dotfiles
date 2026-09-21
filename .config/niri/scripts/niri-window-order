@@ -42,7 +42,7 @@ apply_order
 
 # Re-apply after window changes. Debounce briefly so routing rules have time to
 # put a newly opened window on its target workspace before ordering columns.
-niri msg event-stream --json 2>/dev/null |
+niri msg --json event-stream 2>/dev/null |
 while IFS= read -r event; do
     if jq -e '.WindowOpenedOrChanged // .WindowClosed' >/dev/null 2>&1 <<<"$event"; then
         sleep 0.12
