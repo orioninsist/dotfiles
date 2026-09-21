@@ -5,9 +5,13 @@ state_dir="${XDG_CACHE_HOME:-$HOME/.cache}/orion-status"
 state_file="$state_dir/microphone"
 mkdir -p "$state_dir"
 
+WPCTL="$(command -v wpctl || true)"
+PWMON="$(command -v pw-mon || true)"
+[[ -n "$WPCTL" && -n "$PWMON" ]] || exit 127
+
 write_state() {
     local value tmp
-    value="$(/usr/sbin/wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
+    value="$("$WPCTL" get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null || true)"
     [[ -n "$value" ]] || return 0
     if [[ "$value" == *"[MUTED]"* ]]; then
         value="muted"
@@ -22,7 +26,7 @@ write_state() {
 write_state
 
 # pw-mon blocks on PipeWire events; no interval polling.
-/usr/sbin/pw-mon 2>/dev/null |
+"$PWMON" 2>/dev/null |
 while IFS= read -r _; do
     write_state
 done
