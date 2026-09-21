@@ -10,10 +10,22 @@ run_unless() {
     pgrep -f "$pattern" >/dev/null 2>&1 || "$@" >/dev/null 2>&1 &
 }
 
+# Workspace 1: browser / AI / files.
 run_unless 'google-chrome.*--app-id=cadlkienfkclaiaibeoongdcgmdikeeg' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg
 run_unless 'google-chrome.*--app-id=mjoklplbddabcmpepnokjaffbmgbkkgg' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mjoklplbddabcmpepnokjaffbmgbkkgg
 run_unless 'google-chrome.*--app-id=mhpcpiccfiaoabcaedpafgjabjjheekk' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=mhpcpiccfiaoabcaedpafgjabjjheekk
+
+# Workspace 6: fixed media strip, opened in left-to-right order.
+# YouTube -> YouTube Music -> Spotify -> Mullvad Browser.
 run_unless 'google-chrome.*--app-id=agimnkijcaahngcdmfeangaknmldooml' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=agimnkijcaahngcdmfeangaknmldooml
+sleep 0.35
+run_unless 'google-chrome.*--app-id=cinhimbnkkaeohfgghhklpknlkffjgod' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=cinhimbnkkaeohfgghhklpknlkffjgod
+sleep 0.35
+pgrep -x Spotify >/dev/null 2>&1 || Spotify >/dev/null 2>&1 &
+sleep 0.35
+pgrep -f 'mullvad-browser' >/dev/null 2>&1 || mullvad-browser >/dev/null 2>&1 &
+
+# Workspace 7: knowledge / productivity.
 run_unless 'google-chrome.*--app-id=idkejijbjcgdnloelolopdemkebfadai' /opt/google/chrome/google-chrome --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai
 
 pgrep -x google-chrome >/dev/null 2>&1 || google-chrome-stable >/dev/null 2>&1 &
