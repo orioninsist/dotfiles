@@ -87,9 +87,9 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 prefer-no-csd
 
-// Application workspace placement is managed explicitly by Niri Apps (apps.json).
-// Keep ordinary launcher-opened applications on the workspace where the user opened them.
-// No global open-on-workspace application routing lives here.
+// Application workspace placement is managed by Niri Apps (apps.json).
+// sync-app-rules generates native open-on-workspace rules from that single source.
+include optional=true "app-workspaces.kdl"
 
 // Firefox Picture-in-Picture stays floating wherever Firefox is routed.
 window-rule {
