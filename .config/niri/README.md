@@ -31,6 +31,15 @@ The task map is stable and intended for muscle memory:
 | `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
 | `Super+0` | 10 | Free / Temporary | Espanso Manager plus ad-hoc temporary work |
 
+Application routing is native Niri configuration. Matching windows open on their assigned workspace once, and can still be moved manually afterward without being forced back.
+
+Current fixed routes:
+- Workspace 1: major web browsers plus ChatGPT, GitHub and Gemini Chrome PWAs.
+- Workspace 2: Foot, Alacritty and Kitty.
+- Workspace 3: VS Code, Zed and JetBrains-family IDE windows.
+- Workspace 6: YouTube PWA, YouTube Music PWA, Mullvad Browser and Spotify.
+- Workspace 7: Knowledge Productivity and the Knowledge Chrome PWA.
+
 Physical placement:
 - Workspaces 1-5 prefer `HDMI-A-1` (ASUS).
 - Workspaces 6-10 prefer `eDP-1` (ThinkPad).
@@ -125,7 +134,7 @@ Physical placement:
 | `Super+Ctrl+T` | Tor Browser |
 | `Super+Ctrl+Shift+M` | Mullvad Browser |
 | `Super+Ctrl+Y` | Nautilus |
-| `Super+F8` | Focus workspace 7 and launch Knowledge Productivity |
+| `Super+F8` | Launch Knowledge Productivity (native rule opens it on workspace 7) |
 | `Super+F9` | Focus workspace 10 and launch Espanso Manager |
 | `Super+P` | Flameshot GUI |
 
