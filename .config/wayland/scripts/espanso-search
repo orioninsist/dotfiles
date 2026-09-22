@@ -2,14 +2,56 @@
 
 set -euo pipefail
 
-trigger="$(
+match_dir="/mnt/local/projects/dotfiles/.config/espanso/match"
+
+mapfile -t active_triggers < <(
     espanso match list |
         sed 's/ - .*//' |
-        fuzzel \
-            --dmenu \
-            --prompt="Espanso > "
-)" || exit 0
+        sed '/^[[:space:]]*$/d' |
+        sort -u
+)
 
+declare -A active=()
+for trigger in "${active_triggers[@]}"; do
+    active["$trigger"]=1
+done
+
+declare -a files=()
+declare -A file_triggers=()
+
+while IFS= read -r -d '' file; do
+    relative="${file#"$match_dir"/}"
+    triggers=""
+
+    while IFS= read -r trigger; do
+        [[ -n "$trigger" ]] || continue
+        [[ -n "${active[$trigger]+x}" ]] || continue
+        triggers+="$trigger"$'\n'
+    done < <(
+        sed -nE 's/^[[:space:]]*-[[:space:]]*trigger:[[:space:]]*["'\''"]?([^"'\''[:space:]]+)["'\''"]?[[:space:]]*$/\1/p' "$file" |
+            sort -u
+    )
+
+    [[ -n "$triggers" ]] || continue
+
+    count="$(printf '%s' "$triggers" | sed '/^[[:space:]]*$/d' | wc -l)"
+    files+=("$(printf '%-32s %4d trigger' "$relative" "$count")")
+    file_triggers["$relative"]="$triggers"
+done < <(
+    find "$match_dir" -type f \( -name '*.yml' -o -name '*.yaml' \) -print0 |
+        sort -z
+)
+
+(("${#files[@]}" > 0)) || exit 0
+
+selection="$(printf '%s\n' "${files[@]}" | fuzzel --dmenu --counter --prompt="Espanso files > ")" || exit 0
+[[ -n "$selection" ]] || exit 0
+
+selected_file="${selection%%[[:space:]]*}"
+triggers="${file_triggers[$selected_file]-}"
+[[ -n "$triggers" ]] || exit 0
+
+trigger="$(printf '%s' "$triggers" | sed '/^[[:space:]]*$/d' | fuzzel --dmenu --counter --prompt="${selected_file} > ")" || exit 0
 [[ -n "$trigger" ]] || exit 0
 
 espanso match exec --trigger "$trigger"
