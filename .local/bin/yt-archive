@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+url="${1:-}"
+[[ "$url" =~ ^https?:// ]] || { printf 'Kullanim: yt-archive URL\n' >&2; exit 2; }
+for cmd in yt-dlp fzf; do command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }; done
+mkdir -p "$HOME/.video" "$HOME/.local/state/yt-dlp"
+choice="$(printf '%s\n' 'Video (MP4)' 'Ses (best audio)' | fzf --prompt='Arsiv modu > ' --height=40% --border)"
+[[ -n "$choice" ]] || exit 0
+archive="$HOME/.local/state/yt-dlp/download-archive.txt"
+if [[ "$choice" == Video* ]]; then
+  yt-dlp --download-archive "$archive" -f 'bv*+ba/b' --merge-output-format mp4 --remux-video mp4 -o "$HOME/.video/%(title)s [%(id)s].%(ext)s" "$url"
+else
+  mkdir -p "$HOME/.sounds"
+  yt-dlp --download-archive "$archive" -f bestaudio -o "$HOME/.sounds/%(title)s [%(id)s].%(ext)s" "$url"
+fi
