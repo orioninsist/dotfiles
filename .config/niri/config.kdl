@@ -74,7 +74,6 @@ workspace "10" { open-on-output "eDP-1"; }
 spawn-at-startup "/usr/bin/mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
-spawn-at-startup "/home/murat/.config/niri/scripts/start-session-apps"
 
 // Wallpaper. swaybg is compositor-independent.
 spawn-at-startup "swaybg" "-i" "/home/murat/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg" "-m" "fill"
@@ -86,10 +85,6 @@ hotkey-overlay {
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 prefer-no-csd
-
-// Application workspace placement is managed by Niri Apps (apps.json).
-// sync-app-rules generates native open-on-workspace rules from that single source.
-include optional=true "app-workspaces.kdl"
 
 // Firefox Picture-in-Picture stays floating wherever Firefox is routed.
 window-rule {
