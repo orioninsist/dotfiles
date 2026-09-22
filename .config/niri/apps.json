@@ -48,7 +48,7 @@
         },
         {
           "name": "Files",
-          "app_id": "foot",
+          "app_id": "org.gnome.Nautilus",
           "exec": [
             "nautilus",
             "--new-window"
