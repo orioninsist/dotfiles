@@ -2,6 +2,16 @@
 
 Modular Niri configuration for the daily Wayland session.
 
+## Table of contents
+
+- [Structure](#structure)
+- [Workspace / tag map](#workspace--tag-map)
+- [Fixed tag and column order](#fixed-tag-and-column-order)
+- [Complete shortcut reference](#complete-shortcut-reference)
+- [Daily mental model](#daily-mental-model)
+- [Conflict policy](#conflict-policy)
+- [Validation](#validation)
+
 ## Structure
 
 | File | Responsibility |
@@ -33,58 +43,60 @@ The task map is stable and intended for muscle memory:
 
 Application routing is native Niri configuration. Matching windows open on their assigned workspace once, and can still be moved manually afterward without being forced back.
 
-Current fixed routes:
-- Workspace 1: major web browsers plus ChatGPT, GitHub and Gemini Chrome PWAs.
-- Workspace 2: Foot, Alacritty and Kitty.
-- Workspace 3: VS Code, Zed and JetBrains-family IDE windows.
-- Workspace 6: YouTube PWA, YouTube Music PWA, Mullvad Browser and Spotify.
-- Workspace 7: Knowledge Productivity and the Knowledge Chrome PWA.
+Current fixed routes and their exact left-to-right positions are documented in [Fixed tag and column order](#fixed-tag-and-column-order).
 
 Physical placement:
 - Workspaces 1-5 prefer `HDMI-A-1` (ASUS).
 - Workspaces 6-10 prefer `eDP-1` (ThinkPad).
 - This is only a default placement; columns can still be moved between monitors.
 
-### Maintaining fixed app order inside a workspace
+## Fixed tag and column order
 
-Workspace assignment and left-to-right column order are maintained in two different places:
+This is the canonical list to edit when changing the personal app layout. The **Tag** column controls the workspace and **Position** is the initial left-to-right column number.
 
-- `config.kdl` decides **which workspace/tag** an application opens on.
-- `scripts/niri-window-place-once` decides the application's **initial column index inside that workspace**.
+| Tag | Position | Application | Niri `app_id` |
+|---:|---:|---|---|
+| 1 | 1 | Google Chrome | `google-chrome` |
+| 1 | 2 | ChatGPT PWA | `chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default` |
+| 1 | 3 | GitHub PWA | `chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default` |
+| 1 | 4 | Gemini PWA | `chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default` |
+| 1 | 5 | Microsoft Copilot PWA | `chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default` |
+| 1 | 6 | Grok PWA | `chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default` |
+| 1 | 7 | NotebookLM / Gemini Notebook | `chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default` |
+| 1 | 8 | Google Drive PWA | `chrome-aghbiahbpaijignceidepookljebhfak-Default` |
+| 1 | 9 | GNOME Files | `org.gnome.Nautilus` |
+| 2 | 1 | Foot | `foot` |
+| 2 | 2 | Alacritty | `Alacritty` |
+| 2 | 3 | Kitty | `kitty` |
+| 3 | 1 | VS Code | `code` / `code-url-handler` |
+| 3 | 2 | ChatGPT Desktop | `Chatgpt` |
+| 3 | 3 | GitHub Copilot | `github` |
+| 3 | 4 | Antigravity IDE | `antigravity-ide` |
+| 3 | 5 | Antigravity | `antigravity` |
+| 3 | 6 | Zed Editor | `zed` / `dev.zed.Zed` |
+| 3 | 7 | JetBrains family | `jetbrains-*` |
+| 4 | 1 | Google Calendar PWA | `chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default` |
+| 6 | 1 | YouTube PWA | `chrome-agimnkijcaahngcdmfeangaknmldooml-Default` |
+| 6 | 2 | YouTube Music PWA | `chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default` |
+| 6 | 3 | Mullvad Browser | `Mullvad Browser` |
+| 6 | 4 | Spotify | `Spotify` |
+| 7 | 1 | Knowledge Productivity | `knowledge-productivity` |
+| 7 | 2 | Knowledge PWA | `chrome-idkejijbjcgdnloelolopdemkebfadai-Default` |
 
-The order script is intentionally "place once": when a matching window opens, it is moved to its configured column index. After that, manual column movement is left untouched.
+Two files implement this table:
 
-Edit the `target_index()` case in `scripts/niri-window-place-once` to add, remove or reorder applications. Example:
+- `config.kdl`: assigns each application to its tag/workspace.
+- `scripts/niri-window-place-once`: assigns its initial left-to-right position with `target_index()`.
 
-```bash
-code|code-url-handler) echo 1 ;;
-zed|dev.zed.Zed) echo 2 ;;
-jetbrains-*) echo 3 ;;
-```
+The placement is intentionally one-time. After opening, manual moves are not forced back.
 
-This means, on workspace 3, Code starts at column 1, Zed at column 2, and JetBrains-family IDEs at column 3.
-
-To change the order, change only the number:
-
-```bash
-code|code-url-handler) echo 2 ;;
-zed|dev.zed.Zed) echo 1 ;;
-```
-
-To remove fixed ordering for an application, remove its matching line from `target_index()`. Its workspace routing in `config.kdl` can remain, so the app will still open on the same workspace but will no longer be assigned a fixed initial column.
-
-Use the window's Niri `app_id`, not its executable path. To discover it:
+To add an application, open it and get its real ID with:
 
 ```sh
 niri msg windows
 ```
 
-Open the application, find its `App ID`, then use that value in both places when needed:
-
-1. `config.kdl` → workspace/tag routing.
-2. `scripts/niri-window-place-once` → initial left-to-right column position.
-
-After edits, validate and reload the Niri config as usual. If only `niri-window-place-once` changed, restart that script (or start a new Niri session) so the running watcher uses the new order.
+Then add the ID to the appropriate `window-rule` in `config.kdl` and add its position to `target_index()`. To remove fixed ordering but keep the tag assignment, remove only its `target_index()` entry.
 
 ## Complete shortcut reference
 
