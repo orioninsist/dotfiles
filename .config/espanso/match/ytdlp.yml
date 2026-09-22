@@ -7,3 +7,18 @@ matches:
 
   - trigger: ":ytvideo"
     replace: "yt-video "
+
+  - trigger: ":ytplaylist"
+    replace: "yt-playlist "
+
+  - trigger: ":ytthumb"
+    replace: "yt-thumb "
+
+  - trigger: ":ytinfo"
+    replace: "yt-info "
+
+  - trigger: ":ytsection"
+    replace: "yt-section "
+
+  - trigger: ":ytarchive"
+    replace: "yt-archive "
