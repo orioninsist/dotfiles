@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+url="${1:-}"
+[[ "$url" =~ ^https?:// ]] || { printf 'Kullanim: yt-playlist URL\n' >&2; exit 2; }
+for cmd in yt-dlp fzf; do command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }; done
+mkdir -p "$HOME/.video"
+choice="$(printf '%s\n' 'Video (MP4)' 'Ses (best audio)' | fzf --prompt='Playlist modu > ' --height=40% --border)"
+[[ -n "$choice" ]] || exit 0
+if [[ "$choice" == Video* ]]; then
+  yt-dlp --yes-playlist -f 'bv*+ba/b' --merge-output-format mp4 --remux-video mp4 -o "$HOME/.video/%(playlist_title)s/%(playlist_index)03d - %(title)s [%(id)s].%(ext)s" "$url"
+else
+  mkdir -p "$HOME/.sounds"
+  yt-dlp --yes-playlist -f bestaudio -o "$HOME/.sounds/%(playlist_title)s/%(playlist_index)03d - %(title)s [%(id)s].%(ext)s" "$url"
+fi
