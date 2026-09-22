@@ -74,6 +74,7 @@ workspace "10" { open-on-output "eDP-1"; }
 spawn-at-startup "/usr/bin/mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
+spawn-at-startup "bash" "/home/murat/.config/niri/scripts/niri-window-place-once"
 
 // Wallpaper. swaybg is compositor-independent.
 spawn-at-startup "swaybg" "-i" "/home/murat/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg" "-m" "fill"
