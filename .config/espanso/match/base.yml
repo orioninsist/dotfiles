@@ -1,6 +1,1 @@
-matches:
-- trigger: :openaidevelopers
-  replace: |
-    cd /mnt/local/projects/docsync && uv run docsync https://developers.openai.com/ --output-dir /mnt/local/projects/5-Documentation/openai/docs --state-dir /mnt/local/projects/5-Documentation/openai --max-concurrency 5 --max-requests 10000 --requests-per-minute 20 --language en --refresh-hours 24 --mode playwright --browser-type chromium
-- trigger: :openaidevelopersmerge
-  replace: cd /mnt/local/projects/markdownMerge && rm -f /mnt/local/projects/5-Documentation/openai/merge/openai-*.md /mnt/local/projects/5-Documentation/openai/merge/manifest.json /mnt/local/projects/5-Documentation/openai/merge/summary.txt /mnt/local/projects/5-Documentation/openai/merge/validation.txt && uv run mdmerge /mnt/local/projects/5-Documentation/openai/docs /mnt/local/projects/5-Documentation/openai/merge --name openai --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+matches: []
