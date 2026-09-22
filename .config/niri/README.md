@@ -11,9 +11,6 @@ Modular Niri configuration for the daily Wayland session.
 | `binds/workspaces.kdl` | Workspace navigation, movement and wheel navigation |
 | `binds/system.kdl` | Audio, media, brightness, capture, hardware, notifications and session |
 | `binds/applications.kdl` | Personal application launchers only |
-| `scripts/start-session-apps` | Ordered daily application set, gated by a persistent on/off switch |
-| `apps.json` | Single source of truth for managed app workspace, order, launch command and startup state |
-| `scripts/niri-window-order` | Event-driven manager that keeps managed apps in the order above |
 
 Niri 26.04 supports `include`, so the main config stays small while each binding domain remains independently maintainable.
 
@@ -33,14 +30,6 @@ The task map is stable and intended for muscle memory:
 | `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
 | `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
 | `Super+0` | 10 | Free / Temporary | Espanso Manager plus ad-hoc temporary work |
-
-Startup set (deterministic left-to-right order where applicable). The module runs only when explicitly enabled:
-- Workspace 1: Chrome, ChatGPT, GitHub, Gemini and Nautilus, opened in that order.
-- Workspace 2: Foot.
-- Workspace 3: VS Code.
-- Workspace 6: YouTube, YouTube Music, Mullvad Browser and Spotify, opened in that order.
-- Workspace 7: Knowledge Productivity and Knowledge webapp.
-- Daily startup windows open at full column width by default; this is not fullscreen.
 
 Physical placement:
 - Workspaces 1-5 prefer `HDMI-A-1` (ASUS).
@@ -138,8 +127,6 @@ Physical placement:
 | `Super+Ctrl+Y` | Nautilus |
 | `Super+F8` | Focus workspace 7 and launch Knowledge Productivity |
 | `Super+F9` | Focus workspace 10 and launch Espanso Manager |
-| `Super+F10` | Snapshot |
-| `Super+F12` | Toggle automatic startup layout on/off |
 | `Super+P` | Flameshot GUI |
 
 ### Display, power profile and hardware
@@ -266,35 +253,3 @@ niri msg action load-config-file
 ```
 
 
-## Automatic startup layout control
-
-The startup layout is opt-in and persistent. Its runtime state lives outside the dotfiles tree at `${XDG_STATE_HOME:-~/.local/state}/niri-session/enabled`, so toggling it never dirties the repository.
-
-```sh
-~/.config/niri/scripts/niri-session on
-~/.config/niri/scripts/niri-session off
-~/.config/niri/scripts/niri-session toggle
-~/.config/niri/scripts/niri-session status
-```
-
-- `off`: Niri starts normally and none of the managed daily applications are opened.
-- `on`: the ordered startup layout runs on the next Niri login.
-- `Super+F12`: toggles the same persistent state.
-- Workspace 1 opens ordinary Chrome explicitly with the real `Default` profile and a new blank window. This preserves the signed-in Chrome profile instead of creating an isolated guest-like profile. Chrome PWAs use the same `Default` profile.
-
-
-## Persistent window order
-
-Daily managed apps keep the same relative left-to-right order even when one is closed and reopened. This is independent from the automatic-startup ON/OFF switch: startup decides whether apps are launched at login; window ordering applies whenever a managed app is open.
-
-Use Niri Apps to change managed application order and workspace. The persistent ordering manager reads `~/.config/niri/apps.json` directly; there is no separate window-order configuration.
-
-Example:
-
-```text
-1|google-chrome
-1|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default
-1|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default
-```
-
-Move a line up/down to change its preferred relative position. Delete a line to stop managing that app. Add `WORKSPACE|APP_ID` to manage another app; get its exact App ID with `niri msg windows`. After editing, restart the ordering manager or log in again.
