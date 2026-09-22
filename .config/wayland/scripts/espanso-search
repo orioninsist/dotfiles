@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+trigger="$(
+    espanso match list |
+        sed 's/ - .*//' |
+        fuzzel \
+            --dmenu \
+            --prompt="Espanso > "
+)" || exit 0
+
+[[ -n "$trigger" ]] || exit 0
+
+espanso match exec --trigger "$trigger"

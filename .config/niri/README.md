@@ -176,6 +176,7 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 |---|---|
 | `Super+Enter` | Foot terminal |
 | `Super+D` | wmenu-run application launcher |
+| `Super+C` | Search and expand Espanso matches with Fuzzel |
 | `Super+Ctrl+Enter` | Alacritty |
 | `Super+Y` | Kitty running Yazi |
 | `Super+Ctrl+B` | Google Chrome |

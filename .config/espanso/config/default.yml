@@ -1,7 +1,7 @@
 enable: true
 backend: inject
 show_notifications: false
-auto_restart: false
+auto_restart: true
 
 keyboard_layout:
   rules: evdev
