@@ -1,5 +1,5 @@
 matches:
-  - trigger: ":mp3"
+  - trigger: ":ytaudio"
     replace: "yt-audio "
 
   - trigger: ":ytsub"
