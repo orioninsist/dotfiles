@@ -39,7 +39,7 @@ The task map is stable and intended for muscle memory:
 | `Super+7` | 7 | Productivity / Content | Knowledge Productivity, Knowledge webapp, OBS, mpv, HandBrake, Folo, NewsFlash, Google News |
 | `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
 | `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
-| `Super+0` | 10 | Free / Temporary | Espanso Manager plus ad-hoc temporary work |
+| `Super+0` | 10 | Free / Temporary | Ad-hoc temporary work |
 
 Application routing is native Niri configuration. Matching windows open on their assigned workspace once, and can still be moved manually afterward without being forced back.
 
@@ -189,7 +189,6 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 | `Super+Ctrl+Shift+M` | Mullvad Browser |
 | `Super+Ctrl+Y` | Nautilus |
 | `Super+F8` | Launch Knowledge Productivity (native rule opens it on workspace 7) |
-| `Super+F9` | Focus workspace 10 and launch Espanso Manager |
 | `Super+P` | Flameshot GUI |
 
 ### Display, power profile and hardware
