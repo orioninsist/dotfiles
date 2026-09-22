@@ -90,9 +90,9 @@ prefer-no-csd
 // Stable application-to-workspace routing for muscle memory.
 // These rules apply only when a window opens; manual moves remain untouched.
 
-// TAG 1: browsers and selected web apps.
+// TAG 1: browsers, AI/research web apps, Drive and Files.
 window-rule {
-    match app-id=r#"^(google-chrome|brave-browser|microsoft-edge|microsoft-edge-stable|yandex-browser|yandex-browser-stable|firefox|firefoxdeveloperedition|org\.mozilla\.firefox|org\.mozilla\.firefoxdeveloperedition|Tor Browser|tor-browser|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default|chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default)$"#
+    match app-id=r#"^(google-chrome|brave-browser|microsoft-edge|microsoft-edge-stable|yandex-browser|yandex-browser-stable|firefox|firefoxdeveloperedition|org\.mozilla\.firefox|org\.mozilla\.firefoxdeveloperedition|Tor Browser|tor-browser|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default|chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default|chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default|chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default|chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default|chrome-aghbiahbpaijignceidepookljebhfak-Default|org\.gnome\.Nautilus)$"#
     open-on-workspace "1"
 }
 
@@ -102,10 +102,16 @@ window-rule {
     open-on-workspace "2"
 }
 
-// TAG 3: editors and IDEs.
+// TAG 3: development and AI coding tools.
 window-rule {
-    match app-id=r#"^(code|code-url-handler|zed|dev\.zed\.Zed|jetbrains-.*)$"#
+    match app-id=r#"^(code|code-url-handler|Chatgpt|github|antigravity-ide|antigravity|zed|dev\.zed\.Zed|jetbrains-.*)$"#
     open-on-workspace "3"
+}
+
+// TAG 4: work / office.
+window-rule {
+    match app-id=r#"^chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default$"#
+    open-on-workspace "4"
 }
 
 // TAG 6: media.
