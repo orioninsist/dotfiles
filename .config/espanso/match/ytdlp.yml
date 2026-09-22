@@ -1,0 +1,3 @@
+matches:
+  - trigger: ":mp3"
+    replace: "yt-audio "
