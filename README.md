@@ -163,14 +163,18 @@ Espanso reloads the configuration
         ↓
 Super+C
         ↓
-espanso match list
+Fuzzel: YAML match files + active trigger count
         ↓
-Fuzzel filter
+select a match file
         ↓
-Enter
+Fuzzel: triggers from that file
+        ↓
+select a trigger
         ↓
 expand the selected match into the active application
 ```
+
+The Espanso picker is intentionally hierarchical. The first Fuzzel view treats each custom YAML match file as a category and shows its active trigger count. The second view contains only the active triggers from the selected file. Both views enable Fuzzel's match counter, so filtering shows the current match count against the total. Empty match files are omitted. This keeps the picker usable as the number of topic files and triggers grows without adding a separate database or index.
 
 The repository is the versioned source, while the local checkout is the live runtime source. GitHub is used for backup, history, and rollback rather than as a runtime dependency.
 
