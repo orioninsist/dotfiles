@@ -122,7 +122,7 @@ window-rule {
 
 // TAG 7: Knowledge.
 window-rule {
-    match app-id=r#"^(knowledge-productivity|chrome-idkejijbjcgdnloelolopdemkebfadai-Default)$"#
+    match app-id=r#"^chrome-idkejijbjcgdnloelolopdemkebfadai-Default$"#
     open-on-workspace "7"
 }
 

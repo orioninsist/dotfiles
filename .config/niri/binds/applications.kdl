@@ -17,7 +17,7 @@ binds {
     Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
     Mod+Ctrl+Y { spawn "nautilus" "--new-window"; }
 
-    Mod+F8 { spawn-sh "niri msg action focus-workspace 7; /home/murat/.local/bin/knowledge-productivity"; }
+    Mod+F8 { spawn-sh "niri msg action focus-workspace 7; /opt/google/chrome/google-chrome --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai"; }
     Mod+F11 { spawn "/usr/bin/snapshot"; }
     Mod+P { spawn "/usr/bin/flameshot" "gui"; }
 }

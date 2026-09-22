@@ -36,7 +36,7 @@ The task map is stable and intended for muscle memory:
 | `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Contacts, Keep, Tasks, Forms, Password Manager, Photos, Vids, calibre |
 | `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Facebook, Instagram, Meta Business Suite, Google AdSense |
 | `Super+6` | 6 | Creative / Design / Media | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw, YouTube, YouTube Music, Mullvad Browser, Spotify |
-| `Super+7` | 7 | Productivity / Content | Knowledge Productivity, Knowledge webapp, OBS, mpv, HandBrake, Folo, NewsFlash, Google News |
+| `Super+7` | 7 | Productivity / Content | Knowledge PWA, OBS, mpv, HandBrake, Folo, NewsFlash, Google News |
 | `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
 | `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
 | `Super+0` | 10 | Free / Temporary | Ad-hoc temporary work |
@@ -80,8 +80,7 @@ This is the canonical list to edit when changing the personal app layout. The **
 | 6 | 2 | YouTube Music PWA | `chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default` |
 | 6 | 3 | Mullvad Browser | `Mullvad Browser` |
 | 6 | 4 | Spotify | `Spotify` |
-| 7 | 1 | Knowledge Productivity | `knowledge-productivity` |
-| 7 | 2 | Knowledge PWA | `chrome-idkejijbjcgdnloelolopdemkebfadai-Default` |
+| 7 | 1 | Knowledge PWA | `chrome-idkejijbjcgdnloelolopdemkebfadai-Default` |
 
 Two files implement this table:
 
@@ -188,7 +187,7 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 | `Super+Ctrl+T` | Tor Browser |
 | `Super+Ctrl+Shift+M` | Mullvad Browser |
 | `Super+Ctrl+Y` | Nautilus |
-| `Super+F8` | Launch Knowledge Productivity (native rule opens it on workspace 7) |
+| `Super+F8` | Launch Knowledge PWA on workspace 7 |
 | `Super+P` | Flameshot GUI |
 
 ### Display, power profile and hardware

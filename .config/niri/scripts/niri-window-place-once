@@ -44,8 +44,7 @@ target_index() {
         Spotify) echo 4 ;;
 
         # TAG 7: Productivity / Content
-        knowledge-productivity) echo 1 ;;
-        chrome-idkejijbjcgdnloelolopdemkebfadai-Default) echo 2 ;;
+        chrome-idkejijbjcgdnloelolopdemkebfadai-Default) echo 1 ;;
         *) return 1 ;;
     esac
 }
