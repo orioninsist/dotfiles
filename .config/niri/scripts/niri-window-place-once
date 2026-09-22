@@ -9,26 +9,41 @@ rm -f "$state_dir"/* 2>/dev/null || true
 
 target_index() {
     case "$1" in
+        # TAG 1: Web / Research / AI / Files
         google-chrome) echo 1 ;;
         chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default) echo 2 ;;
         chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default) echo 3 ;;
         chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default) echo 4 ;;
-        brave-browser) echo 5 ;;
-        microsoft-edge|microsoft-edge-stable) echo 6 ;;
-        yandex-browser|yandex-browser-stable) echo 7 ;;
-        firefox|org.mozilla.firefox) echo 8 ;;
-        firefoxdeveloperedition|org.mozilla.firefoxdeveloperedition) echo 9 ;;
-        "Tor Browser"|tor-browser) echo 10 ;;
+        chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default) echo 5 ;;
+        chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default) echo 6 ;;
+        chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default) echo 7 ;;
+        chrome-aghbiahbpaijignceidepookljebhfak-Default) echo 8 ;;
+        org.gnome.Nautilus) echo 9 ;;
+
+        # TAG 2: Terminal / Operations
         foot) echo 1 ;;
         Alacritty) echo 2 ;;
         kitty) echo 3 ;;
+
+        # TAG 3: Development
         code|code-url-handler) echo 1 ;;
-        zed|dev.zed.Zed) echo 2 ;;
-        jetbrains-*) echo 3 ;;
+        Chatgpt) echo 2 ;;
+        github) echo 3 ;;
+        antigravity-ide) echo 4 ;;
+        antigravity) echo 5 ;;
+        zed|dev.zed.Zed) echo 6 ;;
+        jetbrains-*) echo 7 ;;
+
+        # TAG 4: Work / Office
+        chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default) echo 1 ;;
+
+        # TAG 6: Creative / Design / Media
         chrome-agimnkijcaahngcdmfeangaknmldooml-Default) echo 1 ;;
         chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default) echo 2 ;;
         "Mullvad Browser") echo 3 ;;
         Spotify) echo 4 ;;
+
+        # TAG 7: Productivity / Content
         knowledge-productivity) echo 1 ;;
         chrome-idkejijbjcgdnloelolopdemkebfadai-Default) echo 2 ;;
         *) return 1 ;;
