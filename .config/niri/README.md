@@ -45,6 +45,47 @@ Physical placement:
 - Workspaces 6-10 prefer `eDP-1` (ThinkPad).
 - This is only a default placement; columns can still be moved between monitors.
 
+### Maintaining fixed app order inside a workspace
+
+Workspace assignment and left-to-right column order are maintained in two different places:
+
+- `config.kdl` decides **which workspace/tag** an application opens on.
+- `scripts/niri-window-place-once` decides the application's **initial column index inside that workspace**.
+
+The order script is intentionally "place once": when a matching window opens, it is moved to its configured column index. After that, manual column movement is left untouched.
+
+Edit the `target_index()` case in `scripts/niri-window-place-once` to add, remove or reorder applications. Example:
+
+```bash
+code|code-url-handler) echo 1 ;;
+zed|dev.zed.Zed) echo 2 ;;
+jetbrains-*) echo 3 ;;
+```
+
+This means, on workspace 3, Code starts at column 1, Zed at column 2, and JetBrains-family IDEs at column 3.
+
+To change the order, change only the number:
+
+```bash
+code|code-url-handler) echo 2 ;;
+zed|dev.zed.Zed) echo 1 ;;
+```
+
+To remove fixed ordering for an application, remove its matching line from `target_index()`. Its workspace routing in `config.kdl` can remain, so the app will still open on the same workspace but will no longer be assigned a fixed initial column.
+
+Use the window's Niri `app_id`, not its executable path. To discover it:
+
+```sh
+niri msg windows
+```
+
+Open the application, find its `App ID`, then use that value in both places when needed:
+
+1. `config.kdl` → workspace/tag routing.
+2. `scripts/niri-window-place-once` → initial left-to-right column position.
+
+After edits, validate and reload the Niri config as usual. If only `niri-window-place-once` changed, restart that script (or start a new Niri session) so the running watcher uses the new order.
+
 ## Complete shortcut reference
 
 ### Window management
