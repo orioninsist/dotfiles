@@ -1,72 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 url="${1:-}"
-if [[ -z "$url" ]]; then
-  printf 'Kullanim: yt-sub URL\n' >&2
-  exit 2
-fi
-
-for cmd in yt-dlp fzf; do
-  command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }
-done
-
-mkdir -p "$HOME/.subs"
-
+[[ "$url" =~ ^https?:// ]] || { printf 'Kullanim: yt-sub URL\n' >&2; exit 2; }
+for cmd in yt-dlp fzf; do command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }; done
+mkdir -p "$HOME/.subtitles"
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
-
-if ! yt-dlp --list-subs "$url" >"$tmp"; then
-  printf '\nAltyazi listesi alinamadi. Yukaridaki yt-dlp hatasina bak.\n' >&2
-  exit 1
-fi
-
-rows="$(
-  awk '
-    /Available automatic captions for / { section="auto"; next }
-    /Available subtitles for / { section="manual"; next }
-    /has no automatic captions/ { if (section=="auto") section=""; next }
-    /has no subtitles/ { if (section=="manual") section=""; next }
-    section && $1 !~ /^Language$/ && $1 ~ /^[[:alnum:]_.-]+$/ {
-      code=$1
-      $1=""
-      sub(/^[[:space:]]+/, "")
-      printf "%-12s | %-6s | %s\n", code, section, $0
-    }
-  ' "$tmp"
-)"
-
-if [[ -z "$rows" ]]; then
-  printf '\nyt-dlp ciktisi:\n' >&2
-  cat "$tmp" >&2
-  printf '\nListede gercekten altyazi varsa ama yukarida secenek olusmadiysa parser hatasidir.\n' >&2
-  exit 1
-fi
-
+if ! yt-dlp --list-subs "$url" >"$tmp"; then printf '\nAltyazi listesi alinamadi. Yukaridaki yt-dlp hatasina bak.\n' >&2; exit 1; fi
+rows="$(awk '/Available automatic captions for / { section="auto"; next } /Available subtitles for / { section="manual"; next } /has no automatic captions/ { if (section=="auto") section=""; next } /has no subtitles/ { if (section=="manual") section=""; next } section && $1 !~ /^Language$/ && $1 ~ /^[[:alnum:]_.-]+$/ { code=$1; $1=""; sub(/^[[:space:]]+/, ""); printf "%-12s | %-6s | %s\n", code, section, $0 }' "$tmp")"
+if [[ -z "$rows" ]]; then printf '\nyt-dlp ciktisi:\n' >&2; cat "$tmp" >&2; exit 1; fi
 choice="$(printf '%s\n' "$rows" | fzf --prompt='Altyazi > ' --height=70% --border)"
 [[ -n "$choice" ]] || exit 0
-
 lang="$(printf '%s\n' "$choice" | awk -F'|' '{gsub(/[[:space:]]/,"",$1); print $1}')"
 kind="$(printf '%s\n' "$choice" | awk -F'|' '{gsub(/[[:space:]]/,"",$2); print $2}')"
-
-if [[ "$kind" == "auto" ]]; then
-  subflag="--write-auto-subs"
-else
-  subflag="--write-subs"
-fi
-
-yt-dlp \
-  --skip-download \
-  "$subflag" \
-  --sub-langs "$lang" \
-  --sub-format "srt/best" \
-  --convert-subs srt \
-  -o "$HOME/.subs/%(title)s [%(id)s].%(ext)s" \
-  "$url"
-
-srt="$(find "$HOME/.subs" -maxdepth 1 -type f -name "*.$lang.srt" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)"
-if [[ -n "$srt" && -f "$srt" ]]; then
-  txt="${srt%.srt}.txt"
-  sed '/^[0-9][0-9]*$/d; /-->/d; /^[[:space:]]*$/d' "$srt" > "$txt"
-  printf '\nKaydedildi:\n%s\n%s\n' "$srt" "$txt"
-fi
+[[ "$kind" == "auto" ]] && subflag="--write-auto-subs" || subflag="--write-subs"
+yt-dlp --skip-download "$subflag" --sub-langs "$lang" --sub-format "srt/best" --convert-subs srt -o "$HOME/.subtitles/%(title)s [%(id)s].%(ext)s" "$url"
+srt="$(find "$HOME/.subtitles" -maxdepth 1 -type f -name "*.$lang.srt" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)"
+if [[ -n "$srt" && -f "$srt" ]]; then txt="${srt%.srt}.txt"; sed '/^[0-9][0-9]*$/d; /-->/d; /^[[:space:]]*$/d' "$srt" > "$txt"; printf '\nKaydedildi:\n%s\n%s\n' "$srt" "$txt"; fi
