@@ -129,3 +129,86 @@ Expected result:
 ```text
 0  0
 ```
+
+## Espanso
+
+Espanso is the permanent local text-expansion layer for this setup. It is intentionally file-based and local-first: YAML files are edited locally, become active immediately, and are committed to Git only after verification.
+
+Live structure:
+
+```text
+~/.config/espanso/match/
+├── packages/
+├── storage/
+└── custom -> /mnt/local/projects/dotfiles/.config/espanso/match/
+```
+
+Custom matches live in:
+
+```text
+/mnt/local/projects/dotfiles/.config/espanso/match/
+├── base.yml
+├── openai.yml
+└── <topic>.yml
+```
+
+Espanso loads match files recursively, so creating or editing a topic YAML file under the repository is enough. No per-file symlink, database, manager application, index, deploy step, or synchronization script is required.
+
+The daily workflow is:
+
+```text
+edit/add/remove YAML
+        ↓
+Espanso reloads the configuration
+        ↓
+Super+C
+        ↓
+espanso match list
+        ↓
+Fuzzel filter
+        ↓
+Enter
+        ↓
+expand the selected match into the active application
+```
+
+The repository is the versioned source, while the local checkout is the live runtime source. GitHub is used for backup, history, and rollback rather than as a runtime dependency.
+
+Current Espanso defaults are intentionally minimal:
+
+```yaml
+enable: true
+backend: inject
+show_notifications: false
+auto_restart: true
+
+keyboard_layout:
+  rules: evdev
+  model: pc105
+  layout: us
+  variant: ""
+  options: ""
+```
+
+Notes:
+
+- `enable: true` keeps Espanso enabled.
+- `backend: inject` forces direct key-event text injection instead of clipboard injection.
+- `show_notifications: false` disables Espanso notifications.
+- `auto_restart: true` refreshes the worker automatically when configuration files change on disk.
+- The explicit `keyboard_layout` block pins the Wayland keyboard layout to the current evdev / pc105 / US setup.
+
+Do not add extra tuning unless a real reproducible problem appears. In particular, injection delays and modifier delays should remain at Espanso defaults unless a specific application starts losing characters or mis-handling injected key events.
+
+For day-to-day changes:
+
+```bash
+cd /mnt/local/projects/dotfiles
+$EDITOR .config/espanso/match/<topic>.yml
+espanso match list
+git diff
+git add .config/espanso
+git commit -m "Update Espanso matches"
+git push origin main
+```
+
