@@ -204,6 +204,70 @@ Notes:
 
 Do not add extra tuning unless a real reproducible problem appears. In particular, injection delays and modifier delays should remain at Espanso defaults unless a specific application starts losing characters or mis-handling injected key events.
 
+
+### Quick YAML editor workflow
+
+The `:word` Espanso trigger expands to:
+
+```text
+espanso-word 
+```
+
+The command takes exactly two arguments:
+
+```text
+espanso-word EDITOR FILE
+```
+
+Examples:
+
+```bash
+espanso-word nvim openai
+espanso-word vim ytdlp
+espanso-word nano notes
+```
+
+Behavior:
+
+- The first argument is the editor command.
+- The second argument is the Espanso match file name.
+- Bash completion lists existing YAML files from `.config/espanso/match/` for the second argument.
+- The `.yml` / `.yaml` extension may be omitted.
+- If the requested file does not exist, `espanso-word` creates `<name>.yml` with a valid `matches:` root and opens it in the selected editor.
+- Existing files are opened directly.
+
+The helper lives in:
+
+```text
+.local/bin/espanso-word
+```
+
+The trigger lives in:
+
+```text
+.config/espanso/match/word.yml
+```
+
+The Bash completion function is defined in `.bashrc`.
+
+Typical flow:
+
+```text
+Super+C
+  ↓
+:word
+  ↓
+espanso-word 
+  ↓
+type: EDITOR FILE
+  ↓
+Tab-complete/filter an existing YAML name or type a new name
+  ↓
+Enter
+  ↓
+open existing file or create + open a new YAML file
+```
+
 For day-to-day changes:
 
 ```bash
