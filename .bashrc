@@ -103,3 +103,34 @@ fi
 zellij() {
     /usr/local/bin/zellij attach --create orioninsist "$@"
 }
+
+# espanso-word: complete Espanso YAML match files
+_espanso_word_complete() {
+    local cur
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    if (( COMP_CWORD == 1 )); then
+        COMPREPLY=( $(compgen -c -- "$cur") )
+        return
+    fi
+
+    if (( COMP_CWORD == 2 )); then
+        local dir="/mnt/local/projects/dotfiles/.config/espanso/match"
+        local file
+        COMPREPLY=()
+
+        while IFS= read -r file; do
+            file="${file##*/}"
+            file="${file%.yml}"
+            file="${file%.yaml}"
+
+            [[ "$file" == "$cur"* ]] && COMPREPLY+=("$file")
+        done < <(
+            find "$dir" -maxdepth 1 -type f \
+                \( -name '*.yml' -o -name '*.yaml' \) \
+                -print | sort
+        )
+    fi
+}
+
+complete -F _espanso_word_complete espanso-word

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MATCH_DIR="/mnt/local/projects/dotfiles/.config/espanso/match"
+
+editor="${1:-}"
+name="${2:-}"
+
+if [[ -z "$editor" || -z "$name" ]]; then
+    echo "Kullanım: espanso-word EDITOR DOSYA"
+    exit 1
+fi
+
+command -v "$editor" >/dev/null 2>&1 || {
+    echo "Editor bulunamadı: $editor"
+    exit 1
+}
+
+case "$name" in
+    *.yml|*.yaml) ;;
+    *) name="${name}.yml" ;;
+esac
+
+file="$MATCH_DIR/$name"
+
+if [[ ! -e "$file" ]]; then
+    printf 'matches:\n' > "$file"
+    echo "Yeni dosya: $file"
+fi
+
+exec "$editor" "$file"
