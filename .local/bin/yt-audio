@@ -1,22 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 url="${1:-}"
 [[ "$url" =~ ^https?:// ]] || { printf 'Kullanim: yt-audio URL\n' >&2; exit 2; }
-
-for cmd in yt-dlp fzf; do
-  command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }
-done
-
-mkdir -p "$HOME/.sounds"
-
+for cmd in yt-dlp fzf; do command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }; done
+mkdir -p "$HOME/.audio"
 formats="$(yt-dlp -F "$url")" || exit 1
 rows="$(printf '%s\n' "$formats" | awk '/audio only/ && $1 !~ /^ID$/ {print}')"
 [[ -n "$rows" ]] || { printf 'Indirilebilir ses formati bulunamadi.\n' >&2; exit 1; }
-
 choice="$(printf '%s\n' "$rows" | fzf --prompt='Ses kalitesi > ' --height=80% --border)"
 [[ -n "$choice" ]] || exit 0
 id="$(printf '%s\n' "$choice" | awk '{print $1}')"
-
-yt-dlp -f "$id" -o "$HOME/.sounds/%(title)s [%(id)s].%(ext)s" "$url"
+yt-dlp -f "$id" -o "$HOME/.audio/%(title)s [%(id)s].%(ext)s" "$url"
 command -v notify-send >/dev/null && notify-send "yt-dlp" "Ses indirme tamamlandi." || true
