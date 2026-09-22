@@ -13,26 +13,35 @@ done
 
 mkdir -p "$HOME/.subs"
 
-subs="$(yt-dlp --list-subs "$url" 2>/dev/null)" || {
-  printf 'Altyazi listesi alinamadi.\n' >&2
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+
+if ! yt-dlp --list-subs "$url" >"$tmp"; then
+  printf '\nAltyazi listesi alinamadi. Yukaridaki yt-dlp hatasina bak.\n' >&2
   exit 1
-}
+fi
 
 rows="$(
-  printf '%s\n' "$subs" |
-    awk '
-      /^Available subtitles for / { section="manual"; next }
-      /^Available automatic captions for / { section="auto"; next }
-      section && $1 ~ /^[[:alnum:]_-]+$/ && $2 != "Name" {
-        code=$1
-        $1=""
-        sub(/^[[:space:]]+/, "")
-        printf "%-8s | %-6s | %s\n", code, section, $0
-      }
-    '
+  awk '
+    /Available automatic captions for / { section="auto"; next }
+    /Available subtitles for / { section="manual"; next }
+    /has no automatic captions/ { if (section=="auto") section=""; next }
+    /has no subtitles/ { if (section=="manual") section=""; next }
+    section && $1 !~ /^Language$/ && $1 ~ /^[[:alnum:]_.-]+$/ {
+      code=$1
+      $1=""
+      sub(/^[[:space:]]+/, "")
+      printf "%-12s | %-6s | %s\n", code, section, $0
+    }
+  ' "$tmp"
 )"
 
-[[ -n "$rows" ]] || { printf 'Bu videoda indirilebilir altyazi bulunamadi.\n' >&2; exit 1; }
+if [[ -z "$rows" ]]; then
+  printf '\nyt-dlp ciktisi:\n' >&2
+  cat "$tmp" >&2
+  printf '\nListede gercekten altyazi varsa ama yukarida secenek olusmadiysa parser hatasidir.\n' >&2
+  exit 1
+fi
 
 choice="$(printf '%s\n' "$rows" | fzf --prompt='Altyazi > ' --height=70% --border)"
 [[ -n "$choice" ]] || exit 0
