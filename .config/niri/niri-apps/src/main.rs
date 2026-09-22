@@ -28,6 +28,7 @@ fn save_config(config: &Config) {
     let data = serde_json::to_string_pretty(config).expect("serialize apps.json") + "\n";
     fs::write(&tmp, data).expect("write apps.json");
     fs::rename(tmp, config_path()).expect("replace apps.json");
+    let _ = Command::new(home().join(".config/niri/scripts/sync-app-rules")).status();
 }
 fn state_path() -> PathBuf {
     std::env::var_os("XDG_STATE_HOME").map(PathBuf::from)
