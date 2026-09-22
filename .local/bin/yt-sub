@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+url="${1:-}"
+if [[ -z "$url" ]]; then
+  printf 'Kullanim: yt-sub URL\n' >&2
+  exit 2
+fi
+
+for cmd in yt-dlp fzf; do
+  command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }
+done
+
+mkdir -p "$HOME/.subs"
+
+subs="$(yt-dlp --list-subs "$url" 2>/dev/null)" || {
+  printf 'Altyazi listesi alinamadi.\n' >&2
+  exit 1
+}
+
+rows="$(
+  printf '%s\n' "$subs" |
+    awk '
+      /^Available subtitles for / { section="manual"; next }
+      /^Available automatic captions for / { section="auto"; next }
+      section && $1 ~ /^[[:alnum:]_-]+$/ && $2 != "Name" {
+        code=$1
+        $1=""
+        sub(/^[[:space:]]+/, "")
+        printf "%-8s | %-6s | %s\n", code, section, $0
+      }
+    '
+)"
+
+[[ -n "$rows" ]] || { printf 'Bu videoda indirilebilir altyazi bulunamadi.\n' >&2; exit 1; }
+
+choice="$(printf '%s\n' "$rows" | fzf --prompt='Altyazi > ' --height=70% --border)"
+[[ -n "$choice" ]] || exit 0
+
+lang="$(printf '%s\n' "$choice" | awk -F'|' '{gsub(/[[:space:]]/,"",$1); print $1}')"
+kind="$(printf '%s\n' "$choice" | awk -F'|' '{gsub(/[[:space:]]/,"",$2); print $2}')"
+
+if [[ "$kind" == "auto" ]]; then
+  subflag="--write-auto-subs"
+else
+  subflag="--write-subs"
+fi
+
+yt-dlp \
+  --skip-download \
+  "$subflag" \
+  --sub-langs "$lang" \
+  --sub-format "srt/best" \
+  --convert-subs srt \
+  -o "$HOME/.subs/%(title)s [%(id)s].%(ext)s" \
+  "$url"
+
+srt="$(find "$HOME/.subs" -maxdepth 1 -type f -name "*.$lang.srt" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)"
+if [[ -n "$srt" && -f "$srt" ]]; then
+  txt="${srt%.srt}.txt"
+  sed '/^[0-9][0-9]*$/d; /-->/d; /^[[:space:]]*$/d' "$srt" > "$txt"
+  printf '\nKaydedildi:\n%s\n%s\n' "$srt" "$txt"
+fi
