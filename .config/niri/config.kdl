@@ -86,6 +86,39 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 prefer-no-csd
 
+// Stable application-to-workspace routing for muscle memory.
+// These rules apply only when a window opens; manual moves remain untouched.
+
+// TAG 1: browsers and selected web apps.
+window-rule {
+    match app-id=r#"^(google-chrome|brave-browser|microsoft-edge|microsoft-edge-stable|yandex-browser|yandex-browser-stable|firefox|firefoxdeveloperedition|org\.mozilla\.firefox|org\.mozilla\.firefoxdeveloperedition|Tor Browser|tor-browser|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default|chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default)$"#
+    open-on-workspace "1"
+}
+
+// TAG 2: terminals.
+window-rule {
+    match app-id=r#"^(foot|Alacritty|kitty)$"#
+    open-on-workspace "2"
+}
+
+// TAG 3: editors and IDEs.
+window-rule {
+    match app-id=r#"^(code|code-url-handler|zed|dev\.zed\.Zed|jetbrains-.*)$"#
+    open-on-workspace "3"
+}
+
+// TAG 6: media.
+window-rule {
+    match app-id=r#"^(chrome-agimnkijcaahngcdmfeangaknmldooml-Default|chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default|Mullvad Browser|Spotify)$"#
+    open-on-workspace "6"
+}
+
+// TAG 7: Knowledge.
+window-rule {
+    match app-id=r#"^(knowledge-productivity|chrome-idkejijbjcgdnloelolopdemkebfadai-Default)$"#
+    open-on-workspace "7"
+}
+
 // Firefox Picture-in-Picture stays floating wherever Firefox is routed.
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
