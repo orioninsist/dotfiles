@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -u
 command -v jq >/dev/null 2>&1 || exit 0
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/niri-window-place-once.lock"
+flock -n 9 || exit 0
 state_dir="${XDG_RUNTIME_DIR:-/tmp}/niri-place-once"
 mkdir -p "$state_dir"
 rm -f "$state_dir"/* 2>/dev/null || true
