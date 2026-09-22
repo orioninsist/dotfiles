@@ -40,11 +40,5 @@ apply_order() {
     [[ -n "$focused" ]] && niri msg action focus-window --id "$focused" >/dev/null 2>&1 || true
 }
 
+
 apply_order
-niri msg --json event-stream 2>/dev/null |
-while IFS= read -r event; do
-    if jq -e '.WindowOpenedOrChanged // .WindowClosed' >/dev/null 2>&1 <<<"$event"; then
-        sleep 0.12
-        apply_order
-    fi
-done
