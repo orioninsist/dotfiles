@@ -116,3 +116,14 @@ def test_niri_session_entrypoint_and_ly_acceptance():
         text=True,
     )
     assert enabled.returncode == 0, enabled.stdout + enabled.stderr
+
+
+def test_ly_custom_niri_session_is_absolute():
+    custom = Path("/etc/ly/custom-sessions/niri.desktop")
+    assert custom.is_file(), custom
+    text = custom.read_text(errors="ignore")
+    assert "Exec=/usr/bin/niri-session" in text, text
+
+    packaged = Path("/usr/share/wayland-sessions/niri.desktop")
+    assert packaged.is_file(), packaged
+    assert shutil.which("niri-session") == "/usr/bin/niri-session"
