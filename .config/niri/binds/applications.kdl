@@ -2,7 +2,7 @@
 // Kept separate from Niri-native window management.
 binds {
     Mod+Return { spawn "/usr/local/bin/foot"; }
-    Mod+D { spawn "wmenu-run"; }
+    Mod+D { spawn "fuzzel"; }
     Mod+C { spawn "bash" "/home/murat/.config/wayland/scripts/espanso-search"; }
     Mod+Ctrl+Return { spawn "alacritty"; }
     Mod+Y { spawn "/usr/local/bin/kitty" "/home/murat/.local/bin/yazi"; }
