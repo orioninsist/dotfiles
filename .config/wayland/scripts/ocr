@@ -1,28 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export TESSDATA_PREFIX=/usr/share/tessdata
-
 IMAGE="$HOME/.cache/wayland-ocr.png"
 TEXT="$HOME/.cache/wayland-ocr.txt"
 
-REGION=$(/usr/bin/slurp) || exit 0
+REGION="$(slurp)" || exit 0
+grim -g "$REGION" "$IMAGE"
 
-/usr/bin/grim -g "$REGION" "$IMAGE"
-
-/usr/local/bin/tesseract \
-    "$IMAGE" "$HOME/.cache/wayland-ocr" \
-    -l tur+eng \
-    --psm 6 \
-    2>/dev/null
+tesseract "$IMAGE" "$HOME/.cache/wayland-ocr" -l tur+eng --psm 6 2>/dev/null
 
 if [[ ! -s "$TEXT" ]]; then
     sleep 0.15
-    /usr/bin/notify-send "OCR" "No text detected"
+    notify-send "OCR" "No text detected"
     exit 0
 fi
 
-"$HOME/.local/bin/wl-copy" < "$TEXT"
-
+wl-copy < "$TEXT"
 sleep 0.15
-/usr/bin/notify-send "OCR copied" "$(head -c 160 "$TEXT")"
+notify-send "OCR copied" "$(head -c 160 "$TEXT")"
