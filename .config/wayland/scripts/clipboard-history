@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-selection="$(cliphist list | fuzzel --dmenu --prompt="Clipboard > ")"
+selection="$(cliphist list | fzf --prompt="Clipboard > ")" || exit 0
 
 [[ -n "$selection" ]] || exit 0
 
