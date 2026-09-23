@@ -15,9 +15,7 @@ selection="$(
             print entry
         }
     ' "$emoji_data" |
-        fuzzel \
-            --dmenu \
-            --prompt="emoji > "
+        fzf --prompt="emoji > "
 )" || exit 0
 
 [[ -n "$selection" ]] || exit 0
@@ -27,7 +25,5 @@ emoji="${selection%%$'\t'*}"
 [[ -n "$emoji" ]] || exit 0
 
 printf '%s' "$emoji" | wl-copy
-
 sleep 0.05
-
 wtype "$emoji"
