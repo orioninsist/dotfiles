@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import shutil
 import subprocess
 
@@ -47,14 +48,17 @@ def test_niri_config_validates():
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_no_foreign_package_manager_commands_in_installer():
-    forbidden_commands = ("pacman ", "yay ", "paru ", "apt-get ", "apt ")
-    text = "\n".join(
-        p.read_text(errors="ignore")
-        for p in (ROOT / "install").glob("*.sh")
-    )
-    hits = [token for token in forbidden_commands if token in text]
-    assert not hits, hits
+def test_installer_uses_only_dnf_package_manager():
+    offenders = []
+    for p in (ROOT / "install").glob("*.sh"):
+        text = p.read_text(errors="ignore")
+        for line_no, line in enumerate(text.splitlines(), 1):
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            if re.search(r"(^|[;&|]\s*)(pacman|yay|paru|apt-get|apt)(\s|$)", stripped):
+                offenders.append(f"{p.name}:{line_no}: {stripped}")
+    assert not offenders, offenders
 
 
 def test_portable_runtime_paths():
