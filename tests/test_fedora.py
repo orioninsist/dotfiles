@@ -96,3 +96,23 @@ def test_niri_smithay_runtime_packages():
 
     for cmd in ["niri", "niri-session", "Xwayland"]:
         assert shutil.which(cmd), cmd
+
+
+def test_niri_session_entrypoint_and_ly_acceptance():
+    session = Path("/usr/share/wayland-sessions/niri.desktop")
+    assert session.is_file(), session
+    text = session.read_text(errors="ignore")
+    assert "Exec=niri-session" in text, text
+
+    niri_session = shutil.which("niri-session")
+    assert niri_session, "niri-session not found in PATH"
+
+    ly_unit = Path("/usr/lib/systemd/system/ly@.service")
+    assert ly_unit.is_file(), ly_unit
+
+    enabled = subprocess.run(
+        ["systemctl", "is-enabled", "ly@tty2.service"],
+        capture_output=True,
+        text=True,
+    )
+    assert enabled.returncode == 0, enabled.stdout + enabled.stderr
