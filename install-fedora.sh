@@ -12,6 +12,7 @@ bash "$ROOT/install/10-base.sh"
 bash "$ROOT/install/20-dotfiles.sh"
 bash "$ROOT/install/30-services.sh"
 bash "$ROOT/install/35-fedora-qemu-guest.sh"
+bash "$ROOT/install/36-display-manager.sh"
 bash "$ROOT/install/40-verify.sh"
 
 echo
