@@ -53,7 +53,7 @@ def test_graphics_runtime_and_display_manager():
     assert session.is_file(), session
 
     enabled = subprocess.run(
-        ["systemctl", "is-enabled", "ly.service"],
+        ["systemctl", "is-enabled", "ly@tty2.service"],
         capture_output=True,
         text=True,
     )
