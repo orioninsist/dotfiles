@@ -6,13 +6,10 @@ PATH="$(printf '%s' "$PATH" | awk -v RS=: -v ORS=: -v local_bin="$HOME/.local/bi
 PATH="${PATH%:}"
 export PATH="$HOME/.local/bin:$PATH"
 
-# ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
-# If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# eza
 alias ls="eza --icons=auto --group-directories-first"
 alias ll="eza -lah --git --icons=auto --group-directories-first"
 alias la="eza -a --icons=auto --group-directories-first"
@@ -22,11 +19,13 @@ alias grep="grep --color=auto"
 PS1="[\u@\h \W]\$ "
 
 export _ZO_RESOLVE_SYMLINKS=1
-eval "$(zoxide init bash)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
 
-enable -p | grep -q "^enable flyline$" || enable -f /mnt/local/projects/flyline/target/release/libflyline.so flyline
+FLYLINE_SO="$HOME/.local/lib/flyline/libflyline.so"
+if [[ -f "$FLYLINE_SO" ]]; then
+    enable -p | grep -q "^enable flyline$" || enable -f "$FLYLINE_SO" flyline
+fi
 
-# Load completions synthesized by flycomp.
 FLYCOMP_COMPLETION_DIR="$HOME/.local/share/flyline/completions"
 if [[ -d "$FLYCOMP_COMPLETION_DIR" ]]; then
     for completion_file in "$FLYCOMP_COMPLETION_DIR"/*; do
@@ -35,102 +34,63 @@ if [[ -d "$FLYCOMP_COMPLETION_DIR" ]]; then
 fi
 unset completion_file FLYCOMP_COMPLETION_DIR
 
-# Automatically attach Kitty to the persistent Zellij session.
-if [ -z "$ZELLIJ" ] && [ "$TERM" = "xterm-kitty" ]; then
-    exec zellij attach --create "orioninsist"
+if command -v zellij >/dev/null 2>&1 && [ -z "$ZELLIJ" ] && [ "$TERM" = "xterm-kitty" ]; then
+    exec command zellij attach --create "orioninsist"
 fi
 
-# Starship prompt
-eval "$(starship init bash)"
-export PATH="$HOME/.bun/bin:$PATH"
+command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
+[[ -d "$HOME/.bun/bin" ]] && export PATH="$HOME/.bun/bin:$PATH"
 
-# Knowledge global terminal completion
-if [ -f ~/.local/share/bash-completion/completions/kn ]; then
-    source ~/.local/share/bash-completion/completions/kn
+if [ -f "$HOME/.local/share/bash-completion/completions/kn" ]; then
+    source "$HOME/.local/share/bash-completion/completions/kn"
 fi
 
-# Generate and immediately load a Bash completion with flycomp.
 fc() {
     if [[ $# -ne 1 ]]; then
         printf 'Usage: fc <command>\n' >&2
         return 2
     fi
-
     local command_name="$1"
     local completion_dir="$HOME/.local/share/bash-completion/completions"
     local completion_file="$completion_dir/$command_name"
-
-    if ! command -v "$command_name" >/dev/null 2>&1; then
-        printf 'Command not found: %s\n' "$command_name" >&2
-        return 127
-    fi
-
+    command -v "$command_name" >/dev/null 2>&1 || { printf 'Command not found: %s\n' "$command_name" >&2; return 127; }
+    command -v flycomp >/dev/null 2>&1 || { printf 'flycomp not installed\n' >&2; return 127; }
     mkdir -p "$completion_dir"
-
-    if ! flycomp "$command_name" > "$completion_file"; then
-        rm -f "$completion_file"
-        printf 'Failed to generate completion for: %s\n' "$command_name" >&2
-        return 1
-    fi
-
+    flycomp "$command_name" > "$completion_file" || { rm -f "$completion_file"; return 1; }
     source "$completion_file"
-
-    printf 'Completion installed and loaded: %s\n' "$command_name"
 }
 
-# fzf shell integration
-if [[ -r "$HOME/.config/fzf/fzf.bash" ]]; then
-    source "$HOME/.config/fzf/fzf.bash"
+[[ -r "$HOME/.config/fzf/fzf.bash" ]] && source "$HOME/.config/fzf/fzf.bash"
+
+if command -v atuin >/dev/null 2>&1; then
+    eval "$(atuin init bash)"
 fi
 
-# Atuin shell history
-eval "$(atuin init bash)"
-
-# Flyline integration for Atuin.
-flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
-flyline key bind Up 'editingBufferMode+cursorOnFirstLine=runBashCommand("__atuin_history --shell-up-key-binding --keymap-mode=emacs")+submitOrNewline'
-# sd shell integration
-if [[ -r "$HOME/.config/sd/sd.bash" ]]; then
-    source "$HOME/.config/sd/sd.bash"
+if command -v flyline >/dev/null 2>&1; then
+    flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
+    flyline key bind Up 'editingBufferMode+cursorOnFirstLine=runBashCommand("__atuin_history --shell-up-key-binding --keymap-mode=emacs")+submitOrNewline'
 fi
 
-# ast-grep shell completion
-if [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]]; then
-    source "$HOME/.config/ast-grep/ast-grep.bash"
-fi
+[[ -r "$HOME/.config/sd/sd.bash" ]] && source "$HOME/.config/sd/sd.bash"
+[[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]] && source "$HOME/.config/ast-grep/ast-grep.bash"
 
-# Open or attach to the single Orion Zellij session.
-zellij() {
-    /usr/local/bin/zellij attach --create orioninsist "$@"
-}
-
-# espanso-word: complete Espanso YAML match files
 _espanso_word_complete() {
     local cur
     cur="${COMP_WORDS[COMP_CWORD]}"
-
     if (( COMP_CWORD == 1 )); then
         COMPREPLY=( $(compgen -c -- "$cur") )
         return
     fi
-
     if (( COMP_CWORD == 2 )); then
-        local dir="/mnt/local/projects/dotfiles/.config/espanso/match"
+        local dir="$HOME/.config/espanso/match"
         local file
         COMPREPLY=()
-
         while IFS= read -r file; do
             file="${file##*/}"
             file="${file%.yml}"
             file="${file%.yaml}"
-
             [[ "$file" == "$cur"* ]] && COMPREPLY+=("$file")
-        done < <(
-            find "$dir" -maxdepth 1 -type f \
-                \( -name '*.yml' -o -name '*.yaml' \) \
-                -print | sort
-        )
+        done < <(find "$dir" -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) -print 2>/dev/null | sort)
     fi
 }
-
 complete -F _espanso_word_complete espanso-word
