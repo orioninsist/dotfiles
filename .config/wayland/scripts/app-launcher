@@ -31,7 +31,7 @@ selection="$(
 
 [[ -n "$selection" ]] || exit 0
 
-# fzf is the foreground process of the popup terminal.  Replacing this
-# shell with the selected command lets Foot keep the client alive instead of
-# tearing down a newly-detached GUI process together with the picker.
-exec "$selection"
+# Launch the selected PATH command in a new session and let this popup
+# shell exit immediately so the fzf/Foot window disappears.
+setsid -f "$selection" >/dev/null 2>&1 < /dev/null
+exit 0
