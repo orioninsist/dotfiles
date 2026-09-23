@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+set -u
+
+if [[ "${1-}" != "sync" || "$#" -ne 1 ]]; then
+    echo "usage: path-apps sync"
+    exit 2
+fi
+
+user_apps="$HOME/.local/share/applications"
+system_apps="/usr/share/applications"
+bin_dir="$HOME/.local/bin"
+
+mkdir -p "$bin_dir"
+
+sanitize_name() {
+    local name="$1"
+    name="${name,,}"
+    name="${name// /-}"
+    name="$(printf '%s' "$name" | sed -E 's/[^a-z0-9._+-]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')"
+    printf '%s' "$name"
+}
+
+strip_exec_field_codes() {
+    printf '%s' "$1" | sed -E 's/(^|[[:space:]])%[fFuUdDnNickvm]([[:space:]]|$)/ /g; s/[[:space:]]+/ /g; s/^ //; s/ $//'
+}
+
+count=0
+added=0
+existing=0
+skipped=0
+failed=0
+
+echo "Scanning desktop applications..."
+echo
+
+while IFS= read -r desktop; do
+    ((count++))
+
+    grep -q '^\[Desktop Entry\]' "$desktop" 2>/dev/null || { ((skipped++)); continue; }
+    [[ "$(grep -m1 '^Type=' "$desktop" 2>/dev/null | cut -d= -f2-)" == "Application" ]] || { ((skipped++)); continue; }
+    [[ "$(grep -m1 '^Hidden=' "$desktop" 2>/dev/null | cut -d= -f2-)" == "true" ]] && { ((skipped++)); continue; }
+    [[ "$(grep -m1 '^NoDisplay=' "$desktop" 2>/dev/null | cut -d= -f2-)" == "true" ]] && { ((skipped++)); continue; }
+
+    name="$(grep -m1 '^Name=' "$desktop" 2>/dev/null | cut -d= -f2-)"
+    exec_line="$(grep -m1 '^Exec=' "$desktop" 2>/dev/null | cut -d= -f2-)"
+
+    [[ -n "$name" && -n "$exec_line" ]] || { ((failed++)); continue; }
+
+    cmd_name="$(sanitize_name "$name")"
+    [[ -n "$cmd_name" ]] || { ((failed++)); continue; }
+
+    if command -v "$cmd_name" >/dev/null 2>&1; then
+        ((existing++))
+        continue
+    fi
+
+    # Chrome/Chromium PWA: preserve the app-id invocation directly.
+    if [[ "$exec_line" == *"--app-id="* ]]; then
+        app_id="$(printf '%s\n' "$exec_line" | sed -nE 's/.*--app-id=([^[:space:]]+).*/\1/p' | head -n1)"
+        profile="$(printf '%s\n' "$exec_line" | sed -nE 's/.*--profile-directory=([^[:space:]]+).*/\1/p' | head -n1)"
+        browser="$(printf '%s\n' "$exec_line" | awk '{print $1}')"
+
+        [[ -n "$app_id" && -x "$browser" ]] || { ((failed++)); continue; }
+
+        target="$bin_dir/$cmd_name"
+        {
+            echo '#!/usr/bin/env bash'
+            printf 'exec %q ' "$browser"
+            [[ -n "$profile" ]] && printf '%q ' "--profile-directory=$profile"
+            printf '%q "$@"\n' "--app-id=$app_id"
+        } > "$target"
+        chmod +x "$target"
+        echo "ADD   $cmd_name    PWA"
+        ((added++))
+        continue
+    fi
+
+    cleaned="$(strip_exec_field_codes "$exec_line")"
+    [[ -n "$cleaned" ]] || { ((failed++)); continue; }
+
+    first="$(printf '%s\n' "$cleaned" | awk '{print $1}')"
+
+    # If the real executable is already globally reachable, there is nothing
+    # useful to wrap; Super+D already sees it through PATH.
+    if command -v "${first##*/}" >/dev/null 2>&1; then
+        ((existing++))
+        continue
+    fi
+
+    if [[ "$first" != /* || ! -x "$first" ]]; then
+        ((skipped++))
+        continue
+    fi
+
+    target="$bin_dir/$cmd_name"
+    {
+        echo '#!/usr/bin/env bash'
+        printf 'exec %s "$@"\n' "$cleaned"
+    } > "$target"
+    chmod +x "$target"
+    echo "ADD   $cmd_name    desktop"
+    ((added++))
+done < <(
+    {
+        [[ -d "$user_apps" ]] && find "$user_apps" -maxdepth 1 -type f -name '*.desktop' -print
+        [[ -d "$system_apps" ]] && find "$system_apps" -maxdepth 1 -type f -name '*.desktop' -print
+    } | sort -u
+)
+
+hash -r 2>/dev/null || true
+
+echo
+echo "────────────────────────────────"
+printf 'Scanned:  %d\n' "$count"
+printf 'Existing: %d\n' "$existing"
+printf 'Added:    %d\n' "$added"
+printf 'Skipped:  %d\n' "$skipped"
+printf 'Failed:   %d\n' "$failed"
+echo
+
+if (( failed == 0 )); then
+    echo "PATH applications are up to date"
+else
+    echo "Completed with $failed unhandled desktop entries"
+fi
