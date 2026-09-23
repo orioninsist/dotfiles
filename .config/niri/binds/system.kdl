@@ -15,40 +15,40 @@ binds {
 
     Mod+F1 { spawn-sh "current=$(busctl get-property org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.UPower.PowerProfiles ActiveProfile | sed -E 's/^s \"(.*)\"$/\\1/'); case \"$current\" in performance) next=balanced ;; balanced) next=power-saver ;; *) next=performance ;; esac; busctl set-property org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.UPower.PowerProfiles ActiveProfile s \"$next\""; }
 
-    Mod+T { spawn "bash" "/home/murat/.config/wayland/scripts/bluetooth-toggle"; }
-    Mod+F4 { spawn "bash" "/home/murat/.config/wayland/scripts/audio-toggle"; }
-    Mod+F5 { spawn "bash" "/home/murat/.config/wayland/scripts/mic-toggle"; }
-    Mod+F6 { spawn "bash" "/home/murat/.config/wayland/scripts/camera-toggle"; }
+    Mod+T { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/bluetooth-toggle"; }
+    Mod+F4 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/audio-toggle"; }
+    Mod+F5 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/mic-toggle"; }
+    Mod+F6 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/camera-toggle"; }
 
-    Mod+Shift+A { spawn "bash" "/home/murat/.config/niri/scripts/display-mode" "asus"; }
-    Mod+Shift+T { spawn "bash" "/home/murat/.config/niri/scripts/display-mode" "thinkpad"; }
-    Mod+Shift+D { spawn "bash" "/home/murat/.config/niri/scripts/display-mode" "dual"; }
+    Mod+Shift+A { spawn "bash" "-lc" "$HOME/.config/niri/scripts/display-mode asus"; }
+    Mod+Shift+T { spawn "bash" "-lc" "$HOME/.config/niri/scripts/display-mode thinkpad"; }
+    Mod+Shift+D { spawn "bash" "-lc" "$HOME/.config/niri/scripts/display-mode dual"; }
 
     Print { screenshot; }
     Mod+Print { screenshot-screen; }
     Mod+Ctrl+Print { screenshot-window; }
 
-    Mod+Ctrl+1 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-record" "1"; }
-    Mod+Ctrl+2 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-record" "2"; }
-    Mod+Ctrl+3 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-record" "3"; }
-    Mod+Ctrl+4 { spawn "bash" "/home/murat/.config/wayland/scripts/camera-record"; }
-    Mod+Ctrl+5 { spawn "bash" "/home/murat/.config/wayland/scripts/screen-camera-record"; }
-    Mod+Ctrl+Shift+Print { spawn "bash" "/home/murat/.config/wayland/scripts/ocr"; }
+    Mod+Ctrl+1 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/screen-record 1"; }
+    Mod+Ctrl+2 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/screen-record 2"; }
+    Mod+Ctrl+3 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/screen-record 3"; }
+    Mod+Ctrl+4 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/camera-record"; }
+    Mod+Ctrl+5 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/screen-camera-record"; }
+    Mod+Ctrl+Shift+Print { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/ocr"; }
 
-    Mod+I { spawn "/home/murat/.local/bin/whisper-type.sh"; }
-    Mod+Shift+I { spawn "/home/murat/.local/bin/whisper-type.sh" "en"; }
-    Mod+Ctrl+P { spawn "/usr/bin/wl-color-picker"; }
+    Mod+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh"; }
+    Mod+Shift+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh en"; }
+    Mod+Ctrl+P { spawn "wl-color-picker"; }
 
-    Mod+Shift+V { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/clipboard-history"; }
-    Mod+N { spawn "bash" "/home/murat/.config/wayland/scripts/mako-toggle"; }
-    Mod+Shift+N { spawn "bash" "/home/murat/.config/wayland/scripts/wlsunset-toggle"; }
-    Mod+Ctrl+N { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/notification-history"; }
-    Mod+Ctrl+E { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/emoji-picker"; }
+    Mod+Shift+V { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/clipboard-history"; }
+    Mod+N { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/mako-toggle"; }
+    Mod+Shift+N { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/wlsunset-toggle"; }
+    Mod+Ctrl+N { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/notification-history"; }
+    Mod+Ctrl+E { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/emoji-picker"; }
 
     Mod+Shift+C { spawn-sh "niri msg action load-config-file"; }
-    Mod+F11 { spawn "/usr/local/bin/foot" "/usr/local/bin/glow" "-p" "/home/murat/.config/niri/README.md"; }
+    Mod+F11 { spawn "bash" "-lc" "foot -e glow -p $HOME/.config/niri/README.md"; }
 
-    Mod+Shift+S { spawn-sh "/usr/bin/swaylock -f -c 000000 && systemctl suspend"; }
+    Mod+Shift+S { spawn-sh "swaylock -f -c 000000 && systemctl suspend"; }
     Mod+Shift+Escape { quit; }
     Ctrl+Alt+Delete { quit; }
     Mod+Shift+P { power-off-monitors; }
