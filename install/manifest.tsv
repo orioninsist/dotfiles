@@ -1,31 +1,78 @@
-# kind	debian-package	command/purpose
-apt	git	git
-apt	curl	curl
-apt	ca-certificates	TLS certificates
-apt	build-essential	compiler toolchain
-apt	python3	python3
-apt	python3-pytest	pytest
-apt	niri	niri
-apt	pipewire	pipewire
-apt	pipewire-pulse	pipewire-pulse
-apt	wireplumber	wireplumber
-apt	pavucontrol	pavucontrol
-apt	playerctl	playerctl
-apt	brightnessctl	brightnessctl
-apt	swayidle	swayidle
-apt	swaylock	swaylock
-apt	swaybg	swaybg
-apt	mako-notifier	mako
-apt	wl-clipboard	wl-copy/wl-paste
-apt	cliphist	cliphist
-apt	fzf	fzf
-apt	ripgrep	rg
-apt	jq	jq
-apt	ffmpeg	ffmpeg
-apt	flameshot	flameshot
-apt	libnotify-bin	notify-send
-apt	bluez	bluetoothctl
-apt	upower	UPower D-Bus
-apt	xdg-desktop-portal	xdg portal
-apt	xdg-desktop-portal-gtk	GTK portal
-# unresolved entries are intentionally not guessed. audit-current-system.sh discovers them.
+# kind\tdebian-package/source\tcommand/purpose\tstatus
+apt\tgit\tgit\tconfirmed
+apt\tcurl\tcurl\tconfirmed
+apt\tca-certificates\tTLS certificates\tconfirmed
+apt\tbuild-essential\tcompiler toolchain\tconfirmed
+apt\tpython3\tpython3\tconfirmed
+apt\tpython3-pytest\tpytest\tconfirmed
+apt\tniri\tniri\tverify-on-debian13
+apt\tpipewire\tpipewire\tconfirmed
+apt\tpipewire-pulse\tpipewire-pulse\tconfirmed
+apt\twireplumber\twireplumber\tconfirmed
+apt\tpavucontrol\tpavucontrol\tconfirmed
+apt\tplayerctl\tplayerctl\tconfirmed
+apt\tbrightnessctl\tbrightnessctl\tconfirmed
+apt\tswayidle\tswayidle\tconfirmed
+apt\tswaylock\tswaylock\tconfirmed
+apt\tswaybg\tswaybg\tconfirmed
+apt\tmako-notifier\tmako\tconfirmed
+apt\twl-clipboard\twl-copy/wl-paste\tconfirmed
+apt\tcliphist\tcliphist\tverify-on-debian13
+apt\tfzf\tfzf\tconfirmed
+apt\tripgrep\trg\tconfirmed
+apt\tjq\tjq\tconfirmed
+apt\tffmpeg\tffmpeg/ffprobe\tconfirmed
+apt\tflameshot\tflameshot\tconfirmed
+apt\tlibnotify-bin\tnotify-send\tconfirmed
+apt\tbluez\tbluetoothd\tconfirmed
+apt\tupower\tUPower D-Bus\tconfirmed
+apt\txdg-desktop-portal\txdg portal core\tconfirmed
+apt\txdg-desktop-portal-gtk\tGTK file chooser portal\tconfirmed
+apt\tgrim\tgrim screenshot helper\tconfirmed
+apt\tslurp\tslurp region selector\tconfirmed
+apt\topenssh-client\tssh-agent\tconfirmed
+apt\tvim\tvim\tconfirmed
+apt\tyarnpkg\tyarn\tverify-command-name
+apt\tgnome-snapshot\tsnapshot camera app\tverify-package-name
+custom\t/usr/bin/wl-color-picker\twl-color-picker\tunowned-on-source-system
+custom\t/usr/local/bin/cliphist\tcliphist\tunowned-on-source-system
+custom\t/usr/local/bin/easyeffects\teasyeffects\tunowned-on-source-system
+custom\t/usr/local/bin/foot\tfoot\tunowned-on-source-system
+custom\t/usr/local/bin/glow\tglow\tunowned-on-source-system
+custom\t/usr/local/bin/kitty\tkitty\tunowned-on-source-system
+missing\t/usr/local/bin/makoctl\tmakoctl\treferenced-but-missing
+custom\t/usr/local/bin/mpv\tmpv\tunowned-on-source-system
+custom\t/usr/local/bin/nvim\tnvim\tunowned-on-source-system
+custom\t/usr/local/bin/swayimg\tswayimg\tunowned-on-source-system
+custom\t/usr/local/bin/tesseract\ttesseract\tunowned-on-source-system
+custom\t/usr/local/bin/wl-screenrec\twl-screenrec\tunowned-on-source-system
+custom\t/usr/local/bin/zellij\tzellij\tunowned-on-source-system
+aur\tantigravity-cli\tantigravity-cli\tforeign-on-arch
+aur\tbrave-bin\tbrave\tforeign-on-arch
+aur\tchatgpt-desktop\tchatgpt-desktop\tforeign-on-arch
+aur\tclaude-code\tclaude-code\tforeign-on-arch
+aur\tgithub-copilot-app-bin\tgithub-copilot-app\tforeign-on-arch
+aur\tgithub-copilot-cli-bin\tgithub-copilot-cli\tforeign-on-arch
+aur\tgoogle-chrome\tgoogle-chrome-stable\tforeign-on-arch
+aur\tjetbrains-toolbox\tjetbrains-toolbox\tforeign-on-arch
+aur\tmicrosoft-edge-stable-bin\tmicrosoft-edge-stable\tforeign-on-arch
+aur\tmullvad-browser-bin\tmullvad-browser\tforeign-on-arch
+aur\trealesrgan-ncnn-vulkan-bin\trealesrgan-ncnn-vulkan\tforeign-on-arch
+aur\tspotify\tspotify\tforeign-on-arch
+aur\ttor-browser-bin\ttor-browser\tforeign-on-arch
+aur\ttradingview\ttradingview\tforeign-on-arch
+aur\tvisual-studio-code-bin\tcode\tforeign-on-arch
+aur\tyandex-browser\tyandex-browser-stable\tforeign-on-arch
+source-service\trclone-gdrive.service\trclone mount/sync\tenabled-on-source-system
+source-service\trclone-gdrive-shared.service\trclone shared mount/sync\tenabled-on-source-system
+source-service\tknowledge-personal-search.service\tknowledge personal search\tenabled-on-source-system
+source-service\tknowledge-personal-watch.service\tknowledge personal watch\tenabled-on-source-system
+source-service\tknowledge-personal-web.service\tknowledge personal web\tenabled-on-source-system
+source-service\tpolkit-gnome-authentication-agent-1.service\tpolkit agent\tenabled-on-source-system
+source-service\tgnome-keyring-daemon.socket\tgnome keyring\tenabled-on-source-system
+hardware\tintel-media-driver\tIntel VA-API media driver\tverify-target-hardware
+hardware\tintel-microcode\tIntel CPU microcode\tverify-target-hardware
+hardware\tthermald\tIntel thermal management\tverify-target-hardware
+hardware\tfirmware-sof-signed\tSOF audio firmware\tverify-target-hardware
+# Remaining source-system explicit packages are inventory, not automatically required.
+# Promote a package to apt/vendor/source only when configs/services/tests prove it is part of the reproducible environment.
