@@ -20,7 +20,7 @@ if [[ "${VERSION_ID:-}" != "44" ]]; then
   exit 3
 fi
 
-for step in   install/10-base.sh   install/20-dotfiles.sh   install/30-services.sh   install/35-fedora-qemu-guest.sh   install/40-verify.sh
+for step in   install/05-preflight.sh   install/10-base.sh   install/20-dotfiles.sh   install/30-services.sh   install/35-fedora-qemu-guest.sh   install/40-verify.sh
 do
   echo "==> $step"
   bash "$ROOT/$step"
