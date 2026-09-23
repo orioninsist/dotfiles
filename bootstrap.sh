@@ -11,11 +11,16 @@ fi
 
 source /etc/os-release
 case "${ID:-}" in
-  debian) ;;
-  *) echo "bootstrap.sh currently targets Debian only (detected: ${ID:-unknown})." >&2; exit 2 ;;
+  fedora) ;;
+  *) echo "bootstrap.sh targets Fedora only (detected: ${ID:-unknown})." >&2; exit 2 ;;
 esac
 
-for step in   install/10-base.sh   install/20-dotfiles.sh   install/30-services.sh   install/40-verify.sh
+if [[ "${VERSION_ID:-}" != "44" ]]; then
+  echo "bootstrap.sh is validated for Fedora 44 only (detected: ${VERSION_ID:-unknown})." >&2
+  exit 3
+fi
+
+for step in   install/10-base.sh   install/20-dotfiles.sh   install/30-services.sh   install/35-fedora-qemu-guest.sh   install/40-verify.sh
 do
   echo "==> $step"
   bash "$ROOT/$step"
