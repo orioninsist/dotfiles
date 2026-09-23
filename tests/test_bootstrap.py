@@ -50,13 +50,15 @@ def test_niri_config_validates():
 
 def test_installer_uses_only_dnf_package_manager():
     offenders = []
-    for p in (ROOT / "install").glob("*.sh"):\n        if p.name.startswith("audit-"):\n            continue
+    for p in (ROOT / "install").glob("*.sh"):
+        if p.name.startswith("audit-"):
+            continue
         text = p.read_text(errors="ignore")
         for line_no, line in enumerate(text.splitlines(), 1):
             stripped = line.strip()
             if not stripped or stripped.startswith("#"):
                 continue
-            if re.search(r"(^|[;&|]\s*)(pacman|yay|paru|apt-get|apt)(\s|$)", stripped):
+            if re.search(r"(^|[;&|]\\s*)(pacman|yay|paru|apt-get|apt)(\\s|$)", stripped):
                 offenders.append(f"{p.name}:{line_no}: {stripped}")
     assert not offenders, offenders
 
