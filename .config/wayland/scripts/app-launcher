@@ -31,4 +31,4 @@ selection="$(
 
 [[ -n "$selection" ]] || exit 0
 
-nohup "$selection" >/dev/null 2>&1 &
+setsid -f "$selection" >/dev/null 2>&1
