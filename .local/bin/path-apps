@@ -50,6 +50,21 @@ while IFS= read -r desktop; do
     cmd_name="$(sanitize_name "$name")"
     [[ -n "$cmd_name" ]] || { ((failed++)); continue; }
 
+    # Chrome/Chromium PWA: match by app-id first, not by display name.
+    # This avoids duplicate aliases such as gemini + google-gemini.
+    if [[ "$exec_line" == *"--app-id="* ]]; then
+        app_id="$(printf '%s\n' "$exec_line" | sed -nE 's/.*--app-id=([^[:space:]]+).*/\1/p' | head -n1)"
+        [[ -n "$app_id" ]] || { ((failed++)); continue; }
+
+        existing_pwa="$(
+            grep -RIl --include='*' -- "--app-id=$app_id" "$bin_dir" 2>/dev/null | head -n1
+        )"
+        if [[ -n "$existing_pwa" ]]; then
+            ((existing++))
+            continue
+        fi
+    fi
+
     if command -v "$cmd_name" >/dev/null 2>&1; then
         ((existing++))
         continue
