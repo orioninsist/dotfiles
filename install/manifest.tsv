@@ -46,7 +46,8 @@ dnf	swayimg	swayimg	confirmed
 dnf	tesseract	tesseract OCR	verify-in-qemu
 dnf	foot	foot terminal	confirmed-fedora44
 dnf	easyeffects	easyeffects	confirmed-fedora44
-dnf	qemu-guest-agent	libvirt/QEMU guest integration	verify-in-qemu
+dnf	qemu-guest-agent	libvirt/QEMU guest integration	confirmed-fedora44
+dnf	spice-vdagent	SPICE guest desktop integration (resize/input/clipboard)	confirmed-fedora44
 dnf	acpid	ACPI event handling in VM	verify-in-qemu
 dnf	cliphist	clipboard history	confirmed-fedora44
 dnf	glow	Markdown pager	confirmed-fedora44
