@@ -10,6 +10,17 @@ dnf	python3-pytest	pytest	confirmed
 dnf	niri	niri Wayland compositor	confirmed-fedora44
 dnf	mesa-dri-drivers	Mesa DRI drivers including virtio_gpu	confirmed-fedora44
 dnf	mesa-libgbm	Mesa GBM runtime	confirmed-fedora44
+dnf	xwayland-satellite	Integrated Xwayland support required by Fedora niri package	confirmed-fedora44
+dnf	mesa-libEGL	EGL runtime required by niri	confirmed-fedora44
+dnf	libwayland-server	Wayland server runtime loaded by niri	confirmed-fedora44
+dnf	libseat	Seat/session backend used by Smithay/niri	confirmed-fedora44
+dnf	libinput	Input backend used by Smithay/niri	confirmed-fedora44
+dnf	libxkbcommon	Keyboard handling runtime used by Smithay/niri	confirmed-fedora44
+dnf	libdisplay-info	Display information runtime used by niri/Smithay	confirmed-fedora44
+dnf	pixman	Software rendering/compositing runtime used by Smithay	confirmed-fedora44
+dnf	libglvnd-egl	EGL dispatch runtime	confirmed-fedora44
+dnf	wayland	Wayland runtime utilities/libraries	confirmed-fedora44
+dnf	xorg-x11-server-Xwayland	Xwayland server runtime	confirmed-fedora44
 dnf	ly	LY display manager	confirmed-fedora44
 dnf	pipewire	pipewire	confirmed
 dnf	pipewire-pulseaudio	PipeWire PulseAudio compatibility	verify-in-qemu
