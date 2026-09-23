@@ -42,11 +42,11 @@ dnf	neovim	nvim	confirmed
 dnf	swayimg	swayimg	confirmed
 dnf	tesseract	tesseract OCR	verify-in-qemu
 dnf	foot	foot terminal	confirmed-fedora44
-dnf	easyeffects	easyeffects	verify-in-qemu
+dnf	easyeffects	easyeffects	confirmed-fedora44
 dnf	qemu-guest-agent	libvirt/QEMU guest integration	verify-in-qemu
 dnf	acpid	ACPI event handling in VM	verify-in-qemu
-source	cliphist	clipboard history	resolve-fedora-source
-source	glow	Markdown pager	resolve-fedora-source
+dnf	cliphist	clipboard history	confirmed-fedora44
+dnf	glow	Markdown pager	confirmed-fedora44
 source	wl-screenrec	Wayland recorder	resolve-fedora-source
 source	zellij	terminal workspace	resolve-fedora-source
 source	wl-color-picker	color picker	resolve-fedora-source
