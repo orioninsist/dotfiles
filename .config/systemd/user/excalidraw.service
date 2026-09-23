@@ -1,14 +1,14 @@
 [Unit]
 Description=Excalidraw Local Server
 After=network.target
+ConditionPathIsDirectory=%h/Projects/excalidraw
 
 [Service]
-WorkingDirectory=/mnt/local/projects/excalidraw
-ExecStart=/usr/bin/yarn workspace excalidraw-app start --host 127.0.0.1 --port 3001
+WorkingDirectory=%h/Projects/excalidraw
+ExecStart=/usr/bin/env yarn workspace excalidraw-app start --host 127.0.0.1 --port 3001
 Restart=always
 RestartSec=5
 Environment=NODE_ENV=development
-Environment=PATH=/home/murat/.nvm/versions/node/v24.19.0/bin:/usr/local/bin:/usr/bin:/bin
 
 [Install]
 WantedBy=default.target
