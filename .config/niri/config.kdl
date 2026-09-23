@@ -13,12 +13,9 @@ input {
         natural-scroll
     }
 
-    // Match Sway's keyboard-focused behavior.
-    // focus-follows-mouse intentionally remains disabled.
     warp-mouse-to-focus
 }
 
-// Physical desk layout: ThinkPad on the left, ASUS on the right.
 output "eDP-1" {
     scale 1
     transform "normal"
@@ -43,9 +40,7 @@ layout {
 
     default-column-width { proportion 0.5; }
 
-    focus-ring {
-        off
-    }
+    focus-ring { off }
 
     border {
         width 3
@@ -55,9 +50,6 @@ layout {
     }
 }
 
-// Persistent named workspaces.
-// 1-5 prefer the external ASUS display.
-// 6-10 prefer the ThinkPad display.
 workspace "1" { open-on-output "HDMI-A-1"; }
 workspace "2" { open-on-output "HDMI-A-1"; }
 workspace "3" { open-on-output "HDMI-A-1"; }
@@ -70,69 +62,53 @@ workspace "8"  { open-on-output "eDP-1"; }
 workspace "9"  { open-on-output "eDP-1"; }
 workspace "10" { open-on-output "eDP-1"; }
 
-// Session applications.
-spawn-at-startup "/usr/bin/mako"
+spawn-at-startup "mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
-spawn-at-startup "bash" "/home/murat/.config/niri/scripts/niri-window-place-once"
+spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/niri-window-place-once"
 
-// Wallpaper. swaybg is compositor-independent.
-spawn-at-startup "swaybg" "-i" "/home/murat/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg" "-m" "fill"
+spawn-at-startup "bash" "-lc" "test -f \"$HOME/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg\" && exec swaybg -i \"$HOME/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg\" -m fill"
 
-hotkey-overlay {
-    skip-at-startup
-}
+hotkey-overlay { skip-at-startup }
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
-
 prefer-no-csd
 
-// Stable application-to-workspace routing for muscle memory.
-// These rules apply only when a window opens; manual moves remain untouched.
-
-// TAG 1: browsers, AI/research web apps, Drive and Files.
 window-rule {
     match app-id=r#"^(google-chrome|brave-browser|microsoft-edge|microsoft-edge-stable|yandex-browser|yandex-browser-stable|firefox|firefoxdeveloperedition|org\.mozilla\.firefox|org\.mozilla\.firefoxdeveloperedition|Tor Browser|tor-browser|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default|chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default|chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default|chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default|chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default|chrome-aghbiahbpaijignceidepookljebhfak-Default|org\.gnome\.Nautilus)$"#
     open-on-workspace "1"
 }
 
-// TAG 2: terminals.
 window-rule {
     match app-id=r#"^(foot|Alacritty|kitty)$"#
     open-on-workspace "2"
 }
 
-// TAG 3: development and AI coding tools.
 window-rule {
     match app-id=r#"^(code|code-url-handler|Chatgpt|github|antigravity-ide|antigravity|zed|dev\.zed\.Zed|jetbrains-.*)$"#
     open-on-workspace "3"
 }
 
-// TAG 4: work / office.
 window-rule {
     match app-id=r#"^chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default$"#
     open-on-workspace "4"
 }
 
-// TAG 6: media.
 window-rule {
     match app-id=r#"^(chrome-agimnkijcaahngcdmfeangaknmldooml-Default|chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default|Mullvad Browser|Spotify)$"#
     open-on-workspace "6"
 }
 
-// TAG 7: Knowledge.
 window-rule {
     match app-id=r#"^chrome-idkejijbjcgdnloelolopdemkebfadai-Default$"#
     open-on-workspace "7"
 }
 
-// Firefox Picture-in-Picture stays floating wherever Firefox is routed.
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
 }
 
-// fzf desktop pickers use a small floating terminal instead of a normal tiled terminal.
 window-rule {
     match app-id=r#"^fzf-popup$"#
     open-floating true
@@ -140,8 +116,6 @@ window-rule {
     default-window-height { fixed 360; }
 }
 
-
-// Modular bindings. Niri 26.04+ merges included binds sections.
 include "binds/window-management.kdl"
 include "binds/workspaces.kdl"
 include "binds/system.kdl"
