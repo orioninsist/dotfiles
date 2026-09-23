@@ -174,8 +174,8 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 | Shortcut | Action |
 |---|---|
 | `Super+Enter` | Foot terminal |
-| `Super+D` | Fuzzel application launcher |
-| `Super+C` | Search and expand Espanso matches with Fuzzel |
+| `Super+D` | fzf PATH application launcher |
+| `Super+C` | Search and expand Espanso matches with fzf |
 | `Super+Ctrl+Enter` | Alacritty |
 | `Super+Y` | Kitty running Yazi |
 | `Super+Ctrl+B` | Google Chrome |
