@@ -5,8 +5,8 @@ set -euo pipefail
 selection="$(
     makoctl history -j |
         jq -r '.[] | "\(.id)\t[\(.app_name)] \(.summary) — \(.body | gsub("\n"; " "))"' |
-        fuzzel --dmenu --prompt="Notifications > " --width=70 --lines=10
-)"
+        fzf --prompt="Notifications > "
+)" || exit 0
 
 [[ -n "$selection" ]] || exit 0
 
