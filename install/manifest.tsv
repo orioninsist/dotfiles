@@ -8,6 +8,9 @@ dnf	make	build tool	confirmed
 dnf	python3	python3	confirmed
 dnf	python3-pytest	pytest	confirmed
 dnf	niri	niri Wayland compositor	confirmed-fedora44
+dnf	mesa-dri-drivers	Mesa DRI drivers including virtio_gpu	confirmed-fedora44
+dnf	mesa-libgbm	Mesa GBM runtime	confirmed-fedora44
+dnf	ly	LY display manager	confirmed-fedora44
 dnf	pipewire	pipewire	confirmed
 dnf	pipewire-pulseaudio	PipeWire PulseAudio compatibility	verify-in-qemu
 dnf	wireplumber	wireplumber	confirmed
