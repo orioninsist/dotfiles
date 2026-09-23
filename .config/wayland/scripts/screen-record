@@ -1,55 +1,35 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
-
-export LD_LIBRARY_PATH=/usr/lib
-
 
 RECORD_DIR="$HOME/.record"
 PID_FILE="$HOME/.cache/screen-record.pid"
-
-WL_SCREENREC="/usr/local/bin/wl-screenrec"
 RECORDING_LOCK="$HOME/.config/wayland/scripts/recording-lock"
-
-AUDIO_DEVICE="alsa_input.pci-0000_00_1f.3.analog-stereo"
 
 mkdir -p "$RECORD_DIR" "$HOME/.cache"
 
-# Toggle: stop the currently active screen recording.
+command -v wl-screenrec >/dev/null 2>&1 || {
+  notify-send "Screen Recording" "wl-screenrec is not installed"
+  exit 1
+}
+
 if [[ -f "$PID_FILE" ]]; then
     PID="$(cat "$PID_FILE")"
-
     if kill -0 "$PID" 2>/dev/null; then
         kill -INT "$PID"
         notify-send "Screen Recording" "Stopping recording"
         exit 0
     fi
-
     rm -f "$PID_FILE"
 fi
 
 MODE="${1:-}"
-
 case "$MODE" in
-    1)
-        OUTPUT="eDP-1"
-        PREFIX="thinkpad"
-        ;;
-    2)
-        OUTPUT="HDMI-A-1"
-        PREFIX="asus"
-        ;;
-    3)
-        OUTPUT=""
-        PREFIX="area"
-        ;;
-    *)
-        notify-send "Screen Recording" "Invalid recording mode"
-        exit 1
-        ;;
+    1) OUTPUT="${SCREEN_RECORD_OUTPUT_1:-eDP-1}"; PREFIX="screen1" ;;
+    2) OUTPUT="${SCREEN_RECORD_OUTPUT_2:-HDMI-A-1}"; PREFIX="screen2" ;;
+    3) OUTPUT=""; PREFIX="area" ;;
+    *) notify-send "Screen Recording" "Invalid recording mode"; exit 1 ;;
 esac
 
-# Prevent screen, camera and combined recording sessions from overlapping.
 "$RECORDING_LOCK" acquire screen || exit 1
 trap '"$RECORDING_LOCK" release screen' EXIT
 
@@ -60,14 +40,14 @@ fi
 TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
 OUTPUT_FILE="$RECORD_DIR/${PREFIX}_${TIMESTAMP}.mp4"
 
-ARGS=(
-    --filename "$OUTPUT_FILE"
-    --audio
-    --audio-device "$AUDIO_DEVICE"
-    --audio-backend pulse
-    --codec avc
-    --low-power off
-)
+ARGS=(--filename "$OUTPUT_FILE" --codec avc --low-power off)
+
+if pactl info >/dev/null 2>&1; then
+    DEFAULT_SOURCE="$(pactl get-default-source 2>/dev/null || true)"
+    if [[ -n "$DEFAULT_SOURCE" ]]; then
+        ARGS+=(--audio --audio-device "$DEFAULT_SOURCE" --audio-backend pulse)
+    fi
+fi
 
 if [[ "$MODE" == "3" ]]; then
     ARGS+=(--geometry "$GEOMETRY")
@@ -75,15 +55,10 @@ else
     ARGS+=(--output "$OUTPUT")
 fi
 
-"$WL_SCREENREC" "${ARGS[@]}" &
+wl-screenrec "${ARGS[@]}" &
 PID=$!
-
 echo "$PID" > "$PID_FILE"
-
 notify-send "Screen Recording" "Recording started"
-
 wait "$PID" || true
-
 rm -f "$PID_FILE"
-
 notify-send "Screen Recording" "Recording finished: $OUTPUT_FILE"
