@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+declare -A seen=()
+entries=()
+
+for dir in "$HOME/.local/share/applications" /usr/local/share/applications /usr/share/applications; do
+    [[ -d "$dir" ]] || continue
+
+    while IFS= read -r -d '' desktop; do
+        id="${desktop##*/}"
+        [[ -n "${seen[$id]+x}" ]] && continue
+        seen["$id"]=1
+
+        grep -qx 'Hidden=true' "$desktop" && continue
+        grep -qx 'NoDisplay=true' "$desktop" && continue
+
+        name="$(sed -n 's/^Name=//p' "$desktop" | head -n1)"
+        [[ -n "$name" ]] || continue
+
+        entries+=("$name"$'\t'"$desktop")
+    done < <(find "$dir" -maxdepth 1 -type f -name '*.desktop' -print0 | sort -z)
+done
+
+(("${#entries[@]}" > 0)) || exit 0
+
+selection="$(
+    printf '%s\n' "${entries[@]}" |
+        sort -f |
+        fzf --delimiter=$'\t' --with-nth=1 --prompt='Apps > '
+)" || exit 0
+
+[[ -n "$selection" ]] || exit 0
+
+desktop="${selection#*$'\t'}"
+[[ -f "$desktop" ]] || exit 1
+
+nohup gio launch "$desktop" >/dev/null 2>&1 &
