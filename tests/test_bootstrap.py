@@ -23,7 +23,7 @@ def test_core_commands_after_install():
     required = [
         "git", "python3", "niri", "wpctl", "wl-copy", "wl-paste",
         "fzf", "rg", "foot", "mako", "makoctl", "grim", "slurp",
-        "tesseract", "notify-send",
+        "tesseract", "notify-send", "nautilus",
     ]
     missing = [x for x in required if shutil.which(x) is None]
     assert not missing, missing
@@ -79,3 +79,10 @@ def test_portable_runtime_paths():
         if found:
             failures[str(path.relative_to(ROOT))] = found
     assert not failures, failures
+
+
+def test_niri_portal_backend():
+    portal = (ROOT / ".config/xdg-desktop-portal/portals.conf").read_text()
+    assert "org.freedesktop.impl.portal.ScreenCast=gnome" in portal
+    assert "org.freedesktop.impl.portal.Screenshot=gnome" in portal
+    assert "xdg-desktop-portal-wlr" not in portal
