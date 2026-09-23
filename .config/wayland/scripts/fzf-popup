@@ -4,6 +4,10 @@ set -euo pipefail
 
 (($# > 0)) || exit 2
 
+# Desktop pickers get their own compact fzf layout without changing
+# the normal terminal fzf configuration.
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} --height=~100% --min-height=8"
+
 exec /usr/local/bin/foot \
     --app-id=fzf-popup \
     --title=fzf \
