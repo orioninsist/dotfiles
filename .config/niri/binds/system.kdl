@@ -39,11 +39,11 @@ binds {
     Mod+Shift+I { spawn "/home/murat/.local/bin/whisper-type.sh" "en"; }
     Mod+Ctrl+P { spawn "/usr/bin/wl-color-picker"; }
 
-    Mod+Shift+V { spawn "bash" "/home/murat/.config/wayland/scripts/clipboard-history"; }
+    Mod+Shift+V { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/clipboard-history"; }
     Mod+N { spawn "bash" "/home/murat/.config/wayland/scripts/mako-toggle"; }
     Mod+Shift+N { spawn "bash" "/home/murat/.config/wayland/scripts/wlsunset-toggle"; }
-    Mod+Ctrl+N { spawn "bash" "/home/murat/.config/wayland/scripts/notification-history"; }
-    Mod+Ctrl+E { spawn "bash" "/home/murat/.config/wayland/scripts/emoji-picker"; }
+    Mod+Ctrl+N { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/notification-history"; }
+    Mod+Ctrl+E { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/emoji-picker"; }
 
     Mod+Shift+C { spawn-sh "niri msg action load-config-file"; }
     Mod+F11 { spawn "/usr/local/bin/foot" "/usr/local/bin/glow" "-p" "/home/murat/.config/niri/README.md"; }
