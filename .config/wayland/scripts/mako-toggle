@@ -1,23 +1,12 @@
 #!/usr/bin/env bash
-
-exec > /tmp/mako-toggle.log 2>&1
-
-echo "START $(date)"
-
-export XDG_RUNTIME_DIR="/run/user/$(id -u)"
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+set -euo pipefail
 
 STATE_FILE="$HOME/.cache/mako-popup-state"
 
-/usr/local/bin/makoctl mode
-
-if /usr/local/bin/makoctl mode | grep -q "do-not-disturb"; then
-    /usr/local/bin/makoctl mode -r do-not-disturb
+if makoctl mode | grep -q "do-not-disturb"; then
+    makoctl mode -r do-not-disturb
     echo enabled > "$STATE_FILE"
 else
-    /usr/local/bin/makoctl mode -a do-not-disturb
+    makoctl mode -a do-not-disturb
     echo disabled > "$STATE_FILE"
 fi
-
-
-echo "END $(date)"
