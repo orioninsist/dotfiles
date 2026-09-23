@@ -128,6 +128,52 @@ Expected result:
 0  0
 ```
 
+
+## PATH application sync
+
+This setup uses a PATH-only application launcher:
+
+```text
+Super+D -> fzf -> PATH -> command
+```
+
+Desktop entries are not used directly by the launcher. To expose newly installed GUI applications and Chrome PWAs through the same PATH-only flow, run:
+
+```bash
+path-apps sync
+```
+
+The helper scans:
+
+- `~/.local/share/applications/*.desktop`
+- `/usr/share/applications/*.desktop`
+
+Behavior:
+
+- If the application is already reachable through `$PATH`, it is left unchanged.
+- If a Chrome/Chromium PWA is not yet represented in PATH, the helper creates a direct wrapper in `~/.local/bin` using its `--app-id`.
+- If a normal desktop application is not reachable through PATH but has an executable absolute path, the helper creates a wrapper in `~/.local/bin`.
+- Existing `.desktop` files, icons, and PWA registrations are not removed.
+- PWA duplicates are avoided by matching the real Chrome `--app-id`, not the display name.
+
+The intended workflow after installing a new GUI application or PWA is simply:
+
+```text
+install application/PWA
+        ↓
+path-apps sync
+        ↓
+Super+D
+        ↓
+select the PATH command with fzf
+```
+
+The helper itself is tracked in:
+
+```text
+.local/bin/path-apps
+```
+
 ## Espanso
 
 Espanso is the permanent local text-expansion layer for this setup. It is intentionally file-based and local-first: YAML files are edited locally, become active immediately, and are committed to Git only after verification.
