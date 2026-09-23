@@ -65,3 +65,34 @@ def test_graphics_runtime_and_display_manager():
         text=True,
     )
     assert default_target.stdout.strip() == "graphical.target", default_target.stdout + default_target.stderr
+
+
+def test_niri_smithay_runtime_packages():
+    packages = [
+        "niri",
+        "mesa-dri-drivers",
+        "mesa-libgbm",
+        "mesa-libEGL",
+        "libwayland-server",
+        "libseat",
+        "libinput",
+        "libxkbcommon",
+        "libdisplay-info",
+        "pixman",
+        "libglvnd-egl",
+        "wayland",
+        "xwayland-satellite",
+        "xorg-x11-server-Xwayland",
+        "xdg-desktop-portal-gtk",
+        "xdg-desktop-portal-gnome",
+        "gnome-keyring",
+    ]
+    rpm = subprocess.run(
+        ["rpm", "-q", *packages],
+        capture_output=True,
+        text=True,
+    )
+    assert rpm.returncode == 0, rpm.stdout + rpm.stderr
+
+    for cmd in ["niri", "niri-session", "Xwayland"]:
+        assert shutil.which(cmd), cmd
