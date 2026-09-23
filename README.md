@@ -2,7 +2,7 @@
 
 Personal Arch Linux / Niri configuration repository.
 
-The active configuration is managed from `/mnt/local/projects/dotfiles` and linked into `$HOME` with symbolic links. This keeps the Git repository and the live configuration in sync.
+The active configuration is managed from `/mnt/local/projects/dotfiles`. Most managed paths are linked into `$HOME`; Wayland helper scripts under `~/.config/wayland/scripts/` are deployed from the repository into the live config.
 
 ## Managed configuration
 
@@ -17,7 +17,6 @@ Desktop and applications:
 - `atuin`
 - `eza`
 - `foot`
-- `fuzzel`
 - `gtk-3.0`
 - `gtk-4.0`
 - `mako`
@@ -46,13 +45,12 @@ Examples:
 ~/.config/foot   -> /mnt/local/projects/dotfiles/.config/foot
 ~/.config/nvim   -> /mnt/local/projects/dotfiles/.config/nvim
 ~/.config/niri   -> /mnt/local/projects/dotfiles/.config/niri
-~/.config/wayland -> /mnt/local/projects/dotfiles/.config/wayland
 ~/.config/yazi   -> /mnt/local/projects/dotfiles/.config/yazi
 ```
 
 Some single configuration files, such as GTK and xdg-desktop-portal settings, are linked individually.
 
-Because these are symbolic links, changes made in the repository become the active configuration immediately.
+Because most managed paths are symbolic links, repository changes become active immediately. Wayland helper scripts are the exception and must be copied/deployed into `~/.config/wayland/scripts/` after changes.
 
 ## Flyline
 
@@ -163,18 +161,18 @@ Espanso reloads the configuration
         ↓
 Super+C
         ↓
-Fuzzel: YAML match files + active trigger count
+fzf: YAML match files + active trigger count
         ↓
 select a match file
         ↓
-Fuzzel: triggers from that file
+fzf: triggers from that file
         ↓
 select a trigger
         ↓
 expand the selected match into the active application
 ```
 
-The Espanso picker is intentionally hierarchical. The first Fuzzel view treats each custom YAML match file as a category and shows its active trigger count. The second view contains only the active triggers from the selected file. Both views enable Fuzzel's match counter, so filtering shows the current match count against the total. Empty match files are omitted. This keeps the picker usable as the number of topic files and triggers grows without adding a separate database or index.
+The Espanso picker is intentionally hierarchical. The first fzf view treats each custom YAML match file as a category and shows its active trigger count. The second view contains only the active triggers from the selected file. Filtering is handled directly by fzf. Empty match files are omitted. This keeps the picker usable as the number of topic files and triggers grows without adding a separate database or index.
 
 The repository is the versioned source, while the local checkout is the live runtime source. GitHub is used for backup, history, and rollback rather than as a runtime dependency.
 
