@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MATCH_DIR="/mnt/local/projects/dotfiles/.config/espanso/match"
+MATCH_DIR="$HOME/.config/espanso/match"
 
 editor="${1:-}"
 name="${2:-}"
@@ -21,6 +21,7 @@ case "$name" in
     *) name="${name}.yml" ;;
 esac
 
+mkdir -p "$MATCH_DIR"
 file="$MATCH_DIR/$name"
 
 if [[ ! -e "$file" ]]; then
