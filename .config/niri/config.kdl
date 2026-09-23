@@ -38,7 +38,9 @@ layout {
         proportion 0.66667
     }
 
-    default-column-width { proportion 0.5; }
+    default-column-width {
+        proportion 0.5
+    }
 
     focus-ring {
         off
@@ -52,17 +54,37 @@ layout {
     }
 }
 
-workspace "1" { open-on-output "HDMI-A-1"; }
-workspace "2" { open-on-output "HDMI-A-1"; }
-workspace "3" { open-on-output "HDMI-A-1"; }
-workspace "4" { open-on-output "HDMI-A-1"; }
-workspace "5" { open-on-output "HDMI-A-1"; }
+workspace "1" {
+    open-on-output "HDMI-A-1"
+}
+workspace "2" {
+    open-on-output "HDMI-A-1"
+}
+workspace "3" {
+    open-on-output "HDMI-A-1"
+}
+workspace "4" {
+    open-on-output "HDMI-A-1"
+}
+workspace "5" {
+    open-on-output "HDMI-A-1"
+}
 
-workspace "6"  { open-on-output "eDP-1"; }
-workspace "7"  { open-on-output "eDP-1"; }
-workspace "8"  { open-on-output "eDP-1"; }
-workspace "9"  { open-on-output "eDP-1"; }
-workspace "10" { open-on-output "eDP-1"; }
+workspace "6" {
+    open-on-output "eDP-1"
+}
+workspace "7" {
+    open-on-output "eDP-1"
+}
+workspace "8" {
+    open-on-output "eDP-1"
+}
+workspace "9" {
+    open-on-output "eDP-1"
+}
+workspace "10" {
+    open-on-output "eDP-1"
+}
 
 spawn-at-startup "mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
@@ -70,7 +92,9 @@ spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font
 spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/niri-window-place-once"
 spawn-at-startup "bash" "-lc" "test -f \"$HOME/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg\" && exec swaybg -i \"$HOME/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg\" -m fill"
 
-hotkey-overlay { skip-at-startup }
+hotkey-overlay {
+    skip-at-startup
+}
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
@@ -113,8 +137,12 @@ window-rule {
 window-rule {
     match app-id=r#"^fzf-popup$"#
     open-floating true
-    default-column-width { fixed 680; }
-    default-window-height { fixed 360; }
+    default-column-width {
+        fixed 680
+    }
+    default-window-height {
+        fixed 360
+    }
 }
 
 include "binds/window-management.kdl"
