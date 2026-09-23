@@ -1,14 +1,13 @@
 // Personal application launchers.
-// Kept separate from Niri-native window management.
 binds {
-    Mod+Return { spawn "/usr/local/bin/foot"; }
-    Mod+D { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/app-launcher"; }
-    Mod+C { spawn "bash" "/home/murat/.config/wayland/scripts/fzf-popup" "/home/murat/.config/wayland/scripts/espanso-search"; }
+    Mod+Return { spawn "foot"; }
+    Mod+D { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/app-launcher"; }
+    Mod+C { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/espanso-search"; }
     Mod+Ctrl+Return { spawn "alacritty"; }
-    Mod+Y { spawn "/usr/local/bin/kitty" "/home/murat/.local/bin/yazi"; }
+    Mod+Y { spawn "bash" "-lc" "kitty $HOME/.local/bin/yazi"; }
 
     Mod+Ctrl+B { spawn "google-chrome-stable"; }
-    Mod+Ctrl+Shift+B { spawn "brave"; }
+    Mod+Ctrl+Shift+B { spawn "brave-browser"; }
     Mod+Ctrl+M { spawn "microsoft-edge-stable"; }
     Mod+Ctrl+Shift+Y { spawn "yandex-browser-stable"; }
     Mod+Ctrl+F { spawn "firefox"; }
@@ -17,7 +16,7 @@ binds {
     Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
     Mod+Ctrl+Y { spawn "nautilus" "--new-window"; }
 
-    Mod+F8 { spawn-sh "niri msg action focus-workspace 7; /opt/google/chrome/google-chrome --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai"; }
-    Mod+F11 { spawn "/usr/bin/snapshot"; }
-    Mod+P { spawn "/usr/bin/flameshot" "gui"; }
+    Mod+F8 { spawn-sh "niri msg action focus-workspace 7; google-chrome-stable --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai"; }
+    Mod+F11 { spawn "snapshot"; }
+    Mod+P { spawn "flameshot" "gui"; }
 }
