@@ -136,8 +136,8 @@ window-rule {
 window-rule {
     match app-id=r#"^fzf-popup$"#
     open-floating true
-    default-column-width { fixed 760; }
-    default-window-height { fixed 420; }
+    default-column-width { fixed 680; }
+    default-window-height { fixed 360; }
 }
 
 
