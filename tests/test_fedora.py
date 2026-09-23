@@ -36,3 +36,32 @@ def test_qemu_guest_agent_when_virtualized():
         text=True,
     )
     assert state.returncode == 0, state.stdout + state.stderr
+
+
+def test_graphics_runtime_and_display_manager():
+    for cmd in ["niri", "ly"]:
+        assert shutil.which(cmd), cmd
+
+    rpm = subprocess.run(
+        ["rpm", "-q", "mesa-dri-drivers", "mesa-libgbm"],
+        capture_output=True,
+        text=True,
+    )
+    assert rpm.returncode == 0, rpm.stdout + rpm.stderr
+
+    session = Path("/usr/share/wayland-sessions/niri.desktop")
+    assert session.is_file(), session
+
+    enabled = subprocess.run(
+        ["systemctl", "is-enabled", "ly.service"],
+        capture_output=True,
+        text=True,
+    )
+    assert enabled.returncode == 0, enabled.stdout + enabled.stderr
+
+    default_target = subprocess.run(
+        ["systemctl", "get-default"],
+        capture_output=True,
+        text=True,
+    )
+    assert default_target.stdout.strip() == "graphical.target", default_target.stdout + default_target.stderr
