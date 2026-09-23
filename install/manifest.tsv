@@ -7,7 +7,7 @@ dnf	gcc-c++	C++ compiler	confirmed
 dnf	make	build tool	confirmed
 dnf	python3	python3	confirmed
 dnf	python3-pytest	pytest	confirmed
-dnf	niri	niri Wayland compositor	verify-in-qemu
+dnf	niri	niri Wayland compositor	confirmed-fedora44
 dnf	pipewire	pipewire	confirmed
 dnf	pipewire-pulseaudio	PipeWire PulseAudio compatibility	verify-in-qemu
 dnf	wireplumber	wireplumber	confirmed
@@ -17,7 +17,7 @@ dnf	brightnessctl	brightnessctl	confirmed
 dnf	swayidle	swayidle	confirmed
 dnf	swaylock	swaylock	confirmed
 dnf	swaybg	swaybg	confirmed
-dnf	mako	mako	confirmed
+dnf	mako	mako/makoctl	confirmed-fedora44
 dnf	wl-clipboard	wl-copy/wl-paste	confirmed
 dnf	fzf	fzf	confirmed
 dnf	ripgrep	rg	confirmed
@@ -29,8 +29,10 @@ dnf	bluez	Bluetooth stack	confirmed
 dnf	bluez-tools	Bluetooth CLI helpers	verify-in-qemu
 dnf	upower	UPower D-Bus	confirmed
 dnf	xdg-desktop-portal	xdg portal core	confirmed
-dnf	xdg-desktop-portal-gtk	GTK portal	confirmed
-dnf	xdg-desktop-portal-wlr	Wayland screen cast/screenshot portal	verify-with-niri
+dnf	xdg-desktop-portal-gtk	GTK portal fallback and file chooser	confirmed
+dnf	xdg-desktop-portal-gnome	Niri screencast portal	confirmed-fedora44
+dnf	gnome-keyring	Secret portal/keyring support	confirmed
+dnf	nautilus	GNOME file chooser integration	confirmed
 dnf	grim	grim screenshot helper	confirmed
 dnf	slurp	slurp region selector	confirmed
 dnf	openssh-clients	ssh-agent	confirmed
@@ -39,17 +41,16 @@ dnf	kitty	kitty terminal	confirmed
 dnf	neovim	nvim	confirmed
 dnf	swayimg	swayimg	confirmed
 dnf	tesseract	tesseract OCR	verify-in-qemu
-dnf	foot	foot terminal	verify-in-qemu
+dnf	foot	foot terminal	confirmed-fedora44
 dnf	easyeffects	easyeffects	verify-in-qemu
-dnf	qemu-guest-agent	clean libvirt/QEMU guest shutdown support	verify-in-qemu
+dnf	qemu-guest-agent	libvirt/QEMU guest integration	verify-in-qemu
 dnf	acpid	ACPI event handling in VM	verify-in-qemu
 source	cliphist	clipboard history	resolve-fedora-source
 source	glow	Markdown pager	resolve-fedora-source
 source	wl-screenrec	Wayland recorder	resolve-fedora-source
 source	zellij	terminal workspace	resolve-fedora-source
 source	wl-color-picker	color picker	resolve-fedora-source
-missing	makoctl	mako control command	referenced-but-missing-on-source
-vendor	brave	Brave browser	resolve-vendor-repo
+vendor	brave-browser	Brave browser	resolve-vendor-repo
 vendor	google-chrome-stable	Google Chrome	resolve-vendor-repo
 vendor	microsoft-edge-stable	Microsoft Edge	resolve-vendor-repo
 vendor	mullvad-browser	Mullvad Browser	resolve-upstream
@@ -62,7 +63,7 @@ source-service	rclone-gdrive-shared.service	rclone shared mount/sync	enabled-on-
 source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system
 source-service	knowledge-personal-watch.service	knowledge personal watch	enabled-on-source-system
 source-service	knowledge-personal-web.service	knowledge personal web	enabled-on-source-system
-source-service	polkit-gnome-authentication-agent-1.service	polkit agent	enabled-on-source-system
+source-service	polkit-agent	polkit authentication agent	resolve-fedora-service
 source-service	gnome-keyring-daemon.socket	gnome keyring	enabled-on-source-system
 hardware	intel-media-driver	Intel VA-API media driver	physical-machine-only
 hardware	microcode_ctl	CPU microcode	physical-machine-only
