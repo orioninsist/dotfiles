@@ -1,78 +1,70 @@
-# kind\tdebian-package/source\tcommand/purpose\tstatus
-apt\tgit\tgit\tconfirmed
-apt\tcurl\tcurl\tconfirmed
-apt\tca-certificates\tTLS certificates\tconfirmed
-apt\tbuild-essential\tcompiler toolchain\tconfirmed
-apt\tpython3\tpython3\tconfirmed
-apt\tpython3-pytest\tpytest\tconfirmed
-apt\tniri\tniri\tverify-on-debian13
-apt\tpipewire\tpipewire\tconfirmed
-apt\tpipewire-pulse\tpipewire-pulse\tconfirmed
-apt\twireplumber\twireplumber\tconfirmed
-apt\tpavucontrol\tpavucontrol\tconfirmed
-apt\tplayerctl\tplayerctl\tconfirmed
-apt\tbrightnessctl\tbrightnessctl\tconfirmed
-apt\tswayidle\tswayidle\tconfirmed
-apt\tswaylock\tswaylock\tconfirmed
-apt\tswaybg\tswaybg\tconfirmed
-apt\tmako-notifier\tmako\tconfirmed
-apt\twl-clipboard\twl-copy/wl-paste\tconfirmed
-apt\tcliphist\tcliphist\tverify-on-debian13
-apt\tfzf\tfzf\tconfirmed
-apt\tripgrep\trg\tconfirmed
-apt\tjq\tjq\tconfirmed
-apt\tffmpeg\tffmpeg/ffprobe\tconfirmed
-apt\tflameshot\tflameshot\tconfirmed
-apt\tlibnotify-bin\tnotify-send\tconfirmed
-apt\tbluez\tbluetoothd\tconfirmed
-apt\tupower\tUPower D-Bus\tconfirmed
-apt\txdg-desktop-portal\txdg portal core\tconfirmed
-apt\txdg-desktop-portal-gtk\tGTK file chooser portal\tconfirmed
-apt\tgrim\tgrim screenshot helper\tconfirmed
-apt\tslurp\tslurp region selector\tconfirmed
-apt\topenssh-client\tssh-agent\tconfirmed
-apt\tvim\tvim\tconfirmed
-apt\tyarnpkg\tyarn\tverify-command-name
-apt\tgnome-snapshot\tsnapshot camera app\tverify-package-name
-custom\t/usr/bin/wl-color-picker\twl-color-picker\tunowned-on-source-system
-custom\t/usr/local/bin/cliphist\tcliphist\tunowned-on-source-system
-custom\t/usr/local/bin/easyeffects\teasyeffects\tunowned-on-source-system
-custom\t/usr/local/bin/foot\tfoot\tunowned-on-source-system
-custom\t/usr/local/bin/glow\tglow\tunowned-on-source-system
-custom\t/usr/local/bin/kitty\tkitty\tunowned-on-source-system
-missing\t/usr/local/bin/makoctl\tmakoctl\treferenced-but-missing
-custom\t/usr/local/bin/mpv\tmpv\tunowned-on-source-system
-custom\t/usr/local/bin/nvim\tnvim\tunowned-on-source-system
-custom\t/usr/local/bin/swayimg\tswayimg\tunowned-on-source-system
-custom\t/usr/local/bin/tesseract\ttesseract\tunowned-on-source-system
-custom\t/usr/local/bin/wl-screenrec\twl-screenrec\tunowned-on-source-system
-custom\t/usr/local/bin/zellij\tzellij\tunowned-on-source-system
-aur\tantigravity-cli\tantigravity-cli\tforeign-on-arch
-aur\tbrave-bin\tbrave\tforeign-on-arch
-aur\tchatgpt-desktop\tchatgpt-desktop\tforeign-on-arch
-aur\tclaude-code\tclaude-code\tforeign-on-arch
-aur\tgithub-copilot-app-bin\tgithub-copilot-app\tforeign-on-arch
-aur\tgithub-copilot-cli-bin\tgithub-copilot-cli\tforeign-on-arch
-aur\tgoogle-chrome\tgoogle-chrome-stable\tforeign-on-arch
-aur\tjetbrains-toolbox\tjetbrains-toolbox\tforeign-on-arch
-aur\tmicrosoft-edge-stable-bin\tmicrosoft-edge-stable\tforeign-on-arch
-aur\tmullvad-browser-bin\tmullvad-browser\tforeign-on-arch
-aur\trealesrgan-ncnn-vulkan-bin\trealesrgan-ncnn-vulkan\tforeign-on-arch
-aur\tspotify\tspotify\tforeign-on-arch
-aur\ttor-browser-bin\ttor-browser\tforeign-on-arch
-aur\ttradingview\ttradingview\tforeign-on-arch
-aur\tvisual-studio-code-bin\tcode\tforeign-on-arch
-aur\tyandex-browser\tyandex-browser-stable\tforeign-on-arch
-source-service\trclone-gdrive.service\trclone mount/sync\tenabled-on-source-system
-source-service\trclone-gdrive-shared.service\trclone shared mount/sync\tenabled-on-source-system
-source-service\tknowledge-personal-search.service\tknowledge personal search\tenabled-on-source-system
-source-service\tknowledge-personal-watch.service\tknowledge personal watch\tenabled-on-source-system
-source-service\tknowledge-personal-web.service\tknowledge personal web\tenabled-on-source-system
-source-service\tpolkit-gnome-authentication-agent-1.service\tpolkit agent\tenabled-on-source-system
-source-service\tgnome-keyring-daemon.socket\tgnome keyring\tenabled-on-source-system
-hardware\tintel-media-driver\tIntel VA-API media driver\tverify-target-hardware
-hardware\tintel-microcode\tIntel CPU microcode\tverify-target-hardware
-hardware\tthermald\tIntel thermal management\tverify-target-hardware
-hardware\tfirmware-sof-signed\tSOF audio firmware\tverify-target-hardware
-# Remaining source-system explicit packages are inventory, not automatically required.
-# Promote a package to apt/vendor/source only when configs/services/tests prove it is part of the reproducible environment.
+# kind	fedora-package/source	command/purpose	status
+dnf	git	git	confirmed
+dnf	curl	curl	confirmed
+dnf	ca-certificates	TLS certificates	confirmed
+dnf	gcc	C compiler	confirmed
+dnf	gcc-c++	C++ compiler	confirmed
+dnf	make	build tool	confirmed
+dnf	python3	python3	confirmed
+dnf	python3-pytest	pytest	confirmed
+dnf	niri	niri Wayland compositor	verify-in-qemu
+dnf	pipewire	pipewire	confirmed
+dnf	pipewire-pulseaudio	PipeWire PulseAudio compatibility	verify-in-qemu
+dnf	wireplumber	wireplumber	confirmed
+dnf	pavucontrol	pavucontrol	confirmed
+dnf	playerctl	playerctl	confirmed
+dnf	brightnessctl	brightnessctl	confirmed
+dnf	swayidle	swayidle	confirmed
+dnf	swaylock	swaylock	confirmed
+dnf	swaybg	swaybg	confirmed
+dnf	mako	mako	confirmed
+dnf	wl-clipboard	wl-copy/wl-paste	confirmed
+dnf	fzf	fzf	confirmed
+dnf	ripgrep	rg	confirmed
+dnf	jq	jq	confirmed
+dnf	ffmpeg-free	ffmpeg/ffprobe	verify-in-qemu
+dnf	flameshot	flameshot	confirmed
+dnf	libnotify	notify-send	confirmed
+dnf	bluez	Bluetooth stack	confirmed
+dnf	bluez-tools	Bluetooth CLI helpers	verify-in-qemu
+dnf	upower	UPower D-Bus	confirmed
+dnf	xdg-desktop-portal	xdg portal core	confirmed
+dnf	xdg-desktop-portal-gtk	GTK portal	confirmed
+dnf	xdg-desktop-portal-wlr	Wayland screen cast/screenshot portal	verify-with-niri
+dnf	grim	grim screenshot helper	confirmed
+dnf	slurp	slurp region selector	confirmed
+dnf	openssh-clients	ssh-agent	confirmed
+dnf	vim-enhanced	vim	confirmed
+dnf	kitty	kitty terminal	confirmed
+dnf	neovim	nvim	confirmed
+dnf	swayimg	swayimg	confirmed
+dnf	tesseract	tesseract OCR	verify-in-qemu
+dnf	foot	foot terminal	verify-in-qemu
+dnf	easyeffects	easyeffects	verify-in-qemu
+dnf	qemu-guest-agent	clean libvirt/QEMU guest shutdown support	verify-in-qemu
+dnf	acpid	ACPI event handling in VM	verify-in-qemu
+source	cliphist	clipboard history	resolve-fedora-source
+source	glow	Markdown pager	resolve-fedora-source
+source	wl-screenrec	Wayland recorder	resolve-fedora-source
+source	zellij	terminal workspace	resolve-fedora-source
+source	wl-color-picker	color picker	resolve-fedora-source
+missing	makoctl	mako control command	referenced-but-missing-on-source
+vendor	brave	Brave browser	resolve-vendor-repo
+vendor	google-chrome-stable	Google Chrome	resolve-vendor-repo
+vendor	microsoft-edge-stable	Microsoft Edge	resolve-vendor-repo
+vendor	mullvad-browser	Mullvad Browser	resolve-upstream
+vendor	code	Visual Studio Code	resolve-vendor-repo
+vendor	yandex-browser-stable	Yandex Browser	resolve-vendor-repo
+vendor	spotify	Spotify	resolve-fedora-install-method
+vendor	tor-browser	Tor Browser	resolve-upstream
+source-service	rclone-gdrive.service	rclone mount/sync	enabled-on-source-system
+source-service	rclone-gdrive-shared.service	rclone shared mount/sync	enabled-on-source-system
+source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system
+source-service	knowledge-personal-watch.service	knowledge personal watch	enabled-on-source-system
+source-service	knowledge-personal-web.service	knowledge personal web	enabled-on-source-system
+source-service	polkit-gnome-authentication-agent-1.service	polkit agent	enabled-on-source-system
+source-service	gnome-keyring-daemon.socket	gnome keyring	enabled-on-source-system
+hardware	intel-media-driver	Intel VA-API media driver	physical-machine-only
+hardware	microcode_ctl	CPU microcode	physical-machine-only
+hardware	thermald	Intel thermal management	physical-machine-only
+# Do not promote source-system inventory into Fedora installation until proven by config/service/test usage.
