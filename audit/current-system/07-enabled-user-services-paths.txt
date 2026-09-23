@@ -1,0 +1,25 @@
+===== ENABLED USER SERVICES/PATHS =====
+UNIT FILE                                   STATE   PRESET
+chrome-webapps-sync.path                    enabled enabled
+openwith-normalizer.path                    enabled enabled
+zellij-copy.path                            enabled enabled
+easyeffects.service                         enabled enabled
+espanso.service                             enabled enabled
+knowledge-personal-search.service           enabled enabled
+knowledge-personal-watch.service            enabled enabled
+knowledge-personal-web.service              enabled enabled
+niri-keyboard-state.service                 enabled enabled
+orion-audio-state.service                   enabled enabled
+orion-power-profile-state.service           enabled enabled
+polkit-gnome-authentication-agent-1.service enabled enabled
+ssh-agent.service                           enabled enabled
+swayidle.service                            enabled enabled
+wireplumber.service                         enabled enabled
+xdg-user-dirs.service                       enabled enabled
+gnome-keyring-daemon.socket                 enabled enabled
+p11-kit-server.socket                       enabled enabled
+pipewire-pulse.socket                       enabled enabled
+pipewire.socket                             enabled enabled
+
+20 unit files listed.
+

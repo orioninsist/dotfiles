@@ -1,0 +1,36 @@
+===== ENABLED SYSTEM SERVICES =====
+UNIT FILE                               STATE   PRESET
+autovt@tty1.service                     enabled disabled
+autovt@tty2.service                     enabled disabled
+bluetooth.service                       enabled disabled
+docker.service                          enabled disabled
+getty@.service                          enabled enabled
+iptables.service                        enabled disabled
+iwd.service                             enabled disabled
+rclone-gdrive-shared.service            enabled disabled
+rclone-gdrive.service                   enabled disabled
+systemd-homed-activate.service          enabled enabled
+systemd-homed.service                   enabled enabled
+systemd-network-generator.service       enabled enabled
+systemd-networkd-wait-online.service    enabled enabled
+systemd-networkd.service                enabled enabled
+systemd-resolved.service                enabled enabled
+systemd-timesyncd.service               enabled enabled
+thermald.service                        enabled disabled
+tuned.service                           enabled disabled
+vnstat.service                          enabled disabled
+libvirtd-admin.socket                   enabled disabled
+libvirtd-ro.socket                      enabled disabled
+libvirtd.socket                         enabled disabled
+systemd-networkd-resolve-hook.socket    enabled disabled
+systemd-networkd-varlink-metrics.socket enabled disabled
+systemd-networkd-varlink.socket         enabled disabled
+systemd-networkd.socket                 enabled disabled
+systemd-resolved-monitor.socket         enabled disabled
+systemd-resolved-varlink.socket         enabled disabled
+systemd-userdbd.socket                  enabled enabled
+remote-fs.target                        enabled enabled
+fstrim.timer                            enabled disabled
+
+31 unit files listed.
+

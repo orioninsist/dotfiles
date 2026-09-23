@@ -1,0 +1,22 @@
+===== FOREIGN/AUR PACKAGES =====
+antigravity-cli
+brave-bin
+chatgpt-desktop
+claude-code
+github-copilot-app-bin
+github-copilot-cli-bin
+google-chrome
+jetbrains-toolbox
+libselinux
+libsepol
+microsoft-edge-stable-bin
+mullvad-browser-bin
+mullvad-browser-bin-debug
+realesrgan-ncnn-vulkan-bin
+spotify
+tor-browser-bin
+tradingview
+visual-studio-code-bin
+yandex-browser
+yay
+
