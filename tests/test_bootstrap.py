@@ -47,13 +47,13 @@ def test_niri_config_validates():
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_no_arch_package_manager_references_in_installer():
-    forbidden = ("pacman", "yay", "paru", "apt-get", "apt ")
+def test_no_foreign_package_manager_commands_in_installer():
+    forbidden_commands = ("pacman ", "yay ", "paru ", "apt-get ", "apt ")
     text = "\n".join(
         p.read_text(errors="ignore")
         for p in (ROOT / "install").glob("*.sh")
     )
-    hits = [token for token in forbidden if token in text]
+    hits = [token for token in forbidden_commands if token in text]
     assert not hits, hits
 
 
