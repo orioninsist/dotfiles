@@ -132,6 +132,15 @@ window-rule {
     open-floating true
 }
 
+// fzf desktop pickers use a small floating terminal instead of a normal tiled terminal.
+window-rule {
+    match app-id=r#"^fzf-popup$"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 560; }
+}
+
+
 // Modular bindings. Niri 26.04+ merges included binds sections.
 include "binds/window-management.kdl"
 include "binds/workspaces.kdl"
