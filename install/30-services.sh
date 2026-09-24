@@ -18,6 +18,23 @@ optional_units=(
   openwith-normalizer.path
 )
 
+unit_execs_available() {
+  local unit="$1" text path
+  text="$(systemctl --user cat "$unit" 2>/dev/null)" || return 1
+
+  while IFS= read -r path; do
+    path="${path#-}"
+    path="${path//%h/$HOME}"
+    [[ "$path" == /* ]] || continue
+    if [[ ! -x "$path" ]]; then
+      echo "INFO skipping $unit; executable unavailable: $path" >&2
+      return 1
+    fi
+  done < <(printf '%s\n' "$text" | sed -nE 's/^[[:space:]]*ExecStart=[-]?([^[:space:];]+).*/\1/p')
+
+  return 0
+}
+
 missing_required=()
 for unit in "${required_units[@]}"; do
   if systemctl --user cat "$unit" >/dev/null 2>&1; then
@@ -28,15 +45,19 @@ for unit in "${required_units[@]}"; do
 done
 
 for unit in "${optional_units[@]}"; do
-  if systemctl --user cat "$unit" >/dev/null 2>&1; then
+  if ! systemctl --user cat "$unit" >/dev/null 2>&1; then
+    echo "INFO optional unit unavailable: $unit" >&2
+    continue
+  fi
+
+  if unit_execs_available "$unit"; then
     systemctl --user enable "$unit" || true
   else
-    echo "INFO optional unit unavailable: $unit" >&2
+    systemctl --user disable "$unit" >/dev/null 2>&1 || true
   fi
 done
 
 if (("${#missing_required[@]}" > 0)); then
-  printf 'Missing required user unit: %s
-' "${missing_required[@]}" >&2
+  printf 'Missing required user unit: %s\n' "${missing_required[@]}" >&2
   exit 1
 fi
