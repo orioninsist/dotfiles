@@ -1,0 +1,6 @@
+# Knowledge workspace configuration
+#
+# The only user-configured value is the note root.
+
+[[workspace]]
+root = "/mnt/projects/Knowledge"

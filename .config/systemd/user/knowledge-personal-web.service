@@ -1,13 +1,12 @@
 [Unit]
 Description=Knowledge Personal Hugo Runtime
-ConditionPathIsDirectory=/mnt/local/projects/knowledge
 After=knowledge-personal-search.service
-Wants=knowledge-personal-search.service
+Requires=knowledge-personal-search.service
 
 [Service]
 Type=simple
-WorkingDirectory=/mnt/local/projects/knowledge
-ExecStart=/usr/bin/hugo server --config hugo.toml,.runtime/personal/hugo.toml --bind 127.0.0.1 --port 1314 --renderToMemory --disableFastRender --noBuildLock
+WorkingDirectory=/mnt/projects/knowledge
+ExecStart=/usr/sbin/hugo server --config hugo.toml,.runtime/personal/hugo.toml --bind 127.0.0.1 --port 1314 --renderToMemory --disableFastRender --noBuildLock
 Restart=on-failure
 RestartSec=2
 

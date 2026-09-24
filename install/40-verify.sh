@@ -113,7 +113,7 @@ systemctl is-enabled --quiet ly@tty2.service
 [[ "$(systemctl get-default)" == "graphical.target" ]]
 
 echo "==> Dotfile links"
-for path in "$HOME/.config/niri" "$HOME/.config/zellij" "$HOME/.config/systemd"; do
+for path in "$HOME/.config/niri" "$HOME/.config/zellij" "$HOME/.config/systemd" "$HOME/.config/knowledge"; do
   [[ -e "$path" ]] || { echo "Missing dotfile path: $path" >&2; exit 1; }
 done
 
@@ -153,6 +153,7 @@ echo "==> Conditional external projects"
 [[ ! -d /mnt/projects/knowledge ]] || {
   for unit in knowledge-personal-search.service knowledge-personal-watch.service knowledge-personal-web.service; do
     systemctl --user is-enabled --quiet "$unit"
+    systemctl --user is-active --quiet "$unit"
   done
 }
 
