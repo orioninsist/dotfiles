@@ -25,6 +25,17 @@ if (("${#missing[@]}" > 0)); then
   exit 1
 fi
 
+echo "==> Niri and display manager"
+niri validate --config "$HOME/.config/niri/config.kdl"
+test -e /usr/share/wayland-sessions/niri.desktop
+systemctl is-enabled --quiet ly@tty2.service
+[[ "$(systemctl get-default)" == "graphical.target" ]]
+
+echo "==> Dotfile links"
+for path in "$HOME/.config/niri" "$HOME/.config/zellij" "$HOME/.config/systemd"; do
+  [[ -e "$path" ]] || { echo "Missing dotfile path: $path" >&2; exit 1; }
+done
+
 echo "==> User units"
 for unit in ssh-agent.service swayidle.service niri-keyboard-state.service zellij-copy.path; do
   systemctl --user cat "$unit" >/dev/null
@@ -37,6 +48,14 @@ echo "==> Conditional external projects"
     systemctl --user is-enabled --quiet "$unit"
   done
 }
+
+echo "==> Desktop integration"
+for cmd in wpctl pactl notify-send gsettings busctl; do
+  command -v "$cmd" >/dev/null 2>&1 || { echo "Missing desktop command: $cmd" >&2; exit 1; }
+done
+for unit in pipewire.socket pipewire-pulse.socket gnome-keyring-daemon.socket; do
+  systemctl --user cat "$unit" >/dev/null
+done
 
 echo "==> System service parity"
 for unit in bluetooth.service docker.service vnstat.service NetworkManager.service; do
