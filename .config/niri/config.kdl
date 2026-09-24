@@ -70,14 +70,11 @@ workspace "8"  { open-on-output "eDP-1"; }
 workspace "9"  { open-on-output "eDP-1"; }
 workspace "10" { open-on-output "eDP-1"; }
 
-// Session applications.
-spawn-at-startup "/usr/bin/mako"
-spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
+// Session setup that belongs in Niri itself.
+// Long-running daemons (mako, cliphist, swaybg, swayidle, etc.) are managed
+// as user systemd services bound to the graphical session.
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
-spawn-at-startup "bash" "/home/murat/.config/niri/scripts/niri-window-place-once"
-
-// Wallpaper. swaybg is compositor-independent.
-spawn-at-startup "swaybg" "-i" "/home/murat/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg" "-m" "fill"
+spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/niri-window-place-once"
 
 hotkey-overlay {
     skip-at-startup
@@ -139,7 +136,6 @@ window-rule {
     default-column-width { fixed 680; }
     default-window-height { fixed 360; }
 }
-
 
 // Modular bindings. Niri 26.04+ merges included binds sections.
 include "binds/window-management.kdl"
