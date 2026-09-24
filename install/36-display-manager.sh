@@ -36,21 +36,29 @@ Type=Application
 DesktopNames=niri
 DESKTOP
 
-echo "Installing Fedora Ly SELinux policy..."
 policy_src="$ROOT/install/selinux/ly-local.te"
 policy_makefile="/usr/share/selinux/devel/Makefile"
+policy_stamp="/etc/ly/.ly-local-policy.sha256"
 [[ -f "$policy_src" ]] || { echo "Missing SELinux policy source: $policy_src" >&2; exit 1; }
 [[ -f "$policy_makefile" ]] || { echo "Missing SELinux development Makefile: $policy_makefile" >&2; exit 1; }
 
-policy_tmp="$(mktemp -d)"
-trap 'rm -rf "$policy_tmp"' EXIT
-install -m 0644 "$policy_src" "$policy_tmp/ly-local.te"
-make -s -C "$policy_tmp" -f "$policy_makefile" ly-local.pp
-sudo semodule -i "$policy_tmp/ly-local.pp"
-sudo semodule -l | grep -Eq '^ly-local([[:space:]]|$)' || {
-  echo "Ly SELinux policy installation verification failed" >&2
-  exit 1
-}
+policy_hash="$(sha256sum "$policy_src" | awk '{print $1}')"
+installed_hash="$(sudo cat "$policy_stamp" 2>/dev/null || true)"
+if sudo semodule -l | grep -Eq '^ly-local([[:space:]]|$)' && [[ "$installed_hash" == "$policy_hash" ]]; then
+  echo "Ly SELinux policy unchanged; skipping rebuild."
+else
+  echo "Installing Fedora Ly SELinux policy..."
+  policy_tmp="$(mktemp -d)"
+  trap 'rm -rf "$policy_tmp"' EXIT
+  install -m 0644 "$policy_src" "$policy_tmp/ly-local.te"
+  make -s -C "$policy_tmp" -f "$policy_makefile" ly-local.pp
+  sudo semodule -i "$policy_tmp/ly-local.pp"
+  sudo semodule -l | grep -Eq '^ly-local([[:space:]]|$)' || {
+    echo "Ly SELinux policy installation verification failed" >&2
+    exit 1
+  }
+  printf '%s\n' "$policy_hash" | sudo tee "$policy_stamp" >/dev/null
+fi
 
 if command -v getenforce >/dev/null; then
   selinux_mode="$(getenforce)"
