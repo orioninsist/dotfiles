@@ -184,9 +184,7 @@ upstream	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	official-portable-linux-
 # Local-project parity policy
 dnf	starship	Starship prompt	replace-local-build-with-fedora-package
 external-project	/mnt/local/projects/knowledge	Knowledge project	conditional-services
-external-project	/mnt/local/areas/note	Note project	preserve-path-after-data-restore
 external-project	/mnt/local/areas/microbreak	Microbreak project	preserve-path-after-data-restore
 external-project	/mnt/local/projects/starship	Starship source checkout	not-required-use-fedora-package
 external-project	/mnt/local/projects/zoxide	Zoxide source checkout	not-required-use-fedora-package
-external-project	$HOME/Projects/excalidraw	Excalidraw local server	conditional-user-service
 external-project	$HOME/.local/lib/flyline/libflyline.so	Flyline Bash loadable	conditional-shell-extension
