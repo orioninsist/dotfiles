@@ -1,14 +1,14 @@
 [Unit]
-Description=Wayland Clipboard History
+Description=Niri wallpaper
 PartOf=graphical-session.target
 After=graphical-session.target
 Requisite=graphical-session.target
+ConditionPathExists=%h/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/wl-paste --watch /usr/bin/cliphist store
+ExecStart=/usr/bin/swaybg -i %h/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg -m fill
 Restart=on-failure
-RestartSec=1
 
 [Install]
 WantedBy=graphical-session.target

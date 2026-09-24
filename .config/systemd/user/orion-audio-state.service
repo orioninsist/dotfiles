@@ -2,6 +2,7 @@
 Description=PipeWire audio state bridge
 After=pipewire.service wireplumber.service
 PartOf=graphical-session.target
+Requisite=graphical-session.target
 
 [Service]
 Type=simple

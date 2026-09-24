@@ -4,7 +4,7 @@ binds {
     Mod+D { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/app-launcher"; }
     Mod+C { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/espanso-search"; }
     Mod+Ctrl+Return { spawn "alacritty"; }
-    Mod+Y { spawn "bash" "-lc" "kitty $HOME/.local/bin/yazi"; }
+    Mod+Y { spawn "kitty" "yazi"; }
 
     Mod+Ctrl+B { spawn "google-chrome-stable"; }
     Mod+Ctrl+Shift+B { spawn "brave-browser"; }

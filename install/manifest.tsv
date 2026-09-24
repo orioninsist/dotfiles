@@ -71,10 +71,17 @@ dnf	pulseaudio-utils	pactl	verify-in-qemu
 dnf	wtype	wtype	verify-in-qemu
 dnf	wlsunset	wlsunset	verify-in-qemu
 dnf	snapshot	snapshot	confirmed-fedora44
-source	yazi	yazi file manager	unavailable-fedora44-repos
-source	wl-screenrec	Wayland recorder	unavailable-fedora44-repos
-source	zellij	terminal workspace	unavailable-fedora44-repos
-source	wl-color-picker	color picker	unavailable-fedora44-repos
+dnf	atuin	atuin	confirmed-fedora44
+dnf	calcurse	calcurse calendar	confirmed-fedora44
+dnf	calibre	calibre ebook manager	confirmed-fedora44
+dnf	du-dust	dust disk usage	confirmed-fedora44
+dnf	fd-find	fd file finder	confirmed-fedora44
+dnf	fuzzel	fuzzel launcher	confirmed-fedora44
+dnf	mpv	mpv media player	confirmed-fedora44
+dnf	procs	procs process viewer	confirmed-fedora44
+dnf	rclone	rclone cloud storage	confirmed-fedora44
+dnf	syncthing	syncthing file sync	confirmed-fedora44
+dnf	waybar	waybar status bar	confirmed-fedora44
 vendor	brave-browser	Brave browser	resolve-vendor-repo
 vendor	google-chrome-stable	Google Chrome	resolve-vendor-repo
 vendor	microsoft-edge-stable	Microsoft Edge	resolve-vendor-repo
@@ -94,3 +101,17 @@ hardware	intel-media-driver	Intel VA-API media driver	physical-machine-only
 hardware	microcode_ctl	CPU microcode	physical-machine-only
 hardware	thermald	Intel thermal management	physical-machine-only
 # Do not promote source-system inventory into Fedora installation until proven by config/service/test usage.
+dnf	tmux	tmux terminal multiplexer	confirmed-fedora44
+dnf	cargo	cargo Rust package installer	required-wl-screenrec
+dnf	rust	rust compiler	required-wl-screenrec
+dnf	rust-std-static-wasm32-wasip1	Rust WASI target standard library	required-zellij-plugins
+dnf	clang	clang compiler	required-wl-screenrec
+dnf	libdrm-devel	DRM development files	required-wl-screenrec
+dnf	freeglut-devel	OpenGL utility development files	required-wl-screenrec
+dnf	ffmpeg-free-devel	FFmpeg development files	required-wl-screenrec
+dnf	ImageMagick	ImageMagick convert	required-wl-color-picker
+dnf	zenity	zenity color dialog	required-wl-color-picker
+copr	yazi	lihaohong/yazi	fedora44
+copr	zellij	frodo/zellij	fedora44
+cargo	wl-screenrec	wl-screenrec	upstream-fedora-method
+upstream	wl-color-picker	jgmdev/wl-color-picker	upstream-script

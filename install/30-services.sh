@@ -11,6 +11,8 @@ required_units=(
 )
 
 optional_units=(
+  cliphist.service
+  swaybg.service
   easyeffects.service
   orion-audio-state.service
   orion-power-profile-state.service
