@@ -95,13 +95,13 @@ vendor	code	Visual Studio Code	resolve-vendor-repo
 vendor	yandex-browser-stable	Yandex Browser	resolve-vendor-repo
 vendor	spotify	Spotify	resolve-fedora-install-method
 vendor	tor-browser	Tor Browser	resolve-upstream
-source-service	rclone-gdrive.service	rclone mount/sync	enabled-on-source-system
-source-service	rclone-gdrive-shared.service	rclone shared mount/sync	enabled-on-source-system
+source-service	rclone-gdrive.service	rclone mount/sync	resolved-fedora-template
+source-service	rclone-gdrive-shared.service	rclone shared mount/sync	resolved-fedora-template
 source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system
 source-service	knowledge-personal-watch.service	knowledge personal watch	enabled-on-source-system
 source-service	knowledge-personal-web.service	knowledge personal web	enabled-on-source-system
 source-service	plasma-polkit-agent.service	Fedora polkit authentication agent	resolved-polkit-kde
-source-service	gnome-keyring-daemon.socket	gnome keyring	enabled-on-source-system
+source-service	gnome-keyring-daemon.socket	gnome keyring	resolved-fedora-package
 hardware	intel-media-driver	Intel VA-API media driver	physical-machine-only
 hardware	microcode_ctl	CPU microcode	physical-machine-only
 hardware	thermald	Intel thermal management	physical-machine-only
@@ -148,3 +148,25 @@ dnf	pciutils	PCI utilities	required-workstation
 dnf	usbutils	USB utilities	required-workstation
 dnf	bind-utils	DNS utilities	required-workstation
 dnf	nmap-ncat	network utility	required-workstation
+
+# Arch host parity additions
+dnf	docker	Docker engine	arch-parity-system-service
+dnf	docker-compose	Docker Compose	arch-parity-system-service
+dnf	iwd	iwd wireless daemon	arch-parity-system-service
+dnf	thermald	Intel thermal daemon	arch-parity-physical
+dnf	tuned	Tuned power management	arch-parity-physical
+dnf	vnstat	Network traffic statistics	arch-parity-system-service
+dnf	libvirt	libvirt virtualization daemon	arch-parity-virtualization
+dnf	virt-install	virt-install CLI	arch-parity-virtualization
+dnf	virt-manager	virt-manager GUI	arch-parity-virtualization
+dnf	yt-dlp	yt-dlp downloader	arch-parity-cli
+dnf	ShellCheck	ShellCheck	arch-parity-cli
+dnf	nodejs	Node.js runtime	arch-parity-runtime
+dnf	npm	npm package manager	arch-parity-runtime
+dnf	uv	uv Python tool manager	arch-parity-runtime
+dnf	yarnpkg	Yarn package manager	arch-parity-runtime
+dnf	bash-completion	Bash completion support	arch-parity-shell
+dnf	wget	wget downloader	arch-parity-cli
+dnf	fastfetch	fastfetch system info	arch-parity-cli
+dnf	hyperfine	hyperfine benchmark tool	arch-parity-cli
+dnf	pandoc	Pandoc document converter	arch-parity-cli
