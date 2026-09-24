@@ -177,7 +177,7 @@ Optional units are enabled only when their executables are available. Missing op
 The Knowledge services are conditional on:
 
 ```text
-/mnt/projects/knowledge
+/home/murat/Media/6-Project/knowledge
 ```
 
 If that project is absent, its services remain disabled.

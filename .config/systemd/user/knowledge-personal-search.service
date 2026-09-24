@@ -3,9 +3,9 @@ Description=Knowledge Personal Search API
 
 [Service]
 Type=simple
-WorkingDirectory=/mnt/projects/knowledge
+WorkingDirectory=/home/murat/Media/6-Project/knowledge
 Environment=KNOWLEDGE_API_PORT=8788
-Environment=KNOWLEDGE_DB_PATH=/mnt/projects/knowledge/.runtime/personal/knowledge.db
+Environment=KNOWLEDGE_DB_PATH=/home/murat/Media/6-Project/knowledge/.runtime/personal/knowledge.db
 Environment=KNOWLEDGE_D2_BIN=/usr/sbin/d2
 Environment=KNOWLEDGE_TYPST_BIN=%h/.local/bin/typst
 ExecStart=%h/.bun/bin/bun scripts/search-server.ts

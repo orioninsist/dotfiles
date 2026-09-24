@@ -150,7 +150,7 @@ if [[ -n "$ssd_device" ]]; then
 fi
 
 echo "==> Conditional external projects"
-[[ ! -d /mnt/projects/knowledge ]] || {
+[[ ! -d /home/murat/Media/6-Project/knowledge ]] || {
   for unit in knowledge-personal-search.service knowledge-personal-watch.service knowledge-personal-web.service; do
     systemctl --user is-enabled --quiet "$unit"
     systemctl --user is-active --quiet "$unit"
