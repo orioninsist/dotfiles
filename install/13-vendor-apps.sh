@@ -123,6 +123,35 @@ if ! rpm -q chatgpt >/dev/null 2>&1; then
   rm -f "$tmp_chatgpt"
 fi
 
+
+COPILOT_APP_DIR="$HOME/.local/opt/github-copilot"
+COPILOT_APP="$COPILOT_APP_DIR/github-copilot.AppImage"
+if [[ ! -x "$COPILOT_APP" ]]; then
+  echo "==> GitHub Copilot App"
+  mkdir -p "$COPILOT_APP_DIR" "$BIN_DIR" "$HOME/.local/share/applications"
+  copilot_api="https://api.github.com/repos/github/copilot-app/releases/latest"
+  copilot_url="$(curl -fsSL "$copilot_api" | jq -r '
+    [.assets[]
+      | select(.name | test("linux.*(x86_64|amd64).*\\.AppImage$"; "i"))][0].browser_download_url // empty
+  ')"
+  [[ -n "$copilot_url" ]] || {
+    echo "Unable to resolve official GitHub Copilot Linux x86_64 AppImage." >&2
+    exit 1
+  }
+  curl -fL "$copilot_url" -o "$COPILOT_APP"
+  chmod +x "$COPILOT_APP"
+  ln -sfn "$COPILOT_APP" "$BIN_DIR/github-copilot-app"
+  cat > "$HOME/.local/share/applications/github-copilot-app.desktop" <<DESKTOP
+[Desktop Entry]
+Name=GitHub Copilot
+Comment=GitHub Copilot
+Exec=$COPILOT_APP
+Terminal=false
+Type=Application
+Categories=Development;
+DESKTOP
+fi
+
 echo "==> Official user-local developer tools"
 
 if ! command -v claude >/dev/null 2>&1; then
