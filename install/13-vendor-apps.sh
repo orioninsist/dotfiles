@@ -21,6 +21,20 @@ install_dnf_repo_package   "https://brave-browser-rpm-release.s3.brave.com/brave
 
 install_dnf_repo_package   "https://repository.mullvad.net/rpm/stable/mullvad.repo"   mullvad-browser
 
+
+if ! rpm -q microsoft-edge-stable >/dev/null 2>&1; then
+  sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+  sudo tee /etc/yum.repos.d/microsoft-edge.repo >/dev/null <<'REPO'
+[microsoft-edge]
+name=Microsoft Edge
+baseurl=https://packages.microsoft.com/yumrepos/edge-stable/
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+REPO
+  sudo dnf -y install microsoft-edge-stable
+fi
+
 if ! rpm -q code >/dev/null 2>&1; then
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
   sudo tee /etc/yum.repos.d/vscode.repo >/dev/null <<'REPO'
@@ -48,4 +62,4 @@ fi
 
 echo
 echo "Vendor phase installed methods that are fully documented for Fedora/Linux."
-echo "Chrome/Edge/Yandex/Tor/JetBrains and unsupported desktop apps remain explicit until their unattended source URLs are verified."
+echo "Chrome/Yandex/Tor/JetBrains and unsupported desktop apps remain explicit until their unattended source URLs are verified."
