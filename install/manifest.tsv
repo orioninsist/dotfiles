@@ -1,6 +1,7 @@
 # kind	fedora-package/source	command/purpose	status
 dnf	coreutils	GNU core utilities	required-base
 dnf	git	git	confirmed
+dnf	git-delta	delta Git pager	confirmed-fedora44
 dnf	curl	curl	confirmed
 dnf	ca-certificates	TLS certificates	confirmed
 dnf	gcc	C compiler	confirmed
