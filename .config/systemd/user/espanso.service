@@ -2,10 +2,11 @@
 Description=Espanso text expander
 PartOf=graphical-session.target
 After=graphical-session.target
+Requisite=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=%h/.local/bin/espanso launcher
+ExecStart=/usr/bin/sh -lc 'exec "$(command -v espanso)" launcher'
 Restart=on-failure
 RestartSec=3
 
