@@ -1,1 +1,8 @@
 
+
+# systemd user enable state (symlinks into this live dotfiles tree)
+.config/systemd/user/*.wants/
+
+# Python test bytecode
+__pycache__/
+*.py[cod]
