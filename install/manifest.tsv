@@ -69,7 +69,7 @@ dnf	glib2	gsettings	confirmed-fedora44
 dnf	pulseaudio-utils	pactl	verify-in-qemu
 dnf	wtype	wtype	verify-in-qemu
 dnf	wlsunset	wlsunset	verify-in-qemu
-dnf	gnome-snapshot	snapshot	verify-in-qemu
+optional	snapshot	GNOME camera app	unavailable-fedora44
 source	wl-screenrec	Wayland recorder	resolve-fedora-source
 source	zellij	terminal workspace	resolve-fedora-source
 source	wl-color-picker	color picker	resolve-fedora-source
