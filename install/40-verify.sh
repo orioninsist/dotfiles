@@ -12,7 +12,7 @@ required_commands=(
   syncthing waybar hugo d2 tmux cargo rustc clang convert zenity
   yazi zellij wl-screenrec wl-color-picker bun typst eza bat yq
   tree htop btop ncdu zoxide rsync unzip zip git-lfs gh openssl
-  gpg age file which lsof strace lspci lsusb host nc starship realesrgan-ncnn-vulkan chatgpt
+  gpg age file which lsof strace lspci lsusb host nc starship realesrgan-ncnn-vulkan chatgpt github-copilot-app
 )
 
 missing=()
