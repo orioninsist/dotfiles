@@ -38,7 +38,7 @@ secrets_filter = true
 
 # We build/install Atuin ourselves, so a slightly longer SQLite acquisition timeout
 # is preferable to failing immediately during short-lived shell/database contention.
-local_timeout = "5s"
+local_timeout = 5.0
 
 [stats]
 common_subcommands = [
