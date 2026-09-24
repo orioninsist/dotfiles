@@ -15,12 +15,17 @@ else
 fi
 (("${#pkgs[@]}" > 0)) || { echo "No Fedora packages found in install/manifest.tsv" >&2; exit 1; }
 
+installed_provides() {
+  local pkg="$1"
+  dnf -q repoquery --installed --whatprovides "$pkg" 2>/dev/null | grep -q .
+}
+
 echo "Checking installed Fedora packages..."
 missing=()
 installed=0
 
 for pkg in "${pkgs[@]}"; do
-  if rpm -q "$pkg" >/dev/null 2>&1 || dnf -q repoquery --installed "$pkg" >/dev/null 2>&1; then
+  if rpm -q "$pkg" >/dev/null 2>&1 || installed_provides "$pkg"; then
     ((installed += 1))
   else
     missing+=("$pkg")
@@ -77,7 +82,7 @@ echo
 echo "Verifying installed package set..."
 still_missing=()
 for pkg in "${pkgs[@]}"; do
-  rpm -q "$pkg" >/dev/null 2>&1 || dnf -q repoquery --installed "$pkg" >/dev/null 2>&1 || still_missing+=("$pkg")
+  rpm -q "$pkg" >/dev/null 2>&1 || installed_provides "$pkg" || still_missing+=("$pkg")
 done
 
 if (("${#still_missing[@]}" > 0)); then
