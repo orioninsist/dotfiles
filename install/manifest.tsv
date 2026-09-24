@@ -24,7 +24,7 @@ dnf	ly	LY display manager	confirmed-fedora44
 dnf	selinux-policy-devel	SELinux policy build tooling for Ly local policy	confirmed-fedora44
 dnf	pipewire	pipewire	confirmed
 dnf	pipewire-pulseaudio	PipeWire PulseAudio compatibility	verify-in-qemu
-dnf	wireplumber	wireplumber	confirmed
+dnf	wireplumber	wireplumber/wpctl	confirmed
 dnf	pavucontrol	pavucontrol	confirmed
 dnf	playerctl	playerctl	confirmed
 dnf	brightnessctl	brightnessctl	confirmed
