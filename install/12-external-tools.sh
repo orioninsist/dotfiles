@@ -104,8 +104,12 @@ build_zellij_plugin() {
   local built="$plugin_dir/target/wasm32-wasip1/release/$wasm"
   local dist="$plugin_dir/dist/$wasm"
 
-  echo "Building: $name"
+  if [[ -f "$dist" ]] && ! find "$plugin_dir/src" "$plugin_dir/Cargo.toml" "$plugin_dir/Cargo.lock" -type f -newer "$dist" -print -quit 2>/dev/null | grep -q .; then
+    echo "Zellij plugin already built: $name"
+    return 0
+  fi
 
+  echo "Building: $name"
   cargo build     --manifest-path "$plugin_dir/Cargo.toml"     --locked     --release     --target wasm32-wasip1
 
   test -f "$built" || {
@@ -137,7 +141,9 @@ done
 ((failed == 0))
 
 
-if ! command -v starship >/dev/null 2>&1; then
+if command -v starship >/dev/null 2>&1; then
+  echo "Starship already available: $(command -v starship)"
+else
   echo "==> Starship"
   curl -fsSL https://starship.rs/install.sh | sh -s -- -y -b "$BIN_DIR"
 fi
