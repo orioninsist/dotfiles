@@ -19,6 +19,7 @@ optional_units=(
   espanso.service
   openwith-normalizer.path
   plasma-polkit-agent.service
+  gnome-keyring-daemon.socket
 )
 
 knowledge_units=(
@@ -65,6 +66,9 @@ for unit in "${optional_units[@]}"; do
     systemctl --user disable "$unit" >/dev/null 2>&1 || true
   fi
 done
+
+# chrome-webapps-sync.path has no matching service in the repository, so never enable it blindly.
+systemctl --user disable chrome-webapps-sync.path >/dev/null 2>&1 || true
 
 knowledge_root="/mnt/local/projects/knowledge"
 if [[ -d "$knowledge_root" ]]; then
