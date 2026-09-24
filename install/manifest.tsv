@@ -83,6 +83,10 @@ dnf	procs	procs process viewer	confirmed-fedora44
 dnf	rclone	rclone cloud storage	confirmed-fedora44
 dnf	syncthing	syncthing file sync	confirmed-fedora44
 dnf	waybar	waybar status bar	confirmed-fedora44
+dnf	hugo	Hugo runtime for Knowledge personal web	confirmed-fedora44
+dnf	d2	D2 diagram renderer for Knowledge search	confirmed-fedora44
+dnf	polkit-kde	Fedora PolicyKit authentication agent	confirmed-fedora44
+dnf	xz	Typst upstream archive extraction	required-typst
 vendor	brave-browser	Brave browser	resolve-vendor-repo
 vendor	google-chrome-stable	Google Chrome	resolve-vendor-repo
 vendor	microsoft-edge-stable	Microsoft Edge	resolve-vendor-repo
@@ -96,7 +100,7 @@ source-service	rclone-gdrive-shared.service	rclone shared mount/sync	enabled-on-
 source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system
 source-service	knowledge-personal-watch.service	knowledge personal watch	enabled-on-source-system
 source-service	knowledge-personal-web.service	knowledge personal web	enabled-on-source-system
-source-service	polkit-agent	polkit authentication agent	resolve-fedora-service
+source-service	plasma-polkit-agent.service	Fedora polkit authentication agent	resolved-polkit-kde
 source-service	gnome-keyring-daemon.socket	gnome keyring	enabled-on-source-system
 hardware	intel-media-driver	Intel VA-API media driver	physical-machine-only
 hardware	microcode_ctl	CPU microcode	physical-machine-only
@@ -116,6 +120,8 @@ copr	yazi	lihaohong/yazi	fedora44
 copr	zellij	frodo/zellij	fedora44
 cargo	wl-screenrec	wl-screenrec	upstream-fedora-method
 upstream	wl-color-picker	jgmdev/wl-color-picker	upstream-script
+upstream	bun	bun-v1.3.3 official installer	arch-parity
+upstream	typst	v0.15.0 official Linux x86_64 prebuilt	arch-parity
 
 # Fedora 44 workstation CLI
 dnf	eza	modern ls	required-workstation
