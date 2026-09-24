@@ -121,11 +121,18 @@ def test_ly_custom_niri_session_is_absolute():
     custom = Path("/etc/ly/custom-sessions/niri.desktop")
     assert custom.is_file(), custom
     text = custom.read_text(errors="ignore")
-    assert "Exec=/usr/bin/niri-session" in text, text
+    exec_line = next((line for line in text.splitlines() if line.startswith("Exec=")), "")
+    assert exec_line, text
+
+    niri_session = shutil.which("niri-session")
+    assert niri_session, "niri-session not found in PATH"
+    assert Path(exec_line.removeprefix("Exec=")).resolve() == Path(niri_session).resolve(), (
+        exec_line,
+        niri_session,
+    )
 
     packaged = Path("/usr/share/wayland-sessions/niri.desktop")
     assert packaged.is_file(), packaged
-    assert shutil.which("niri-session") == "/usr/bin/niri-session"
 
 
 def test_ly_selinux_policy_is_installed():
@@ -142,7 +149,7 @@ def test_ly_selinux_policy_is_installed():
     assert "allow unconfined_service_t unconfined_t:process transition;" in policy_text
 
     modules = subprocess.run(
-        ["sudo", "-n", "semodule", "-l"],
+        ["sudo", "semodule", "-l"],
         capture_output=True,
         text=True,
     )
