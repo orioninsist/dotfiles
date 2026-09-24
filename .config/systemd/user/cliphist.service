@@ -4,4 +4,4 @@ After=graphical-session-pre.target
 
 [Service]
 Type=simple
-ExecStart=%h/.local/bin/wl-paste --watch cliphist store
+ExecStart=/usr/bin/wl-paste --watch /usr/bin/cliphist store
