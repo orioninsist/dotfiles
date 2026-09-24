@@ -24,6 +24,7 @@ for step in \
   install/05-preflight.sh \
   install/10-base.sh \
   install/12-external-tools.sh \
+  install/13-vendor-apps.sh \
   install/15-fonts.sh \
   install/20-dotfiles.sh \
   install/30-services.sh \
