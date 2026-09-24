@@ -28,9 +28,6 @@ knowledge_units=(
   knowledge-personal-web.service
 )
 
-external_project_units=(
-  excalidraw.service
-)
 
 unit_execs_available() {
   local unit="$1" text path
@@ -90,17 +87,6 @@ else
     systemctl --user disable "$unit" >/dev/null 2>&1 || true
   done
 fi
-
-for unit in "${external_project_units[@]}"; do
-  if systemctl --user cat "$unit" >/dev/null 2>&1 && unit_execs_available "$unit"; then
-    if systemctl --user show -p Conditions --value "$unit" | grep -q 'test failed'; then
-      systemctl --user disable "$unit" >/dev/null 2>&1 || true
-      echo "INFO external project for $unit is absent; service remains disabled."
-    else
-      systemctl --user enable "$unit"
-    fi
-  fi
-done
 
 if (("${#missing_required[@]}" > 0)); then
   printf 'Missing required user unit: %s\n' "${missing_required[@]}" >&2
