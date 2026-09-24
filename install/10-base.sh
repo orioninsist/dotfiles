@@ -9,9 +9,9 @@ fi
 echo "Machine profile: $profile"
 
 if [[ "$profile" == "qemu" ]]; then
-  mapfile -t pkgs < <(awk -F '\t' '$1=="dnf" || $1=="dnf-qemu"{print $2}' "$ROOT/install/manifest.tsv")
+  mapfile -t pkgs < <(awk -F '\t' '$1=="dnf" || $1=="dnf-qemu"{print $2}' "$ROOT/install/manifest.tsv" | sort -u)
 else
-  mapfile -t pkgs < <(awk -F '\t' '$1=="dnf" || $1=="dnf-physical"{print $2}' "$ROOT/install/manifest.tsv")
+  mapfile -t pkgs < <(awk -F '\t' '$1=="dnf" || $1=="dnf-physical"{print $2}' "$ROOT/install/manifest.tsv" | sort -u)
 fi
 (("${#pkgs[@]}" > 0)) || { echo "No Fedora packages found in install/manifest.tsv" >&2; exit 1; }
 
