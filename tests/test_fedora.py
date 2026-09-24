@@ -143,7 +143,7 @@ def test_ly_selinux_policy_is_installed():
     assert "allow unconfined_service_t unconfined_t:process transition;" in policy_text
 
     modules = subprocess.run(
-        ["sudo", "semodule", "-l"],
+        ["semodule", "-l"],
         capture_output=True,
         text=True,
     )
