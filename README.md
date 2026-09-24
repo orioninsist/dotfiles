@@ -269,3 +269,9 @@ arch-final-2026-09-23
 ```
 
 Private/user data is intentionally not restored by the dotfiles bootstrap. Restore personal data and secrets separately from the private backup, after verifying paths and checksums.
+
+### Desktop appearance
+
+- System color preference: dark
+- GTK 3/4 theme: Catppuccin Mocha/Mauve
+- Wallpaper is managed from `.wallpapers` by `swaybg.service`.

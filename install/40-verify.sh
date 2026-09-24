@@ -119,6 +119,48 @@ for unit in pipewire.socket pipewire-pulse.socket gnome-keyring-daemon.socket; d
   systemctl --user cat "$unit" >/dev/null
 done
 
+echo "==> Desktop appearance"
+CATPPUCCIN_GTK_THEME="catppuccin-mocha-mauve-standard+default"
+CATPPUCCIN_GTK_DIR="$HOME/.local/share/themes/$CATPPUCCIN_GTK_THEME"
+
+[[ "$(gsettings get org.gnome.desktop.interface color-scheme)" == "'prefer-dark'" ]] || {
+  echo "GNOME dark color scheme is not enabled" >&2
+  exit 1
+}
+
+[[ "$(gsettings get org.gnome.desktop.interface gtk-theme)" == "'$CATPPUCCIN_GTK_THEME'" ]] || {
+  echo "Catppuccin GTK theme is not active" >&2
+  exit 1
+}
+
+for gtk in gtk-3.0 gtk-4.0; do
+  [[ -f "$CATPPUCCIN_GTK_DIR/$gtk/gtk.css" ]] || {
+    echo "Missing Catppuccin $gtk theme" >&2
+    exit 1
+  }
+
+  grep -Fqx "gtk-theme-name=$CATPPUCCIN_GTK_THEME" \
+    "$HOME/.config/$gtk/settings.ini" || {
+      echo "$gtk does not select Catppuccin Mocha/Mauve" >&2
+      exit 1
+    }
+done
+
+[[ -L "$HOME/.wallpapers" ]] || {
+  echo "~/.wallpapers is not a dotfiles symlink" >&2
+  exit 1
+}
+
+[[ "$(readlink -f "$HOME/.wallpapers")" == "$ROOT/.wallpapers" ]] || {
+  echo "~/.wallpapers does not point to the dotfiles wallpaper directory" >&2
+  exit 1
+}
+
+[[ -f "$HOME/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg" ]] || {
+  echo "Configured wallpaper is missing" >&2
+  exit 1
+}
+
 echo "==> System service parity"
 for unit in bluetooth.service docker.service vnstat.service NetworkManager.service; do
   systemctl cat "$unit" >/dev/null

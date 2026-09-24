@@ -7,6 +7,9 @@ mkdir -p "$BIN_DIR"
 BUN_VERSION="1.3.3"
 TYPST_VERSION="0.15.0"
 SATTY_VERSION="0.22.0"
+CATPPUCCIN_GTK_VERSION="1.0.3"
+CATPPUCCIN_GTK_THEME="catppuccin-mocha-mauve-standard+default"
+CATPPUCCIN_GTK_SHA256="cbacdac6161f98c315fb86740e21426ef6dda64f0ad69157cf28f3a1dda446fe"
 SATTY_SHA256="eb7a028c4a5ce331c2f355add8e2b807a7d697fe4495f7e1965786a4f6bcd5b8"
 
 mkdir -p "$BIN_DIR"
@@ -101,6 +104,41 @@ else
 fi
 
 echo
+echo "==> Installing Catppuccin GTK $CATPPUCCIN_GTK_VERSION"
+
+THEME_DIR="$HOME/.local/share/themes/$CATPPUCCIN_GTK_THEME"
+
+if [[ -f "$THEME_DIR/gtk-3.0/gtk.css" &&
+      -f "$THEME_DIR/gtk-4.0/gtk.css" ]]; then
+  echo "Catppuccin GTK already installed: $THEME_DIR"
+else
+  tmpdir="$(mktemp -d)"
+  trap 'rm -rf "$tmpdir"' EXIT
+
+  curl -fL \
+    "https://github.com/catppuccin/gtk/releases/download/v$CATPPUCCIN_GTK_VERSION/$CATPPUCCIN_GTK_THEME.zip" \
+    -o "$tmpdir/theme.zip"
+
+  echo "$CATPPUCCIN_GTK_SHA256  $tmpdir/theme.zip" | sha256sum -c -
+
+  python3 -m zipfile -e "$tmpdir/theme.zip" "$tmpdir/extracted"
+
+  src="$tmpdir/extracted/$CATPPUCCIN_GTK_THEME"
+  [[ -d "$src" ]] || {
+    echo "Catppuccin GTK theme missing from release archive: $src" >&2
+    exit 1
+  }
+
+  mkdir -p "$HOME/.local/share/themes"
+  rm -rf "$THEME_DIR"
+  cp -a "$src" "$THEME_DIR"
+
+  rm -rf "$tmpdir"
+  trap - EXIT
+fi
+
+echo
+
 echo "==> Installing wl-screenrec"
 
 if command -v wl-screenrec >/dev/null 2>&1; then
