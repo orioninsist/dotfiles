@@ -97,7 +97,7 @@ def test_niri_portal_backend():
 def test_niri_referenced_commands_are_declared():
     manifest = (ROOT / "install/manifest.tsv").read_text(errors="ignore")
     declared = {
-        line.split("\t")[2]
+        line.split("\t")[1]
         for line in manifest.splitlines()
         if line and not line.startswith("#") and len(line.split("\t")) >= 3
     }
