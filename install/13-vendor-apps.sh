@@ -114,6 +114,15 @@ if [[ ! -x "$REALESRGAN_DIR/realesrgan-ncnn-vulkan" ]]; then
   rm -rf "$tmp_realesrgan" "$tmp_realesrgan_dir"
 fi
 
+
+if ! rpm -q chatgpt >/dev/null 2>&1; then
+  echo "==> ChatGPT Desktop (official OpenAI Fedora RPM)"
+  tmp_chatgpt="$(mktemp --suffix=.rpm)"
+  curl --proto '=https' --tlsv1.2 -fL     https://persistent.oaistatic.com/codex-app-prod/linux/rpm/latest/chatgpt.x86_64.rpm     -o "$tmp_chatgpt"
+  sudo dnf -y install "$tmp_chatgpt"
+  rm -f "$tmp_chatgpt"
+fi
+
 echo "==> Official user-local developer tools"
 
 if ! command -v claude >/dev/null 2>&1; then
