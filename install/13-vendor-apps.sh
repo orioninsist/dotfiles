@@ -80,6 +80,21 @@ REPO
   sudo dnf -y install antigravity
 fi
 
+
+TOR_VERSION="15.0.23"
+TOR_DIR="$HOME/.local/opt/tor-browser"
+if [[ ! -x "$TOR_DIR/Browser/start-tor-browser" ]]; then
+  echo "==> Tor Browser $TOR_VERSION"
+  mkdir -p "$HOME/.local/opt"
+  tmp_tor="$(mktemp --suffix=.tar.xz)"
+  curl -fL "https://dist.torproject.org/torbrowser/$TOR_VERSION/tor-browser-linux-x86_64-$TOR_VERSION.tar.xz" -o "$tmp_tor"
+  rm -rf "$TOR_DIR"
+  tar -xJf "$tmp_tor" -C "$HOME/.local/opt"
+  mv "$HOME/.local/opt/tor-browser" "$TOR_DIR" 2>/dev/null || true
+  rm -f "$tmp_tor"
+  "$TOR_DIR/start-tor-browser.desktop" --register-app || true
+fi
+
 echo "==> Official user-local developer tools"
 
 if ! command -v claude >/dev/null 2>&1; then
