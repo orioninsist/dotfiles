@@ -28,7 +28,7 @@ else
 fi
 
 echo "==> Enabling Arch-parity Fedora system services"
-for unit in bluetooth.service docker.service iwd.service vnstat.service; do
+for unit in bluetooth.service docker.service vnstat.service; do
   if systemctl cat "$unit" >/dev/null 2>&1; then
     sudo systemctl enable "$unit"
   else
@@ -51,3 +51,9 @@ for socket in libvirtd.socket libvirtd-ro.socket libvirtd-admin.socket; do
     sudo systemctl enable "$socket"
   fi
 done
+
+# Fedora owns networking through NetworkManager. Do not recreate Arch's
+# systemd-networkd+iwd topology unless a Fedora-specific NM iwd backend is configured.
+if systemctl cat NetworkManager.service >/dev/null 2>&1; then
+  sudo systemctl enable NetworkManager.service
+fi
