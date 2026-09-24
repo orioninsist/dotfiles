@@ -80,7 +80,6 @@ def test_niri_smithay_runtime_packages():
         "libdisplay-info",
         "pixman",
         "libglvnd-egl",
-        "wayland",
         "xwayland-satellite",
         "xorg-x11-server-Xwayland",
         "xdg-desktop-portal-gtk",
