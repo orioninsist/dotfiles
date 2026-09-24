@@ -38,6 +38,25 @@ echo "==> Conditional external projects"
   done
 }
 
+echo "==> System service parity"
+for unit in bluetooth.service docker.service vnstat.service NetworkManager.service; do
+  systemctl cat "$unit" >/dev/null
+  systemctl is-enabled --quiet "$unit"
+done
+for socket in libvirtd.socket libvirtd-ro.socket libvirtd-admin.socket; do
+  systemctl cat "$socket" >/dev/null
+  systemctl is-enabled --quiet "$socket"
+done
+if ! systemd-detect-virt --quiet --vm; then
+  for unit in thermald.service tuned.service; do
+    systemctl is-enabled --quiet "$unit"
+  done
+fi
+if [[ -f "$HOME/.config/rclone/rclone.conf" ]]; then
+  systemctl is-enabled --quiet rclone-gdrive.service
+  systemctl is-enabled --quiet rclone-gdrive-shared.service
+fi
+
 echo "==> Fedora package profile"
 if systemd-detect-virt --quiet --vm; then
   rpm -q qemu-guest-agent spice-vdagent acpid >/dev/null
