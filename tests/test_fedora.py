@@ -127,3 +127,35 @@ def test_ly_custom_niri_session_is_absolute():
     packaged = Path("/usr/share/wayland-sessions/niri.desktop")
     assert packaged.is_file(), packaged
     assert shutil.which("niri-session") == "/usr/bin/niri-session"
+
+
+def test_ly_selinux_policy_is_installed():
+    rpm = subprocess.run(
+        ["rpm", "-q", "selinux-policy-devel"],
+        capture_output=True,
+        text=True,
+    )
+    assert rpm.returncode == 0, rpm.stdout + rpm.stderr
+
+    policy_source = Path(__file__).resolve().parents[1] / "install/selinux/ly-local.te"
+    assert policy_source.is_file(), policy_source
+    policy_text = policy_source.read_text(errors="ignore")
+    assert "allow unconfined_service_t unconfined_t:process transition;" in policy_text
+
+    modules = subprocess.run(
+        ["sudo", "semodule", "-l"],
+        capture_output=True,
+        text=True,
+    )
+    assert modules.returncode == 0, modules.stdout + modules.stderr
+    assert any(line.split() and line.split()[0] == "ly-local" for line in modules.stdout.splitlines())
+
+    getenforce = shutil.which("getenforce")
+    assert getenforce, "getenforce not found"
+    mode = subprocess.run(
+        [getenforce],
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    assert mode != "Disabled", mode
