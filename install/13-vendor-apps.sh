@@ -22,6 +22,16 @@ install_dnf_repo_package   "https://brave-browser-rpm-release.s3.brave.com/brave
 install_dnf_repo_package   "https://repository.mullvad.net/rpm/stable/mullvad.repo"   mullvad-browser
 
 
+
+if ! rpm -q google-chrome-stable >/dev/null 2>&1; then
+  tmp_rpm="$(mktemp --suffix=.rpm)"
+  trap 'rm -f "$tmp_rpm"' RETURN
+  curl -fL https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm -o "$tmp_rpm"
+  sudo dnf -y install "$tmp_rpm"
+  rm -f "$tmp_rpm"
+  trap - RETURN
+fi
+
 if ! rpm -q microsoft-edge-stable >/dev/null 2>&1; then
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
   sudo tee /etc/yum.repos.d/microsoft-edge.repo >/dev/null <<'REPO'
@@ -50,6 +60,13 @@ REPO
   sudo dnf -y install code
 fi
 
+
+
+if ! rpm -q yandex-browser-stable >/dev/null 2>&1; then
+  sudo rpmkeys --import https://repo.yandex.ru/yandex-browser/YANDEX-BROWSER-KEY.GPG
+  sudo dnf config-manager addrepo --id=yandex-browser --set=baseurl=https://repo.yandex.ru/yandex-browser/rpm/stable/x86_64
+  sudo dnf -y install yandex-browser-stable
+fi
 
 if ! rpm -q antigravity >/dev/null 2>&1; then
   sudo tee /etc/yum.repos.d/antigravity.repo >/dev/null <<'REPO'
