@@ -95,6 +95,25 @@ if [[ ! -x "$TOR_DIR/Browser/start-tor-browser" ]]; then
   "$TOR_DIR/start-tor-browser.desktop" --register-app || true
 fi
 
+
+REALESRGAN_VERSION="0.2.5.0"
+REALESRGAN_BUILD="20220424"
+REALESRGAN_DIR="$HOME/.local/opt/realesrgan-ncnn-vulkan"
+if [[ ! -x "$REALESRGAN_DIR/realesrgan-ncnn-vulkan" ]]; then
+  echo "==> Real-ESRGAN NCNN/Vulkan"
+  mkdir -p "$HOME/.local/opt" "$BIN_DIR"
+  tmp_realesrgan="$(mktemp --suffix=.zip)"
+  tmp_realesrgan_dir="$(mktemp -d)"
+  curl -fL "https://github.com/xinntao/Real-ESRGAN/releases/download/v$REALESRGAN_VERSION/realesrgan-ncnn-vulkan-$REALESRGAN_BUILD-ubuntu.zip" -o "$tmp_realesrgan"
+  unzip -q "$tmp_realesrgan" -d "$tmp_realesrgan_dir"
+  rm -rf "$REALESRGAN_DIR"
+  mkdir -p "$REALESRGAN_DIR"
+  cp -a "$tmp_realesrgan_dir"/. "$REALESRGAN_DIR"/
+  chmod +x "$REALESRGAN_DIR/realesrgan-ncnn-vulkan"
+  ln -sfn "$REALESRGAN_DIR/realesrgan-ncnn-vulkan" "$BIN_DIR/realesrgan-ncnn-vulkan"
+  rm -rf "$tmp_realesrgan" "$tmp_realesrgan_dir"
+fi
+
 echo "==> Official user-local developer tools"
 
 if ! command -v claude >/dev/null 2>&1; then
