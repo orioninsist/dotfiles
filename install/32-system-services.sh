@@ -26,3 +26,28 @@ if [[ -f "$HOME/.config/rclone/rclone.conf" ]]; then
 else
   echo "INFO rclone config missing; rclone mount services remain disabled."
 fi
+
+echo "==> Enabling Arch-parity Fedora system services"
+for unit in bluetooth.service docker.service iwd.service vnstat.service; do
+  if systemctl cat "$unit" >/dev/null 2>&1; then
+    sudo systemctl enable "$unit"
+  else
+    echo "INFO system unit unavailable: $unit"
+  fi
+done
+
+if ! systemd-detect-virt --quiet --vm; then
+  for unit in thermald.service tuned.service; do
+    if systemctl cat "$unit" >/dev/null 2>&1; then
+      sudo systemctl enable "$unit"
+    else
+      echo "INFO physical system unit unavailable: $unit"
+    fi
+  done
+fi
+
+for socket in libvirtd.socket libvirtd-ro.socket libvirtd-admin.socket; do
+  if systemctl cat "$socket" >/dev/null 2>&1; then
+    sudo systemctl enable "$socket"
+  fi
+done
