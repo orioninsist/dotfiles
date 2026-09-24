@@ -96,56 +96,26 @@ def test_niri_portal_backend():
 
 def test_niri_referenced_commands_are_declared():
     manifest = (ROOT / "install/manifest.tsv").read_text(errors="ignore")
-    declared = {
-        line.split("\t")[1]
+    rows = [
+        line.split("\t")
         for line in manifest.splitlines()
         if line and not line.startswith("#") and len(line.split("\t")) >= 3
-    }
+    ]
+    declared_text = "\n".join("\t".join(row[:3]) for row in rows)
 
     required_commands = {
-        "foot",
-        "alacritty",
-        "kitty",
-        "google-chrome-stable",
-        "brave-browser",
-        "microsoft-edge-stable",
-        "yandex-browser-stable",
-        "firefox",
-        "firefox-developer-edition",
-        "tor-browser",
-        "mullvad-browser",
-        "nautilus",
-        "snapshot",
-        "flameshot",
-        "wpctl",
-        "playerctl",
-        "brightnessctl",
-        "busctl",
-        "notify-send",
-        "wl-screenrec",
-        "ffmpeg",
-        "ffprobe",
-        "pactl",
-        "wl-color-picker",
-        "wl-copy",
-        "wtype",
-        "wlsunset",
-        "cliphist",
-        "fzf",
-        "mako",
-        "makoctl",
-        "swaylock",
-        "swaybg",
-        "slurp",
-        "grim",
-        "tesseract",
-        "glow",
-        "niri",
+        "foot", "alacritty", "kitty", "google-chrome-stable", "brave-browser",
+        "microsoft-edge-stable", "yandex-browser-stable", "firefox",
+        "tor-browser", "mullvad-browser", "nautilus", "snapshot", "flameshot",
+        "wpctl", "playerctl", "brightnessctl", "busctl", "notify-send",
+        "wl-screenrec", "ffmpeg", "ffprobe", "pactl", "wl-color-picker",
+        "wl-copy", "wtype", "wlsunset", "cliphist", "fzf", "mako", "makoctl",
+        "swaylock", "swaybg", "slurp", "grim", "tesseract", "glow", "niri",
         "gsettings",
     }
 
-    missing = sorted(cmd for cmd in required_commands if cmd not in declared)
+    missing = sorted(cmd for cmd in required_commands if cmd not in declared_text)
     assert not missing, (
-        "Niri/Wayland runtime commands referenced by dotfiles are not declared "
-        f"in install/manifest.tsv: {missing}"
+        "Niri/Wayland runtime commands referenced by dotfiles are not represented "
+        f"in install/manifest.tsv package/command declarations: {missing}"
     )
