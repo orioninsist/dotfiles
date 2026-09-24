@@ -50,6 +50,19 @@ REPO
   sudo dnf -y install code
 fi
 
+
+if ! rpm -q antigravity >/dev/null 2>&1; then
+  sudo tee /etc/yum.repos.d/antigravity.repo >/dev/null <<'REPO'
+[antigravity-rpm]
+name=Antigravity RPM Repository
+baseurl=https://us-central1-yum.pkg.dev/projects/antigravity-auto-updater-dev/antigravity-rpm
+enabled=1
+gpgcheck=0
+REPO
+  sudo dnf -y makecache
+  sudo dnf -y install antigravity
+fi
+
 echo "==> Official user-local developer tools"
 
 if ! command -v claude >/dev/null 2>&1; then
@@ -62,4 +75,4 @@ fi
 
 echo
 echo "Vendor phase installed methods that are fully documented for Fedora/Linux."
-echo "Chrome/Yandex/Tor/JetBrains and unsupported desktop apps remain explicit until their unattended source URLs are verified."
+echo "Remaining portable tarball/release applications are installed by the upstream-app phase; Spotify remains an explicit no-native-Fedora exception."
