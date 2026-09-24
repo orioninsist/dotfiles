@@ -129,10 +129,10 @@ COPILOT_APP="$COPILOT_APP_DIR/github-copilot.AppImage"
 if [[ ! -x "$COPILOT_APP" ]]; then
   echo "==> GitHub Copilot App"
   mkdir -p "$COPILOT_APP_DIR" "$BIN_DIR" "$HOME/.local/share/applications"
-  copilot_api="https://api.github.com/repos/github/copilot-app/releases/latest"
+  copilot_api="https://api.github.com/repos/github/app/releases/latest"
   copilot_url="$(curl -fsSL "$copilot_api" | jq -r '
     [.assets[]
-      | select(.name | test("linux.*(x86_64|amd64).*\\.AppImage$"; "i"))][0].browser_download_url // empty
+      | select(.name | test("linux.*(x64|x86_64|amd64).*\\.AppImage$"; "i"))][0].browser_download_url // empty
   ')"
   [[ -n "$copilot_url" ]] || {
     echo "Unable to resolve official GitHub Copilot Linux x86_64 AppImage." >&2
