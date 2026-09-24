@@ -57,7 +57,7 @@ else
   trap 'rm -f "$tmp"' EXIT
 
   curl -fL \
-    https://raw.githubusercontent.com/jgmdev/wl-color-picker/master/wl-color-picker \
+    https://raw.githubusercontent.com/jgmdev/wl-color-picker/main/wl-color-picker.sh \
     -o "$tmp"
 
   install -m 0755 "$tmp" "$BIN_DIR/wl-color-picker"

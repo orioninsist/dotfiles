@@ -1,4 +1,5 @@
 # kind	fedora-package/source	command/purpose	status
+dnf	coreutils	GNU core utilities	required-base
 dnf	git	git	confirmed
 dnf	curl	curl	confirmed
 dnf	ca-certificates	TLS certificates	confirmed
@@ -115,3 +116,29 @@ copr	yazi	lihaohong/yazi	fedora44
 copr	zellij	frodo/zellij	fedora44
 cargo	wl-screenrec	wl-screenrec	upstream-fedora-method
 upstream	wl-color-picker	jgmdev/wl-color-picker	upstream-script
+
+# Fedora 44 workstation CLI
+dnf	eza	modern ls	required-workstation
+dnf	bat	syntax highlighting cat	required-workstation
+dnf	yq	YAML processor	required-workstation
+dnf	tree	directory tree	required-workstation
+dnf	htop	interactive process viewer	required-workstation
+dnf	btop	system resource monitor	required-workstation
+dnf	ncdu	interactive disk usage	required-workstation
+dnf	zoxide	smart directory jumper	required-workstation
+dnf	rsync	file synchronization	required-workstation
+dnf	unzip	ZIP extractor	required-workstation
+dnf	zip	ZIP archiver	required-workstation
+dnf	git-lfs	Git large file storage	required-workstation
+dnf	gh	GitHub CLI	required-workstation
+dnf	openssl	TLS and crypto toolkit	required-workstation
+dnf	gnupg2	OpenPGP toolkit	required-workstation
+dnf	age	file encryption	required-workstation
+dnf	file	file type detection	required-workstation
+dnf	which	command locator	required-workstation
+dnf	lsof	open file inspector	required-workstation
+dnf	strace	system call tracer	required-workstation
+dnf	pciutils	PCI utilities	required-workstation
+dnf	usbutils	USB utilities	required-workstation
+dnf	bind-utils	DNS utilities	required-workstation
+dnf	nmap-ncat	network utility	required-workstation
