@@ -153,7 +153,6 @@ dnf	nmap-ncat	network utility	required-workstation
 dnf	docker	Docker engine	arch-parity-system-service
 dnf	docker-compose	Docker Compose	arch-parity-system-service
 dnf	iwd	iwd wireless daemon	installed-not-enabled-fedora-networkmanager-default
-dnf-physical	thermald	Intel thermal daemon	arch-parity-physical
 dnf-physical	tuned	Tuned power management	arch-parity-physical
 dnf	vnstat	Network traffic statistics	arch-parity-system-service
 dnf	libvirt	libvirt virtualization daemon	arch-parity-virtualization
