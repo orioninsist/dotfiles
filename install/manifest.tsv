@@ -103,7 +103,7 @@ source-service	knowledge-personal-watch.service	knowledge personal watch	enabled
 source-service	knowledge-personal-web.service	knowledge personal web	enabled-on-source-system
 source-service	plasma-polkit-agent.service	Fedora polkit authentication agent	resolved-polkit-kde
 source-service	gnome-keyring-daemon.socket	gnome keyring	resolved-fedora-package
-dnf-physical	intel-media-driver	Intel VA-API media driver	physical-machine-only
+dnf-physical	libva-intel-media-driver	Intel VA-API media driver	physical-machine-only
 dnf-physical	microcode_ctl	CPU microcode	physical-machine-only
 dnf-physical	thermald	Intel thermal management	physical-machine-only
 # Do not promote source-system inventory into Fedora installation until proven by config/service/test usage.

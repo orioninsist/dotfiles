@@ -80,7 +80,7 @@ echo "==> Fedora package profile"
 if systemd-detect-virt --quiet --vm; then
   rpm -q qemu-guest-agent spice-vdagent acpid >/dev/null
 else
-  rpm -q intel-media-driver microcode_ctl thermald tuned >/dev/null
+  rpm -q libva-intel-media-driver microcode_ctl thermald tuned >/dev/null
 fi
 
 echo "Acceptance parity checks passed."
