@@ -1,0 +1,15 @@
+[Unit]
+Description=Knowledge Personal Live Workspace Sync
+ConditionPathIsDirectory=/mnt/local/projects/knowledge
+After=knowledge-personal-search.service
+Wants=knowledge-personal-search.service
+
+[Service]
+Type=simple
+WorkingDirectory=/mnt/local/projects/knowledge
+ExecStart=/usr/bin/bash scripts/live-workspace-sync.sh personal
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target
