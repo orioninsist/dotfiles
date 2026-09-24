@@ -1,8 +1,106 @@
 # dotfiles
 
-Personal Arch Linux / Niri configuration repository.
+Personal Fedora Linux 44 / Niri configuration and bootstrap repository.
 
-The active configuration is managed from `/mnt/local/projects/dotfiles`. Most managed paths are linked into `$HOME`; Wayland helper scripts under `~/.config/wayland/scripts/` are deployed from the repository into the live config.
+The active checkout is expected at:
+
+```text
+~/dotfiles
+```
+
+The repository manages shell configuration, Niri, Wayland helpers, user/system services, package parity, desktop applications, and Fedora-specific bootstrap/verification.
+
+## Target
+
+Validated target:
+
+- Fedora Linux 44, x86_64
+- Niri Wayland compositor
+- Ly display manager
+- SELinux Enforcing
+- NetworkManager
+- PipeWire / WirePlumber
+- Fedora physical-machine and QEMU/KVM profiles
+
+The previous Arch Linux state is preserved by the Git tag:
+
+```text
+arch-final-2026-09-23
+```
+
+## Installation
+
+For a fresh Fedora 44 system:
+
+```bash
+sudo dnf -y install git
+git clone https://github.com/orioninsist/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+bash install-fedora.sh
+```
+
+The installer runs these phases:
+
+1. preflight checks
+2. Fedora packages
+3. external tools
+4. vendor applications
+5. fonts
+6. dotfiles installation
+7. user services
+8. system services
+9. QEMU guest integration when applicable
+10. Ly / Niri session / SELinux setup
+11. acceptance tests
+
+The lower-level Fedora bootstrap is also available as:
+
+```bash
+bash bootstrap.sh
+```
+
+## Verification
+
+Run the full acceptance checks with:
+
+```bash
+cd ~/dotfiles
+export DOTFILES_ROOT="$PWD"
+bash install/40-verify.sh
+```
+
+A successful installation currently ends with:
+
+```text
+VERIFY_EXIT=0
+NIRI=PASS
+LY=enabled
+SELINUX=Enforcing
+FAILED_UNITS=0
+```
+
+The test suite also verifies required commands, Niri/Ly integration, dotfile links, required user units, desktop integration, system-service parity, and the Fedora package profile.
+
+## Package and application inventory
+
+The Fedora package/application source of truth is:
+
+```text
+install/manifest.tsv
+```
+
+It includes:
+
+- Fedora packages
+- physical-machine-only packages
+- QEMU guest packages
+- COPR packages
+- upstream tools
+- vendor applications
+- system and user services
+- conditional external projects
+
+Docker is the configured container engine. Podman is not part of this repository's required target.
 
 ## Managed configuration
 
@@ -12,97 +110,129 @@ Shell:
 - `.bashrc`
 - `.profile`
 
-Desktop and applications:
+Desktop and applications include:
 
-- `atuin`
-- `eza`
-- `foot`
-- `gtk-3.0`
-- `gtk-4.0`
-- `mako`
-- `nvim`
-- `niri`
-- `wayland`
-- `systemd`
-- `xdg-desktop-portal`
-- `yazi`
+- Atuin
+- Eza
+- Foot
+- GTK 3/4
+- Mako
+- Neovim
+- Niri
+- Starship
+- Wayland helper scripts
+- systemd user units
+- xdg-desktop-portal
+- Yazi
+- Zellij
 
 Wallpapers are stored under `.wallpapers`.
 
 ## Symlink model
 
-The live files point directly to this repository instead of being copied.
+Managed configuration is linked from the repository into `$HOME`.
 
 Examples:
 
 ```text
-~/.bashrc       -> /mnt/local/projects/dotfiles/.bashrc
-~/.bash_profile -> /mnt/local/projects/dotfiles/.bash_profile
-~/.profile      -> /mnt/local/projects/dotfiles/.profile
+~/.bashrc        -> ~/dotfiles/.bashrc
+~/.bash_profile  -> ~/dotfiles/.bash_profile
+~/.profile       -> ~/dotfiles/.profile
 
-~/.config/atuin  -> /mnt/local/projects/dotfiles/.config/atuin
-~/.config/eza    -> /mnt/local/projects/dotfiles/.config/eza
-~/.config/foot   -> /mnt/local/projects/dotfiles/.config/foot
-~/.config/nvim   -> /mnt/local/projects/dotfiles/.config/nvim
-~/.config/niri   -> /mnt/local/projects/dotfiles/.config/niri
-~/.config/yazi   -> /mnt/local/projects/dotfiles/.config/yazi
+~/.config/atuin  -> ~/dotfiles/.config/atuin
+~/.config/foot   -> ~/dotfiles/.config/foot
+~/.config/nvim   -> ~/dotfiles/.config/nvim
+~/.config/niri   -> ~/dotfiles/.config/niri
+~/.config/yazi   -> ~/dotfiles/.config/yazi
 ```
 
-Some single configuration files, such as GTK and xdg-desktop-portal settings, are linked individually.
+Because `~/.config/systemd` is repository-backed, live systemd enable symlinks under `*.wants/` are runtime state and are ignored by Git. Do not delete those directories merely to clean the working tree.
 
-Because most managed paths are symbolic links, repository changes become active immediately. Wayland helper scripts are the exception and must be copied/deployed into `~/.config/wayland/scripts/` after changes.
+## User services
 
-## Flyline
-
-Flyline is built from source from the local checkout:
+Required user units include:
 
 ```text
-/mnt/local/projects/flyline
+ssh-agent.service
+swayidle.service
+niri-keyboard-state.service
+zellij-copy.path
 ```
 
-Bash loads the release library from:
+Optional units are enabled only when their executables are available. Missing optional software is not treated as an installation failure.
+
+The Knowledge services are conditional on:
 
 ```text
-/mnt/local/projects/flyline/target/release/libflyline.so
+/mnt/local/projects/knowledge
 ```
 
-The Flyline builtin is loaded only in interactive Bash sessions.
+If that project is absent, its services remain disabled.
 
-The current shell configuration also integrates Flyline with Atuin:
+## Niri, Ly and SELinux
 
-- `Ctrl+R` opens Atuin history search.
-- `Up` uses Atuin history navigation.
+SELinux must remain enabled.
 
-Official Flyline documentation:
+The Fedora bootstrap installs the local Ly SELinux policy from:
 
-https://github.com/HalFrgrd/flyline
+```text
+install/selinux/ly-local.te
+```
 
-## Updating Flyline
+Do not work around Ly session problems by disabling SELinux or switching the machine permanently to permissive mode.
 
-Update the source checkout and build the release artifact:
+Niri configuration can be checked independently with:
 
 ```bash
-cd /mnt/local/projects/flyline
-
-git fetch upstream
-git merge --ff-only upstream/master
-git push origin master
-
-cargo build --release --locked
+niri validate
 ```
 
-Open a new interactive Bash session after rebuilding, then verify:
+## PATH application sync
+
+This setup uses a PATH-oriented launcher flow:
+
+```text
+Super+D -> fzf -> PATH command
+```
+
+After installing a GUI application or Chrome/Chromium PWA, run:
 
 ```bash
-flyline version
+path-apps sync
 ```
+
+The helper scans desktop entries and creates wrappers under `~/.local/bin` when needed without removing existing desktop entries or PWA registrations.
+
+## Espanso
+
+Espanso configuration is tracked under:
+
+```text
+.config/espanso/
+```
+
+Its service is optional during bootstrap: if the Espanso executable is not installed, `espanso.service` is skipped rather than failing the Fedora acceptance tests.
+
+Custom match files live under:
+
+```text
+.config/espanso/match/
+```
+
+The helper:
+
+```text
+.local/bin/espanso-word
+```
+
+opens or creates topic YAML files.
 
 ## Dotfiles workflow
 
-Inspect changes before committing:
+Inspect changes:
 
 ```bash
-cd /mnt/local/projects/dotfiles
+cd ~/dotfiles
 git status --short
 git diff
 ```
@@ -115,212 +245,27 @@ git commit -m "Describe the change"
 git push origin main
 ```
 
-Confirm the local branch and GitHub are synchronized:
+Confirm local and GitHub `main` are synchronized:
 
 ```bash
 git fetch origin --prune
 git rev-list --left-right --count main...origin/main
 ```
 
-Expected result:
+Expected:
 
 ```text
 0  0
 ```
 
+## Migration notes
 
-## PATH application sync
+Fedora is now the active `main` branch target.
 
-This setup uses a PATH-only application launcher:
-
-```text
-Super+D -> fzf -> PATH -> command
-```
-
-Desktop entries are not used directly by the launcher. To expose newly installed GUI applications and Chrome PWAs through the same PATH-only flow, run:
-
-```bash
-path-apps sync
-```
-
-The helper scans:
-
-- `~/.local/share/applications/*.desktop`
-- `/usr/share/applications/*.desktop`
-
-Behavior:
-
-- If the application is already reachable through `$PATH`, it is left unchanged.
-- If a Chrome/Chromium PWA is not yet represented in PATH, the helper creates a direct wrapper in `~/.local/bin` using its `--app-id`.
-- If a normal desktop application is not reachable through PATH but has an executable absolute path, the helper creates a wrapper in `~/.local/bin`.
-- Existing `.desktop` files, icons, and PWA registrations are not removed.
-- PWA duplicates are avoided by matching the real Chrome `--app-id`, not the display name.
-
-The intended workflow after installing a new GUI application or PWA is simply:
+Historical Arch state remains recoverable from:
 
 ```text
-install application/PWA
-        ↓
-path-apps sync
-        ↓
-Super+D
-        ↓
-select the PATH command with fzf
+arch-final-2026-09-23
 ```
 
-The helper itself is tracked in:
-
-```text
-.local/bin/path-apps
-```
-
-## Espanso
-
-Espanso is the permanent local text-expansion layer for this setup. It is intentionally file-based and local-first: YAML files are edited locally, become active immediately, and are committed to Git only after verification.
-
-Live structure:
-
-```text
-~/.config/espanso/match/
-├── packages/
-├── storage/
-└── custom -> /mnt/local/projects/dotfiles/.config/espanso/match/
-```
-
-Custom matches live in:
-
-```text
-/mnt/local/projects/dotfiles/.config/espanso/match/
-├── base.yml
-├── openai.yml
-└── <topic>.yml
-```
-
-Espanso loads match files recursively, so creating or editing a topic YAML file under the repository is enough. No per-file symlink, database, manager application, index, deploy step, or synchronization script is required.
-
-The daily workflow is:
-
-```text
-edit/add/remove YAML
-        ↓
-Espanso reloads the configuration
-        ↓
-Super+C
-        ↓
-fzf: YAML match files + active trigger count
-        ↓
-select a match file
-        ↓
-fzf: triggers from that file
-        ↓
-select a trigger
-        ↓
-expand the selected match into the active application
-```
-
-The Espanso picker is intentionally hierarchical. The first fzf view treats each custom YAML match file as a category and shows its active trigger count. The second view contains only the active triggers from the selected file. Filtering is handled directly by fzf. Empty match files are omitted. This keeps the picker usable as the number of topic files and triggers grows without adding a separate database or index.
-
-The repository is the versioned source, while the local checkout is the live runtime source. GitHub is used for backup, history, and rollback rather than as a runtime dependency.
-
-Current Espanso defaults are intentionally minimal:
-
-```yaml
-enable: true
-backend: inject
-show_notifications: false
-auto_restart: true
-
-keyboard_layout:
-  rules: evdev
-  model: pc105
-  layout: us
-  variant: ""
-  options: ""
-```
-
-Notes:
-
-- `enable: true` keeps Espanso enabled.
-- `backend: inject` forces direct key-event text injection instead of clipboard injection.
-- `show_notifications: false` disables Espanso notifications.
-- `auto_restart: true` refreshes the worker automatically when configuration files change on disk.
-- The explicit `keyboard_layout` block pins the Wayland keyboard layout to the current evdev / pc105 / US setup.
-
-Do not add extra tuning unless a real reproducible problem appears. In particular, injection delays and modifier delays should remain at Espanso defaults unless a specific application starts losing characters or mis-handling injected key events.
-
-
-### Quick YAML editor workflow
-
-The `:word` Espanso trigger expands to:
-
-```text
-espanso-word 
-```
-
-The command takes exactly two arguments:
-
-```text
-espanso-word EDITOR FILE
-```
-
-Examples:
-
-```bash
-espanso-word nvim openai
-espanso-word vim ytdlp
-espanso-word nano notes
-```
-
-Behavior:
-
-- The first argument is the editor command.
-- The second argument is the Espanso match file name.
-- Bash completion lists existing YAML files from `.config/espanso/match/` for the second argument.
-- The `.yml` / `.yaml` extension may be omitted.
-- If the requested file does not exist, `espanso-word` creates `<name>.yml` with a valid `matches:` root and opens it in the selected editor.
-- Existing files are opened directly.
-
-The helper lives in:
-
-```text
-.local/bin/espanso-word
-```
-
-The trigger lives in:
-
-```text
-.config/espanso/match/word.yml
-```
-
-The Bash completion function is defined in `.bashrc`.
-
-Typical flow:
-
-```text
-Super+C
-  ↓
-:word
-  ↓
-espanso-word 
-  ↓
-type: EDITOR FILE
-  ↓
-Tab-complete/filter an existing YAML name or type a new name
-  ↓
-Enter
-  ↓
-open existing file or create + open a new YAML file
-```
-
-For day-to-day changes:
-
-```bash
-cd /mnt/local/projects/dotfiles
-$EDITOR .config/espanso/match/<topic>.yml
-espanso match list
-git diff
-git add .config/espanso
-git commit -m "Update Espanso matches"
-git push origin main
-```
-
+Private/user data is intentionally not restored by the dotfiles bootstrap. Restore personal data and secrets separately from the private backup, after verifying paths and checksums.
