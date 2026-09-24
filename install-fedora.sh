@@ -7,7 +7,7 @@ export DOTFILES_ROOT="$ROOT"
 START_SECONDS=$SECONDS
 CURRENT_PHASE="startup"
 CURRENT_INDEX=0
-TOTAL_PHASES=7
+TOTAL_PHASES=8
 declare -a PHASE_RESULTS=()
 
 elapsed() {
@@ -60,11 +60,12 @@ echo "OK sudo credentials"
 
 run_phase 1 "Preflight checks" "$ROOT/install/05-preflight.sh"
 run_phase 2 "Fedora packages" "$ROOT/install/10-base.sh"
-run_phase 3 "Dotfiles installation" "$ROOT/install/20-dotfiles.sh"
-run_phase 4 "User services" "$ROOT/install/30-services.sh"
-run_phase 5 "QEMU guest integration" "$ROOT/install/35-fedora-qemu-guest.sh"
-run_phase 6 "Ly, Niri session and SELinux" "$ROOT/install/36-display-manager.sh"
-run_phase 7 "Acceptance tests" "$ROOT/install/40-verify.sh"
+run_phase 3 "Google Sans Code font" "$ROOT/install/15-fonts.sh"
+run_phase 4 "Dotfiles installation" "$ROOT/install/20-dotfiles.sh"
+run_phase 5 "User services" "$ROOT/install/30-services.sh"
+run_phase 6 "QEMU guest integration" "$ROOT/install/35-fedora-qemu-guest.sh"
+run_phase 7 "Ly, Niri session and SELinux" "$ROOT/install/36-display-manager.sh"
+run_phase 8 "Acceptance tests" "$ROOT/install/40-verify.sh"
 
 echo
 echo "===== INSTALL SUMMARY ====="
