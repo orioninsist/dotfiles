@@ -20,7 +20,7 @@ missing=()
 installed=0
 
 for pkg in "${pkgs[@]}"; do
-  if rpm -q "$pkg" >/dev/null 2>&1; then
+  if rpm -q "$pkg" >/dev/null 2>&1 || dnf -q repoquery --installed "$pkg" >/dev/null 2>&1; then
     ((installed += 1))
   else
     missing+=("$pkg")
@@ -77,7 +77,7 @@ echo
 echo "Verifying installed package set..."
 still_missing=()
 for pkg in "${pkgs[@]}"; do
-  rpm -q "$pkg" >/dev/null 2>&1 || still_missing+=("$pkg")
+  rpm -q "$pkg" >/dev/null 2>&1 || dnf -q repoquery --installed "$pkg" >/dev/null 2>&1 || still_missing+=("$pkg")
 done
 
 if (("${#still_missing[@]}" > 0)); then
