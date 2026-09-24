@@ -181,7 +181,6 @@ vendor	antigravity	Google Antigravity	official-google-rpm-repo
 upstream	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	official-portable-linux-binary
 
 # Local-project parity policy
-dnf	starship	Starship prompt	replace-local-build-with-fedora-package
 external-project	/mnt/local/projects/knowledge	Knowledge project	conditional-services
 external-project	/mnt/local/areas/microbreak	Microbreak project	preserve-path-after-data-restore
 external-project	/mnt/local/projects/starship	Starship source checkout	not-required-use-fedora-package
@@ -191,3 +190,5 @@ dnf	NetworkManager	Fedora network management	fedora-functional-equivalent
 fedora-equivalent	NetworkManager.service	Arch systemd-networkd+iwd topology	managed-by-fedora
 fedora-equivalent	firewalld/nftables	Arch iptables.service	do-not-recreate-legacy-iptables-service
 fedora-default	fstrim.timer	SSD periodic trim	retain-fedora-default
+
+upstream	starship	Starship prompt	official-installer-user-local
