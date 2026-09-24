@@ -88,7 +88,7 @@ workspace "10" {
 
 spawn-at-startup "mako"
 spawn-at-startup "systemctl" "--user" "start" "cliphist.service"
-spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "JetBrains Mono 10"
+spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
 spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/niri-window-place-once"
 spawn-at-startup "bash" "-lc" "test -f \"$HOME/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg\" && exec swaybg -i \"$HOME/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg\" -m fill"
 
