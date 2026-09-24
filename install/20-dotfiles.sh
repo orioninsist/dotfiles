@@ -24,6 +24,13 @@ for p in "$ROOT"/.local/bin/*; do
   backup_or_link "$p" "$HOME/.local/bin/${p##*/}"
 done
 
+# Git does not preserve an executable bit for every script copied from older
+# dotfiles layouts. Normalize scripts that Niri launches directly.
+for script_dir in "$ROOT/.config/wayland/scripts" "$ROOT/.config/niri/scripts" "$ROOT/.local/bin"; do
+  [[ -d "$script_dir" ]] || continue
+  find "$script_dir" -maxdepth 1 -type f -exec chmod u+x {} +
+done
+
 for f in .bashrc .bash_profile .profile; do
   [[ -e "$ROOT/$f" ]] || continue
   backup_or_link "$ROOT/$f" "$HOME/$f"
