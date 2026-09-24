@@ -5,17 +5,39 @@ ROOT="${DOTFILES_ROOT:?}"
 mapfile -t pkgs < <(awk -F '\t' '$1=="dnf"{print $2}' "$ROOT/install/manifest.tsv")
 (("${#pkgs[@]}" > 0)) || { echo "No Fedora packages found in install/manifest.tsv" >&2; exit 1; }
 
-echo "Checking ${#pkgs[@]} Fedora packages..."
+echo "Checking installed Fedora packages..."
 missing=()
-index=0
+installed=0
+
 for pkg in "${pkgs[@]}"; do
-  ((index += 1))
-  printf '  [%d/%d] %s\n' "$index" "${#pkgs[@]}" "$pkg"
-  dnf -q repoquery --available "$pkg" >/dev/null 2>&1 || missing+=("$pkg")
+  if rpm -q "$pkg" >/dev/null 2>&1; then
+    ((installed += 1))
+  else
+    missing+=("$pkg")
+  fi
 done
 
-if (("${#missing[@]}" > 0)); then
-  printf 'Unavailable Fedora package: %s\n' "${missing[@]}" >&2
+echo "Installed: $installed/${#pkgs[@]}"
+
+if (("${#missing[@]}" == 0)); then
+  echo "All required Fedora packages are already installed."
+  echo "No DNF transaction needed."
+  exit 0
+fi
+
+echo "Missing: ${#missing[@]}"
+printf '  %s\n' "${missing[@]}"
+
+echo
+echo "Verifying only missing packages in Fedora repositories..."
+unavailable=()
+for pkg in "${missing[@]}"; do
+  echo "  checking: $pkg"
+  dnf -q repoquery --available "$pkg" >/dev/null 2>&1 || unavailable+=("$pkg")
+done
+
+if (("${#unavailable[@]}" > 0)); then
+  printf 'Unavailable Fedora package: %s\n' "${unavailable[@]}" >&2
   exit 1
 fi
 
@@ -23,8 +45,8 @@ dnf_retry() {
   local attempt=1
   local max_attempts=3
   while true; do
-    echo "DNF attempt $attempt/$max_attempts: $*"
-    if sudo dnf "$@"; then
+    echo "DNF attempt $attempt/$max_attempts"
+    if sudo dnf -y install "$@"; then
       return 0
     fi
     if ((attempt >= max_attempts)); then
@@ -38,11 +60,19 @@ dnf_retry() {
 }
 
 echo
-echo "Refreshing and upgrading Fedora packages..."
-dnf_retry -y upgrade --refresh
+echo "Installing only missing Fedora packages..."
+dnf_retry "${missing[@]}"
 
 echo
-echo "Installing required Fedora packages..."
-dnf_retry -y install "${pkgs[@]}"
+echo "Verifying installed package set..."
+still_missing=()
+for pkg in "${pkgs[@]}"; do
+  rpm -q "$pkg" >/dev/null 2>&1 || still_missing+=("$pkg")
+done
 
-echo "Fedora package phase complete."
+if (("${#still_missing[@]}" > 0)); then
+  printf 'Package still missing after installation: %s\n' "${still_missing[@]}" >&2
+  exit 1
+fi
+
+echo "All required Fedora packages are installed."
