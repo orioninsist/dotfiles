@@ -152,7 +152,7 @@ dnf	nmap-ncat	network utility	required-workstation
 # Arch host parity additions
 dnf	docker	Docker engine	arch-parity-system-service
 dnf	docker-compose	Docker Compose	arch-parity-system-service
-dnf	iwd	iwd wireless daemon	arch-parity-system-service
+dnf	iwd	iwd wireless daemon	installed-not-enabled-fedora-networkmanager-default
 dnf-physical	thermald	Intel thermal daemon	arch-parity-physical
 dnf-physical	tuned	Tuned power management	arch-parity-physical
 dnf	vnstat	Network traffic statistics	arch-parity-system-service
@@ -188,3 +188,7 @@ external-project	/mnt/local/areas/microbreak	Microbreak project	preserve-path-af
 external-project	/mnt/local/projects/starship	Starship source checkout	not-required-use-fedora-package
 external-project	/mnt/local/projects/zoxide	Zoxide source checkout	not-required-use-fedora-package
 external-project	$HOME/.local/lib/flyline/libflyline.so	Flyline Bash loadable	conditional-shell-extension
+dnf	NetworkManager	Fedora network management	fedora-functional-equivalent
+fedora-equivalent	NetworkManager.service	Arch systemd-networkd+iwd topology	managed-by-fedora
+fedora-equivalent	firewalld/nftables	Arch iptables.service	do-not-recreate-legacy-iptables-service
+fedora-default	fstrim.timer	SSD periodic trim	retain-fedora-default
