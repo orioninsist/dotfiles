@@ -18,6 +18,13 @@ optional_units=(
   orion-power-profile-state.service
   espanso.service
   openwith-normalizer.path
+  plasma-polkit-agent.service
+)
+
+knowledge_units=(
+  knowledge-personal-search.service
+  knowledge-personal-watch.service
+  knowledge-personal-web.service
 )
 
 unit_execs_available() {
@@ -58,6 +65,23 @@ for unit in "${optional_units[@]}"; do
     systemctl --user disable "$unit" >/dev/null 2>&1 || true
   fi
 done
+
+knowledge_root="/mnt/local/projects/knowledge"
+if [[ -d "$knowledge_root" ]]; then
+  echo "Knowledge project detected: $knowledge_root"
+  for unit in "${knowledge_units[@]}"; do
+    if systemctl --user cat "$unit" >/dev/null 2>&1 && unit_execs_available "$unit"; then
+      systemctl --user enable "$unit"
+    else
+      echo "INFO Knowledge unit unavailable or dependency missing: $unit" >&2
+    fi
+  done
+else
+  echo "INFO Knowledge project absent; Knowledge services remain disabled."
+  for unit in "${knowledge_units[@]}"; do
+    systemctl --user disable "$unit" >/dev/null 2>&1 || true
+  done
+fi
 
 if (("${#missing_required[@]}" > 0)); then
   printf 'Missing required user unit: %s\n' "${missing_required[@]}" >&2
