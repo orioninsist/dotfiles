@@ -119,6 +119,37 @@ for unit in pipewire.socket pipewire-pulse.socket gnome-keyring-daemon.socket; d
   systemctl --user cat "$unit" >/dev/null
 done
 
+echo "==> Font stack"
+
+[[ -f "$HOME/.local/share/fonts/GoogleSansCodeNerd/GoogleSansCodeNerdFontMono-Regular.ttf" ]] || {
+  echo "GoogleSansCode Nerd Font Mono is missing" >&2
+  exit 1
+}
+
+mono_family="$(fc-match -f '%{family}\n' monospace)"
+[[ "$mono_family" == *"GoogleSansCode Nerd Font Mono"* ]] || {
+  echo "Monospace does not resolve to GoogleSansCode Nerd Font Mono: $mono_family" >&2
+  exit 1
+}
+
+[[ "$(fc-match -f '%{family}\n' emoji | head -1)" == "Noto Color Emoji" ]] || {
+  echo "Emoji fallback is not Noto Color Emoji" >&2
+  exit 1
+}
+
+[[ -f "$HOME/.local/share/fonts/NotoColorEmoji/NotoColorEmoji.ttf" ]] || {
+  echo "Noto Color Emoji font file is missing" >&2
+  exit 1
+}
+
+grep -Fq "font=GoogleSansCode Nerd Font Mono:size=12" \
+  "$HOME/.config/foot/foot.ini" || {
+    echo "Foot does not use GoogleSansCode Nerd Font Mono" >&2
+    exit 1
+  }
+
+echo
+
 echo "==> Desktop appearance"
 CATPPUCCIN_GTK_THEME="catppuccin-mocha-mauve-standard+default"
 CATPPUCCIN_GTK_DIR="$HOME/.local/share/themes/$CATPPUCCIN_GTK_THEME"

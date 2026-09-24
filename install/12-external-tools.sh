@@ -11,6 +11,10 @@ CATPPUCCIN_GTK_VERSION="1.0.3"
 CATPPUCCIN_GTK_THEME="catppuccin-mocha-mauve-standard+default"
 CATPPUCCIN_GTK_SHA256="cbacdac6161f98c315fb86740e21426ef6dda64f0ad69157cf28f3a1dda446fe"
 SATTY_SHA256="eb7a028c4a5ce331c2f355add8e2b807a7d697fe4495f7e1965786a4f6bcd5b8"
+NERD_FONTS_VERSION="3.5.1"
+NERD_FONTS_GOOGLE_SANS_CODE_SHA256="b5a2a79b6ac0f021049c63b67bb42a1dcf81d5bc4e447fc6205c79d969605f42"
+NOTO_EMOJI_COMMIT="e20cbc2bbec1926686be9f9bee7d1d2cfa1fea0e"
+NOTO_COLOR_EMOJI_SHA256="15671215ab769fdc7162a045d56fd7d7e477c51b04e6b3c761d914d8fdd6cc44"
 
 mkdir -p "$BIN_DIR"
 export PATH="$BIN_DIR:$HOME/.bun/bin:$PATH"
@@ -104,6 +108,50 @@ else
 fi
 
 echo
+echo "==> Installing fonts"
+
+FONT_ROOT="$HOME/.local/share/fonts"
+NERD_FONT_DIR="$FONT_ROOT/GoogleSansCodeNerd"
+EMOJI_FONT_DIR="$FONT_ROOT/NotoColorEmoji"
+
+mkdir -p "$NERD_FONT_DIR" "$EMOJI_FONT_DIR"
+
+if [[ -f "$NERD_FONT_DIR/GoogleSansCodeNerdFontMono-Regular.ttf" ]]; then
+  echo "GoogleSansCode Nerd Font already installed."
+else
+  tmpdir="$(mktemp -d)"
+  trap 'rm -rf "$tmpdir"' EXIT
+
+  curl -fL \
+    "https://github.com/ryanoasis/nerd-fonts/releases/download/v$NERD_FONTS_VERSION/GoogleSansCode.tar.xz" \
+    -o "$tmpdir/GoogleSansCode.tar.xz"
+
+  echo "$NERD_FONTS_GOOGLE_SANS_CODE_SHA256  $tmpdir/GoogleSansCode.tar.xz" | sha256sum -c -
+
+  tar -xJf "$tmpdir/GoogleSansCode.tar.xz" -C "$tmpdir"
+
+  find "$tmpdir" -type f \( -name '*.ttf' -o -name '*.otf' \) \
+    -exec cp -f {} "$NERD_FONT_DIR/" \;
+
+  rm -rf "$tmpdir"
+  trap - EXIT
+fi
+
+if [[ -f "$EMOJI_FONT_DIR/NotoColorEmoji.ttf" ]] &&
+   [[ "$(fc-match -f '%{family}\n' 'Noto Color Emoji' | head -1)" == "Noto Color Emoji" ]]; then
+  echo "Noto Color Emoji already installed."
+else
+  curl -fL \
+    "https://raw.githubusercontent.com/googlefonts/noto-emoji/$NOTO_EMOJI_COMMIT/2D/fonts/NotoColorEmoji.ttf" \
+    -o "$EMOJI_FONT_DIR/NotoColorEmoji.ttf"
+
+  echo "$NOTO_COLOR_EMOJI_SHA256  $EMOJI_FONT_DIR/NotoColorEmoji.ttf" | sha256sum -c -
+fi
+
+fc-cache -f
+
+echo
+
 echo "==> Installing Catppuccin GTK $CATPPUCCIN_GTK_VERSION"
 
 THEME_DIR="$HOME/.local/share/themes/$CATPPUCCIN_GTK_THEME"

@@ -196,3 +196,5 @@ fedora-default	fstrim.timer	SSD periodic trim	retain-fedora-default
 
 upstream	starship	Starship prompt	official-installer-user-local
 upstream	catppuccin-gtk	v1.0.3 Mocha/Mauve standard+default	required-desktop-theme
+upstream	nerd-fonts-google-sans-code	v3.5.1 GoogleSansCode Nerd Font	required-font-stack
+upstream	noto-color-emoji	Unicode 18 pinned commit	required-font-stack
