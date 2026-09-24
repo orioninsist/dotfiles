@@ -188,7 +188,7 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 | `Super+Ctrl+Shift+M` | Mullvad Browser |
 | `Super+Ctrl+Y` | Nautilus |
 | `Super+F8` | Launch Knowledge PWA on workspace 7 |
-| `Super+P` | Flameshot GUI |
+| `Super+P` | Satty screenshot annotation |
 
 ### Display, power profile and hardware
 

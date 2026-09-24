@@ -6,6 +6,8 @@ BIN_DIR="$HOME/.local/bin"
 mkdir -p "$BIN_DIR"
 BUN_VERSION="1.3.3"
 TYPST_VERSION="0.15.0"
+SATTY_VERSION="0.22.0"
+SATTY_SHA256="eb7a028c4a5ce331c2f355add8e2b807a7d697fe4495f7e1965786a4f6bcd5b8"
 
 mkdir -p "$BIN_DIR"
 export PATH="$BIN_DIR:$HOME/.bun/bin:$PATH"
@@ -64,6 +66,35 @@ else
 
   tar -xJf "$tmpdir/typst.tar.xz" -C "$tmpdir"
   install -m 0755     "$tmpdir/typst-x86_64-unknown-linux-musl/typst"     "$BIN_DIR/typst"
+
+  rm -rf "$tmpdir"
+  trap - EXIT
+fi
+
+echo
+echo "==> Installing Satty $SATTY_VERSION"
+
+if command -v satty >/dev/null 2>&1 && satty --version 2>/dev/null | grep -Fq "$SATTY_VERSION"; then
+  echo "Satty already installed: $(command -v satty)"
+else
+  tmpdir="$(mktemp -d)"
+  trap 'rm -rf "$tmpdir"' EXIT
+
+  curl -fL \
+    "https://github.com/Satty-org/Satty/releases/download/v$SATTY_VERSION/satty-x86_64-unknown-linux-gnu.tar.gz" \
+    -o "$tmpdir/satty.tar.gz"
+
+  echo "$SATTY_SHA256  $tmpdir/satty.tar.gz" | sha256sum -c -
+
+  tar -xzf "$tmpdir/satty.tar.gz" -C "$tmpdir"
+  satty_bin="$(find "$tmpdir" -type f -name satty -perm -u+x -print -quit)"
+
+  [[ -n "$satty_bin" ]] || {
+    echo "Satty binary not found in release archive" >&2
+    exit 1
+  }
+
+  install -m 0755 "$satty_bin" "$BIN_DIR/satty"
 
   rm -rf "$tmpdir"
   trap - EXIT
@@ -129,7 +160,7 @@ echo "==> Verifying external tools"
 
 failed=0
 
-for cmd in yazi zellij bun typst wl-screenrec wl-color-picker; do
+for cmd in yazi zellij bun typst satty wl-screenrec wl-color-picker; do
   if command -v "$cmd" >/dev/null 2>&1; then
     printf 'OK   %-20s %s\n' "$cmd" "$(command -v "$cmd")"
   else

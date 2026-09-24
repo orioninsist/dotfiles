@@ -106,7 +106,7 @@ def test_niri_referenced_commands_are_declared():
     required_commands = {
         "foot", "alacritty", "kitty", "google-chrome-stable", "brave-browser",
         "microsoft-edge-stable", "yandex-browser-stable", "firefox",
-        "tor-browser", "mullvad-browser", "nautilus", "snapshot", "flameshot",
+        "tor-browser", "mullvad-browser", "nautilus", "snapshot", "flameshot", "satty",
         "wpctl", "playerctl", "brightnessctl", "busctl", "notify-send",
         "wl-screenrec", "ffmpeg", "ffprobe", "pactl", "wl-color-picker",
         "wl-copy", "wtype", "wlsunset", "cliphist", "fzf", "mako", "makoctl",

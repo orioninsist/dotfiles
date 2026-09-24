@@ -124,6 +124,7 @@ cargo	wl-screenrec	wl-screenrec	upstream-fedora-method
 upstream	wl-color-picker	jgmdev/wl-color-picker	upstream-script
 upstream	bun	bun-v1.3.3 official installer	arch-parity
 upstream	typst	v0.15.0 official Linux x86_64 prebuilt	arch-parity
+upstream	satty	v0.22.0 official Linux x86_64 prebuilt	required-screenshot-annotation
 
 # Fedora 44 workstation CLI
 dnf	eza	modern ls	required-workstation

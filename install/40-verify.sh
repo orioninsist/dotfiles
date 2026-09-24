@@ -16,7 +16,7 @@ required_commands=(
   grim slurp ssh vim nvim tesseract easyeffects cliphist
   glow atuin calcurse calibre dust fd fuzzel mpv procs rclone
   syncthing waybar hugo d2 tmux cargo rustc clang convert zenity
-  yazi zellij wl-screenrec wl-color-picker bun typst eza bat yq
+  yazi zellij wl-screenrec wl-color-picker bun typst satty eza bat yq
   tree htop btop ncdu zoxide rsync unzip zip git-lfs gh openssl
   gpg age file which lsof strace lspci lsusb host nc starship realesrgan-ncnn-vulkan chatgpt github-copilot-app
 )
@@ -46,6 +46,20 @@ bash --noprofile --rcfile "$HOME/.bashrc" -ic '
   echo "Flyline/FZF Bash integration failed" >&2
   exit 1
 }
+
+echo "==> Executable dotfile helpers"
+for path in \
+  "$HOME/.config/wayland/scripts/fzf-popup" \
+  "$HOME/.config/wayland/scripts/app-launcher" \
+  "$HOME/.config/wayland/scripts/satty-screenshot" \
+  "$HOME/.config/niri/scripts/niri-window-place-once" \
+  "$HOME/.local/bin/path-apps"
+do
+  [[ -x "$path" ]] || {
+    echo "Dotfile helper is not executable: $path" >&2
+    exit 1
+  }
+done
 
 echo "==> Niri and display manager"
 niri validate --config "$HOME/.config/niri/config.kdl"
