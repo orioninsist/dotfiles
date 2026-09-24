@@ -1,0 +1,14 @@
+[Unit]
+Description=Niri wallpaper
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+ConditionPathExists=%h/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/swaybg -i %h/.wallpapers/sam-ferrara-uNvgvo2cs7k-unsplash.jpg -m fill
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
