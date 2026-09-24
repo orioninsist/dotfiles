@@ -1,0 +1,11 @@
+module ly-local 1.0;
+
+require {
+    type unconfined_t;
+    type unconfined_service_t;
+    class process transition;
+}
+
+# Fedora 44: allow Ly's system service domain to transition into
+# the authenticated user's unconfined domain when starting the session shell.
+allow unconfined_service_t unconfined_t:process transition;
