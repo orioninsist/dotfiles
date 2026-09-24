@@ -28,6 +28,7 @@ for step in \
   install/15-fonts.sh \
   install/20-dotfiles.sh \
   install/25-storage.sh \
+  install/27-whisper.sh \
   install/30-services.sh \
   install/32-system-services.sh \
   install/35-fedora-qemu-guest.sh \

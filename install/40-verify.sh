@@ -19,6 +19,7 @@ required_commands=(
   yazi zellij wl-screenrec wl-color-picker bun typst satty eza bat yq
   tree htop btop ncdu zoxide rsync unzip zip git-lfs gh openssl
   gpg age file which lsof strace lspci lsusb host nc starship realesrgan-ncnn-vulkan chatgpt github-copilot-app
+  arecord amixer ffmpeg wtype notify-send uv
 )
 
 missing=()
@@ -53,7 +54,8 @@ for path in \
   "$HOME/.config/wayland/scripts/app-launcher" \
   "$HOME/.config/wayland/scripts/satty-screenshot" \
   "$HOME/.config/niri/scripts/niri-window-place-once" \
-  "$HOME/.local/bin/path-apps"
+  "$HOME/.local/bin/path-apps" \
+  "$HOME/.local/bin/whisper-type.sh"
 do
   [[ -x "$path" ]] || {
     echo "Dotfile helper is not executable: $path" >&2
@@ -63,6 +65,49 @@ done
 
 echo "==> Niri and display manager"
 niri validate --config "$HOME/.config/niri/config.kdl"
+
+echo "==> Whisper voice typing"
+WHISPER_PROJECT="/mnt/projects/whisper"
+WHISPER_PYTHON="$WHISPER_PROJECT/.venv/bin/python"
+
+[[ -d "$WHISPER_PROJECT/.git" ]] || {
+  echo "Whisper project checkout is missing: $WHISPER_PROJECT" >&2
+  exit 1
+}
+
+[[ -x "$WHISPER_PYTHON" ]] || {
+  echo "Whisper Python environment is missing: $WHISPER_PYTHON" >&2
+  exit 1
+}
+
+"$WHISPER_PYTHON" - <<'PYVERIFY'
+import torch
+import whisper
+
+assert torch.version.cuda is None, f"CUDA Torch installed: {torch.version.cuda}"
+assert not torch.cuda.is_available(), "CUDA unexpectedly available"
+
+try:
+    import triton
+except ImportError:
+    pass
+else:
+    raise SystemExit("Triton unexpectedly installed")
+
+whisper.load_model("small")
+print("Whisper small CPU model: PASS")
+PYVERIFY
+
+grep -Fq 'Mod+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh"; }'   "$HOME/.config/niri/binds/system.kdl" || {
+    echo "Missing Niri Turkish Whisper binding: Mod+I" >&2
+    exit 1
+  }
+
+grep -Fq 'Mod+Shift+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh en"; }'   "$HOME/.config/niri/binds/system.kdl" || {
+    echo "Missing Niri English Whisper binding: Mod+Shift+I" >&2
+    exit 1
+  }
+
 test -e /usr/share/wayland-sessions/niri.desktop
 systemctl is-enabled --quiet ly@tty2.service
 [[ "$(systemctl get-default)" == "graphical.target" ]]

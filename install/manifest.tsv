@@ -39,6 +39,7 @@ dnf	fzf	fzf	confirmed
 dnf	ripgrep	rg	confirmed
 dnf	jq	jq	confirmed
 dnf	ffmpeg-free	ffmpeg/ffprobe	verify-in-qemu
+dnf	alsa-utils	arecord/amixer	Whisper microphone capture
 dnf	flameshot	flameshot	confirmed
 dnf	libnotify	notify-send	confirmed
 dnf	bluez	Bluetooth stack	confirmed
@@ -185,6 +186,7 @@ upstream	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	official-portable-linux-
 
 # Local-project parity policy
 external-project	/mnt/projects/knowledge	Knowledge project	conditional-services
+external-project	/mnt/projects/whisper	OpenAI Whisper voice typing	required-voice-typing
 external-project	/mnt/local/areas/microbreak	Microbreak project	preserve-path-after-data-restore
 external-project	/mnt/projects/starship	Starship source checkout	not-required-use-fedora-package
 external-project	/mnt/projects/zoxide	Zoxide source checkout	not-required-use-fedora-package
