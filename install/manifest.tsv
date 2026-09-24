@@ -56,6 +56,7 @@ dnf	neovim	nvim	confirmed
 dnf	swayimg	swayimg	confirmed
 dnf	tesseract	tesseract OCR	verify-in-qemu
 dnf	foot	foot terminal	confirmed-fedora44
+dnf	jetbrains-mono-fonts	JetBrains Mono terminal font	confirmed-fedora44
 dnf	easyeffects	easyeffects	confirmed-fedora44
 dnf	qemu-guest-agent	libvirt/QEMU guest integration	confirmed-fedora44
 dnf	spice-vdagent	SPICE guest desktop integration (resize/input/clipboard)	confirmed-fedora44
@@ -70,9 +71,10 @@ dnf	pulseaudio-utils	pactl	verify-in-qemu
 dnf	wtype	wtype	verify-in-qemu
 dnf	wlsunset	wlsunset	verify-in-qemu
 dnf	snapshot	snapshot	confirmed-fedora44
-source	wl-screenrec	Wayland recorder	resolve-fedora-source
-source	zellij	terminal workspace	resolve-fedora-source
-source	wl-color-picker	color picker	resolve-fedora-source
+source	yazi	yazi file manager	unavailable-fedora44-repos
+source	wl-screenrec	Wayland recorder	unavailable-fedora44-repos
+source	zellij	terminal workspace	unavailable-fedora44-repos
+source	wl-color-picker	color picker	unavailable-fedora44-repos
 vendor	brave-browser	Brave browser	resolve-vendor-repo
 vendor	google-chrome-stable	Google Chrome	resolve-vendor-repo
 vendor	microsoft-edge-stable	Microsoft Edge	resolve-vendor-repo
