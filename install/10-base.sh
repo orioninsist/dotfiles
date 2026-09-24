@@ -2,7 +2,17 @@
 set -Eeuo pipefail
 ROOT="${DOTFILES_ROOT:?}"
 
-mapfile -t pkgs < <(awk -F '\t' '$1=="dnf"{print $2}' "$ROOT/install/manifest.tsv")
+profile="physical"
+if systemd-detect-virt --quiet --vm; then
+  profile="qemu"
+fi
+echo "Machine profile: $profile"
+
+if [[ "$profile" == "qemu" ]]; then
+  mapfile -t pkgs < <(awk -F '\t' '$1=="dnf" || $1=="dnf-qemu"{print $2}' "$ROOT/install/manifest.tsv")
+else
+  mapfile -t pkgs < <(awk -F '\t' '$1=="dnf" || $1=="dnf-physical"{print $2}' "$ROOT/install/manifest.tsv")
+fi
 (("${#pkgs[@]}" > 0)) || { echo "No Fedora packages found in install/manifest.tsv" >&2; exit 1; }
 
 echo "Checking installed Fedora packages..."
