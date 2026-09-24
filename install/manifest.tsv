@@ -174,9 +174,9 @@ dnf	pandoc	Pandoc document converter	arch-parity-cli
 # Arch foreign/application parity
 upstream	claude-code	Claude Code	official-anthropic-installer
 upstream	github-copilot-cli	GitHub Copilot CLI	official-github-installer
-upstream	jetbrains-toolbox	JetBrains Toolbox	official-jetbrains-tarball
-vendor	chatgpt-desktop	ChatGPT Desktop	needs-linux-upstream-verification
+upstream	jetbrains-toolbox	JetBrains Toolbox	official-jetbrains-tarball-fedora44-not-yet-listed-supported
+vendor	chatgpt	ChatGPT Desktop	official-openai-fedora44-rpm
 vendor	github-copilot-app	GitHub Copilot app	needs-linux-upstream-verification
-vendor	tradingview	TradingView Desktop	needs-linux-upstream-verification
+vendor	tradingview	TradingView Desktop	official-linux-deb-or-snap-no-native-fedora
 vendor	antigravity	Antigravity IDE	needs-linux-upstream-verification
-vendor	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	needs-fedora-upstream-verification
+upstream	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	official-portable-linux-binary
