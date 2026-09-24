@@ -2,10 +2,10 @@
 
 Personal Fedora Linux 44 / Niri configuration and bootstrap repository.
 
-The active checkout is expected at:
+The checkout can live anywhere. On the current machine it lives at:
 
 ```text
-~/dotfiles
+/mnt/projects/dotfiles
 ```
 
 The repository manages shell configuration, Niri, Wayland helpers, user/system services, package parity, desktop applications, and Fedora-specific bootstrap/verification.
@@ -147,6 +147,17 @@ Examples:
 ```
 
 Because `~/.config/systemd` is repository-backed, live systemd enable symlinks under `*.wants/` are runtime state and are ignored by Git. Do not delete those directories merely to clean the working tree.
+
+After moving an existing checkout, update the managed links from the new location:
+
+```bash
+cd /mnt/projects/dotfiles
+bash install/relink-moved-checkout.sh
+```
+
+The script locates the checkout from its own path. It repairs links into an older
+`dotfiles` checkout and leaves unrelated links and regular files alone. This is
+only a link repair; there is no need to rerun the full Fedora installer.
 
 ## User services
 
