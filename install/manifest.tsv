@@ -59,9 +59,9 @@ dnf	tesseract	tesseract OCR	verify-in-qemu
 dnf	foot	foot terminal	confirmed-fedora44
 dnf	jetbrains-mono-fonts	JetBrains Mono terminal font	confirmed-fedora44
 dnf	easyeffects	easyeffects	confirmed-fedora44
-dnf	qemu-guest-agent	libvirt/QEMU guest integration	confirmed-fedora44
-dnf	spice-vdagent	SPICE guest desktop integration (resize/input/clipboard)	confirmed-fedora44
-dnf	acpid	ACPI event handling in VM	verify-in-qemu
+dnf-qemu	qemu-guest-agent	libvirt/QEMU guest integration	confirmed-fedora44
+dnf-qemu	spice-vdagent	SPICE guest desktop integration (resize/input/clipboard)	confirmed-fedora44
+dnf-qemu	acpid	ACPI event handling in VM	verify-in-qemu
 dnf	cliphist	clipboard history	confirmed-fedora44
 dnf	glow	Markdown pager	confirmed-fedora44
 dnf	alacritty	alacritty	verify-in-qemu
@@ -102,9 +102,9 @@ source-service	knowledge-personal-watch.service	knowledge personal watch	enabled
 source-service	knowledge-personal-web.service	knowledge personal web	enabled-on-source-system
 source-service	plasma-polkit-agent.service	Fedora polkit authentication agent	resolved-polkit-kde
 source-service	gnome-keyring-daemon.socket	gnome keyring	resolved-fedora-package
-hardware	intel-media-driver	Intel VA-API media driver	physical-machine-only
-hardware	microcode_ctl	CPU microcode	physical-machine-only
-hardware	thermald	Intel thermal management	physical-machine-only
+dnf-physical	intel-media-driver	Intel VA-API media driver	physical-machine-only
+dnf-physical	microcode_ctl	CPU microcode	physical-machine-only
+dnf-physical	thermald	Intel thermal management	physical-machine-only
 # Do not promote source-system inventory into Fedora installation until proven by config/service/test usage.
 dnf	tmux	tmux terminal multiplexer	confirmed-fedora44
 dnf	cargo	cargo Rust package installer	required-wl-screenrec
@@ -153,8 +153,8 @@ dnf	nmap-ncat	network utility	required-workstation
 dnf	docker	Docker engine	arch-parity-system-service
 dnf	docker-compose	Docker Compose	arch-parity-system-service
 dnf	iwd	iwd wireless daemon	arch-parity-system-service
-dnf	thermald	Intel thermal daemon	arch-parity-physical
-dnf	tuned	Tuned power management	arch-parity-physical
+dnf-physical	thermald	Intel thermal daemon	arch-parity-physical
+dnf-physical	tuned	Tuned power management	arch-parity-physical
 dnf	vnstat	Network traffic statistics	arch-parity-system-service
 dnf	libvirt	libvirt virtualization daemon	arch-parity-virtualization
 dnf	virt-install	virt-install CLI	arch-parity-virtualization
