@@ -19,7 +19,6 @@ dnf	libxkbcommon	Keyboard handling runtime used by Smithay/niri	confirmed-fedora
 dnf	libdisplay-info	Display information runtime used by niri/Smithay	confirmed-fedora44
 dnf	pixman	Software rendering/compositing runtime used by Smithay	confirmed-fedora44
 dnf	libglvnd-egl	EGL dispatch runtime	confirmed-fedora44
-dnf	wayland	Wayland runtime utilities/libraries	confirmed-fedora44
 dnf	xorg-x11-server-Xwayland	Xwayland server runtime	confirmed-fedora44
 dnf	ly	LY display manager	confirmed-fedora44
 dnf	selinux-policy-devel	SELinux policy build tooling for Ly local policy	confirmed-fedora44
