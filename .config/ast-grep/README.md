@@ -12,9 +12,8 @@ The active configuration directory is symlinked from:
 
     ~/.config/ast-grep
 
-to:
-
-    /mnt/local/projects/dotfiles/.config/ast-grep
+to the `.config/ast-grep` directory of the active dotfiles checkout.
+You can inspect its current location with `readlink -f ~/.config/ast-grep`.
 
 ## Project configuration
 
