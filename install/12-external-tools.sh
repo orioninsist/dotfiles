@@ -147,3 +147,17 @@ else
   echo "==> Starship"
   curl -fsSL https://starship.rs/install.sh | sh -s -- -y -b "$BIN_DIR"
 fi
+
+echo "==> Installing Flyline"
+FLYLINE_SO="$HOME/.local/lib/libflyline.so"
+if [[ ! -f "$FLYLINE_SO" ]]; then
+  flyline_tmp_home="$(mktemp -d)"
+  trap 'rm -rf "$flyline_tmp_home"' EXIT
+
+  env HOME="$flyline_tmp_home"       FLYLINE_INSTALL_DIR="$HOME/.local/lib"       bash <(curl -sSfL https://github.com/HalFrgrd/flyline/releases/latest/download/install.sh)
+
+  rm -rf "$flyline_tmp_home"
+  trap - EXIT
+else
+  echo "Flyline already installed: $FLYLINE_SO"
+fi

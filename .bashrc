@@ -21,7 +21,7 @@ PS1="[\u@\h \W]\$ "
 export _ZO_RESOLVE_SYMLINKS=1
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
 
-FLYLINE_SO="$HOME/.local/lib/flyline/libflyline.so"
+FLYLINE_SO="$HOME/.local/lib/libflyline.so"
 if [[ -f "$FLYLINE_SO" ]]; then
     enable -p | grep -q "^enable flyline$" || enable -f "$FLYLINE_SO" flyline
 fi

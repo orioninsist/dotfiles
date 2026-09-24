@@ -31,6 +31,22 @@ if (("${#missing[@]}" > 0)); then
   exit 1
 fi
 
+echo "==> Bash shell integration"
+FLYLINE_SO="$HOME/.local/lib/libflyline.so"
+[[ -f "$FLYLINE_SO" ]] || {
+  echo "Missing Flyline loadable: $FLYLINE_SO" >&2
+  exit 1
+}
+
+bash --noprofile --rcfile "$HOME/.bashrc" -ic '
+  enable -p | grep -q "^enable flyline$" &&
+  type fzf-file-widget >/dev/null 2>&1 &&
+  type fzf-flyline-cd-widget >/dev/null 2>&1
+' </dev/null || {
+  echo "Flyline/FZF Bash integration failed" >&2
+  exit 1
+}
+
 echo "==> Niri and display manager"
 niri validate --config "$HOME/.config/niri/config.kdl"
 test -e /usr/share/wayland-sessions/niri.desktop

@@ -6,3 +6,6 @@
 # Python test bytecode
 __pycache__/
 *.py[cod]
+
+# Generated Zellij plugin artifacts
+.config/zellij/plugins/*/dist/*.wasm
