@@ -1,0 +1,17 @@
+[Unit]
+Description=Rclone Google Drive shared-with-me mount
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=%h/.config/rclone/rclone.conf
+
+[Service]
+Type=notify
+User=%i
+Group=%i
+ExecStart=/usr/bin/rclone mount gdrive: /mnt/gdrive-shared --config %h/.config/rclone/rclone.conf --drive-shared-with-me --read-only --vfs-cache-mode full --cache-dir %h/.cache/rclone
+ExecStop=/usr/bin/fusermount3 -uz /mnt/gdrive-shared
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
