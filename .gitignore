@@ -9,3 +9,6 @@ __pycache__/
 
 # Generated Zellij plugin artifacts
 .config/zellij/plugins/*/dist/*.wasm
+
+# Desktop runtime state
+.config/gtk-3.0/bookmarks

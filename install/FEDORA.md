@@ -22,12 +22,12 @@ After the minimal Fedora installation:
 
 ```bash
 sudo dnf -y install git
-git clone --branch bootstrap-fedora https://github.com/orioninsist/dotfiles.git /mnt/local/projects/dotfiles
-cd /mnt/local/projects/dotfiles
+git clone --branch bootstrap-fedora https://github.com/orioninsist/dotfiles.git /mnt/projects/dotfiles
+cd /mnt/projects/dotfiles
 bash bootstrap.sh
 ```
 
-If /mnt/local/projects is not part of the final filesystem design, stop before bootstrap and adjust the repo path strategy first: several current dotfiles still intentionally reference that location.
+If /mnt/projects is not part of the final filesystem design, stop before bootstrap and adjust the repo path strategy first: several current dotfiles still intentionally reference that location.
 
 ## Readiness rule
 

@@ -164,7 +164,7 @@ Optional units are enabled only when their executables are available. Missing op
 The Knowledge services are conditional on:
 
 ```text
-/mnt/local/projects/knowledge
+/mnt/projects/knowledge
 ```
 
 If that project is absent, its services remain disabled.

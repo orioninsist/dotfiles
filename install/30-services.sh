@@ -71,7 +71,7 @@ done
 # chrome-webapps-sync.path has no matching service in the repository, so never enable it blindly.
 systemctl --user disable chrome-webapps-sync.path >/dev/null 2>&1 || true
 
-knowledge_root="/mnt/local/projects/knowledge"
+knowledge_root="/mnt/projects/knowledge"
 if [[ -d "$knowledge_root" ]]; then
   echo "Knowledge project detected: $knowledge_root"
   for unit in "${knowledge_units[@]}"; do

@@ -78,8 +78,34 @@ for unit in ssh-agent.service swayidle.service niri-keyboard-state.service zelli
   systemctl --user is-enabled --quiet "$unit"
 done
 
+echo "==> Projects storage"
+SSD_UUID="e2aafb35-8be2-4d13-87a3-f4b644748d59"
+ssd_device="$(blkid -U "$SSD_UUID" 2>/dev/null || true)"
+
+if [[ -n "$ssd_device" ]]; then
+  [[ "$(findmnt -rn -M /mnt/.data -o SOURCE)" == "$ssd_device" ]] || {
+    echo "Projects SSD is not mounted correctly at /mnt/.data" >&2
+    exit 1
+  }
+
+  [[ "$(findmnt -rn -M /mnt/projects -o SOURCE)" == "$ssd_device[/local/projects]" ]] || {
+    echo "Projects bind mount is not correct at /mnt/projects" >&2
+    exit 1
+  }
+
+  [[ "$(findmnt -rn -M /mnt/.data | wc -l)" -eq 1 ]] || {
+    echo "Duplicate /mnt/.data mounts detected" >&2
+    exit 1
+  }
+
+  [[ "$(findmnt -rn -M /mnt/projects | wc -l)" -eq 1 ]] || {
+    echo "Duplicate /mnt/projects mounts detected" >&2
+    exit 1
+  }
+fi
+
 echo "==> Conditional external projects"
-[[ ! -d /mnt/local/projects/knowledge ]] || {
+[[ ! -d /mnt/projects/knowledge ]] || {
   for unit in knowledge-personal-search.service knowledge-personal-watch.service knowledge-personal-web.service; do
     systemctl --user is-enabled --quiet "$unit"
   done
