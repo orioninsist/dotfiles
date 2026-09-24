@@ -87,14 +87,14 @@ dnf	hugo	Hugo runtime for Knowledge personal web	confirmed-fedora44
 dnf	d2	D2 diagram renderer for Knowledge search	confirmed-fedora44
 dnf	polkit-kde	Fedora PolicyKit authentication agent	confirmed-fedora44
 dnf	xz	Typst upstream archive extraction	required-typst
-vendor	brave-browser	Brave browser	resolve-vendor-repo
-vendor	google-chrome-stable	Google Chrome	resolve-vendor-repo
-vendor	microsoft-edge-stable	Microsoft Edge	resolve-vendor-repo
-vendor	mullvad-browser	Mullvad Browser	resolve-upstream
-vendor	code	Visual Studio Code	resolve-vendor-repo
-vendor	yandex-browser-stable	Yandex Browser	resolve-vendor-repo
-vendor	spotify	Spotify	resolve-fedora-install-method
-vendor	tor-browser	Tor Browser	resolve-upstream
+vendor	brave-browser	Brave browser	official-brave-dnf-repo
+vendor	google-chrome-stable	Google Chrome	official-google-rpm
+vendor	microsoft-edge-stable	Microsoft Edge	official-microsoft-rpm-repo
+vendor	mullvad-browser	Mullvad Browser	official-mullvad-dnf-repo
+vendor	code	Visual Studio Code	official-microsoft-vscode-repo
+vendor	yandex-browser-stable	Yandex Browser	official-yandex-rpm
+vendor	spotify	Spotify	needs-supported-fedora-method
+upstream	tor-browser	Tor Browser	official-tor-linux-tarball
 source-service	rclone-gdrive.service	rclone mount/sync	resolved-fedora-template
 source-service	rclone-gdrive-shared.service	rclone shared mount/sync	resolved-fedora-template
 source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system
@@ -170,3 +170,13 @@ dnf	wget	wget downloader	arch-parity-cli
 dnf	fastfetch	fastfetch system info	arch-parity-cli
 dnf	hyperfine	hyperfine benchmark tool	arch-parity-cli
 dnf	pandoc	Pandoc document converter	arch-parity-cli
+
+# Arch foreign/application parity
+upstream	claude-code	Claude Code	official-anthropic-installer
+upstream	github-copilot-cli	GitHub Copilot CLI	official-github-installer
+upstream	jetbrains-toolbox	JetBrains Toolbox	official-jetbrains-tarball
+vendor	chatgpt-desktop	ChatGPT Desktop	needs-linux-upstream-verification
+vendor	github-copilot-app	GitHub Copilot app	needs-linux-upstream-verification
+vendor	tradingview	TradingView Desktop	needs-linux-upstream-verification
+vendor	antigravity	Antigravity IDE	needs-linux-upstream-verification
+vendor	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	needs-fedora-upstream-verification
