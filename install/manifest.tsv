@@ -88,13 +88,13 @@ dnf	d2	D2 diagram renderer for Knowledge search	confirmed-fedora44
 dnf	polkit-kde	Fedora PolicyKit authentication agent	confirmed-fedora44
 dnf	xz	Typst upstream archive extraction	required-typst
 vendor	brave-browser	Brave browser	official-brave-dnf-repo
-vendor	google-chrome-stable	Google Chrome	official-google-rpm
+vendor	google-chrome-stable	Google Chrome	official-google-fedora-rpm
 vendor	microsoft-edge-stable	Microsoft Edge	official-microsoft-rpm-repo
 vendor	mullvad-browser	Mullvad Browser	official-mullvad-dnf-repo
 vendor	code	Visual Studio Code	official-microsoft-vscode-repo
-vendor	yandex-browser-stable	Yandex Browser	official-yandex-rpm
-vendor	spotify	Spotify	needs-supported-fedora-method
-upstream	tor-browser	Tor Browser	official-tor-linux-tarball
+vendor	yandex-browser-stable	Yandex Browser	official-yandex-fedora-rpm
+exception	spotify	Spotify	no-official-fedora-rpm-use-web-or-explicit-third-party
+upstream	tor-browser	Tor Browser	official-tor-linux-tarball-register-app
 source-service	rclone-gdrive.service	rclone mount/sync	resolved-fedora-template
 source-service	rclone-gdrive-shared.service	rclone shared mount/sync	resolved-fedora-template
 source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system
@@ -174,9 +174,9 @@ dnf	pandoc	Pandoc document converter	arch-parity-cli
 # Arch foreign/application parity
 upstream	claude-code	Claude Code	official-anthropic-installer
 upstream	github-copilot-cli	GitHub Copilot CLI	official-github-installer
-upstream	jetbrains-toolbox	JetBrains Toolbox	official-jetbrains-tarball-fedora44-not-yet-listed-supported
+upstream	jetbrains-toolbox	JetBrains Toolbox	official-jetbrains-linux-tarball
 vendor	chatgpt	ChatGPT Desktop	official-openai-fedora44-rpm
-vendor	github-copilot-app	GitHub Copilot app	needs-linux-upstream-verification
+upstream	github-copilot-app	GitHub Copilot app	official-github-linux-release
 vendor	tradingview	TradingView Desktop	official-linux-deb-or-snap-no-native-fedora
-vendor	antigravity	Antigravity IDE	needs-linux-upstream-verification
+vendor	antigravity	Google Antigravity	official-google-rpm-repo
 upstream	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	official-portable-linux-binary
