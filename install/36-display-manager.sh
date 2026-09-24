@@ -20,18 +20,19 @@ test -e /usr/share/wayland-sessions/niri.desktop || {
   exit 1
 }
 
-grep -Eq '^Exec=(/usr/bin/)?niri-session([[:space:]]|$)' /usr/share/wayland-sessions/niri.desktop || {
+grep -Eq '^Exec=(/usr/(s)?bin/)?niri-session([[:space:]]|$)' /usr/share/wayland-sessions/niri.desktop || {
   echo "Invalid Niri session Exec entry" >&2
   exit 1
 }
 
 echo "Configuring Ly Niri session..."
+niri_session_bin="$(command -v niri-session)"
 sudo install -d -m 0755 /etc/ly/custom-sessions
-sudo tee /etc/ly/custom-sessions/niri.desktop >/dev/null <<'DESKTOP'
+sudo tee /etc/ly/custom-sessions/niri.desktop >/dev/null <<DESKTOP
 [Desktop Entry]
 Name=Niri
 Comment=A scrollable-tiling Wayland compositor
-Exec=/usr/bin/niri-session
+Exec=$niri_session_bin
 Type=Application
 DesktopNames=niri
 DESKTOP
@@ -76,5 +77,5 @@ sudo systemctl enable ly@tty2.service
 sudo systemctl set-default graphical.target
 
 echo "Display manager configured: ly@tty2.service"
-echo "Niri session entrypoint: /usr/bin/niri-session"
+echo "Niri session entrypoint: $niri_session_bin"
 echo "Ly SELinux policy: ly-local"
