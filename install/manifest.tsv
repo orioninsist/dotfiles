@@ -87,6 +87,7 @@ dnf	hugo	Hugo runtime for Knowledge personal web	confirmed-fedora44
 dnf	d2	D2 diagram renderer for Knowledge search	confirmed-fedora44
 dnf	polkit-kde	Fedora PolicyKit authentication agent	confirmed-fedora44
 dnf	xz	Typst upstream archive extraction	required-typst
+dnf	tar	Archive extraction	required-external-tools
 vendor	brave-browser	Brave browser	official-brave-dnf-repo
 vendor	google-chrome-stable	Google Chrome	official-google-fedora-rpm
 vendor	microsoft-edge-stable	Microsoft Edge	official-microsoft-rpm-repo
