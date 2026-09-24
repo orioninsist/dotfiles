@@ -2,7 +2,13 @@
 set -Eeuo pipefail
 ROOT="${DOTFILES_ROOT:?}"
 
-python3 -m pytest -q "$ROOT/tests"
+if sudo -n true 2>/dev/null; then
+  python3 -m pytest -q "$ROOT/tests"
+else
+  echo "==> Refreshing sudo credentials for acceptance tests"
+  sudo -v
+  python3 -m pytest -q "$ROOT/tests"
+fi
 
 echo "==> Command parity"
 required_commands=(
@@ -84,3 +90,12 @@ else
 fi
 
 echo "Acceptance parity checks passed."
+
+echo
+echo "=== SUMMARY ==="
+echo "VERIFY_EXIT=0"
+echo "NIRI=PASS"
+echo "LY=$(systemctl is-enabled ly@tty2.service 2>/dev/null || true)"
+echo "SELINUX=$(getenforce 2>/dev/null || echo UNKNOWN)"
+echo "FAILED_UNITS=$(systemctl --failed --no-legend | wc -l)"
+echo "=== END SUMMARY ==="
