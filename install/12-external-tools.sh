@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 ROOT="${DOTFILES_ROOT:?}"
 BIN_DIR="$HOME/.local/bin"
+mkdir -p "$BIN_DIR"
 BUN_VERSION="1.3.3"
 TYPST_VERSION="0.15.0"
 
@@ -134,3 +135,9 @@ for cmd in yazi zellij bun typst wl-screenrec wl-color-picker; do
 done
 
 ((failed == 0))
+
+
+if ! command -v starship >/dev/null 2>&1; then
+  echo "==> Starship"
+  curl -fsSL https://starship.rs/install.sh | sh -s -- -y -b "$BIN_DIR"
+fi
