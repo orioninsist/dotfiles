@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-PROJECT="/mnt/projects/whisper"
+PROJECT="/home/murat/Media/6-Project/whisper"
 REPO="https://github.com/orioninsist/whisper.git"
 PIN="8609812"
 PYTHON_VERSION="3.12"
@@ -10,10 +10,8 @@ MODEL="small"
 command -v uv >/dev/null
 command -v git >/dev/null
 
-[[ -d /mnt/projects ]] || {
-    echo "/mnt/projects is unavailable; storage setup must run first." >&2
-    exit 1
-}
+PROJECTS_ROOT="/home/murat/Media/6-Project"
+mkdir -p "$PROJECTS_ROOT"
 
 if [[ ! -e "$PROJECT" ]]; then
     echo "Cloning Whisper..."
