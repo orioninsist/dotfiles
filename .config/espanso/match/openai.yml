@@ -5,7 +5,7 @@ matches:
 
   - trigger: :openaidevelopersmerge
     replace: |
-      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/developers.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/developers.openai.com /home/murat/Media/5-Documentation/openai/merge/developers.openai.com --name openai-developers --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+      cd /home/murat/Media/6-Project/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/developers.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/developers.openai.com /home/murat/Media/5-Documentation/openai/merge/developers.openai.com --name openai-developers --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
   - trigger: :openaiacademy
     replace: |
@@ -13,7 +13,7 @@ matches:
 
   - trigger: :openaiacademymerge
     replace: |
-      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/academy.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/academy.openai.com /home/murat/Media/5-Documentation/openai/merge/academy.openai.com --name openai-academy --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+      cd /home/murat/Media/6-Project/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/academy.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/academy.openai.com /home/murat/Media/5-Documentation/openai/merge/academy.openai.com --name openai-academy --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
   - trigger: :openaihelp
     replace: |
@@ -21,7 +21,7 @@ matches:
 
   - trigger: :openaihelpmerge
     replace: |
-      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/help.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/help.openai.com /home/murat/Media/5-Documentation/openai/merge/help.openai.com --name openai-help --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+      cd /home/murat/Media/6-Project/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/help.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/help.openai.com /home/murat/Media/5-Documentation/openai/merge/help.openai.com --name openai-help --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
   - trigger: :chatgptlearn
     replace: |
@@ -29,7 +29,7 @@ matches:
 
   - trigger: :chatgptlearnmerge
     replace: |
-      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/learn.chatgpt.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/learn.chatgpt.com /home/murat/Media/5-Documentation/openai/merge/learn.chatgpt.com --name chatgpt-learn --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+      cd /home/murat/Media/6-Project/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/learn.chatgpt.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/learn.chatgpt.com /home/murat/Media/5-Documentation/openai/merge/learn.chatgpt.com --name chatgpt-learn --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
   - trigger: :openai
     replace: |
@@ -37,7 +37,7 @@ matches:
 
   - trigger: :openaimerge
     replace: |
-      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/openai.com /home/murat/Media/5-Documentation/openai/merge/openai.com --name openai --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+      cd /home/murat/Media/6-Project/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/openai.com /home/murat/Media/5-Documentation/openai/merge/openai.com --name openai --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
   - trigger: :openaiplatform
     replace: |
@@ -45,4 +45,4 @@ matches:
 
   - trigger: :openaiplatformmerge
     replace: |
-      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/platform.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/platform.openai.com /home/murat/Media/5-Documentation/openai/merge/platform.openai.com --name openai-platform --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+      cd /home/murat/Media/6-Project/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/platform.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/platform.openai.com /home/murat/Media/5-Documentation/openai/merge/platform.openai.com --name openai-platform --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
