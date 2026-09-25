@@ -185,6 +185,7 @@ vendor	antigravity	Google Antigravity	official-google-rpm-repo
 upstream	realesrgan-ncnn-vulkan	Real-ESRGAN NCNN Vulkan	official-portable-linux-binary
 
 # Local-project parity policy
+external-project	/home/murat/Media/6-Project/docsync	Docsync project	canonical-project-path
 external-project	/home/murat/Media/6-Project/knowledge	Knowledge project	conditional-services
 external-project	/mnt/projects/whisper	OpenAI Whisper voice typing	required-voice-typing
 external-project	/mnt/local/areas/microbreak	Microbreak project	preserve-path-after-data-restore
