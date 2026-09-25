@@ -121,10 +121,10 @@ echo "==> User units"
 for unit in ssh-agent.service swayidle.service swaybg.service niri-keyboard-state.service zellij-copy.path; do
   systemctl --user cat "$unit" >/dev/null
   systemctl --user is-enabled --quiet "$unit"
+  systemctl --user is-active --quiet "$unit"
 done
 
 systemctl --user is-active --quiet graphical-session.target
-systemctl --user is-active --quiet swaybg.service
 
 echo "==> Projects storage"
 SSD_UUID="e2aafb35-8be2-4d13-87a3-f4b644748d59"
