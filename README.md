@@ -8,7 +8,7 @@ The checkout can live anywhere. On the current machine the canonical checkout is
 ~/dotfiles
 ```
 
-`/mnt/projects` remains reserved for project/data checkouts such as `knowledge` and `whisper`; the dotfiles repository itself is kept in `$HOME`.
+`/mnt/projects` is the canonical root for general project/data checkouts. Two projects intentionally live outside it: `docsync` at `/home/murat/Media/6-Project/docsync` and `knowledge` at `/home/murat/Media/6-Project/knowledge`. The dotfiles repository itself is kept in `$HOME`.
 
 The repository manages shell configuration, Niri, Wayland helpers, user/system services, package parity, desktop applications, and Fedora-specific bootstrap/verification.
 
@@ -168,9 +168,12 @@ Required user units include:
 ```text
 ssh-agent.service
 swayidle.service
+swaybg.service
 niri-keyboard-state.service
 zellij-copy.path
 ```
+
+The installer enables and starts these required units immediately, so a moved or freshly installed checkout does not remain in a partially configured state.
 
 Optional units are enabled only when their executables are available. Missing optional software is not treated as an installation failure.
 
