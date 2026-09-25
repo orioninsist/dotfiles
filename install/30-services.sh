@@ -49,7 +49,7 @@ unit_execs_available() {
 missing_required=()
 for unit in "${required_units[@]}"; do
   if systemctl --user cat "$unit" >/dev/null 2>&1; then
-    systemctl --user enable "$unit"
+    systemctl --user enable --now "$unit"
   else
     missing_required+=("$unit")
   fi
@@ -76,7 +76,7 @@ if [[ -d "$knowledge_root" ]]; then
   echo "Knowledge project detected: $knowledge_root"
   for unit in "${knowledge_units[@]}"; do
     if systemctl --user cat "$unit" >/dev/null 2>&1 && unit_execs_available "$unit"; then
-      systemctl --user enable "$unit"
+      systemctl --user enable --now "$unit"
     else
       echo "INFO Knowledge unit unavailable or dependency missing: $unit" >&2
     fi
