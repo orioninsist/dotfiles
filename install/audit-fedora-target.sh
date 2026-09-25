@@ -54,4 +54,4 @@ niri validate 2>&1 || true
 
 echo
 echo "===== ABSOLUTE LEGACY PATHS ====="
-grep -RniE '/usr/local/bin|/mnt/projects|/mnt/local/projects' "$HOME/.config" "$HOME/.local" "$HOME/.bashrc" "$HOME/.profile" 2>/dev/null || true
+grep -RniE '/usr/local/bin' "$HOME/.config" "$HOME/.local" "$HOME/.bashrc" "$HOME/.profile" 2>/dev/null || true
