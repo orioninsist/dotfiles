@@ -1,48 +1,48 @@
 matches:
-- trigger: :openaidevelopers
-  replace: |
-    cd /mnt/local/projects/docsync && uv run docsync https://developers.openai.com/ --output-dir /mnt/local/projects/5-Documentation/openai/docs --state-dir /mnt/local/projects/5-Documentation/openai/state/developers.openai.com --max-concurrency 2 --max-requests 10000 --requests-per-minute 20 --language en --refresh-hours 24 --mode playwright --browser-type chromium
+  - trigger: :openaidevelopers
+    replace: |
+      cd /home/murat/Media/6-Project/docsync && uv run docsync https://developers.openai.com/ --engine python --language en --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
 
-- trigger: :openaidevelopersmerge
-  replace: |
-    cd /mnt/local/projects/markdownMerge && rm -rf /mnt/local/projects/5-Documentation/openai/merge/developers.openai.com && uv run mdmerge /mnt/local/projects/5-Documentation/openai/docs/developers.openai.com /mnt/local/projects/5-Documentation/openai/merge/developers.openai.com --name openai-developers --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+  - trigger: :openaidevelopersmerge
+    replace: |
+      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/developers.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/developers.openai.com /home/murat/Media/5-Documentation/openai/merge/developers.openai.com --name openai-developers --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
-- trigger: :openaiacademy
-  replace: |
-    cd /mnt/local/projects/docsync && uv run docsync https://academy.openai.com/ --output-dir /mnt/local/projects/5-Documentation/openai/docs --state-dir /mnt/local/projects/5-Documentation/openai/state/academy.openai.com --max-concurrency 2 --max-requests 10000 --requests-per-minute 20 --language en --refresh-hours 24 --mode playwright --browser-type chromium
+  - trigger: :openaiacademy
+    replace: |
+      cd /home/murat/Media/6-Project/docsync && uv run docsync https://academy.openai.com/ --engine python --language en --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
 
-- trigger: :openaiacademymerge
-  replace: |
-    cd /mnt/local/projects/markdownMerge && rm -rf /mnt/local/projects/5-Documentation/openai/merge/academy.openai.com && uv run mdmerge /mnt/local/projects/5-Documentation/openai/docs/academy.openai.com /mnt/local/projects/5-Documentation/openai/merge/academy.openai.com --name openai-academy --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+  - trigger: :openaiacademymerge
+    replace: |
+      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/academy.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/academy.openai.com /home/murat/Media/5-Documentation/openai/merge/academy.openai.com --name openai-academy --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
-- trigger: :openaihelp
-  replace: |
-    cd /mnt/local/projects/docsync && uv run docsync https://help.openai.com/ --output-dir /mnt/local/projects/5-Documentation/openai/docs --state-dir /mnt/local/projects/5-Documentation/openai/state/help.openai.com --max-concurrency 2 --max-requests 10000 --requests-per-minute 20 --language en --refresh-hours 24 --mode playwright --browser-type chromium
+  - trigger: :openaihelp
+    replace: |
+      cd /home/murat/Media/6-Project/docsync && uv run docsync https://help.openai.com/ --engine python --language en --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
 
-- trigger: :openaihelpmerge
-  replace: |
-    cd /mnt/local/projects/markdownMerge && rm -rf /mnt/local/projects/5-Documentation/openai/merge/help.openai.com && uv run mdmerge /mnt/local/projects/5-Documentation/openai/docs/help.openai.com /mnt/local/projects/5-Documentation/openai/merge/help.openai.com --name openai-help --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+  - trigger: :openaihelpmerge
+    replace: |
+      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/help.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/help.openai.com /home/murat/Media/5-Documentation/openai/merge/help.openai.com --name openai-help --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
-- trigger: :chatgptlearn
-  replace: |
-    cd /mnt/local/projects/docsync && uv run docsync https://learn.chatgpt.com/ --output-dir /mnt/local/projects/5-Documentation/openai/docs --state-dir /mnt/local/projects/5-Documentation/openai/state/learn.chatgpt.com --max-concurrency 2 --max-requests 10000 --requests-per-minute 20 --language en --refresh-hours 24 --mode playwright --browser-type chromium
+  - trigger: :chatgptlearn
+    replace: |
+      cd /home/murat/Media/6-Project/docsync && uv run docsync https://learn.chatgpt.com/ --engine python --language en --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
 
-- trigger: :chatgptlearnmerge
-  replace: |
-    cd /mnt/local/projects/markdownMerge && rm -rf /mnt/local/projects/5-Documentation/openai/merge/learn.chatgpt.com && uv run mdmerge /mnt/local/projects/5-Documentation/openai/docs/learn.chatgpt.com /mnt/local/projects/5-Documentation/openai/merge/learn.chatgpt.com --name chatgpt-learn --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+  - trigger: :chatgptlearnmerge
+    replace: |
+      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/learn.chatgpt.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/learn.chatgpt.com /home/murat/Media/5-Documentation/openai/merge/learn.chatgpt.com --name chatgpt-learn --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
-- trigger: :openai
-  replace: |
-    cd /mnt/local/projects/docsync && uv run docsync https://openai.com/ --output-dir /mnt/local/projects/5-Documentation/openai/docs --state-dir /mnt/local/projects/5-Documentation/openai/state/openai.com --max-concurrency 2 --max-requests 10000 --requests-per-minute 20 --language en --refresh-hours 24 --mode playwright --browser-type chromium
+  - trigger: :openai
+    replace: |
+      cd /home/murat/Media/6-Project/docsync && uv run docsync https://openai.com/ --engine python --language en --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
 
-- trigger: :openaimerge
-  replace: |
-    cd /mnt/local/projects/markdownMerge && rm -rf /mnt/local/projects/5-Documentation/openai/merge/openai.com && uv run mdmerge /mnt/local/projects/5-Documentation/openai/docs/openai.com /mnt/local/projects/5-Documentation/openai/merge/openai.com --name openai --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+  - trigger: :openaimerge
+    replace: |
+      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/openai.com /home/murat/Media/5-Documentation/openai/merge/openai.com --name openai --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
 
-- trigger: :openaiplatform
-  replace: |
-    cd /mnt/local/projects/docsync && uv run docsync https://platform.openai.com/ --output-dir /mnt/local/projects/5-Documentation/openai/docs --state-dir /mnt/local/projects/5-Documentation/openai/state/platform.openai.com --max-concurrency 2 --max-requests 10000 --requests-per-minute 20 --language en --refresh-hours 24 --mode playwright --browser-type chromium
+  - trigger: :openaiplatform
+    replace: |
+      cd /home/murat/Media/6-Project/docsync && uv run docsync https://platform.openai.com/ --engine python --language en --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
 
-- trigger: :openaiplatformmerge
-  replace: |
-    cd /mnt/local/projects/markdownMerge && rm -rf /mnt/local/projects/5-Documentation/openai/merge/platform.openai.com && uv run mdmerge /mnt/local/projects/5-Documentation/openai/docs/platform.openai.com /mnt/local/projects/5-Documentation/openai/merge/platform.openai.com --name openai-platform --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
+  - trigger: :openaiplatformmerge
+    replace: |
+      cd /mnt/projects/markdownMerge && rm -rf /home/murat/Media/5-Documentation/openai/merge/platform.openai.com && uv run mdmerge /home/murat/Media/5-Documentation/openai/docs/platform.openai.com /home/murat/Media/5-Documentation/openai/merge/platform.openai.com --name openai-platform --token-limit 120000 --reserve-tokens 5000 --encoding o200k_base
