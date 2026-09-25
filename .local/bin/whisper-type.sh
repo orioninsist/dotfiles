@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 LANGUAGE="${1:-tr}"
-PROJECT="/mnt/projects/whisper"
+PROJECT="/home/murat/Media/6-Project/whisper"
 PYTHON="$PROJECT/.venv/bin/python"
 
 STATE_DIR="${XDG_RUNTIME_DIR:-/tmp}/whisper-type"
