@@ -8,7 +8,7 @@ The checkout can live anywhere. On the current machine the canonical checkout is
 ~/dotfiles
 ```
 
-`/mnt/projects` is the canonical root for general project/data checkouts. Two projects intentionally live outside it: `docsync` at `/home/murat/Media/6-Project/docsync` and `knowledge` at `/home/murat/Media/6-Project/knowledge`. The dotfiles repository itself is kept in `$HOME`.
+`/home/murat/Media/6-Project` is the canonical root for project checkouts used by this setup, including `docsync`, `knowledge`, `whisper`, `starship`, `zoxide`, and `markdownMerge`. The dotfiles repository itself is kept in `$HOME`.
 
 The repository manages shell configuration, Niri, Wayland helpers, user/system services, package parity, desktop applications, and Fedora-specific bootstrap/verification.
 
