@@ -60,6 +60,30 @@ REPO
   sudo dnf -y install code
 fi
 
+# Use GNOME Keyring's Secret Service explicitly for VS Code credential storage.
+# Never fall back to Electron's weaker basic password store.
+mkdir -p "$HOME/.vscode"
+
+argv="$HOME/.vscode/argv.json"
+
+if [[ -f "$argv" ]]; then
+  if grep -q '"password-store"' "$argv"; then
+    sed -i \
+      's/"password-store"[[:space:]]*:[[:space:]]*"[^"]*"/"password-store": "gnome-libsecret"/' \
+      "$argv"
+  else
+    sed -i \
+      '/^[[:space:]]*"enable-crash-reporter"[[:space:]]*:/a\\\n\t"password-store": "gnome-libsecret",' \
+      "$argv"
+  fi
+else
+  cat >"$argv" <<'JSON'
+{
+  "password-store": "gnome-libsecret"
+}
+JSON
+fi
+
 
 
 if ! rpm -q yandex-browser-stable >/dev/null 2>&1; then

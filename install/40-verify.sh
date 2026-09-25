@@ -142,6 +142,22 @@ for unit in pipewire.socket pipewire-pulse.socket gnome-keyring-daemon.socket; d
   systemctl --user cat "$unit" >/dev/null
 done
 
+
+echo "==> GNOME Keyring Secret Service"
+busctl --user list | grep -q 'org\.freedesktop\.secrets' || {
+  echo "GNOME Keyring Secret Service is unavailable" >&2
+  exit 1
+}
+
+if command -v code >/dev/null 2>&1; then
+  grep -Eq \
+    '"password-store"[[:space:]]*:[[:space:]]*"gnome-libsecret"' \
+    "$HOME/.vscode/argv.json" || {
+      echo "VS Code is not configured to use GNOME Keyring/libsecret" >&2
+      exit 1
+    }
+fi
+
 echo "==> Font stack"
 
 [[ -f "$HOME/.local/share/fonts/GoogleSansCodeNerd/GoogleSansCodeNerdFontMono-Regular.ttf" ]] || {
