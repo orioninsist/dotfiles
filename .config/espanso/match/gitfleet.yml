@@ -1,0 +1,27 @@
+matches:
+  - trigger: ";gfl"
+    replace: "gitfleet list"
+
+  - trigger: ";gfs"
+    replace: "gitfleet status "
+
+  - trigger: ";gfsh"
+    replace: "gitfleet show "
+
+  - trigger: ";gfu"
+    replace: "gitfleet update "
+
+  - trigger: ";gfp"
+    replace: "gitfleet push "
+
+  - trigger: ";gfr"
+    replace: "gitfleet report --view"
+
+  - trigger: ";gfc"
+    replace: "gitfleet clone --dry-run"
+
+  - trigger: ";gfb"
+    replace: "gitfleet backup --dry-run"
+
+  - trigger: ";gfup"
+    replace: "uv tool upgrade gitfleet"
