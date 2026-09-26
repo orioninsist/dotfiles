@@ -63,7 +63,9 @@ fi
 TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
 OUTPUT_FILE="$RECORD_DIR/${PREFIX}_${TIMESTAMP}.mp4"
 
-ARGS=(--filename "$OUTPUT_FILE" --codec avc --low-power off)
+# This machine advertises VAAPI profiles that wl-screenrec cannot configure.
+# Force the stable software path instead of letting the GPU encoder panic.
+ARGS=(--filename "$OUTPUT_FILE" --codec avc --no-hw --low-power off)
 
 if pactl info >/dev/null 2>&1; then
     DEFAULT_SOURCE="$(pactl get-default-source 2>/dev/null || true)"
