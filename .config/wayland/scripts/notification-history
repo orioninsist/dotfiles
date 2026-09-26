@@ -24,4 +24,3 @@ selection="$(
 [[ -n "$selection" ]] || exit 0
 
 printf '%s' "$selection" | wl-copy
-notify-send "Notification copied" "$selection"
