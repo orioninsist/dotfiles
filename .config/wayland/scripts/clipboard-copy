@@ -5,11 +5,9 @@ set -euo pipefail
 text="${1-}"
 [[ -n "$text" ]] || exit 2
 
-runtime_dir="${XDG_RUNTIME_DIR:-$HOME/.cache}"
-mkdir -p "$runtime_dir"
-payload="$runtime_dir/orion-clipboard.txt"
-printf '%s' "$text" > "$payload"
+log_file="$HOME/.cache/orion-clipboard.log"
+mkdir -p "${log_file%/*}"
 
-# A new wl-copy owner replaces the previous Wayland clipboard owner itself.
-# Do not pkill old owners here: on some sessions that command can block.
-nohup wl-copy --paste-once < "$payload" >/dev/null 2>&1 &
+# Keep the selected text on stdin, matching the working wl-copy CLI usage.
+nohup sh -c 'printf %s "$1" | wl-copy --paste-once' _ "$text" \
+    >>"$log_file" 2>&1 &
