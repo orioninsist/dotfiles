@@ -139,6 +139,33 @@ done < <(
     } | sort -u
 )
 
+
+echo
+echo "Creating KDE PATH wrappers..."
+
+for app in ark gwenview okular calibre; do
+    case "$app" in
+        ark|gwenview|okular)
+            target="$bin_dir/$app"
+            cat > "$target" <<EOF
+#!/usr/bin/env bash
+exec "$HOME/.config/wayland/scripts/qt-kde-launch" $app "\$@"
+EOF
+            chmod +x "$target"
+            echo "KDE wrapper: $target"
+            ;;
+        calibre)
+            target="$bin_dir/calibre"
+            cat > "$target" <<EOF
+#!/usr/bin/env bash
+exec "$HOME/.local/bin/calibre-kde" "\$@"
+EOF
+            chmod +x "$target"
+            echo "Calibre wrapper: $target"
+            ;;
+    esac
+done
+
 hash -r 2>/dev/null || true
 
 echo
