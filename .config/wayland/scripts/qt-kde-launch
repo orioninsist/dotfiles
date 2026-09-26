@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export QT_QPA_PLATFORMTHEME=org.kde.plasma.integration
+export QT_STYLE_OVERRIDE=Breeze
+export KDE_SESSION_VERSION=6
+export KDE_FULL_SESSION=true
+export XDG_CURRENT_DESKTOP=KDE
+export XDG_SESSION_DESKTOP=KDE
+
+exec "$@"
