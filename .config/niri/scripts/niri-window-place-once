@@ -21,9 +21,7 @@ target_index() {
         org.gnome.Nautilus) echo 9 ;;
 
         # TAG 2: Terminal / Operations
-        foot) echo 1 ;;
-        Alacritty) echo 2 ;;
-        kitty) echo 3 ;;
+        kitty) echo 1 ;;
 
         # TAG 3: Development
         code|code-url-handler) echo 1 ;;

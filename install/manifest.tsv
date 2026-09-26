@@ -58,7 +58,6 @@ dnf	kitty	kitty terminal	confirmed
 dnf	neovim	nvim	confirmed
 dnf	swayimg	swayimg	confirmed
 dnf	tesseract	tesseract OCR	verify-in-qemu
-dnf	foot	foot terminal	confirmed-fedora44
 dnf	jetbrains-mono-fonts	JetBrains Mono terminal font	confirmed-fedora44
 dnf	easyeffects	easyeffects	confirmed-fedora44
 dnf-qemu	qemu-guest-agent	libvirt/QEMU guest integration	confirmed-fedora44
@@ -66,7 +65,6 @@ dnf-qemu	spice-vdagent	SPICE guest desktop integration (resize/input/clipboard)	
 dnf-qemu	acpid	ACPI event handling in VM	verify-in-qemu
 dnf	cliphist	clipboard history	confirmed-fedora44
 dnf	glow	Markdown pager	confirmed-fedora44
-dnf	alacritty	alacritty	verify-in-qemu
 dnf	systemd	busctl	confirmed-fedora44
 dnf	firefox	firefox	verify-in-qemu
 dnf	glib2	gsettings	confirmed-fedora44

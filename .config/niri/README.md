@@ -31,7 +31,7 @@ The task map is stable and intended for muscle memory:
 | Key | Workspace | Purpose | Typical applications |
 |---|---:|---|---|
 | `Super+1` | 1 | Web / Research / AI / Files | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, Grok, NotebookLM, GitHub, Stack Overflow, Reddit, Quora, Pinterest, Translate, Colab, Nautilus |
-| `Super+2` | 2 | Terminal / Operations | Foot, Alacritty, Kitty, shell-driven operations |
+| `Super+2` | 2 | Terminal / Operations | Kitty, shell-driven operations |
 | `Super+3` | 3 | Development | VS Code, Zed, Antigravity, JetBrains IDEs and development tools |
 | `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Contacts, Keep, Tasks, Forms, Password Manager, Photos, Vids, calibre |
 | `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Facebook, Instagram, Meta Business Suite, Google AdSense |
@@ -65,9 +65,7 @@ This is the canonical list to edit when changing the personal app layout. The **
 | 1 | 7 | NotebookLM / Gemini Notebook | `chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default` |
 | 1 | 8 | Google Drive PWA | `chrome-aghbiahbpaijignceidepookljebhfak-Default` |
 | 1 | 9 | GNOME Files | `org.gnome.Nautilus` |
-| 2 | 1 | Foot | `foot` |
-| 2 | 2 | Alacritty | `Alacritty` |
-| 2 | 3 | Kitty | `kitty` |
+| 2 | 1 | Kitty | `kitty` |
 | 3 | 1 | VS Code | `code` / `code-url-handler` |
 | 3 | 2 | ChatGPT Desktop | `Chatgpt` |
 | 3 | 3 | GitHub Copilot | `github` |
@@ -173,10 +171,9 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 
 | Shortcut | Action |
 |---|---|
-| `Super+Enter` | Foot terminal |
+| `Super+Enter` | Kitty terminal |
 | `Super+D` | fzf PATH application launcher |
 | `Super+C` | Search and expand Espanso matches with fzf |
-| `Super+Ctrl+Enter` | Alacritty |
 | `Super+Y` | Kitty running Yazi |
 | `Super+Ctrl+B` | Google Chrome |
 | `Super+Ctrl+Shift+B` | Brave |
@@ -240,7 +237,7 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 | `Super+Ctrl+N` | Notification history |
 | `Super+Ctrl+E` | Emoji picker |
 | `Super+Shift+C` | Reload Niri config |
-| `Super+F11` | Open this README in Glow inside Foot |
+| `Super+F11` | Open this README in Glow inside Kitty |
 
 ### Session
 

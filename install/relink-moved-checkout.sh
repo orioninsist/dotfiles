@@ -18,9 +18,15 @@ for source in "$root"/.config/*; do
   [[ -e "$source" ]] || continue
   relink "$source" "$HOME/.config/${source##*/}"
 done
-for source in "$root"/.local/bin/*; do
-  [[ -f "$source" ]] || continue
-  relink "$source" "$HOME/.local/bin/${source##*/}"
+for dir in \
+  "$root/.config/wayland/scripts/commands" \
+  "$root/.config/wayland/apps"
+do
+  [[ -d "$dir" ]] || continue
+  for source in "$dir"/*; do
+    [[ -f "$source" ]] || continue
+    relink "$source" "$HOME/.local/bin/${source##*/}"
+  done
 done
 for name in .bashrc .bash_profile .profile .wallpapers; do
   relink "$root/$name" "$HOME/$name"

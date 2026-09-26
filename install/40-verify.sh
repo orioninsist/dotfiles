@@ -12,7 +12,7 @@ fi
 
 echo "==> Command parity"
 required_commands=(
-  git curl niri foot mako wl-copy wl-paste fzf rg jq
+  git curl niri kitty mako wl-copy wl-paste fzf rg jq
   grim slurp ssh vim nvim tesseract easyeffects cliphist
   glow atuin calcurse calibre dust fd fuzzel mpv procs rclone
   syncthing waybar hugo d2 tmux cargo rustc clang convert zenity
@@ -54,8 +54,8 @@ for path in \
   "$HOME/.config/wayland/scripts/app-launcher" \
   "$HOME/.config/wayland/scripts/satty-screenshot" \
   "$HOME/.config/niri/scripts/niri-window-place-once" \
-  "$HOME/.local/bin/path-apps" \
-  "$HOME/.local/bin/whisper-type.sh"
+  "$HOME/.config/wayland/scripts/path-apps" \
+  "$HOME/.config/wayland/scripts/commands/whisper-type"
 do
   [[ -x "$path" ]] || {
     echo "Dotfile helper is not executable: $path" >&2
@@ -98,12 +98,12 @@ whisper.load_model("small")
 print("Whisper small CPU model: PASS")
 PYVERIFY
 
-grep -Fq 'Mod+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh"; }'   "$HOME/.config/niri/binds/system.kdl" || {
+grep -Fq 'Mod+I { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/commands/whisper-type"; }'   "$HOME/.config/niri/binds/system.kdl" || {
     echo "Missing Niri Turkish Whisper binding: Mod+I" >&2
     exit 1
   }
 
-grep -Fq 'Mod+Shift+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh en"; }'   "$HOME/.config/niri/binds/system.kdl" || {
+grep -Fq 'Mod+Shift+I { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/commands/whisper-type en"; }'   "$HOME/.config/niri/binds/system.kdl" || {
     echo "Missing Niri English Whisper binding: Mod+Shift+I" >&2
     exit 1
   }
@@ -181,9 +181,9 @@ mono_family="$(fc-match -f '%{family}\n' monospace)"
   exit 1
 }
 
-grep -Fq "font=GoogleSansCode Nerd Font Mono:size=12" \
-  "$HOME/.config/foot/foot.ini" || {
-    echo "Foot does not use GoogleSansCode Nerd Font Mono" >&2
+grep -Fq "font_family      GoogleSansCode Nerd Font Mono" \
+  "$HOME/.config/kitty/kitty.conf" || {
+    echo "Kitty does not use GoogleSansCode Nerd Font Mono" >&2
     exit 1
   }
 

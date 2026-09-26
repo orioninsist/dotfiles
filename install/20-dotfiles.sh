@@ -19,9 +19,16 @@ for p in "$ROOT"/.config/*; do
   backup_or_link "$p" "$HOME/.config/${p##*/}"
 done
 
-for p in "$ROOT"/.local/bin/*; do
-  [[ -f "$p" ]] || continue
-  backup_or_link "$p" "$HOME/.local/bin/${p##*/}"
+# Expose repository-managed command and application wrappers through PATH.
+for dir in \
+  "$ROOT/.config/wayland/scripts/commands" \
+  "$ROOT/.config/wayland/apps"
+do
+  [[ -d "$dir" ]] || continue
+  for p in "$dir"/*; do
+    [[ -f "$p" ]] || continue
+    backup_or_link "$p" "$HOME/.local/bin/${p##*/}"
+  done
 done
 
 # Normalize only helpers that are executed directly. Do not chmod every file
@@ -32,7 +39,7 @@ for helper in \
   "$ROOT/.config/wayland/scripts/app-launcher" \
   "$ROOT/.config/wayland/scripts/satty-screenshot" \
   "$ROOT/.config/niri/scripts/niri-window-place-once" \
-  "$ROOT/.local/bin/path-apps"
+  "$ROOT/.config/wayland/scripts/path-apps"
 do
   [[ -f "$helper" ]] || continue
   chmod u+x "$helper"

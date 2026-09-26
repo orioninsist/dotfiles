@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+awk '
+NF {
+    for (i = 1; i <= blanks; i++)
+        print ""
+    blanks = 0
+    sub(/[[:space:]]+$/, "")
+    print
+    next
+}
+{
+    blanks++
+}
+' | wl-copy

@@ -32,6 +32,6 @@ selection="$(
 [[ -n "$selection" ]] || exit 0
 
 # Launch the selected PATH command in a new session and let this popup
-# shell exit immediately so the fzf/Foot window disappears.
+# shell exit immediately so the fzf/Kitty window disappears.
 setsid -f "$selection" >/dev/null 2>&1 < /dev/null
 exit 0

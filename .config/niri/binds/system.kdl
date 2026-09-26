@@ -35,8 +35,8 @@ binds {
     Mod+Ctrl+5 { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/screen-camera-record"; }
     Mod+Ctrl+Shift+Print { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/ocr"; }
 
-    Mod+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh"; }
-    Mod+Shift+I { spawn "bash" "-lc" "$HOME/.local/bin/whisper-type.sh en"; }
+    Mod+I { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/commands/whisper-type"; }
+    Mod+Shift+I { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/commands/whisper-type en"; }
     Mod+Ctrl+P { spawn "wl-color-picker"; }
 
     Mod+Shift+V { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/clipboard-history"; }
@@ -46,7 +46,7 @@ binds {
     Mod+Ctrl+E { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/emoji-picker"; }
 
     Mod+Shift+C { spawn-sh "niri msg action load-config-file"; }
-    Mod+F11 { spawn "bash" "-lc" "foot -e glow -p $HOME/.config/niri/README.md"; }
+    Mod+F11 { spawn "bash" "-lc" "kitty glow -p $HOME/.config/niri/README.md"; }
 
     Mod+Shift+S { spawn-sh "swaylock -f -c 000000 && systemctl suspend"; }
     Mod+Shift+Escape { quit; }

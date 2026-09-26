@@ -34,10 +34,6 @@ if [[ -d "$FLYCOMP_COMPLETION_DIR" ]]; then
 fi
 unset completion_file FLYCOMP_COMPLETION_DIR
 
-if command -v zellij >/dev/null 2>&1 && [ -z "$ZELLIJ" ] && [ "$TERM" = "xterm-kitty" ]; then
-    exec command zellij attach --create "orioninsist"
-fi
-
 command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
 [[ -d "$HOME/.bun/bin" ]] && export PATH="$HOME/.bun/bin:$PATH"
 

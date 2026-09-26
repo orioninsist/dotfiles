@@ -103,7 +103,7 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"^(foot|Alacritty|kitty)$"#
+    match app-id=r#"^kitty$"#
     open-on-workspace "2"
 }
 

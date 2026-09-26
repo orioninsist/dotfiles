@@ -200,6 +200,9 @@ keybinds {
                 name "copy_scrollback"
             }
         }
+        bind "Ctrl Shift l" {
+            WriteChars "\u{1b}[2J\u{1b}[3J\u{1b}[H";
+        }
         bind "Ctrl q" { Quit; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt n" { NewPane; }
@@ -482,7 +485,7 @@ copy_command "wl-copy"                    // wayland
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 //
-// support_kitty_keyboard_protocol false
+support_kitty_keyboard_protocol true
 
 // Enable or disable support for the Kitty Graphics Protocol, used to display images (the host terminal must also support it)
 // (Requires restart)

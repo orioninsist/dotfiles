@@ -11,7 +11,7 @@ def test_manifest_exists():
 
 
 def test_required_repo_paths():
-    for p in [".config/niri", ".config/systemd/user", ".config/wayland/scripts", ".local/bin"]:
+    for p in [".config/niri", ".config/systemd/user", ".config/wayland/scripts"]:
         assert (ROOT / p).exists(), p
 
 
@@ -23,7 +23,7 @@ def test_no_broken_repo_symlinks():
 def test_core_commands_after_install():
     required = [
         "git", "python3", "niri", "wpctl", "wl-copy", "wl-paste",
-        "fzf", "rg", "foot", "mako", "makoctl", "grim", "slurp",
+        "fzf", "rg", "kitty", "mako", "makoctl", "grim", "slurp",
         "tesseract", "notify-send", "nautilus",
     ]
     missing = [x for x in required if shutil.which(x) is None]
@@ -67,7 +67,7 @@ def test_portable_runtime_paths():
     files = [
         ROOT / ".config/niri/config.kdl",
         ROOT / ".config/niri/binds/applications.kdl",
-        ROOT / ".config/foot/foot.ini",
+        ROOT / ".config/kitty/kitty.conf",
         ROOT / ".config/wayland/scripts/fzf-popup",
         ROOT / ".config/wayland/scripts/ocr",
         ROOT / ".config/wayland/scripts/mako-toggle",
@@ -104,7 +104,7 @@ def test_niri_referenced_commands_are_declared():
     declared_text = "\n".join("\t".join(row[:3]) for row in rows)
 
     required_commands = {
-        "foot", "alacritty", "kitty", "google-chrome-stable", "brave-browser",
+        "kitty", "google-chrome-stable", "brave-browser",
         "microsoft-edge-stable", "yandex-browser-stable", "firefox",
         "tor-browser", "mullvad-browser", "nautilus", "snapshot", "flameshot", "satty",
         "wpctl", "playerctl", "brightnessctl", "busctl", "notify-send",

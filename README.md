@@ -116,7 +116,7 @@ Desktop and applications include:
 
 - Atuin
 - Eza
-- Foot
+- Kitty
 - GTK 3/4
 - Mako
 - Neovim
@@ -142,7 +142,7 @@ Examples:
 ~/.profile       -> ~/dotfiles/.profile
 
 ~/.config/atuin  -> ~/dotfiles/.config/atuin
-~/.config/foot   -> ~/dotfiles/.config/foot
+~/.config/kitty  -> ~/dotfiles/.config/kitty
 ~/.config/nvim   -> ~/dotfiles/.config/nvim
 ~/.config/niri   -> ~/dotfiles/.config/niri
 ~/.config/yazi   -> ~/dotfiles/.config/yazi
@@ -238,7 +238,7 @@ Custom match files live under:
 The helper:
 
 ```text
-.local/bin/espanso-word
+.config/wayland/scripts/commands/espanso-word
 ```
 
 opens or creates topic YAML files.
