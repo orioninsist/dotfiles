@@ -3,4 +3,4 @@
 # The only user-configured value is the note root.
 
 [[workspace]]
-root = "/home/murat/Media/5-Documentation/Knowledge"
+root = "__HOME__/Media/5-Documentation/Knowledge"

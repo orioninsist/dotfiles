@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-PROJECT="/home/murat/Media/6-Project/whisper"
+PROJECT="$HOME/Media/6-Project/whisper"
 REPO="https://github.com/orioninsist/whisper.git"
 PIN="8609812"
 PYTHON_VERSION="3.12"
@@ -10,7 +10,7 @@ MODEL="small"
 command -v uv >/dev/null
 command -v git >/dev/null
 
-PROJECTS_ROOT="/home/murat/Media/6-Project"
+PROJECTS_ROOT="$HOME/Media/6-Project"
 mkdir -p "$PROJECTS_ROOT"
 
 if [[ ! -e "$PROJECT" ]]; then

@@ -9,6 +9,7 @@ required_units=(
   swaybg.service
   niri-keyboard-state.service
   zellij-copy.path
+  orion-private-backup.timer
 )
 
 optional_units=(
@@ -71,7 +72,7 @@ done
 # chrome-webapps-sync.path has no matching service in the repository, so never enable it blindly.
 systemctl --user disable chrome-webapps-sync.path >/dev/null 2>&1 || true
 
-knowledge_root="/home/murat/Media/6-Project/knowledge"
+knowledge_root="$HOME/Media/6-Project/knowledge"
 if [[ -d "$knowledge_root" ]]; then
   echo "Knowledge project detected: $knowledge_root"
   for unit in "${knowledge_units[@]}"; do

@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -9,12 +10,30 @@ BANNED = (
 )
 
 def iter_text_files():
-    for base in [ROOT / ".config", ROOT / ".local" / "bin", ROOT / "install"]:
-        if not base.exists():
+    tracked = subprocess.run(
+        ["git", "-C", str(ROOT), "ls-files", "-z"],
+        check=True,
+        capture_output=True,
+    ).stdout.decode().split("\0")
+
+    for relative in tracked:
+        if not relative:
             continue
-        for p in base.rglob("*"):
-            if p.is_file() and (p.suffix in SCAN_SUFFIXES or p.name in {"bootstrap.sh", "install-fedora.sh"}):
-                yield p
+
+        p = ROOT / relative
+
+        if not (
+            relative.startswith(".config/")
+            or relative.startswith(".local/bin/")
+            or relative.startswith("install/")
+        ):
+            continue
+
+        if p.is_file() and (
+            p.suffix in SCAN_SUFFIXES
+            or p.name in {"bootstrap.sh", "install-fedora.sh"}
+        ):
+            yield p
 
 def test_no_hardcoded_home_or_usr_local_bin():
     offenders = []

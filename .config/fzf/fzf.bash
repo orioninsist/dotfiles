@@ -26,8 +26,18 @@ if enable -p 2>/dev/null | grep -q '^enable flyline$'; then
         eval "$command"
     }
 
-    flyline key bind Ctrl+t \
-        'always=runBashCommand(fzf-file-widget)'
+   fzf-flyline-file-widget() {
+       local selected
+       selected="$(fd --hidden --exclude .git | fzf)" || return
+       [[ -n "$selected" ]] || return
+
+       printf -v selected '%q' "$selected"
+       READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}${selected}${READLINE_LINE:READLINE_POINT}"
+       READLINE_POINT=$((READLINE_POINT + ${#selected}))
+   }
+
+   flyline key bind Ctrl+t \
+       'always=runBashCommand("fzf-flyline-file-widget")'
 
     flyline key bind Alt+c \
         'always=runBashCommand(fzf-flyline-cd-widget)'

@@ -62,3 +62,13 @@ if command -v gsettings >/dev/null 2>&1; then
   gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
   gsettings set org.gnome.desktop.interface gtk-theme "$CATPPUCCIN_GTK_THEME"
 fi
+
+# Generate the machine-local Knowledge workspace configuration. Knowledge
+# currently requires an absolute workspace root, so expand HOME at install time.
+if [[ -f "$ROOT/.config/knowledge/workspaces.toml.example" ]]; then
+  mkdir -p "$ROOT/.config/knowledge"
+  sed "s#__HOME__#$HOME#g" \
+    "$ROOT/.config/knowledge/workspaces.toml.example" \
+    > "$ROOT/.config/knowledge/workspaces.toml"
+  chmod 600 "$ROOT/.config/knowledge/workspaces.toml"
+fi

@@ -67,7 +67,7 @@ echo "==> Niri and display manager"
 niri validate --config "$HOME/.config/niri/config.kdl"
 
 echo "==> Whisper voice typing"
-WHISPER_PROJECT="/home/murat/Media/6-Project/whisper"
+WHISPER_PROJECT="$HOME/Media/6-Project/whisper"
 WHISPER_PYTHON="$WHISPER_PROJECT/.venv/bin/python"
 
 [[ -d "$WHISPER_PROJECT/.git" ]] || {
@@ -127,7 +127,7 @@ done
 systemctl --user is-active --quiet graphical-session.target
 
 echo "==> Conditional external projects"
-[[ ! -d /home/murat/Media/6-Project/knowledge ]] || {
+[[ ! -d $HOME/Media/6-Project/knowledge ]] || {
   for unit in knowledge-personal-search.service knowledge-personal-watch.service knowledge-personal-web.service; do
     systemctl --user is-enabled --quiet "$unit"
     systemctl --user is-active --quiet "$unit"
@@ -230,6 +230,76 @@ done
   echo "Configured wallpaper is missing" >&2
   exit 1
 }
+
+echo "==> Private recovery"
+
+for file in \
+  "$ROOT/install/22-recovery.sh" \
+  "$ROOT/install/recovery/backup-private.sh" \
+  "$ROOT/install/recovery/restore-private.sh" \
+  "$ROOT/install/recovery/private-paths.txt" \
+  "$ROOT/install/recovery/recipient.txt"
+do
+  [[ -f "$file" ]] || {
+    echo "Missing recovery file: $file" >&2
+    exit 1
+  }
+done
+
+for script in \
+  "$ROOT/install/22-recovery.sh" \
+  "$ROOT/install/recovery/backup-private.sh" \
+  "$ROOT/install/recovery/restore-private.sh"
+do
+  [[ -x "$script" ]] || {
+    echo "Recovery script is not executable: $script" >&2
+    exit 1
+  }
+
+  bash -n "$script"
+done
+
+grep -Eq '^age1[0-9a-z]+$' \
+  "$ROOT/install/recovery/recipient.txt" || {
+    echo "Invalid age recipient" >&2
+    exit 1
+  }
+
+for required in \
+  '.ssh' \
+  '.gnupg' \
+  '.config/rclone/rclone.conf'
+do
+  grep -Fxq "$required" \
+    "$ROOT/install/recovery/private-paths.txt" || {
+      echo "Missing private recovery path: $required" >&2
+      exit 1
+    }
+done
+
+[[ ! -e "$ROOT/install/recovery/identity.txt" ]] || {
+  echo "Private age identity must never exist in the repository" >&2
+  exit 1
+}
+
+RECOVERY_DIR="$HOME/.config/orion-recovery"
+
+if [[ -f "$RECOVERY_DIR/identity.txt" ]]; then
+  [[ "$(stat -c '%a' "$RECOVERY_DIR/identity.txt")" == "600" ]] || {
+    echo "Recovery identity permissions must be 600" >&2
+    exit 1
+  }
+fi
+
+if [[ -f "$RECOVERY_DIR/private-backup.tar.age" ]]; then
+  [[ "$(stat -c '%a' "$RECOVERY_DIR/private-backup.tar.age")" == "600" ]] || {
+    echo "Encrypted recovery backup permissions must be 600" >&2
+    exit 1
+  }
+fi
+
+echo "Private recovery: PASS"
+echo
 
 echo "==> System service parity"
 for unit in bluetooth.service docker.service vnstat.service NetworkManager.service; do

@@ -17,7 +17,7 @@ matches:
 
   - trigger: :openaihelp
     replace: |
-      cd /home/murat/Media/6-Project/docsync && uv run docsync https://help.openai.com/ --engine python --language en --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
+      cd /home/murat/Media/6-Project/docsync && uv run docsync https://help.openai.com/en --engine python --language en --headful --output-dir /home/murat/Media/5-Documentation/openai/docs --state-dir /home/murat/Media/5-Documentation/openai/state
 
   - trigger: :openaihelpmerge
     replace: |

@@ -12,3 +12,10 @@ __pycache__/
 
 # Desktop runtime state
 .config/gtk-3.0/bookmarks
+
+# Private recovery material - NEVER COMMIT
+.config/rclone/rclone.conf
+.config/orion-recovery/
+
+# Machine-local generated Knowledge config
+.config/knowledge/workspaces.toml

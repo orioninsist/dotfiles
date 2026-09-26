@@ -1,0 +1,7 @@
+[Unit]
+Description=Orion encrypted private recovery backup
+Documentation=file://%h/dotfiles/install/recovery/backup-private.sh
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/install/recovery/backup-private.sh

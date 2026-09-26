@@ -5,8 +5,8 @@ Wants=knowledge-personal-search.service knowledge-personal-web.service
 
 [Service]
 Type=simple
-WorkingDirectory=/home/murat/Media/6-Project/knowledge
-ExecStart=/home/murat/Media/6-Project/knowledge/scripts/live-workspace-sync.sh
+WorkingDirectory=%h/Media/6-Project/knowledge
+ExecStart=%h/Media/6-Project/knowledge/scripts/live-workspace-sync.sh
 Restart=always
 RestartSec=2
 
