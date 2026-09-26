@@ -27,7 +27,7 @@ show_tabs = true
 show_numeric_shortcuts = true
 
 # Enter executes the selected history entry; Tab/Right Arrow leaves it for editing.
-enter_accept = true
+enter_accept = false
 
 # When searching after &&, ||, or |, complete the next command instead of replacing the line.
 command_chaining = true
