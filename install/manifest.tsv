@@ -200,3 +200,4 @@ upstream	catppuccin-gtk	v1.0.3 Mocha/Mauve standard+default	required-desktop-the
 upstream	nerd-fonts-google-sans-code	v3.5.1 GoogleSansCode Nerd Font	required-font-stack
 upstream	noto-color-emoji	Unicode 18 pinned commit	required-font-stack
 dnf	okular	KDE PDF document viewer	confirmed-fedora44
+dnf	gwenview	KDE image viewer	confirmed-fedora44
