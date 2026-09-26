@@ -6,6 +6,7 @@ export LD_LIBRARY_PATH=/usr/lib
 
 RECORD_DIR="$HOME/.record"
 PID_FILE="$HOME/.cache/camera-record.pid"
+LOG_FILE="$HOME/.cache/camera-record.log"
 
 RECORDING_LOCK="$HOME/.config/wayland/scripts/recording-lock"
 
@@ -40,10 +41,9 @@ TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
 OUTPUT_FILE="$RECORD_DIR/camera_${TIMESTAMP}.mp4"
 
 ffmpeg \
+    -hide_banner \
+    -loglevel warning \
     -f v4l2 \
-    -input_format mjpeg \
-    -framerate 30 \
-    -video_size 1280x720 \
     -i "$CAMERA" \
     -f pulse \
     -i "$MIC" \
@@ -51,15 +51,31 @@ ffmpeg \
     -map 1:a \
     -c:v libx264 \
     -c:a aac \
-    "$OUTPUT_FILE" &
+    "$OUTPUT_FILE" >"$LOG_FILE" 2>&1 &
 
 PID=$!
 echo "$PID" > "$PID_FILE"
 
 notify-send "Camera Recording" "Recording started"
 
-wait "$PID" || true
+sleep 1
+if ! kill -0 "$PID" 2>/dev/null; then
+    rm -f "$PID_FILE"
+    notify-send "Camera Recording" "Failed to start. See $LOG_FILE"
+    exit 1
+fi
+
+STATUS=0
+wait "$PID" || STATUS=$?
 
 rm -f "$PID_FILE"
 
-notify-send "Camera Recording" "Recording finished: $OUTPUT_FILE"
+if [[ -s "$OUTPUT_FILE" ]]; then
+    notify-send "Camera Recording" "Recording finished: $OUTPUT_FILE"
+elif (( STATUS != 0 )); then
+    notify-send "Camera Recording" "Recording failed. See $LOG_FILE"
+    exit 1
+else
+    notify-send "Camera Recording" "Recording produced no file"
+    exit 1
+fi

@@ -143,7 +143,8 @@ def test_picker_scripts_close_by_copying_or_typing_selection():
     assert "wl-copy" in notifications
     assert "notify-send \"Notification copied\"" in notifications
     assert "wl-copy" in emoji
-    assert "wtype -- \"$emoji\"" in emoji
+    assert "wtype" not in emoji
+    assert "Emoji copied" in emoji
 
 
 def test_recording_scripts_use_dynamic_devices():
@@ -158,6 +159,10 @@ def test_recording_scripts_use_dynamic_devices():
     assert "pactl get-default-source" in camera
     assert "niri msg --json outputs" in combined
     assert "-map 1:a:1" not in combined
+    assert "Failed to start" in screen
+    assert "Recording failed" in screen
+    assert "wait \"$PID\" || true" not in camera
+    assert "Failed to start" in combined
 
 
 def test_calibre_uses_builtin_dark_palette_not_system_theme():

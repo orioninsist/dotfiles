@@ -25,5 +25,4 @@ emoji="${selection%%$'\t'*}"
 [[ -n "$emoji" ]] || exit 0
 
 printf '%s' "$emoji" | wl-copy
-sleep 0.08
-wtype -- "$emoji" >/dev/null 2>&1 || true
+notify-send "Emoji copied" "$emoji"

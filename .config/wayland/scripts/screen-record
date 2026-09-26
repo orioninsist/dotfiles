@@ -4,6 +4,7 @@ set -euo pipefail
 RECORD_DIR="$HOME/.record"
 PID_FILE="$HOME/.cache/screen-record.pid"
 RECORDING_LOCK="$HOME/.config/wayland/scripts/recording-lock"
+LOG_FILE="$HOME/.cache/screen-record.log"
 
 mkdir -p "$RECORD_DIR" "$HOME/.cache"
 
@@ -77,10 +78,28 @@ else
     ARGS+=(--output "$OUTPUT")
 fi
 
-wl-screenrec "${ARGS[@]}" &
+wl-screenrec "${ARGS[@]}" >"$LOG_FILE" 2>&1 &
 PID=$!
 echo "$PID" > "$PID_FILE"
 notify-send "Screen Recording" "Recording started"
-wait "$PID" || true
+
+sleep 1
+if ! kill -0 "$PID" 2>/dev/null; then
+    rm -f "$PID_FILE"
+    notify-send "Screen Recording" "Failed to start. See $LOG_FILE"
+    exit 1
+fi
+
+STATUS=0
+wait "$PID" || STATUS=$?
+
 rm -f "$PID_FILE"
-notify-send "Screen Recording" "Recording finished: $OUTPUT_FILE"
+if [[ -s "$OUTPUT_FILE" ]]; then
+    notify-send "Screen Recording" "Recording finished: $OUTPUT_FILE"
+elif (( STATUS != 0 )); then
+    notify-send "Screen Recording" "Recording failed. See $LOG_FILE"
+    exit 1
+else
+    notify-send "Screen Recording" "Recording produced no file"
+    exit 1
+fi

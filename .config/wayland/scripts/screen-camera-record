@@ -4,6 +4,7 @@ set -euo pipefail
 RECORD_DIR="$HOME/.record"
 PID_FILE="$HOME/.cache/screen-camera-record.pid"
 RECORDING_LOCK="$HOME/.config/wayland/scripts/recording-lock"
+LOG_FILE="$HOME/.cache/screen-camera-record.log"
 
 command -v wl-screenrec >/dev/null 2>&1 || { notify-send "Screen + Camera Recording" "wl-screenrec is not installed"; exit 1; }
 command -v ffmpeg >/dev/null 2>&1 || { notify-send "Screen + Camera Recording" "ffmpeg is not installed"; exit 1; }
@@ -38,24 +39,34 @@ SCREEN_FILE="$RECORD_DIR/screen_${TIMESTAMP}.mp4"
 CAMERA_FILE="$RECORD_DIR/camera_${TIMESTAMP}.mkv"
 OUTPUT_FILE="$RECORD_DIR/screen_camera_${TIMESTAMP}.mp4"
 
-ffmpeg -f v4l2 -i "$CAMERA" -f pulse -i "$MIC" -map 0:v -map 1:a -c:v libx264 -c:a aac "$CAMERA_FILE" &
+ffmpeg -hide_banner -loglevel warning -f v4l2 -i "$CAMERA" -f pulse -i "$MIC" -map 0:v -map 1:a -c:v libx264 -c:a aac "$CAMERA_FILE" >"$LOG_FILE" 2>&1 &
 CAMERA_PID=$!
 
-wl-screenrec --output "$OUTPUT" --codec avc --low-power off --filename "$SCREEN_FILE" &
+wl-screenrec --output "$OUTPUT" --codec avc --low-power off --filename "$SCREEN_FILE" >>"$LOG_FILE" 2>&1 &
 SCREEN_PID=$!
 
 printf '%s %s %s
 ' "$CAMERA_PID" "$SCREEN_PID" "$TIMESTAMP" > "$PID_FILE"
 notify-send "Screen + Camera Recording" "Recording started"
 
-wait "$SCREEN_PID" 2>/dev/null || true
-wait "$CAMERA_PID" 2>/dev/null || true
+sleep 1
+if ! kill -0 "$SCREEN_PID" 2>/dev/null || ! kill -0 "$CAMERA_PID" 2>/dev/null; then
+    kill -INT "$SCREEN_PID" "$CAMERA_PID" 2>/dev/null || true
+    rm -f "$PID_FILE"
+    notify-send "Screen + Camera Recording" "Failed to start. See $LOG_FILE"
+    exit 1
+fi
+
+SCREEN_STATUS=0
+CAMERA_STATUS=0
+wait "$SCREEN_PID" || SCREEN_STATUS=$?
+wait "$CAMERA_PID" || CAMERA_STATUS=$?
 rm -f "$PID_FILE"
 sleep 1
 
 [[ -s "$SCREEN_FILE" && -s "$CAMERA_FILE" ]] || { notify-send "Screen + Camera Recording" "Recording files are incomplete"; exit 1; }
 
-ffmpeg -fflags +genpts -i "$SCREEN_FILE" -fflags +genpts -i "$CAMERA_FILE"   -filter_complex "[0:v]fps=30,settb=1/30[screen];[1:v]fps=30,scale=320:-1[camera];[screen][camera]overlay=W-w-24:H-h-24[outv]"   -map "[outv]" -map 1:a:0 -c:v libx264 -c:a aac -shortest -movflags +faststart "$OUTPUT_FILE"
+ffmpeg -fflags +genpts -i "$SCREEN_FILE" -fflags +genpts -i "$CAMERA_FILE"   -filter_complex "[0:v]fps=30,settb=1/30[screen];[1:v]fps=30,scale=320:-1[camera];[screen][camera]overlay=W-w-24:H-h-24[outv]"   -map "[outv]" -map 1:a:0 -c:v libx264 -c:a aac -shortest -movflags +faststart "$OUTPUT_FILE" >>"$LOG_FILE" 2>&1
 
 if ffprobe -v error "$OUTPUT_FILE" >/dev/null 2>&1; then
     rm -f "$SCREEN_FILE" "$CAMERA_FILE"
