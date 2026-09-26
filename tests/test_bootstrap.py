@@ -114,6 +114,16 @@ def test_qt_theme_is_global_not_per_app_wrapper():
     assert 'CALIBRE_USE_SYSTEM_THEME null' in niri
 
 
+def test_niri_does_not_auto_route_apps_to_tags():
+    niri = (ROOT / ".config/niri/config.kdl").read_text()
+    assert "open-on-workspace" not in niri
+    assert "niri-window-place-once" not in niri
+    assert "kde-services" not in niri
+    assert "org.gnome.desktop.interface" not in niri
+    assert not (ROOT / ".config/niri/scripts/niri-window-place-once").exists()
+    assert not (ROOT / ".config/niri/scripts/kde-services").exists()
+
+
 def test_calibre_uses_builtin_dark_palette_not_system_theme():
     wrapper = (ROOT / ".local/bin/calibre-kde").read_text()
     assert "exec /usr/bin/calibre" in wrapper
@@ -150,6 +160,7 @@ def test_kde_app_desktop_entries_avoid_path_wrapper_recursion():
 def test_removed_apps_stay_out_of_launcher():
     ignored = (ROOT / ".config/wayland/path-apps.ignore").read_text().splitlines()
     assert "snapshot" in ignored
+    assert "camera" in ignored
     assert "snapshot" not in (ROOT / ".config/niri/binds/applications.kdl").read_text()
     assert "\tdnf\tsnapshot\t" not in (ROOT / "install/manifest.tsv").read_text()
 
@@ -178,7 +189,6 @@ def test_niri_referenced_commands_are_declared():
         "wl-screenrec", "ffmpeg", "ffprobe", "pactl", "wl-color-picker",
         "wl-copy", "wtype", "wlsunset", "cliphist", "fzf", "mako", "makoctl",
         "swaylock", "swaybg", "slurp", "grim", "tesseract", "glow", "niri",
-        "gsettings",
     }
 
     missing = sorted(cmd for cmd in required_commands if cmd not in declared_text)

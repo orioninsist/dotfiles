@@ -15,6 +15,6 @@ binds {
     Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
     Mod+Ctrl+Y { spawn "dolphin" "--new-window"; }
 
-    Mod+F8 { spawn-sh "niri msg action focus-workspace 7; google-chrome-stable --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai"; }
+    Mod+F8 { spawn "google-chrome-stable" "--profile-directory=Default" "--app-id=idkejijbjcgdnloelolopdemkebfadai"; }
     Mod+P { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/satty-screenshot"; }
 }

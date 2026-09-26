@@ -94,10 +94,7 @@ workspace "10" {
     open-on-output "eDP-1"
 }
 
-spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/kde-services"
 spawn-at-startup "mako"
-spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
-spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/niri-window-place-once"
 
 hotkey-overlay {
     skip-at-startup
@@ -105,36 +102,6 @@ hotkey-overlay {
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
-
-window-rule {
-    match app-id=r#"^(google-chrome|brave-browser|microsoft-edge|microsoft-edge-stable|yandex-browser|yandex-browser-stable|firefox|firefoxdeveloperedition|org\.mozilla\.firefox|org\.mozilla\.firefoxdeveloperedition|Tor Browser|tor-browser|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default|chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default|chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default|chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default|chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default|chrome-aghbiahbpaijignceidepookljebhfak-Default|org\.kde\.dolphin)$"#
-    open-on-workspace "1"
-}
-
-window-rule {
-    match app-id=r#"^kitty$"#
-    open-on-workspace "2"
-}
-
-window-rule {
-    match app-id=r#"^(code|code-url-handler|Chatgpt|github|antigravity-ide|antigravity|zed|dev\.zed\.Zed|jetbrains-.*)$"#
-    open-on-workspace "3"
-}
-
-window-rule {
-    match app-id=r#"^chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default$"#
-    open-on-workspace "4"
-}
-
-window-rule {
-    match app-id=r#"^(chrome-agimnkijcaahngcdmfeangaknmldooml-Default|chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default|Mullvad Browser|Spotify)$"#
-    open-on-workspace "6"
-}
-
-window-rule {
-    match app-id=r#"^chrome-idkejijbjcgdnloelolopdemkebfadai-Default$"#
-    open-on-workspace "7"
-}
 
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"

@@ -5,8 +5,7 @@ Modular Niri configuration for the daily Wayland session.
 ## Table of contents
 
 - [Structure](#structure)
-- [Workspace / tag map](#workspace--tag-map)
-- [Fixed tag and column order](#fixed-tag-and-column-order)
+- [Workspace model](#workspace-model)
 - [Complete shortcut reference](#complete-shortcut-reference)
 - [Daily mental model](#daily-mental-model)
 - [Conflict policy](#conflict-policy)
@@ -16,7 +15,7 @@ Modular Niri configuration for the daily Wayland session.
 
 | File | Responsibility |
 |---|---|
-| `config.kdl` | Input, outputs, layout, startup, workspaces, window rules and includes |
+| `config.kdl` | Input, outputs, layout, startup, workspaces, small window rules and includes |
 | `binds/window-management.kdl` | Niri-native window, column, monitor and layout actions |
 | `binds/workspaces.kdl` | Workspace navigation, movement and wheel navigation |
 | `binds/system.kdl` | Audio, media, brightness, capture, hardware, notifications and session |
@@ -24,76 +23,30 @@ Modular Niri configuration for the daily Wayland session.
 
 Niri 26.04 supports `include`, so the main config stays small while each binding domain remains independently maintainable.
 
-## Workspace / tag map
+## Workspace model
 
-The task map is stable and intended for muscle memory:
+Workspaces are intentionally plain. No application is pinned to a tag/workspace,
+and no background placement script reorders windows after they open. This keeps
+startup light and avoids surprise moves when applications are installed, removed
+or renamed.
 
 | Key | Workspace | Purpose | Typical applications |
 |---|---:|---|---|
-| `Super+1` | 1 | Web / Research / AI / Files | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, Grok, NotebookLM, GitHub, Stack Overflow, Reddit, Quora, Pinterest, Translate, Colab, Dolphin |
-| `Super+2` | 2 | Terminal / Operations | Kitty, shell-driven operations |
-| `Super+3` | 3 | Development | VS Code, Zed, Antigravity, JetBrains IDEs and development tools |
-| `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Contacts, Keep, Tasks, Forms, Password Manager, Photos, Vids, calibre |
-| `Super+5` | 5 | Communication / Business | Element, Signal, Messages, Facebook, Instagram, Meta Business Suite, Google AdSense |
-| `Super+6` | 6 | Creative / Design / Media | GIMP, Inkscape, Krita, Adobe Express, Firefly, Excalidraw, YouTube, YouTube Music, Mullvad Browser, Spotify |
-| `Super+7` | 7 | Productivity / Content | Knowledge PWA, OBS, mpv, HandBrake, Folo, NewsFlash, Google News |
-| `Super+8` | 8 | System / VM / Device | virt-manager, scrcpy, pavucontrol, Easy Effects |
-| `Super+9` | 9 | Finance / Monitoring | TradingView, Google Analytics |
-| `Super+0` | 10 | Free / Temporary | Ad-hoc temporary work |
-
-Application routing is native Niri configuration. Matching windows open on their assigned workspace once, and can still be moved manually afterward without being forced back.
-
-Current fixed routes and their exact left-to-right positions are documented in [Fixed tag and column order](#fixed-tag-and-column-order).
+| `Super+1` | 1 | Free workspace | Manual use |
+| `Super+2` | 2 | Free workspace | Manual use |
+| `Super+3` | 3 | Free workspace | Manual use |
+| `Super+4` | 4 | Free workspace | Manual use |
+| `Super+5` | 5 | Free workspace | Manual use |
+| `Super+6` | 6 | Free workspace | Manual use |
+| `Super+7` | 7 | Free workspace | Manual use |
+| `Super+8` | 8 | Free workspace | Manual use |
+| `Super+9` | 9 | Free workspace | Manual use |
+| `Super+0` | 10 | Free workspace | Manual use |
 
 Physical placement:
 - Workspaces 1-5 prefer `HDMI-A-1` (ASUS).
 - Workspaces 6-10 prefer `eDP-1` (ThinkPad).
-- This is only a default placement; columns can still be moved between monitors.
-
-## Fixed tag and column order
-
-This is the canonical list to edit when changing the personal app layout. The **Tag** column controls the workspace and **Position** is the initial left-to-right column number.
-
-| Tag | Position | Application | Niri `app_id` |
-|---:|---:|---|---|
-| 1 | 1 | Google Chrome | `google-chrome` |
-| 1 | 2 | ChatGPT PWA | `chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default` |
-| 1 | 3 | GitHub PWA | `chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default` |
-| 1 | 4 | Gemini PWA | `chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default` |
-| 1 | 5 | Microsoft Copilot PWA | `chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default` |
-| 1 | 6 | Grok PWA | `chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default` |
-| 1 | 7 | NotebookLM / Gemini Notebook | `chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default` |
-| 1 | 8 | Google Drive PWA | `chrome-aghbiahbpaijignceidepookljebhfak-Default` |
-| 1 | 9 | Dolphin | `org.gnome.Dolphin` |
-| 2 | 1 | Kitty | `kitty` |
-| 3 | 1 | VS Code | `code` / `code-url-handler` |
-| 3 | 2 | ChatGPT Desktop | `Chatgpt` |
-| 3 | 3 | GitHub Copilot | `github` |
-| 3 | 4 | Antigravity IDE | `antigravity-ide` |
-| 3 | 5 | Antigravity | `antigravity` |
-| 3 | 6 | Zed Editor | `zed` / `dev.zed.Zed` |
-| 3 | 7 | JetBrains family | `jetbrains-*` |
-| 4 | 1 | Google Calendar PWA | `chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default` |
-| 6 | 1 | YouTube PWA | `chrome-agimnkijcaahngcdmfeangaknmldooml-Default` |
-| 6 | 2 | YouTube Music PWA | `chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default` |
-| 6 | 3 | Mullvad Browser | `Mullvad Browser` |
-| 6 | 4 | Spotify | `Spotify` |
-| 7 | 1 | Knowledge PWA | `chrome-idkejijbjcgdnloelolopdemkebfadai-Default` |
-
-Two files implement this table:
-
-- `config.kdl`: assigns each application to its tag/workspace.
-- `scripts/niri-window-place-once`: assigns its initial left-to-right position with `target_index()`.
-
-The placement is intentionally one-time. After opening, manual moves are not forced back.
-
-To add an application, open it and get its real ID with:
-
-```sh
-niri msg windows
-```
-
-Then add the ID to the appropriate `window-rule` in `config.kdl` and add its position to `target_index()`. To remove fixed ordering but keep the tag assignment, remove only its `target_index()` entry.
+- This is only default output placement for empty workspaces; apps are not auto-routed.
 
 ## Complete shortcut reference
 
@@ -184,7 +137,7 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 | `Super+Ctrl+T` | Tor Browser |
 | `Super+Ctrl+Shift+M` | Mullvad Browser |
 | `Super+Ctrl+Y` | Dolphin |
-| `Super+F8` | Launch Knowledge PWA on workspace 7 |
+| `Super+F8` | Launch Knowledge PWA |
 | `Super+P` | Satty screenshot annotation |
 
 ### Display, power profile and hardware
@@ -309,5 +262,3 @@ To reload while Niri is running:
 ```sh
 niri msg action load-config-file
 ```
-
-
