@@ -49,7 +49,7 @@ dnf	xdg-desktop-portal	xdg portal core	confirmed
 dnf	xdg-desktop-portal-gtk	GTK portal fallback and file chooser	confirmed
 dnf	xdg-desktop-portal-gnome	Niri screencast portal	confirmed-fedora44
 dnf	gnome-keyring	Secret portal/keyring support	confirmed
-dnf	nautilus	GNOME file chooser integration	confirmed
+dnf	dolphin	KDE file manager and default directory handler	confirmed-fedora44
 dnf	grim	grim screenshot helper	confirmed
 dnf	slurp	slurp region selector	confirmed
 dnf	openssh-clients	ssh-agent	confirmed
@@ -96,8 +96,8 @@ vendor	code	Visual Studio Code	official-microsoft-vscode-repo
 vendor	yandex-browser-stable	Yandex Browser	official-yandex-fedora-rpm
 exception	spotify	Spotify	no-official-fedora-rpm-use-web-or-explicit-third-party
 upstream	tor-browser	Tor Browser	official-tor-linux-tarball-register-app
-source-service	rclone-gdrive.service	rclone mount/sync	resolved-fedora-template
-source-service	rclone-gdrive-shared.service	rclone shared mount/sync	resolved-fedora-template
+source-service	rclone-gdrive.service	read-only user Google Drive mount	resolved-fedora-template
+source-service	rclone-gdrive-shared.service	read-only user Google Drive shared-with-me mount	resolved-fedora-template
 source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system
 source-service	knowledge-personal-watch.service	knowledge personal watch	enabled-on-source-system
 source-service	knowledge-personal-web.service	knowledge personal web	enabled-on-source-system

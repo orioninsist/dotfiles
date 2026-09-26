@@ -24,7 +24,7 @@ def test_core_commands_after_install():
     required = [
         "git", "python3", "niri", "wpctl", "wl-copy", "wl-paste",
         "fzf", "rg", "kitty", "mako", "makoctl", "grim", "slurp",
-        "tesseract", "notify-send", "nautilus",
+        "tesseract", "notify-send", "dolphin",
     ]
     missing = [x for x in required if shutil.which(x) is None]
     assert not missing, missing
@@ -106,7 +106,7 @@ def test_niri_referenced_commands_are_declared():
     required_commands = {
         "kitty", "google-chrome-stable", "brave-browser",
         "microsoft-edge-stable", "yandex-browser-stable", "firefox",
-        "tor-browser", "mullvad-browser", "nautilus", "snapshot", "flameshot", "satty",
+        "tor-browser", "mullvad-browser", "dolphin", "snapshot", "flameshot", "satty",
         "wpctl", "playerctl", "brightnessctl", "busctl", "notify-send",
         "wl-screenrec", "ffmpeg", "ffprobe", "pactl", "wl-color-picker",
         "wl-copy", "wtype", "wlsunset", "cliphist", "fzf", "mako", "makoctl",

@@ -185,6 +185,32 @@ The Knowledge services are conditional on:
 
 If that project is absent, its services remain disabled.
 
+### Google Drive read-only mounts
+
+Google Drive is exposed as two user-owned FUSE mounts:
+
+- `~/GoogleDrive` — personal Google Drive
+- `~/GoogleDrive-Shared` — files visible through "Shared with me"
+
+Both mounts are intentionally read-only. They must never be used for upload,
+delete, rename, or synchronization operations.
+
+The mounts use `--vfs-cache-mode off`, so rclone does not maintain a persistent
+VFS file cache. File contents are fetched from Google Drive when accessed.
+Directory metadata may be cached briefly in memory and is refreshed through
+Google Drive polling.
+
+The mounts are managed by the systemd user manager. When the rclone
+configuration exists, the services are enabled for future login/reboot
+sessions and restart automatically after failures.
+
+The mount services are:
+
+- `rclone-gdrive.service`
+- `rclone-gdrive-shared.service`
+
+Backup and synchronization are deliberately separate from these mounts.
+
 ## Niri, Ly and SELinux
 
 SELinux must remain enabled.

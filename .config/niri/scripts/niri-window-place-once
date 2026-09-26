@@ -18,7 +18,7 @@ target_index() {
         chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default) echo 6 ;;
         chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default) echo 7 ;;
         chrome-aghbiahbpaijignceidepookljebhfak-Default) echo 8 ;;
-        org.gnome.Nautilus) echo 9 ;;
+        org.kde.dolphin) echo 9 ;;
 
         # TAG 2: Terminal / Operations
         kitty) echo 1 ;;

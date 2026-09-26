@@ -29,6 +29,11 @@ knowledge_units=(
   knowledge-personal-web.service
 )
 
+rclone_units=(
+  rclone-gdrive.service
+  rclone-gdrive-shared.service
+)
+
 
 unit_execs_available() {
   local unit="$1" text path
@@ -68,6 +73,24 @@ for unit in "${optional_units[@]}"; do
     systemctl --user disable "$unit" >/dev/null 2>&1 || true
   fi
 done
+
+# Google Drive mounts are user-owned, read-only FUSE mounts.
+# Enable them only after the private rclone configuration has been restored.
+if [[ -f "$HOME/.config/rclone/rclone.conf" ]]; then
+  echo "rclone config detected; enabling read-only Google Drive mounts."
+  for unit in "${rclone_units[@]}"; do
+    if systemctl --user cat "$unit" >/dev/null 2>&1; then
+      systemctl --user enable "$unit"
+    else
+      echo "INFO rclone user unit unavailable: $unit" >&2
+    fi
+  done
+else
+  echo "INFO rclone config missing; Google Drive mounts remain disabled."
+  for unit in "${rclone_units[@]}"; do
+    systemctl --user disable "$unit" >/dev/null 2>&1 || true
+  done
+fi
 
 # chrome-webapps-sync.path has no matching service in the repository, so never enable it blindly.
 systemctl --user disable chrome-webapps-sync.path >/dev/null 2>&1 || true

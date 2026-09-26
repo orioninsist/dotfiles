@@ -216,6 +216,48 @@ for gtk in gtk-3.0 gtk-4.0; do
     }
 done
 
+echo "==> Dolphin and KDE appearance"
+
+rpm -q dolphin kio-extras ffmpegthumbs >/dev/null || {
+  echo "Dolphin thumbnail package set is incomplete" >&2
+  exit 1
+}
+
+if rpm -q nautilus >/dev/null 2>&1; then
+  echo "Nautilus must not be installed; Dolphin is the canonical file manager" >&2
+  exit 1
+fi
+
+[[ "$(xdg-mime query default inode/directory)" == "org.kde.dolphin.desktop" ]] || {
+  echo "Dolphin is not the default directory handler" >&2
+  exit 1
+}
+
+grep -Fqx 'application/x-directory=org.kde.dolphin.desktop'   "$HOME/.config/mimeapps.list" || {
+    echo "Dolphin application/x-directory association is missing" >&2
+    exit 1
+  }
+
+KDE_SCHEME="$HOME/.local/share/color-schemes/CatppuccinMochaMauve.colors"
+
+[[ -f "$KDE_SCHEME" ]] || {
+  echo "Catppuccin Mocha Mauve KDE color scheme is missing" >&2
+  exit 1
+}
+
+grep -Fqx 'ColorScheme=CatppuccinMochaMauve'   "$HOME/.config/kdeglobals" || {
+    echo "Catppuccin Mocha Mauve is not the KDE color scheme" >&2
+    exit 1
+  }
+
+grep -Fqx 'ForegroundNormal=205, 214, 244'   "$HOME/.config/kdeglobals" || {
+    echo "Catppuccin KDE foreground colors are not applied" >&2
+    exit 1
+  }
+
+echo "Dolphin / Catppuccin KDE: PASS"
+echo
+
 [[ -L "$HOME/.wallpapers" ]] || {
   echo "~/.wallpapers is not a dotfiles symlink" >&2
   exit 1
@@ -316,8 +358,24 @@ if ! systemd-detect-virt --quiet --vm; then
   done
 fi
 if [[ -f "$HOME/.config/rclone/rclone.conf" ]]; then
-  systemctl is-enabled --quiet rclone-gdrive.service
-  systemctl is-enabled --quiet rclone-gdrive-shared.service
+  echo "==> Read-only Google Drive mounts"
+
+  for unit in rclone-gdrive.service rclone-gdrive-shared.service; do
+    systemctl --user cat "$unit" >/dev/null
+    systemctl --user is-enabled --quiet "$unit"
+  done
+
+  gdrive_unit="$(systemctl --user cat rclone-gdrive.service)"
+  shared_unit="$(systemctl --user cat rclone-gdrive-shared.service)"
+
+  grep -q -- '--read-only' <<<"$gdrive_unit"
+  grep -q -- '--vfs-cache-mode off' <<<"$gdrive_unit"
+  grep -q -- '%h/GoogleDrive' <<<"$gdrive_unit"
+
+  grep -q -- '--read-only' <<<"$shared_unit"
+  grep -q -- '--vfs-cache-mode off' <<<"$shared_unit"
+  grep -q -- '--drive-shared-with-me' <<<"$shared_unit"
+  grep -q -- '%h/GoogleDrive-Shared' <<<"$shared_unit"
 fi
 
 echo "==> Fedora package profile"

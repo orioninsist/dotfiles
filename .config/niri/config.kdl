@@ -98,7 +98,7 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
 
 window-rule {
-    match app-id=r#"^(google-chrome|brave-browser|microsoft-edge|microsoft-edge-stable|yandex-browser|yandex-browser-stable|firefox|firefoxdeveloperedition|org\.mozilla\.firefox|org\.mozilla\.firefoxdeveloperedition|Tor Browser|tor-browser|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default|chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default|chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default|chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default|chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default|chrome-aghbiahbpaijignceidepookljebhfak-Default|org\.gnome\.Nautilus)$"#
+    match app-id=r#"^(google-chrome|brave-browser|microsoft-edge|microsoft-edge-stable|yandex-browser|yandex-browser-stable|firefox|firefoxdeveloperedition|org\.mozilla\.firefox|org\.mozilla\.firefoxdeveloperedition|Tor Browser|tor-browser|chrome-cadlkienfkclaiaibeoongdcgmdikeeg-Default|chrome-mjoklplbddabcmpepnokjaffbmgbkkgg-Default|chrome-mhpcpiccfiaoabcaedpafgjabjjheekk-Default|chrome-hjopciijjmfioojmkkdhpmeobcmldadc-Default|chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default|chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default|chrome-aghbiahbpaijignceidepookljebhfak-Default|org\.kde\.dolphin)$"#
     open-on-workspace "1"
 }
 

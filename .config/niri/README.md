@@ -30,7 +30,7 @@ The task map is stable and intended for muscle memory:
 
 | Key | Workspace | Purpose | Typical applications |
 |---|---:|---|---|
-| `Super+1` | 1 | Web / Research / AI / Files | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, Grok, NotebookLM, GitHub, Stack Overflow, Reddit, Quora, Pinterest, Translate, Colab, Nautilus |
+| `Super+1` | 1 | Web / Research / AI / Files | Chrome, Firefox, Brave, Edge, Tor, Mullvad, ChatGPT, Gemini, Grok, NotebookLM, GitHub, Stack Overflow, Reddit, Quora, Pinterest, Translate, Colab, Dolphin |
 | `Super+2` | 2 | Terminal / Operations | Kitty, shell-driven operations |
 | `Super+3` | 3 | Development | VS Code, Zed, Antigravity, JetBrains IDEs and development tools |
 | `Super+4` | 4 | Work / Office | Drive, Docs, Sheets, Slides, Calendar, Contacts, Keep, Tasks, Forms, Password Manager, Photos, Vids, calibre |
@@ -64,7 +64,7 @@ This is the canonical list to edit when changing the personal app layout. The **
 | 1 | 6 | Grok PWA | `chrome-ggjocahimgaohmigbfhghnlfcnjemagj-Default` |
 | 1 | 7 | NotebookLM / Gemini Notebook | `chrome-kjfmejlnnfibknebffpdmphoiomckhdb-Default` |
 | 1 | 8 | Google Drive PWA | `chrome-aghbiahbpaijignceidepookljebhfak-Default` |
-| 1 | 9 | GNOME Files | `org.gnome.Nautilus` |
+| 1 | 9 | Dolphin | `org.gnome.Dolphin` |
 | 2 | 1 | Kitty | `kitty` |
 | 3 | 1 | VS Code | `code` / `code-url-handler` |
 | 3 | 2 | ChatGPT Desktop | `Chatgpt` |
@@ -183,7 +183,7 @@ Then add the ID to the appropriate `window-rule` in `config.kdl` and add its pos
 | `Super+Ctrl+Shift+F` | Firefox Developer Edition |
 | `Super+Ctrl+T` | Tor Browser |
 | `Super+Ctrl+Shift+M` | Mullvad Browser |
-| `Super+Ctrl+Y` | Nautilus |
+| `Super+Ctrl+Y` | Dolphin |
 | `Super+F8` | Launch Knowledge PWA on workspace 7 |
 | `Super+P` | Satty screenshot annotation |
 

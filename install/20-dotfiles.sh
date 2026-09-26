@@ -54,6 +54,15 @@ if [[ -d "$ROOT/.wallpapers" ]]; then
   backup_or_link "$ROOT/.wallpapers" "$HOME/.wallpapers"
 fi
 
+# Install repository-managed KDE color schemes without duplicating them.
+if [[ -d "$ROOT/.local/share/color-schemes" ]]; then
+  mkdir -p "$HOME/.local/share/color-schemes"
+  for p in "$ROOT"/.local/share/color-schemes/*; do
+    [[ -f "$p" ]] || continue
+    backup_or_link "$p" "$HOME/.local/share/color-schemes/${p##*/}"
+  done
+fi
+
 
 echo "==> Applying desktop theme"
 CATPPUCCIN_GTK_THEME="catppuccin-mocha-mauve-standard+default"
