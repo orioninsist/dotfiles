@@ -4586,12 +4586,10 @@
 /usr/bin/env
 /usr/bin/ffmpeg
 /usr/bin/ffprobe
-/usr/bin/flameshot
 /usr/bin/grim
 /usr/bin/mako
 /usr/bin/notify-send
 /usr/bin/slurp
-/usr/bin/snapshot
 /usr/bin/ssh-agent
 /usr/bin/swayidle
 /usr/bin/swaylock
@@ -4611,4 +4609,3 @@
 /usr/local/bin/tesseract
 /usr/local/bin/wl-screenrec
 /usr/local/bin/zellij
-

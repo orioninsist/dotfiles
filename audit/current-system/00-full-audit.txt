@@ -4600,12 +4600,10 @@ Linux archlinux 7.2.6-arch2-1 #1 SMP PREEMPT_DYNAMIC Mon, 14 Sep 2026 22:41:30 +
 /usr/bin/env
 /usr/bin/ffmpeg
 /usr/bin/ffprobe
-/usr/bin/flameshot
 /usr/bin/grim
 /usr/bin/mako
 /usr/bin/notify-send
 /usr/bin/slurp
-/usr/bin/snapshot
 /usr/bin/ssh-agent
 /usr/bin/swayidle
 /usr/bin/swaylock
@@ -4632,12 +4630,10 @@ Linux archlinux 7.2.6-arch2-1 #1 SMP PREEMPT_DYNAMIC Mon, 14 Sep 2026 22:41:30 +
 /usr/bin/env	/usr/bin/env is owned by coreutils 9.11-2
 /usr/bin/ffmpeg	/usr/bin/ffmpeg is owned by ffmpeg 2:9.0.2-1
 /usr/bin/ffprobe	/usr/bin/ffprobe is owned by ffmpeg 2:9.0.2-1
-/usr/bin/flameshot	/usr/bin/flameshot is owned by flameshot 14.0.0-1
 /usr/bin/grim	/usr/bin/grim is owned by grim 1.5.0-2
 /usr/bin/mako	/usr/bin/mako is owned by mako 1.11.0-1
 /usr/bin/notify-send	/usr/bin/notify-send is owned by libnotify 0.8.8-1
 /usr/bin/slurp	/usr/bin/slurp is owned by slurp 1.5.0-2
-/usr/bin/snapshot	/usr/bin/snapshot is owned by snapshot 50.0-1
 /usr/bin/ssh-agent	/usr/bin/ssh-agent is owned by openssh 10.5p1-1
 /usr/bin/swayidle	/usr/bin/swayidle is owned by swayidle 1.9.0-1
 /usr/bin/swaylock	/usr/bin/swaylock is owned by swaylock 1.8.6-1
@@ -4726,7 +4722,6 @@ figlet
 file-roller
 firefox
 firefox-developer-edition
-flameshot
 flawfinder
 fnm
 fop
@@ -4901,7 +4896,6 @@ seatd
 shellcheck
 sip
 smartmontools
-snapshot
 sof-firmware
 soundtouch
 spirv-headers

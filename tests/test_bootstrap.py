@@ -200,8 +200,8 @@ def test_kde_app_desktop_entries_avoid_path_wrapper_recursion():
 
 def test_removed_apps_stay_out_of_launcher():
     ignored = (ROOT / ".config/wayland/path-apps.ignore").read_text().splitlines()
-    assert "snapshot" in ignored
     assert "camera" in ignored
+    assert "snapshot" not in ignored
     assert "snapshot" not in (ROOT / ".config/niri/binds/applications.kdl").read_text()
     assert "\tdnf\tsnapshot\t" not in (ROOT / "install/manifest.tsv").read_text()
 
@@ -223,7 +223,7 @@ def test_niri_referenced_commands_are_declared():
     declared_text = "\n".join("\t".join(row[:3]) for row in rows)
 
     required_commands = {
-        "kitty", "dolphin", "flameshot", "satty",
+        "kitty", "dolphin", "satty",
         "wpctl", "playerctl", "brightnessctl", "busctl", "notify-send",
         "wl-screenrec", "ffmpeg", "ffprobe", "pactl", "wl-color-picker",
         "wl-copy", "wtype", "wlsunset", "cliphist", "fzf", "mako", "makoctl",

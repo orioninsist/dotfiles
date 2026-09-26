@@ -40,7 +40,6 @@ dnf	ripgrep	rg	confirmed
 dnf	jq	jq	confirmed
 dnf	ffmpeg-free	ffmpeg/ffprobe	verify-in-qemu
 dnf	alsa-utils	arecord/amixer	Whisper microphone capture
-dnf	flameshot	flameshot	confirmed
 dnf	libnotify	notify-send	confirmed
 dnf	bluez	Bluetooth stack	confirmed
 dnf	bluez-tools	Bluetooth CLI helpers	verify-in-qemu

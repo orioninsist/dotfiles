@@ -229,7 +229,6 @@ firefox-langpacks
 firewalld
 firewalld-filesystem
 flac-libs
-flameshot
 flexiblas
 flexiblas-netlib
 flexiblas-openblas-openmp
@@ -1623,7 +1622,6 @@ simdutf
 slang
 slurp
 snappy
-snapshot
 socat
 sord
 sound-theme-freedesktop

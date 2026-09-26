@@ -45,8 +45,6 @@ binds {
     Mod+Ctrl+E { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/emoji-picker"; }
 
     Mod+Shift+C { spawn-sh "niri msg action load-config-file"; }
-    Mod+F11 { spawn "bash" "-lc" "kitty glow -p $HOME/.config/niri/README.md"; }
-
     Mod+Shift+S { spawn-sh "swaylock -f -c 000000 && systemctl suspend"; }
     Mod+Shift+Escape { quit; }
     Ctrl+Alt+Delete { quit; }

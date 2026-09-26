@@ -180,7 +180,6 @@ Physical placement:
 | `Super+Ctrl+N` | Notification history |
 | `Super+Ctrl+E` | Emoji picker |
 | `Super+Shift+C` | Reload Niri config |
-| `Super+F11` | Open this README in Glow inside Kitty |
 
 ### Session
 

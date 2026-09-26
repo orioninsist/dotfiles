@@ -66,7 +66,6 @@ figlet
 file-roller
 firefox
 firefox-developer-edition
-flameshot
 flawfinder
 fnm
 fop
@@ -241,7 +240,6 @@ seatd
 shellcheck
 sip
 smartmontools
-snapshot
 sof-firmware
 soundtouch
 spirv-headers
@@ -302,4 +300,3 @@ zed
 zig
 zita-convolver
 zram-generator
-
