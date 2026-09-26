@@ -96,6 +96,22 @@ while IFS= read -r desktop; do
 
     first="$(printf '%s\n' "$cleaned" | awk '{print $1}')"
 
+    # Preserve KDE/Qt wrapper launchers for Super+D PATH launcher.
+    # Direct binaries bypass qt-kde-launch environment.
+    if [[ "$cleaned" == *"qt-kde-launch"* || "$cleaned" == *"calibre-kde"* ]]; then
+        target="$bin_dir/$cmd_name"
+
+        {
+            echo '#!/usr/bin/env bash'
+            printf 'exec %s "$@"\n' "$cleaned"
+        } > "$target"
+
+        chmod +x "$target"
+        echo "ADD   $cmd_name    wrapper"
+        ((added++))
+        continue
+    fi
+
     # If the real executable is already globally reachable, there is nothing
     # useful to wrap; Super+D already sees it through PATH.
     if command -v "${first##*/}" >/dev/null 2>&1; then
