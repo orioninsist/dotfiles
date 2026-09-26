@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Ark
-Exec=bash -lc "$HOME/.config/wayland/scripts/qt-kde-launch ark %U"
+Exec=/home/murat/.config/wayland/scripts/qt-kde-launch ark %U
 MimeType=application/zip;application/x-tar;application/x-7z-compressed;
 Terminal=false
 Categories=Utility;Archiving;

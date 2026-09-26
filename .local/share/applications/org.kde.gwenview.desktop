@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Gwenview
-Exec=bash -lc "$HOME/.config/wayland/scripts/qt-kde-launch gwenview %U"
+Exec=/home/murat/.config/wayland/scripts/qt-kde-launch gwenview %U
 MimeType=image/png;image/jpeg;image/webp;image/avif;
 Terminal=false
 Categories=Graphics;Viewer;
