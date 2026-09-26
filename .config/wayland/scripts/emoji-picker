@@ -24,4 +24,4 @@ emoji="${selection%%$'\t'*}"
 
 [[ -n "$emoji" ]] || exit 0
 
-nohup wl-copy --foreground "$emoji" >/dev/null 2>&1 < /dev/null &
+nohup sh -c 'printf %s "$1" | wl-copy --foreground' _ "$emoji" >/dev/null 2>&1 &
