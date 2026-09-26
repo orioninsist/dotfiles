@@ -59,13 +59,21 @@ fc() {
 [[ -r "$HOME/.config/fzf/fzf.bash" ]] && source "$HOME/.config/fzf/fzf.bash"
 
 if command -v atuin >/dev/null 2>&1; then
-    eval "$(atuin init bash)"
+    # Atuin registers preexec/precmd callbacks. bash-preexec is the dispatcher
+    # that makes those callbacks run for commands entered through Flyline too.
+    BASH_PREEXEC="$HOME/.local/share/bash-preexec/bash-preexec.sh"
+    [[ -r "$BASH_PREEXEC" ]] && source "$BASH_PREEXEC"
+    eval "$(atuin init bash --disable-ctrl-r --disable-up-arrow)"
 fi
 
-if command -v flyline >/dev/null 2>&1; then
-    flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
-    flyline key bind Up 'editingBufferMode+cursorOnFirstLine=runBashCommand("__atuin_history --shell-up-key-binding --keymap-mode=emacs")+submitOrNewline'
+if command -v flyline >/dev/null 2>&1 && command -v atuin >/dev/null 2>&1; then
+    # Keep Flyline as the line editor, but let Atuin own history search.
+    # Do not append submitOrNewline: selecting history should edit the buffer,
+    # not execute the selected command immediately.
+    flyline key bind Ctrl+r 'always=runBashCommand("__atuin_history --keymap-mode=emacs")'
+    flyline key bind Up 'editingBufferMode+cursorOnFirstLine=runBashCommand("__atuin_history --shell-up-key-binding --keymap-mode=emacs")'
 fi
+unset BASH_PREEXEC
 
 [[ -r "$HOME/.config/sd/sd.bash" ]] && source "$HOME/.config/sd/sd.bash"
 [[ -r "$HOME/.config/ast-grep/ast-grep.bash" ]] && source "$HOME/.config/ast-grep/ast-grep.bash"
