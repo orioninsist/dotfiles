@@ -24,4 +24,4 @@ emoji="${selection%%$'\t'*}"
 
 [[ -n "$emoji" ]] || exit 0
 
-printf '%s' "$emoji" | setsid wl-copy >/dev/null 2>&1 &
+nohup wl-copy --foreground "$emoji" >/dev/null 2>&1 < /dev/null &
