@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+log_file="$HOME/.cache/orion-clipboard.log"
+printf 'notification-picker started\n' >> "$log_file"
 
 selection="$(
     makoctl history -j |
@@ -20,6 +22,8 @@ selection="$(
         }' |
         fzf --prompt="Notifications > " --height=40% --reverse
 )" || exit 0
+
+printf 'notification selection: %q\n' "$selection" >> "$log_file"
 
 [[ -n "$selection" ]] || exit 0
 

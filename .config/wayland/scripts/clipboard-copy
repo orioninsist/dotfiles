@@ -7,6 +7,7 @@ text="${1-}"
 
 log_file="$HOME/.cache/orion-clipboard.log"
 mkdir -p "${log_file%/*}"
+printf 'clipboard-copy invoked: %q\n' "$text" >> "$log_file"
 
 # Keep the selected text on stdin, matching the working wl-copy CLI usage.
 nohup sh -c 'printf %s "$1" | wl-copy --paste-once' _ "$text" \

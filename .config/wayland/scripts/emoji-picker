@@ -3,6 +3,8 @@
 set -euo pipefail
 
 emoji_data="$HOME/.config/wayland/scripts/emoji-test.txt"
+log_file="$HOME/.cache/orion-clipboard.log"
+printf 'emoji-picker started\n' >> "$log_file"
 
 [[ -r "$emoji_data" ]] || exit 1
 
@@ -18,10 +20,14 @@ selection="$(
         fzf --prompt="emoji > "
 )" || exit 0
 
+printf 'emoji selection: %q\n' "$selection" >> "$log_file"
+
 [[ -n "$selection" ]] || exit 0
 
 emoji="${selection%%$'\t'*}"
 
 [[ -n "$emoji" ]] || exit 0
+
+printf 'emoji value: %q\n' "$emoji" >> "$log_file"
 
 "$HOME/.config/wayland/scripts/clipboard-copy" "$emoji"
