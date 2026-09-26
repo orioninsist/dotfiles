@@ -4,4 +4,4 @@ set -euo pipefail
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} --height=~100% --min-height=8"
 # Always start a fresh short-lived popup. Reusing a stale Kitty instance can
 # leave an empty, focused window after fzf has already exited.
-exec kitty --class=fzf-popup --title=fzf sh -c 'exec bash "$1"' -- "$1"
+exec kitty --class=fzf-popup --title=fzf bash "$1"
