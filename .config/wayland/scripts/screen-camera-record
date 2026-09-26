@@ -42,7 +42,7 @@ OUTPUT_FILE="$RECORD_DIR/screen_camera_${TIMESTAMP}.mp4"
 ffmpeg -hide_banner -loglevel warning -f v4l2 -i "$CAMERA" -f pulse -i "$MIC" -map 0:v -map 1:a -c:v libx264 -c:a aac "$CAMERA_FILE" >"$LOG_FILE" 2>&1 &
 CAMERA_PID=$!
 
-wl-screenrec --output "$OUTPUT" --codec avc --no-hw --low-power off --filename "$SCREEN_FILE" >>"$LOG_FILE" 2>&1 &
+wl-screenrec --output "$OUTPUT" --codec avc --no-hw --ffmpeg-encoder libx264 --low-power off --filename "$SCREEN_FILE" >>"$LOG_FILE" 2>&1 &
 SCREEN_PID=$!
 
 printf '%s %s %s

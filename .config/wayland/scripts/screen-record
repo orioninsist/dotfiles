@@ -65,7 +65,7 @@ OUTPUT_FILE="$RECORD_DIR/${PREFIX}_${TIMESTAMP}.mp4"
 
 # This machine advertises VAAPI profiles that wl-screenrec cannot configure.
 # Force the stable software path instead of letting the GPU encoder panic.
-ARGS=(--filename "$OUTPUT_FILE" --codec avc --no-hw --low-power off)
+ARGS=(--filename "$OUTPUT_FILE" --codec avc --no-hw --ffmpeg-encoder libx264 --low-power off)
 
 if pactl info >/dev/null 2>&1; then
     DEFAULT_SOURCE="$(pactl get-default-source 2>/dev/null || true)"
