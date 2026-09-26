@@ -10,5 +10,6 @@ mkdir -p "${log_file%/*}"
 printf 'clipboard-copy invoked: %q\n' "$text" >> "$log_file"
 
 # Keep the selected text on stdin, matching the working wl-copy CLI usage.
-nohup sh -c 'printf %s "$1" | wl-copy --paste-once' _ "$text" \
+# The foreground owner must stay alive so later Ctrl+Shift+V requests work.
+nohup setsid sh -c 'printf %s "$1" | wl-copy --foreground' _ "$text" \
     >>"$log_file" 2>&1 &
