@@ -312,6 +312,24 @@ arch-final-2026-09-23
 
 Private/user data is intentionally not restored by the dotfiles bootstrap. Restore personal data and secrets separately from the private backup, after verifying paths and checksums.
 
+### Continuous system-state reconciliation
+
+The user timer `orion-system-state-sync.timer` periodically records the current
+Fedora RPM package set, Flatpak applications, enabled system/user services, and
+stable host identity into `state/`. If those generated manifests changed, it
+creates a commit and pushes it to the configured `origin` remote. It deliberately
+does not collect secrets, personal files, Google Drive, or rclone data.
+
+Run it manually with:
+
+```bash
+~/dotfiles/install/recovery/sync-system-state.sh
+```
+
+Use `--no-push` for a local commit or `--dry-run` to inspect changes without a
+commit. A fresh Fedora install can use the repository's bootstrap flow, then
+install packages from the generated manifests during the recovery phase.
+
 ### Desktop appearance
 
 - System color preference: dark

@@ -23,6 +23,7 @@ fi
 for step in \
   install/05-preflight.sh \
   install/10-base.sh \
+  install/11-state-recovery.sh \
   install/12-external-tools.sh \
   install/13-vendor-apps.sh \
   install/15-fonts.sh \

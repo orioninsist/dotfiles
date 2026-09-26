@@ -1,0 +1,7 @@
+[Unit]
+Description=Reconcile Fedora system state into dotfiles repository
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/install/recovery/sync-system-state.sh

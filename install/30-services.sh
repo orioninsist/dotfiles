@@ -10,6 +10,7 @@ required_units=(
   niri-keyboard-state.service
   zellij-copy.path
   orion-private-backup.timer
+  orion-system-state-sync.timer
 )
 
 optional_units=(
