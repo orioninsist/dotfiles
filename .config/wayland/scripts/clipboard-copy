@@ -13,17 +13,3 @@ printf 'clipboard-copy invoked: %q\n' "$text" >> "$log_file"
 # The foreground owner must stay alive so later Ctrl+Shift+V requests work.
 nohup setsid sh -c 'printf %s "$1" | wl-copy --foreground' _ "$text" \
     >>"$log_file" 2>&1 &
-
-# Wait for the Kitty popup to close, then type into the application that was
-# focused before the picker opened.
-if command -v wtype >/dev/null 2>&1; then
-    nohup bash -c '
-        printf "wtype worker started: %q\\n" "$1" >>"$2"
-        sleep 0.8
-        if wtype "$1" >>"$2" 2>&1; then
-            printf "wtype ok: %q\\n" "$1" >>"$2"
-        else
-            printf "wtype failed (%s): %q\\n" "$?" "$1" >>"$2"
-        fi
-    ' _ "$text" "$log_file" >/dev/null 2>&1 &
-fi

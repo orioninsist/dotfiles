@@ -29,5 +29,6 @@ emoji="${selection%%$'\t'*}"
 [[ -n "$emoji" ]] || exit 0
 
 printf 'emoji value: %q\n' "$emoji" >> "$log_file"
+printf '%s\n' "$emoji" > "${XDG_RUNTIME_DIR:-$HOME/.cache}/orion-picker-result"
 
 "$HOME/.config/wayland/scripts/clipboard-copy" "$emoji"

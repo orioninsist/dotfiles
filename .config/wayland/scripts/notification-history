@@ -24,6 +24,7 @@ selection="$(
 )" || exit 0
 
 printf 'notification selection: %q\n' "$selection" >> "$log_file"
+printf '%s\n' "$selection" > "${XDG_RUNTIME_DIR:-$HOME/.cache}/orion-picker-result"
 
 [[ -n "$selection" ]] || exit 0
 

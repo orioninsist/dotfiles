@@ -2,6 +2,21 @@
 set -euo pipefail
 (($# > 0)) || exit 2
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} --height=~100% --min-height=8"
+runtime_dir="${XDG_RUNTIME_DIR:-$HOME/.cache}"
+result_file="$runtime_dir/orion-picker-result"
+rm -f "$result_file"
+
 # Always start a fresh short-lived popup. Reusing a stale Kitty instance can
 # leave an empty, focused window after fzf has already exited.
-exec kitty --class=fzf-popup --title=fzf bash "$1"
+kitty --class=fzf-popup --title=fzf bash "$1"
+status=$?
+
+if [[ "$1" == *emoji-picker || "$1" == *notification-history ]] && [[ -s "$result_file" ]]; then
+    if command -v wtype >/dev/null 2>&1; then
+        IFS= read -r result < "$result_file"
+        wtype "$result"
+    fi
+fi
+
+rm -f "$result_file"
+exit "$status"
