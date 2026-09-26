@@ -8,6 +8,14 @@ export KDE_COLOR_SCHEME=CatppuccinMochaMauve
 
 cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/orion-launcher"
 cache_file="$cache_dir/path-commands"
+ignore_file="${XDG_CONFIG_HOME:-$HOME/.config}/wayland/path-apps.ignore"
+
+is_ignored_command() {
+    local command="$1"
+
+    [[ -f "$ignore_file" ]] || return 1
+    grep -Fxq -- "$command" "$ignore_file"
+}
 
 refresh_cache() {
     mkdir -p "$cache_dir"
@@ -25,6 +33,7 @@ refresh_cache() {
 
             command="${executable##*/}"
             [[ -n "${seen[$command]+x}" ]] && continue
+            is_ignored_command "$command" && continue
 
             seen["$command"]=1
             commands+=("$command")

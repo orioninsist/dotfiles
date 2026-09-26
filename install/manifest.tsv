@@ -71,7 +71,6 @@ dnf	glib2	gsettings	confirmed-fedora44
 dnf	pulseaudio-utils	pactl	verify-in-qemu
 dnf	wtype	wtype	verify-in-qemu
 dnf	wlsunset	wlsunset	verify-in-qemu
-dnf	snapshot	snapshot	confirmed-fedora44
 dnf	atuin	atuin	confirmed-fedora44
 dnf	calcurse	calcurse calendar	confirmed-fedora44
 dnf	calibre	calibre ebook manager	confirmed-fedora44

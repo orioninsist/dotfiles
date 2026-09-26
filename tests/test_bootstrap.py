@@ -91,6 +91,7 @@ def test_fzf_app_launcher_uses_cache():
     launcher = (ROOT / ".config/wayland/scripts/app-launcher").read_text()
     assert "orion-launcher" in launcher
     assert "cache_is_stale" in launcher
+    assert "path-apps.ignore" in launcher
     assert "fzf --prompt='Run > ' < \"$cache_file\"" in launcher
     assert "QT_QPA_PLATFORMTHEME" in launcher
     assert "KDE_COLOR_SCHEME=CatppuccinMochaMauve" in launcher
@@ -146,6 +147,13 @@ def test_kde_app_desktop_entries_avoid_path_wrapper_recursion():
         assert not (ROOT / ".local/share/applications" / f"org.kde.{app}.desktop").exists(), app
 
 
+def test_removed_apps_stay_out_of_launcher():
+    ignored = (ROOT / ".config/wayland/path-apps.ignore").read_text().splitlines()
+    assert "snapshot" in ignored
+    assert "snapshot" not in (ROOT / ".config/niri/binds/applications.kdl").read_text()
+    assert "\tdnf\tsnapshot\t" not in (ROOT / "install/manifest.tsv").read_text()
+
+
 def test_niri_portal_backend():
     portal = (ROOT / ".config/xdg-desktop-portal/portals.conf").read_text()
     assert "org.freedesktop.impl.portal.ScreenCast=gnome" in portal
@@ -165,7 +173,7 @@ def test_niri_referenced_commands_are_declared():
     required_commands = {
         "kitty", "google-chrome-stable", "brave-browser",
         "microsoft-edge-stable", "yandex-browser-stable", "firefox",
-        "tor-browser", "mullvad-browser", "dolphin", "snapshot", "flameshot", "satty",
+        "tor-browser", "mullvad-browser", "dolphin", "flameshot", "satty",
         "wpctl", "playerctl", "brightnessctl", "busctl", "notify-send",
         "wl-screenrec", "ffmpeg", "ffprobe", "pactl", "wl-color-picker",
         "wl-copy", "wtype", "wlsunset", "cliphist", "fzf", "mako", "makoctl",

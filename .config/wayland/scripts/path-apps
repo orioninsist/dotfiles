@@ -10,6 +10,7 @@ fi
 user_apps="$HOME/.local/share/applications"
 system_apps="/usr/share/applications"
 bin_dir="$HOME/.local/bin"
+ignore_file="${XDG_CONFIG_HOME:-$HOME/.config}/wayland/path-apps.ignore"
 
 mkdir -p "$bin_dir"
 
@@ -23,6 +24,13 @@ sanitize_name() {
 
 strip_exec_field_codes() {
     printf '%s' "$1" | sed -E 's/(^|[[:space:]])%[fFuUdDnNickvm]([[:space:]]|$)/ /g; s/[[:space:]]+/ /g; s/^ //; s/ $//'
+}
+
+is_ignored_command() {
+    local command="$1"
+
+    [[ -f "$ignore_file" ]] || return 1
+    grep -Fxq -- "$command" "$ignore_file"
 }
 
 count=0
@@ -49,6 +57,7 @@ while IFS= read -r desktop; do
 
     cmd_name="$(sanitize_name "$name")"
     [[ -n "$cmd_name" ]] || { ((failed++)); continue; }
+    is_ignored_command "$cmd_name" && { ((skipped++)); continue; }
 
     # Chrome/Chromium PWA: match by app-id first, not by display name.
     # This avoids duplicate aliases such as gemini + google-gemini.
