@@ -140,10 +140,10 @@ def test_picker_scripts_close_by_copying_or_typing_selection():
     notifications = (ROOT / ".config/wayland/scripts/notification-history").read_text()
     emoji = (ROOT / ".config/wayland/scripts/emoji-picker").read_text()
     assert ".[:5][]" in notifications
-    assert "wl-copy" in notifications
-    assert "nohup sh -c" in notifications
-    assert "wl-copy" in emoji
-    assert "nohup sh -c" in emoji
+    clipboard = (ROOT / ".config/wayland/scripts/clipboard-copy").read_text()
+    assert "wl-copy" in clipboard
+    assert "clipboard-copy" in notifications
+    assert "clipboard-copy" in emoji
     assert "wtype" not in emoji
 
 

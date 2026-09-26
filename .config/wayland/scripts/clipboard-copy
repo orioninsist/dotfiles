@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+text="${1-}"
+[[ -n "$text" ]] || exit 2
+
+runtime_dir="${XDG_RUNTIME_DIR:-$HOME/.cache}"
+mkdir -p "$runtime_dir"
+payload="$runtime_dir/orion-clipboard.txt"
+printf '%s' "$text" > "$payload"
+
+# Replace the previous clipboard owner before publishing the new selection.
+pkill -x wl-copy 2>/dev/null || true
+nohup wl-copy --foreground < "$payload" >/dev/null 2>&1 &

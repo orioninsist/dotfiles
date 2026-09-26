@@ -23,4 +23,4 @@ selection="$(
 
 [[ -n "$selection" ]] || exit 0
 
-nohup sh -c 'printf %s "$1" | wl-copy --foreground' _ "$selection" >/dev/null 2>&1 &
+"$HOME/.config/wayland/scripts/clipboard-copy" "$selection"
