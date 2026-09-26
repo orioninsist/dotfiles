@@ -13,7 +13,9 @@ binds {
     Mod+Ctrl+Shift+F { spawn "firefox-developer-edition"; }
     Mod+Ctrl+T { spawn "tor-browser"; }
     Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
-    Mod+Ctrl+Y { spawn "dolphin" "--new-window"; }
+    Mod+Ctrl+Y {
+    spawn "bash" "-lc" "QT_QPA_PLATFORMTHEME=org.kde.plasma.integration QT_STYLE_OVERRIDE=Breeze KDE_SESSION_VERSION=6 KDE_FULL_SESSION=true XDG_CURRENT_DESKTOP=KDE XDG_SESSION_DESKTOP=KDE dolphin --new-window"
+}
 
     Mod+F8 { spawn-sh "niri msg action focus-workspace 7; google-chrome-stable --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai"; }
     Mod+F11 { spawn "snapshot"; }
