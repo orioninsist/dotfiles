@@ -10,6 +10,6 @@ mkdir -p "$runtime_dir"
 payload="$runtime_dir/orion-clipboard.txt"
 printf '%s' "$text" > "$payload"
 
-# Replace the previous clipboard owner before publishing the new selection.
-pkill -x wl-copy 2>/dev/null || true
-nohup wl-copy --foreground < "$payload" >/dev/null 2>&1 &
+# A new wl-copy owner replaces the previous Wayland clipboard owner itself.
+# Do not pkill old owners here: on some sessions that command can block.
+nohup wl-copy --paste-once < "$payload" >/dev/null 2>&1 &
