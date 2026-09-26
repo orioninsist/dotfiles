@@ -96,9 +96,8 @@ while IFS= read -r desktop; do
 
     first="$(printf '%s\n' "$cleaned" | awk '{print $1}')"
 
-    # Preserve KDE/Qt wrapper launchers for Super+D PATH launcher.
-    # Direct binaries bypass qt-kde-launch environment.
-    if [[ "$cleaned" == *"qt-kde-launch"* || "$cleaned" == *"calibre-kde"* ]]; then
+    # Preserve explicit wrappers such as calibre-kde.
+    if [[ "$cleaned" == *"calibre-kde"* ]]; then
         target="$bin_dir/$cmd_name"
 
         {
@@ -141,30 +140,15 @@ done < <(
 
 
 echo
-echo "Creating KDE PATH wrappers..."
+echo "Creating PATH wrappers..."
 
-for app in ark gwenview okular calibre; do
-    case "$app" in
-        ark|gwenview|okular)
-            target="$bin_dir/$app"
-            cat > "$target" <<EOF
-#!/usr/bin/env bash
-exec "$HOME/.config/wayland/scripts/qt-kde-launch" $app "\$@"
-EOF
-            chmod +x "$target"
-            echo "KDE wrapper: $target"
-            ;;
-        calibre)
-            target="$bin_dir/calibre"
-            cat > "$target" <<EOF
+target="$bin_dir/calibre"
+cat > "$target" <<EOF
 #!/usr/bin/env bash
 exec "$HOME/.local/bin/calibre-kde" "\$@"
 EOF
-            chmod +x "$target"
-            echo "Calibre wrapper: $target"
-            ;;
-    esac
-done
+chmod +x "$target"
+echo "Calibre wrapper: $target"
 
 hash -r 2>/dev/null || true
 

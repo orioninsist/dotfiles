@@ -2,4 +2,4 @@
 set -euo pipefail
 (($# > 0)) || exit 2
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} --height=~100% --min-height=8"
-exec kitty --class=fzf-popup --title=fzf bash "$@"
+exec kitty --single-instance --instance-group=fzf-popup --class=fzf-popup --title=fzf bash "$@"

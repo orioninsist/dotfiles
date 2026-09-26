@@ -21,6 +21,7 @@ done
 
 # Expose repository-managed command and application wrappers through PATH.
 for dir in \
+  "$ROOT/.local/bin" \
   "$ROOT/.config/wayland/scripts/commands" \
   "$ROOT/.config/wayland/apps"
 do
@@ -70,6 +71,14 @@ CATPPUCCIN_GTK_THEME="catppuccin-mocha-mauve-standard+default"
 if command -v gsettings >/dev/null 2>&1; then
   gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
   gsettings set org.gnome.desktop.interface gtk-theme "$CATPPUCCIN_GTK_THEME"
+fi
+
+rm -f "$HOME/.cache/orion-launcher/path-commands"
+
+if command -v calibre-debug >/dev/null 2>&1; then
+  env -u CALIBRE_USE_SYSTEM_THEME -u QT_QPA_PLATFORMTHEME -u QT_STYLE_OVERRIDE \
+    CALIBRE_CONFIG_DIRECTORY="$HOME/.config/calibre" \
+    calibre-debug -c "from calibre.gui2 import gprefs; gprefs['color_palette']='dark'; gprefs['ui_style']='calibre'; gprefs.commit()"
 fi
 
 # Generate the machine-local Knowledge workspace configuration. Knowledge

@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Okular
-Exec=/home/murat/.config/wayland/scripts/qt-kde-launch okular %U
-MimeType=application/pdf;
-Terminal=false
-Categories=Office;Viewer;

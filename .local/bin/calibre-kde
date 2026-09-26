@@ -1,11 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-export QT_QPA_PLATFORMTHEME=org.kde.plasma.integration
-export QT_STYLE_OVERRIDE=Breeze
-export KDE_SESSION_VERSION=6
-export KDE_FULL_SESSION=true
-export XDG_CURRENT_DESKTOP=KDE
-export XDG_SESSION_DESKTOP=KDE
-export CALIBRE_USE_SYSTEM_THEME=1
+export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-wayland;xcb}"
+export KDE_COLOR_SCHEME=CatppuccinMochaMauve
 
-exec calibre "$@"
+unset CALIBRE_USE_SYSTEM_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE
+exec /usr/bin/calibre "$@"

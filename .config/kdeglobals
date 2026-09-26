@@ -32,7 +32,6 @@ ForegroundNormal=205, 214, 244
 ForegroundPositive=166, 227, 161
 ForegroundVisited=203, 166, 247
 
-
 [Colors:Complementary]
 BackgroundAlternate=17, 17, 27
 BackgroundNormal=24, 24, 37
@@ -46,7 +45,6 @@ ForegroundNeutral=249, 226, 175
 ForegroundNormal=205, 214, 244
 ForegroundPositive=166, 227, 161
 ForegroundVisited=203, 166, 247
-
 
 [Colors:Header]
 BackgroundAlternate=17, 17, 27
@@ -62,21 +60,19 @@ ForegroundNormal=205, 214, 244
 ForegroundPositive=166, 227, 161
 ForegroundVisited=203, 166, 247
 
-
 [Colors:Selection]
 BackgroundAlternate=203, 166, 247
 BackgroundNormal=203, 166, 247
 DecorationFocus=203, 166, 247
 DecorationHover=69, 71, 90
-ForegroundInactive=17, 17, 27
 ForegroundActive=17, 17, 27
+ForegroundInactive=17, 17, 27
 ForegroundLink=17, 17, 27
 ForegroundNegative=17, 17, 27
 ForegroundNeutral=17, 17, 27
 ForegroundNormal=17, 17, 27
 ForegroundPositive=17, 17, 27
 ForegroundVisited=17, 17, 27
-
 
 [Colors:Tooltip]
 BackgroundAlternate=17, 17, 27
@@ -92,7 +88,6 @@ ForegroundNormal=205, 214, 244
 ForegroundPositive=166, 227, 161
 ForegroundVisited=203, 166, 247
 
-
 [Colors:View]
 BackgroundAlternate=24, 24, 37
 BackgroundNormal=30, 30, 46
@@ -106,7 +101,6 @@ ForegroundNeutral=249, 226, 175
 ForegroundNormal=205, 214, 244
 ForegroundPositive=166, 227, 161
 ForegroundVisited=203, 166, 247
-
 
 [Colors:Window]
 BackgroundAlternate=17, 17, 27
@@ -122,17 +116,19 @@ ForegroundNormal=205, 214, 244
 ForegroundPositive=166, 227, 161
 ForegroundVisited=203, 166, 247
 
-
 [General]
 ColorScheme=CatppuccinMochaMauve
 Name=Catppuccin Mocha Mauve
 accentActiveTitlebar=false
 shadeSortColumn=true
+widgetStyle=Breeze
 
+[Icons]
+Theme=breeze-dark
 
 [KDE]
 contrast=4
-
+widgetStyle=Breeze
 
 [WM]
 activeBackground=30, 30, 46

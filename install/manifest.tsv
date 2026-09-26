@@ -201,3 +201,11 @@ upstream	nerd-fonts-google-sans-code	v3.5.1 GoogleSansCode Nerd Font	required-fo
 upstream	noto-color-emoji	Unicode 18 pinned commit	required-font-stack
 dnf	okular	KDE PDF document viewer	confirmed-fedora44
 dnf	gwenview	KDE image viewer	confirmed-fedora44
+dnf	ark	KDE archive manager	confirmed-fedora44
+dnf	plasma-breeze-qt6	KDE Breeze Qt 6 widget style	confirmed-fedora44
+dnf	breeze-icon-theme	KDE Breeze icon theme	confirmed-fedora44
+dnf	qt6ct	Qt 6 configuration tool and platform theme plugin	confirmed-fedora44
+dnf	qt5ct	Qt 5 configuration tool and platform theme plugin	confirmed-fedora44
+dnf	kvantum	SVG-based Qt theme engine	confirmed-fedora44
+dnf	kvantum-qt5	Kvantum Qt 5 style plugin	confirmed-fedora44
+dnf	kvantum-data	Kvantum bundled themes	confirmed-fedora44

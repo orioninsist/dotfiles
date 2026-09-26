@@ -13,9 +13,7 @@ binds {
     Mod+Ctrl+Shift+F { spawn "firefox-developer-edition"; }
     Mod+Ctrl+T { spawn "tor-browser"; }
     Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
-    Mod+Ctrl+Y {
-    spawn "bash" "-lc" "$HOME/.config/wayland/scripts/qt-kde-launch dolphin --new-window"
-}
+    Mod+Ctrl+Y { spawn "dolphin" "--new-window"; }
 
     Mod+F8 { spawn-sh "niri msg action focus-workspace 7; google-chrome-stable --profile-directory=Default --app-id=idkejijbjcgdnloelolopdemkebfadai"; }
     Mod+F11 { spawn "snapshot"; }

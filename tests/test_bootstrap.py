@@ -87,6 +87,65 @@ def test_portable_runtime_paths():
     assert not failures, failures
 
 
+def test_fzf_app_launcher_uses_cache():
+    launcher = (ROOT / ".config/wayland/scripts/app-launcher").read_text()
+    assert "orion-launcher" in launcher
+    assert "cache_is_stale" in launcher
+    assert "fzf --prompt='Run > ' < \"$cache_file\"" in launcher
+    assert "QT_QPA_PLATFORMTHEME" in launcher
+    assert "KDE_COLOR_SCHEME=CatppuccinMochaMauve" in launcher
+    assert "-u CALIBRE_USE_SYSTEM_THEME" in launcher
+
+
+def test_qt_theme_is_global_not_per_app_wrapper():
+    env = (ROOT / ".config/environment.d/20-qt-theme.conf").read_text()
+    assert "QT_QPA_PLATFORM=wayland;xcb" in env
+    assert "QT_QPA_PLATFORMTHEME=qt6ct" in env
+    assert "KDE_COLOR_SCHEME=CatppuccinMochaMauve" in env
+    assert "QT_STYLE_OVERRIDE" not in env
+    assert "CALIBRE_USE_SYSTEM_THEME" not in env
+    assert not (ROOT / ".config/wayland/scripts/qt-kde-launch").exists()
+    assert not (ROOT / ".local/bin/qt-kde-launch").exists()
+
+    niri = (ROOT / ".config/niri/config.kdl").read_text()
+    assert 'QT_QPA_PLATFORMTHEME "qt6ct"' in niri
+    assert 'QT_STYLE_OVERRIDE null' in niri
+    assert 'CALIBRE_USE_SYSTEM_THEME null' in niri
+
+
+def test_calibre_uses_builtin_dark_palette_not_system_theme():
+    wrapper = (ROOT / ".local/bin/calibre-kde").read_text()
+    assert "exec /usr/bin/calibre" in wrapper
+    assert "unset CALIBRE_USE_SYSTEM_THEME" in wrapper
+    installer = (ROOT / "install/20-dotfiles.sh").read_text()
+    assert "calibre-debug" in installer
+    assert "gprefs['color_palette']='dark'" in installer
+    assert "gprefs['ui_style']='calibre'" in installer
+
+
+def test_qt_theme_packages_are_declared():
+    manifest = (ROOT / "install/manifest.tsv").read_text(errors="ignore")
+    for package in ["qt6ct", "qt5ct", "kvantum", "kvantum-qt5", "kvantum-data"]:
+        assert f"dnf\t{package}\t" in manifest
+
+
+def test_kdeglobals_pins_mocha_breeze_appearance():
+    kdeglobals = (ROOT / ".config/kdeglobals").read_text()
+    assert "ColorScheme=CatppuccinMochaMauve" in kdeglobals
+    assert "Theme=breeze-dark" in kdeglobals
+    assert "widgetStyle=Breeze" in kdeglobals
+
+    for name in ["dolphinrc", "gwenviewrc", "arkrc", "okularrc"]:
+        rc = (ROOT / ".config" / name).read_text()
+        assert "ColorScheme=CatppuccinMochaMauve" in rc
+
+
+def test_kde_app_desktop_entries_avoid_path_wrapper_recursion():
+    for app in ["ark", "gwenview", "okular"]:
+        assert not (ROOT / ".local/bin" / app).exists(), app
+        assert not (ROOT / ".local/share/applications" / f"org.kde.{app}.desktop").exists(), app
+
+
 def test_niri_portal_backend():
     portal = (ROOT / ".config/xdg-desktop-portal/portals.conf").read_text()
     assert "org.freedesktop.impl.portal.ScreenCast=gnome" in portal

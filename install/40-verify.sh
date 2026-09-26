@@ -218,7 +218,10 @@ done
 
 echo "==> Dolphin and KDE appearance"
 
-rpm -q dolphin kio-extras ffmpegthumbs >/dev/null || {
+rpm -q \
+  dolphin kio-extras ffmpegthumbs ark okular gwenview \
+  plasma-breeze-qt6 breeze-icon-theme \
+  qt6ct qt5ct kvantum kvantum-qt5 kvantum-data >/dev/null || {
   echo "Dolphin thumbnail package set is incomplete" >&2
   exit 1
 }
@@ -254,6 +257,32 @@ grep -Fqx 'ForegroundNormal=205, 214, 244'   "$HOME/.config/kdeglobals" || {
     echo "Catppuccin KDE foreground colors are not applied" >&2
     exit 1
   }
+
+grep -Fqx 'widgetStyle=Breeze'   "$HOME/.config/kdeglobals" || {
+    echo "KDE Breeze widget style is not pinned" >&2
+    exit 1
+  }
+
+grep -Fqx 'Theme=breeze-dark'   "$HOME/.config/kdeglobals" || {
+    echo "KDE Breeze Dark icon theme is not pinned" >&2
+    exit 1
+  }
+
+if command -v calibre-debug >/dev/null 2>&1; then
+  CALIBRE_PREFS="$(
+    env -u CALIBRE_USE_SYSTEM_THEME -u QT_QPA_PLATFORMTHEME -u QT_STYLE_OVERRIDE \
+      CALIBRE_CONFIG_DIRECTORY="$HOME/.config/calibre" \
+      calibre-debug -c "from calibre.gui2 import gprefs; print(gprefs['color_palette']); print(gprefs['ui_style'])"
+  )"
+  [[ "$(printf '%s\n' "$CALIBRE_PREFS" | sed -n '1p')" == "dark" ]] || {
+    echo "Calibre dark palette is not pinned" >&2
+    exit 1
+  }
+  [[ "$(printf '%s\n' "$CALIBRE_PREFS" | sed -n '2p')" == "calibre" ]] || {
+    echo "Calibre safe built-in Qt style is not pinned" >&2
+    exit 1
+  }
+fi
 
 echo "Dolphin / Catppuccin KDE: PASS"
 echo

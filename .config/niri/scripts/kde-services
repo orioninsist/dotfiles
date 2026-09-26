@@ -1,12 +1,4 @@
-#!/bin/bash
-
-export QT_QPA_PLATFORMTHEME=org.kde.plasma.integration
-export QT_STYLE_OVERRIDE=Breeze
-export KDE_SESSION_VERSION=6
-export KDE_FULL_SESSION=true
-
-/usr/sbin/kded6 >/tmp/kded6.log 2>&1 &
-
-sleep 3
+#!/usr/bin/env bash
+set -euo pipefail
 
 kbuildsycoca6 --noincremental >/dev/null 2>&1 || true

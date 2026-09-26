@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Gwenview
-Exec=/home/murat/.config/wayland/scripts/qt-kde-launch gwenview %U
-MimeType=image/png;image/jpeg;image/webp;image/avif;
-Terminal=false
-Categories=Graphics;Viewer;

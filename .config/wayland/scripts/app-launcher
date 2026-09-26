@@ -2,36 +2,71 @@
 
 set -euo pipefail
 
-declare -A seen=()
-commands=()
+export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-wayland;xcb}"
+export QT_QPA_PLATFORMTHEME="${QT_QPA_PLATFORMTHEME:-qt6ct}"
+export KDE_COLOR_SCHEME=CatppuccinMochaMauve
 
-IFS=':' read -ra path_dirs <<< "$PATH"
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/orion-launcher"
+cache_file="$cache_dir/path-commands"
 
-for dir in "${path_dirs[@]}"; do
-    [[ -d "$dir" ]] || continue
+refresh_cache() {
+    mkdir -p "$cache_dir"
 
-    while IFS= read -r -d '' executable; do
-        [[ -f "$executable" && -x "$executable" ]] || continue
+    declare -A seen=()
+    commands=()
 
-        command="${executable##*/}"
-        [[ -n "${seen[$command]+x}" ]] && continue
+    IFS=':' read -ra path_dirs <<< "$PATH"
 
-        seen["$command"]=1
-        commands+=("$command")
-    done < <(find -L "$dir" -maxdepth 1 -type f -perm -u+x -print0 2>/dev/null)
-done
+    for dir in "${path_dirs[@]}"; do
+        [[ -d "$dir" ]] || continue
 
-(("${#commands[@]}" > 0)) || exit 0
+        while IFS= read -r -d '' executable; do
+            [[ -f "$executable" && -x "$executable" ]] || continue
+
+            command="${executable##*/}"
+            [[ -n "${seen[$command]+x}" ]] && continue
+
+            seen["$command"]=1
+            commands+=("$command")
+        done < <(find -L "$dir" -maxdepth 1 -type f -perm -u+x -print0 2>/dev/null)
+    done
+
+    (("${#commands[@]}" > 0)) || return 0
+
+    printf '%s\n' "${commands[@]}" | sort -fu > "$cache_file"
+}
+
+cache_is_stale() {
+    [[ -s "$cache_file" ]] || return 0
+
+    IFS=':' read -ra path_dirs <<< "$PATH"
+    for dir in "${path_dirs[@]}"; do
+        [[ -d "$dir" ]] || continue
+        [[ "$dir" -nt "$cache_file" ]] && return 0
+    done
+
+    return 1
+}
+
+if cache_is_stale; then
+    refresh_cache
+fi
+
+[[ -s "$cache_file" ]] || exit 0
 
 selection="$(
-    printf '%s\n' "${commands[@]}" |
-        sort -fu |
-        fzf --prompt='Run > '
+    fzf --prompt='Run > ' < "$cache_file"
 )" || exit 0
 
 [[ -n "$selection" ]] || exit 0
+target="$(command -v -- "$selection" 2>/dev/null || true)"
+[[ -n "$target" ]] || exit 0
 
 # Launch the selected PATH command in a new session and let this popup
 # shell exit immediately so the fzf/Kitty window disappears.
-setsid -f "$selection" >/dev/null 2>&1 < /dev/null
+if [[ "${target##*/}" == calibre ]]; then
+    env -u CALIBRE_USE_SYSTEM_THEME -u QT_QPA_PLATFORMTHEME -u QT_STYLE_OVERRIDE setsid -f "$target" >/dev/null 2>&1 < /dev/null
+else
+    setsid -f "$target" >/dev/null 2>&1 < /dev/null
+fi
 exit 0

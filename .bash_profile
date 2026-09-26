@@ -6,9 +6,8 @@
 
 # Qt / Wayland
 export QT_QPA_PLATFORM='wayland;xcb'
-
-# Global dark appearance
-export CALIBRE_USE_SYSTEM_THEME=1
+export QT_QPA_PLATFORMTHEME='qt6ct'
+export KDE_COLOR_SCHEME='CatppuccinMochaMauve'
 
 # Default terminal editor
 export EDITOR="nvim"
