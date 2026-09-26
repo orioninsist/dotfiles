@@ -86,6 +86,7 @@ workspace "10" {
     open-on-output "eDP-1"
 }
 
+spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/kde-services"
 spawn-at-startup "mako"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "monospace-font-name" "Google Sans Code 10"
 spawn-at-startup "bash" "-lc" "$HOME/.config/niri/scripts/niri-window-place-once"

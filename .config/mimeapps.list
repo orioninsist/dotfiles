@@ -9,5 +9,20 @@ x-scheme-handler/antigravity=antigravity.desktop
 inode/directory=org.kde.dolphin.desktop
 application/x-directory=org.kde.dolphin.desktop
 
+image/png=gimp.desktop
+
+image/jpeg=gimp.desktop
+
+image/svg+xml=org.inkscape.Inkscape.desktop
+
+application/pdf=org.kde.okular.desktop
+
+application/x-krita=org.kde.krita.desktop
+
 [Added Associations]
+image/png=gimp.desktop;
+image/jpeg=gimp.desktop;
+image/svg+xml=org.inkscape.Inkscape.desktop;
+application/pdf=org.kde.okular.desktop;org.inkscape.Inkscape.desktop;gimp.desktop;
+application/x-krita=org.kde.krita.desktop;
 x-scheme-handler/antigravity=antigravity.desktop;
