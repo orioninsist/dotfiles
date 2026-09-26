@@ -9,11 +9,11 @@ command -v wl-screenrec >/dev/null 2>&1 || { notify-send "Screen + Camera Record
 command -v ffmpeg >/dev/null 2>&1 || { notify-send "Screen + Camera Recording" "ffmpeg is not installed"; exit 1; }
 command -v ffprobe >/dev/null 2>&1 || { notify-send "Screen + Camera Recording" "ffprobe is not installed"; exit 1; }
 
-OUTPUT="${SCREEN_RECORD_OUTPUT_1:-eDP-1}"
+OUTPUT="${SCREEN_RECORD_OUTPUT_1:-$(niri msg --json outputs 2>/dev/null | jq -r 'keys[0] // empty' 2>/dev/null)}"
 CAMERA="${CAMERA_DEVICE:-/dev/video0}"
 MIC="${MIC_SOURCE:-$(pactl get-default-source 2>/dev/null || true)}"
-SPEAKER="${SPEAKER_SOURCE:-$(pactl get-default-sink 2>/dev/null || true).monitor}"
 
+[[ -n "$OUTPUT" ]] || { notify-send "Screen + Camera Recording" "No screen output found"; exit 1; }
 [[ -e "$CAMERA" ]] || { notify-send "Screen + Camera Recording" "Camera device not found: $CAMERA"; exit 1; }
 [[ -n "$MIC" ]] || { notify-send "Screen + Camera Recording" "No microphone source found"; exit 1; }
 
@@ -38,7 +38,7 @@ SCREEN_FILE="$RECORD_DIR/screen_${TIMESTAMP}.mp4"
 CAMERA_FILE="$RECORD_DIR/camera_${TIMESTAMP}.mkv"
 OUTPUT_FILE="$RECORD_DIR/screen_camera_${TIMESTAMP}.mp4"
 
-ffmpeg -f v4l2 -i "$CAMERA" -f pulse -i "$MIC" -f pulse -i "$SPEAKER"   -map 0:v -map 1:a -map 2:a -c:v libx264 -c:a aac "$CAMERA_FILE" &
+ffmpeg -f v4l2 -i "$CAMERA" -f pulse -i "$MIC" -map 0:v -map 1:a -c:v libx264 -c:a aac "$CAMERA_FILE" &
 CAMERA_PID=$!
 
 wl-screenrec --output "$OUTPUT" --codec avc --low-power off --filename "$SCREEN_FILE" &
@@ -55,7 +55,7 @@ sleep 1
 
 [[ -s "$SCREEN_FILE" && -s "$CAMERA_FILE" ]] || { notify-send "Screen + Camera Recording" "Recording files are incomplete"; exit 1; }
 
-ffmpeg -fflags +genpts -i "$SCREEN_FILE" -fflags +genpts -i "$CAMERA_FILE"   -filter_complex "[0:v]fps=30,settb=1/30[screen];[1:v]fps=30,scale=320:-1[camera];[screen][camera]overlay=W-w-24:H-h-24[outv]"   -map "[outv]" -map 1:a:0 -map 1:a:1 -c:v libx264 -c:a aac -shortest -movflags +faststart "$OUTPUT_FILE"
+ffmpeg -fflags +genpts -i "$SCREEN_FILE" -fflags +genpts -i "$CAMERA_FILE"   -filter_complex "[0:v]fps=30,settb=1/30[screen];[1:v]fps=30,scale=320:-1[camera];[screen][camera]overlay=W-w-24:H-h-24[outv]"   -map "[outv]" -map 1:a:0 -c:v libx264 -c:a aac -shortest -movflags +faststart "$OUTPUT_FILE"
 
 if ffprobe -v error "$OUTPUT_FILE" >/dev/null 2>&1; then
     rm -f "$SCREEN_FILE" "$CAMERA_FILE"

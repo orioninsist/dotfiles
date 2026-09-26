@@ -4,10 +4,24 @@ set -euo pipefail
 
 selection="$(
     makoctl history -j |
-        jq -r '.[] | "\(.id)\t[\(.app_name)] \(.summary) — \(.body | gsub("\n"; " "))"' |
-        fzf --prompt="Notifications > "
+        jq -r '
+            .[:5][] |
+            [
+                (.app_name // "notification"),
+                (.summary // ""),
+                ((.body // "") | gsub("\n"; " "))
+            ] |
+            @tsv
+        ' |
+        awk -F '\t' '{
+            text = "[" $1 "] " $2
+            if ($3 != "") text = text " — " $3
+            print text
+        }' |
+        fzf --prompt="Notifications > " --height=40% --reverse
 )" || exit 0
 
 [[ -n "$selection" ]] || exit 0
 
-printf '%s\n' "$selection" | wl-copy
+printf '%s' "$selection" | wl-copy
+notify-send "Notification copied" "$selection"

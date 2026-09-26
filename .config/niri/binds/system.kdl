@@ -39,7 +39,6 @@ binds {
     Mod+Shift+I { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/commands/whisper-type en"; }
     Mod+Ctrl+P { spawn "wl-color-picker"; }
 
-    Mod+Shift+V { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/clipboard-history"; }
     Mod+N { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/mako-toggle"; }
     Mod+Shift+N { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/wlsunset-toggle"; }
     Mod+Ctrl+N { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/notification-history"; }

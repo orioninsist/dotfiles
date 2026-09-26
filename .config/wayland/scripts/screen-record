@@ -11,6 +11,23 @@ command -v wl-screenrec >/dev/null 2>&1 || {
   notify-send "Screen Recording" "wl-screenrec is not installed"
   exit 1
 }
+command -v jq >/dev/null 2>&1 || {
+  notify-send "Screen Recording" "jq is not installed"
+  exit 1
+}
+
+list_outputs() {
+    niri msg --json outputs 2>/dev/null |
+        jq -r 'keys[]?' 2>/dev/null
+}
+
+first_output() {
+    list_outputs | sed -n '1p'
+}
+
+second_output() {
+    list_outputs | sed -n '2p'
+}
 
 if [[ -f "$PID_FILE" ]]; then
     PID="$(cat "$PID_FILE")"
@@ -24,11 +41,16 @@ fi
 
 MODE="${1:-}"
 case "$MODE" in
-    1) OUTPUT="${SCREEN_RECORD_OUTPUT_1:-eDP-1}"; PREFIX="screen1" ;;
-    2) OUTPUT="${SCREEN_RECORD_OUTPUT_2:-HDMI-A-1}"; PREFIX="screen2" ;;
+    1) OUTPUT="${SCREEN_RECORD_OUTPUT_1:-$(first_output)}"; PREFIX="screen1" ;;
+    2) OUTPUT="${SCREEN_RECORD_OUTPUT_2:-$(second_output)}"; PREFIX="screen2" ;;
     3) OUTPUT=""; PREFIX="area" ;;
     *) notify-send "Screen Recording" "Invalid recording mode"; exit 1 ;;
 esac
+
+if [[ "$MODE" != "3" && -z "$OUTPUT" ]]; then
+    notify-send "Screen Recording" "No output found for mode $MODE"
+    exit 1
+fi
 
 "$RECORDING_LOCK" acquire screen || exit 1
 trap '"$RECORDING_LOCK" release screen' EXIT

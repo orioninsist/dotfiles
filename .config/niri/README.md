@@ -128,16 +128,7 @@ Physical placement:
 | `Super+D` | fzf PATH application launcher |
 | `Super+C` | Search and expand Espanso matches with fzf |
 | `Super+Y` | Kitty running Yazi |
-| `Super+Ctrl+B` | Google Chrome |
-| `Super+Ctrl+Shift+B` | Brave |
-| `Super+Ctrl+M` | Microsoft Edge |
-| `Super+Ctrl+Shift+Y` | Yandex Browser |
-| `Super+Ctrl+F` | Firefox |
-| `Super+Ctrl+Shift+F` | Firefox Developer Edition |
-| `Super+Ctrl+T` | Tor Browser |
-| `Super+Ctrl+Shift+M` | Mullvad Browser |
 | `Super+Ctrl+Y` | Dolphin |
-| `Super+F8` | Launch Knowledge PWA |
 | `Super+P` | Satty screenshot annotation |
 
 ### Display, power profile and hardware
@@ -184,7 +175,6 @@ Physical placement:
 | `Super+I` | Whisper typing |
 | `Super+Shift+I` | Whisper typing in English |
 | `Super+Ctrl+P` | Color picker |
-| `Super+Shift+V` | Clipboard history |
 | `Super+N` | Toggle Mako |
 | `Super+Shift+N` | Toggle wlsunset / night light |
 | `Super+Ctrl+N` | Notification history |
@@ -244,8 +234,8 @@ Upstream Niri defaults are used where they do not break established personal sho
 
 Deliberate differences:
 - `Super+C` is free; `Super+Alt+C` remains the center-column shortcut.
-- Upstream `Super+Ctrl+F` expands a column; this setup keeps it for Firefox and uses `Super+Alt+F`.
-- Upstream `Super+Shift+V` switches floating/tiling focus; this setup keeps clipboard history there and uses `Super+Space`.
+- Upstream `Super+Ctrl+F` expands a column; this setup uses `Super+Alt+F`.
+- Upstream `Super+Shift+V` switches floating/tiling focus; this setup uses `Super+Space`.
 - `Super+I` and `Super+Shift+I` are reserved for Whisper.
 - `Super+CapsLock` uses the accepted `Caps_Lock` key name in the bind file.
 

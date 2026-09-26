@@ -5,16 +5,7 @@ binds {
     Mod+C { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/espanso-search"; }
     Mod+Y { spawn "kitty" "yazi"; }
 
-    Mod+Ctrl+B { spawn "google-chrome-stable"; }
-    Mod+Ctrl+Shift+B { spawn "brave-browser"; }
-    Mod+Ctrl+M { spawn "microsoft-edge-stable"; }
-    Mod+Ctrl+Shift+Y { spawn "yandex-browser-stable"; }
-    Mod+Ctrl+F { spawn "firefox"; }
-    Mod+Ctrl+Shift+F { spawn "firefox-developer-edition"; }
-    Mod+Ctrl+T { spawn "tor-browser"; }
-    Mod+Ctrl+Shift+M { spawn "mullvad-browser"; }
     Mod+Ctrl+Y { spawn "dolphin" "--new-window"; }
 
-    Mod+F8 { spawn "google-chrome-stable" "--profile-directory=Default" "--app-id=idkejijbjcgdnloelolopdemkebfadai"; }
     Mod+P { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/satty-screenshot"; }
 }

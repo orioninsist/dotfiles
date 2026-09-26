@@ -124,6 +124,42 @@ def test_niri_does_not_auto_route_apps_to_tags():
     assert not (ROOT / ".config/niri/scripts/kde-services").exists()
 
 
+def test_niri_prunes_unused_direct_launchers():
+    apps = (ROOT / ".config/niri/binds/applications.kdl").read_text()
+    system = (ROOT / ".config/niri/binds/system.kdl").read_text()
+    for command in [
+        "google-chrome-stable", "brave-browser", "microsoft-edge-stable",
+        "yandex-browser-stable", "firefox-developer-edition", "tor-browser",
+        "mullvad-browser", "idkejijbjcgdnloelolopdemkebfadai",
+    ]:
+        assert command not in apps
+    assert "clipboard-history" not in system
+
+
+def test_picker_scripts_close_by_copying_or_typing_selection():
+    notifications = (ROOT / ".config/wayland/scripts/notification-history").read_text()
+    emoji = (ROOT / ".config/wayland/scripts/emoji-picker").read_text()
+    assert ".[:5][]" in notifications
+    assert "wl-copy" in notifications
+    assert "notify-send \"Notification copied\"" in notifications
+    assert "wl-copy" in emoji
+    assert "wtype -- \"$emoji\"" in emoji
+
+
+def test_recording_scripts_use_dynamic_devices():
+    screen = (ROOT / ".config/wayland/scripts/screen-record").read_text()
+    camera = (ROOT / ".config/wayland/scripts/camera-record").read_text()
+    combined = (ROOT / ".config/wayland/scripts/screen-camera-record").read_text()
+    assert "niri msg --json outputs" in screen
+    assert "SCREEN_RECORD_OUTPUT_1:-$(first_output)" in screen
+    assert "SCREEN_RECORD_OUTPUT_2:-$(second_output)" in screen
+    assert "alsa_input.pci" not in camera
+    assert "alsa_output.pci" not in camera
+    assert "pactl get-default-source" in camera
+    assert "niri msg --json outputs" in combined
+    assert "-map 1:a:1" not in combined
+
+
 def test_calibre_uses_builtin_dark_palette_not_system_theme():
     wrapper = (ROOT / ".local/bin/calibre-kde").read_text()
     assert "exec /usr/bin/calibre" in wrapper
@@ -182,9 +218,7 @@ def test_niri_referenced_commands_are_declared():
     declared_text = "\n".join("\t".join(row[:3]) for row in rows)
 
     required_commands = {
-        "kitty", "google-chrome-stable", "brave-browser",
-        "microsoft-edge-stable", "yandex-browser-stable", "firefox",
-        "tor-browser", "mullvad-browser", "dolphin", "flameshot", "satty",
+        "kitty", "dolphin", "flameshot", "satty",
         "wpctl", "playerctl", "brightnessctl", "busctl", "notify-send",
         "wl-screenrec", "ffmpeg", "ffprobe", "pactl", "wl-color-picker",
         "wl-copy", "wtype", "wlsunset", "cliphist", "fzf", "mako", "makoctl",
