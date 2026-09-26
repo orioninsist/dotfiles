@@ -161,11 +161,7 @@ Physical placement:
 | `Super+Print` | Screenshot current screen/output |
 | `Super+Ctrl+Print` | Screenshot focused window |
 | `Super+Ctrl+Shift+Print` | OCR capture via `~/.config/wayland/scripts/ocr` |
-| `Super+Ctrl+1` | Screen recording helper mode 1 |
-| `Super+Ctrl+2` | Screen recording helper mode 2 |
-| `Super+Ctrl+3` | Screen recording helper mode 3 |
-| `Super+Ctrl+4` | Camera recording |
-| `Super+Ctrl+5` | Screen + camera recording |
+| `Super+Ctrl+R` | Open OBS for screen recording |
 
 ### Productivity and utilities
 
