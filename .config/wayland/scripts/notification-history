@@ -23,4 +23,4 @@ selection="$(
 
 [[ -n "$selection" ]] || exit 0
 
-printf '%s' "$selection" | wl-copy
+printf '%s' "$selection" | setsid wl-copy >/dev/null 2>&1 &

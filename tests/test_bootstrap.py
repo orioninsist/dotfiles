@@ -141,7 +141,9 @@ def test_picker_scripts_close_by_copying_or_typing_selection():
     emoji = (ROOT / ".config/wayland/scripts/emoji-picker").read_text()
     assert ".[:5][]" in notifications
     assert "wl-copy" in notifications
+    assert "setsid wl-copy" in notifications
     assert "wl-copy" in emoji
+    assert "setsid wl-copy" in emoji
     assert "wtype" not in emoji
 
 
