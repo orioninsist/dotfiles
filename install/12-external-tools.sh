@@ -265,6 +265,17 @@ else
   curl -fsSL https://starship.rs/install.sh | sh -s -- -y -b "$BIN_DIR"
 fi
 
+echo "==> Installing bash-preexec"
+BASH_PREEXEC_DIR="$HOME/.local/share/bash-preexec"
+BASH_PREEXEC_FILE="$BASH_PREEXEC_DIR/bash-preexec.sh"
+if [[ ! -f "$BASH_PREEXEC_FILE" ]]; then
+  mkdir -p "$BASH_PREEXEC_DIR"
+  curl -fsSL https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh \
+    -o "$BASH_PREEXEC_FILE"
+else
+  echo "bash-preexec already installed: $BASH_PREEXEC_FILE"
+fi
+
 echo "==> Installing Flyline"
 FLYLINE_SO="$HOME/.local/lib/libflyline.so"
 if [[ ! -f "$FLYLINE_SO" ]]; then
