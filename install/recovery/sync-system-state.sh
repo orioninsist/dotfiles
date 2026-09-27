@@ -32,6 +32,43 @@ if ! mkdir "$LOCK_FILE" 2>/dev/null; then
 fi
 trap 'rmdir "$LOCK_FILE" 2>/dev/null || true' EXIT
 
+# Never reconcile state on top of unrelated local work.
+if [[ -n "$(git -C "$ROOT" status --porcelain --untracked-files=normal)" ]]; then
+  echo "INFO: repository has local changes; system-state sync skipped."
+  exit 0
+fi
+
+# Synchronize safely with origin before generating a state commit.
+git -C "$ROOT" fetch origin
+
+branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || true)"
+if [[ -z "$branch" ]]; then
+  echo "ERROR: repository is in detached HEAD state." >&2
+  exit 1
+fi
+
+remote_ref="origin/$branch"
+
+if ! git -C "$ROOT" rev-parse --verify "$remote_ref" >/dev/null 2>&1; then
+  echo "ERROR: remote branch $remote_ref does not exist." >&2
+  exit 1
+fi
+
+local_sha="$(git -C "$ROOT" rev-parse HEAD)"
+remote_sha="$(git -C "$ROOT" rev-parse "$remote_ref")"
+base_sha="$(git -C "$ROOT" merge-base HEAD "$remote_ref")"
+
+if [[ "$local_sha" == "$remote_sha" ]]; then
+  :
+elif [[ "$local_sha" == "$base_sha" ]]; then
+  git -C "$ROOT" merge --ff-only "$remote_ref"
+elif [[ "$remote_sha" == "$base_sha" ]]; then
+  :
+else
+  echo "ERROR: local and $remote_ref have diverged; sync skipped." >&2
+  exit 1
+fi
+
 mkdir -p "$STATE_DIR/packages" "$STATE_DIR/services"
 
 rpm -qa --qf '%{NAME}\n' | LC_ALL=C sort -u > "$STATE_DIR/packages/rpm.txt"
