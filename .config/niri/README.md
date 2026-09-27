@@ -125,7 +125,6 @@ Physical placement:
 | Shortcut | Action |
 |---|---|
 | `Super+Enter` | Kitty terminal |
-| `Super+D` | fzf PATH application launcher |
 | `Super+C` | Search and expand Espanso matches with fzf |
 | `Super+Y` | Kitty running Yazi |
 | `Super+Ctrl+Y` | Dolphin |
