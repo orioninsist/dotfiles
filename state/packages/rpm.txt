@@ -100,6 +100,7 @@ cargo
 catdoc
 catdoc-wordview
 cdparanoia-libs
+cef
 cfitsio
 chatgpt
 checkpolicy
@@ -301,7 +302,6 @@ glusterfs-cli
 glusterfs-client-xlators
 glusterfs-fuse
 glx-utils
-glycin-gtk4-libs
 glycin-libs
 glycin-loaders
 gmp
@@ -323,6 +323,7 @@ gnutls-dane
 gnutls-utils
 gobject-introspection
 google-chrome-stable
+google-crc32c
 google-droid-sans-fonts
 google-noto-fonts-common
 google-noto-sans-mono-vf-fonts
@@ -353,7 +354,6 @@ gspell
 gssdp
 gssproxy
 gstreamer1
-gstreamer1-plugin-gtk4
 gstreamer1-plugin-libav
 gstreamer1-plugins-bad-free
 gstreamer1-plugins-bad-free-extras
@@ -382,8 +382,10 @@ gwenview
 gwenview-libs
 gzip
 harfbuzz
+harfbuzz-icu
 hdparm
 hicolor-icon-theme
+hidapi
 highway
 hiredis
 hostname
@@ -433,6 +435,7 @@ iw
 iwd
 jansson
 jasper-libs
+javascriptcoregtk4.1
 jbig2dec-libs
 jbigkit-libs
 jemalloc
@@ -451,7 +454,6 @@ kcolorpicker-qt6
 kde-filesystem
 kdecoration
 kdegraphics-mobipocket
-kdsingleapplication-qt6
 kdsoap
 kdsoap-ws-discovery-client
 kdsoap6
@@ -713,6 +715,7 @@ libcomps
 libcue
 libcurl
 libdaemon
+libdatachannel
 libdatrie
 libdav1d
 libdbusmenu
@@ -818,6 +821,7 @@ liblqr-1
 liblrdf
 libluv
 libmad
+libmanette
 libmarkdown
 libmaxminddb
 libmbim
@@ -878,6 +882,7 @@ libproxy-bin
 libpsl
 libpwquality
 libqmi
+libqrcodegencpp
 libqrtr-glib
 libquadmath
 librabbitmq
@@ -1076,6 +1081,8 @@ make
 mako
 man-db
 mathjax3
+mbedtls
+mbedtls-devel
 mdadm
 mdevctl
 media-player-info
@@ -1171,6 +1178,12 @@ numad
 nvidia-gpu-firmware
 nvme-cli
 nxpwireless-firmware
+obs-studio
+obs-studio-libs
+obs-studio-plugin-browser
+obs-studio-plugin-pwvideo
+obs-studio-plugin-vlc-video
+obs-studio-plugin-webkitgtk
 okular
 okular-libs
 okular-part
@@ -1553,6 +1566,7 @@ qt6-qttools-common
 qt6-qttools-libs-designer
 qt6-qttools-libs-help
 qt6-qttranslations
+qt6-qtwayland
 qt6-qtwebchannel
 qt6-qtwebengine
 qt6-qtwebsockets
@@ -1727,6 +1741,7 @@ usbmuxd
 usbredir
 usbutils
 userspace-rcu
+usrsctp
 utf8proc
 util-linux
 util-linux-core
@@ -1761,6 +1776,7 @@ wavpack
 waybar
 wcurl
 web-assets-filesystem
+webkit2gtk4.1
 webrtc-audio-processing
 wget2
 wget2-libs
@@ -1782,6 +1798,7 @@ xcb-util-image
 xcb-util-keysyms
 xcb-util-renderutil
 xcb-util-wm
+xdg-dbus-proxy
 xdg-desktop-portal
 xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk
