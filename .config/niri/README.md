@@ -15,7 +15,7 @@ Modular Niri configuration for the daily Wayland session.
 
 | File | Responsibility |
 |---|---|
-| `config.kdl` | Input, outputs, layout, startup, workspaces, small window rules and includes |
+| `config.kdl` | Input, outputs, layout, startup, small window rules and includes |
 | `binds/window-management.kdl` | Niri-native window, column, monitor and layout actions |
 | `binds/workspaces.kdl` | Workspace navigation, movement and wheel navigation |
 | `binds/system.kdl` | Audio, media, brightness, capture, hardware, notifications and session |
@@ -43,10 +43,6 @@ or renamed.
 | `Super+9` | 9 | Free workspace | Manual use |
 | `Super+0` | 10 | Free workspace | Manual use |
 
-Physical placement:
-- Workspaces 1-5 prefer `HDMI-A-1` (ASUS).
-- Workspaces 6-10 prefer `eDP-1` (ThinkPad).
-- This is only default output placement for empty workspaces; apps are not auto-routed.
 
 ## Complete shortcut reference
 
