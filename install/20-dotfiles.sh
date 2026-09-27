@@ -54,6 +54,15 @@ if [[ -d "$ROOT/.wallpapers" ]]; then
   backup_or_link "$ROOT/.wallpapers" "$HOME/.wallpapers"
 fi
 
+# Link repository-managed desktop applications.
+if [[ -d "$ROOT/.local/share/applications" ]]; then
+  mkdir -p "$HOME/.local/share/applications"
+  for p in "$ROOT"/.local/share/applications/*; do
+    [[ -f "$p" ]] || continue
+    backup_or_link "$p" "$HOME/.local/share/applications/${p##*/}"
+  done
+fi
+
 # Install repository-managed KDE color schemes without duplicating them.
 if [[ -d "$ROOT/.local/share/color-schemes" ]]; then
   mkdir -p "$HOME/.local/share/color-schemes"
