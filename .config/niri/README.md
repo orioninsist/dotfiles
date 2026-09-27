@@ -182,7 +182,6 @@ Physical placement:
 | Shortcut | Action |
 |---|---|
 | `Super+Shift+S` | Lock with swaylock, then suspend |
-| `Super+Shift+P` | Power off monitors |
 | `Super+Shift+Escape` | Quit Niri |
 
 ## Daily mental model
