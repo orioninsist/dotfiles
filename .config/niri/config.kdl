@@ -95,6 +95,7 @@ workspace "10" {
 }
 
 spawn-at-startup "mako"
+spawn-at-startup "wlsunset" "-T" "1001" "-t" "1000"
 
 hotkey-overlay {
     skip-at-startup

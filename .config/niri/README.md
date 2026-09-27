@@ -184,7 +184,6 @@ Physical placement:
 | `Super+Shift+S` | Lock with swaylock, then suspend |
 | `Super+Shift+P` | Power off monitors |
 | `Super+Shift+Escape` | Quit Niri |
-| `Ctrl+Alt+Delete` | Quit Niri |
 
 ## Daily mental model
 
