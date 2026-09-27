@@ -46,7 +46,6 @@ disabled = false
 style = "bold lavender"
 
 [os.symbols]
-Arch = "󰣇 "
 Linux = "󰌽 "
 Macos = "󰀵 "
 Windows = "󰍲 "
