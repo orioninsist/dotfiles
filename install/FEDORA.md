@@ -22,9 +22,9 @@ After the minimal Fedora installation:
 
 ```bash
 sudo dnf -y install git
-git clone --branch bootstrap-fedora https://github.com/orioninsist/dotfiles.git ~/dotfiles
+git clone https://github.com/orioninsist/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-bash bootstrap.sh
+bash install-fedora.sh
 ```
 
 ## Readiness rule
@@ -37,7 +37,7 @@ The Fedora target is not READY until all repository bootstrap, Niri session, use
 Before the first bootstrap test, keep a powered-off libvirt snapshot named `clean-fedora44`.
 Run the bootstrap from the repository, collect `install/audit-fedora-target.sh`, and treat any pytest failure, missing required command, failed unit, or Niri validation error as a failed iteration.
 
-Do not merge the Fedora branch until the bootstrap succeeds twice consecutively (idempotency), the VM survives a reboot, Niri starts as a real session, portals work, and libvirt graceful shutdown works through qemu-guest-agent.
+Treat changes to the Fedora bootstrap as ready only after it succeeds twice consecutively (idempotency), the VM survives a reboot, Niri starts as a real session, portals work, and libvirt graceful shutdown works through qemu-guest-agent.
 
 
 ## Ly and SELinux
