@@ -94,6 +94,7 @@ vendor	code	Visual Studio Code	official-microsoft-vscode-repo
 vendor	yandex-browser-stable	Yandex Browser	official-yandex-fedora-rpm
 exception	spotify	Spotify	no-official-fedora-rpm-use-web-or-explicit-third-party
 upstream	tor-browser	Tor Browser	official-tor-linux-tarball-register-app
+upstream	zed	Zed editor	official-zed-linux-installer
 source-service	rclone-gdrive.service	read-only user Google Drive mount	resolved-fedora-template
 source-service	rclone-gdrive-shared.service	read-only user Google Drive shared-with-me mount	resolved-fedora-template
 source-service	knowledge-personal-search.service	knowledge personal search	enabled-on-source-system

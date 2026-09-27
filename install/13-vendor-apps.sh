@@ -176,6 +176,13 @@ Categories=Development;
 DESKTOP
 fi
 
+# Zed editor: official upstream Linux installer.
+# Installs user-locally under ~/.local/zed.app and exposes ~/.local/bin/zed.
+if ! command -v zed >/dev/null 2>&1; then
+  echo "==> Zed editor"
+  curl -f https://zed.dev/install.sh | sh
+fi
+
 echo "==> Official user-local developer tools"
 
 if ! command -v claude >/dev/null 2>&1; then

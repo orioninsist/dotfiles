@@ -19,7 +19,7 @@ required_commands=(
   yazi zellij wl-screenrec wl-color-picker bun typst satty eza bat yq
   tree htop btop ncdu zoxide rsync unzip zip git-lfs gh openssl
   gpg age file which lsof strace lspci lsusb host nc starship realesrgan-ncnn-vulkan chatgpt github-copilot-app
-  arecord amixer ffmpeg wtype notify-send uv
+  arecord amixer ffmpeg wtype notify-send uv zed
 )
 
 missing=()
@@ -112,7 +112,7 @@ systemctl is-enabled --quiet ly@tty2.service
 [[ "$(systemctl get-default)" == "graphical.target" ]]
 
 echo "==> Dotfile links"
-for path in "$HOME/.config/niri" "$HOME/.config/zellij" "$HOME/.config/systemd" "$HOME/.config/knowledge"; do
+for path in "$HOME/.config/niri" "$HOME/.config/zellij" "$HOME/.config/systemd" "$HOME/.config/knowledge" "$HOME/.config/zed"; do
   [[ -e "$path" ]] || { echo "Missing dotfile path: $path" >&2; exit 1; }
 done
 

@@ -32,7 +32,7 @@ def test_core_commands_after_install():
 
 def test_user_config_links_after_deploy():
     home = Path.home()
-    for name in ["niri", "systemd", "wayland"]:
+    for name in ["niri", "systemd", "wayland", "zed"]:
         p = home / ".config" / name
         assert p.is_symlink(), p
         assert p.resolve() == (ROOT / ".config" / name).resolve()
