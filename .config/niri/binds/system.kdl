@@ -41,8 +41,7 @@ binds {
     Mod+Ctrl+E { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/emoji-picker"; }
 
     Mod+Shift+C { spawn-sh "niri msg action load-config-file"; }
-    Mod+Shift+S { spawn-sh "swaylock -f -c 000000 && systemctl suspend"; }
+    Mod+Shift+S { spawn-sh "swaylock -f -c 000000"; }
     Mod+Shift+Escape { quit; }
-   Mod+Ctrl+R { spawn "obs"; }
+    Mod+Ctrl+R { spawn "obs"; }
 }
-
