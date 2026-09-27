@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "proxy": "",
   "session": {
     "trust_all_worktrees": true
   },
@@ -25,7 +26,7 @@
   "buffer_font_size": 15,
   "theme": {
     "mode": "dark",
-    "light": "One Light",
+    "light": "Catppuccin Mocha",
     "dark": "Catppuccin Mocha",
   },
 }
