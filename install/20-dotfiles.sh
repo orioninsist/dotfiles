@@ -37,7 +37,6 @@ done
 # through an interpreter.
 for helper in \
   "$ROOT/.config/wayland/scripts/fzf-popup" \
-  "$ROOT/.config/wayland/scripts/app-launcher" \
   "$ROOT/.config/wayland/scripts/satty-screenshot" \
   "$ROOT/.config/niri/scripts/niri-window-place-once" \
   "$ROOT/.config/wayland/scripts/path-apps"
@@ -73,7 +72,6 @@ if command -v gsettings >/dev/null 2>&1; then
   gsettings set org.gnome.desktop.interface gtk-theme "$CATPPUCCIN_GTK_THEME"
 fi
 
-rm -f "$HOME/.cache/orion-launcher/path-commands"
 
 if command -v calibre-debug >/dev/null 2>&1; then
   env -u CALIBRE_USE_SYSTEM_THEME -u QT_QPA_PLATFORMTHEME -u QT_STYLE_OVERRIDE \

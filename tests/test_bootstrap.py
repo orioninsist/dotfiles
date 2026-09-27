@@ -87,17 +87,6 @@ def test_portable_runtime_paths():
     assert not failures, failures
 
 
-def test_fzf_app_launcher_uses_cache():
-    launcher = (ROOT / ".config/wayland/scripts/app-launcher").read_text()
-    assert "orion-launcher" in launcher
-    assert "cache_is_stale" in launcher
-    assert "path-apps.ignore" in launcher
-    assert "fzf --prompt='Run > ' < \"$cache_file\"" in launcher
-    assert "QT_QPA_PLATFORMTHEME" in launcher
-    assert "KDE_COLOR_SCHEME=CatppuccinMochaMauve" in launcher
-    assert "-u CALIBRE_USE_SYSTEM_THEME" in launcher
-
-
 def test_qt_theme_is_global_not_per_app_wrapper():
     env = (ROOT / ".config/environment.d/20-qt-theme.conf").read_text()
     assert "QT_QPA_PLATFORM=wayland;xcb" in env
