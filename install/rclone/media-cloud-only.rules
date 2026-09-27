@@ -1,89 +1,23 @@
-# ============================================================
-# ORION MEDIA CLOUD-ONLY RULES
+# ORION MEDIA CLOUD-ONLY
 #
-# Bu dosya SADECE:
+# Bu dosya rclone --filter-from formatindadir.
 #
-#   Drive'a basariyla yedeklendikten sonra
-#   yerelden kaldirilmasina izin verilen dosyalari
+# Cloud-only yapmak istedigin dosya/desen:
+#   + /path
 #
-# tanimlar.
+# Ornekler:
+#   + /1-Image/**/*.iso
+#   + /2-Video/archive/**
+#   + **/*.zip
 #
-# ------------------------------------------------------------
+# Hassas recovery alanlari cloud-only olamaz.
+- /6-Project/dotfiles/**
+- /8-Document/system-recovery/**
 #
-# NORMAL DOSYA:
+# Kalici test kurali.
+# Test etmek icin lokal dosyayi yeniden olustur:
+# ~/Media/8-Document/cloud-only-test/rclone-move-test.txt
++ /8-Document/cloud-only-test/rclone-move-test.txt
 #
-#   Local  -> VAR
-#   Drive  -> VAR
-#
-#
-# CLOUD-ONLY DOSYA:
-#
-#   once:
-#       Local -> VAR
-#       Drive -> COPY
-#
-#   backup dogrulandiktan sonra:
-#       Local -> SIL
-#       Drive -> KALSIN
-#
-# ------------------------------------------------------------
-#
-# ONEMLI:
-#
-# Bu dosyada AKTIF kural yoksa
-# yerelden HICBIR DOSYA silinmez.
-#
-# Asagidaki orneklerin hepsi '#' ile basladigi icin PASIFTIR.
-#
-# ============================================================
-
-
-# ------------------------------------------------------------
-# ORNEK 1
-# 1-Image altindaki ISO dosyalari cloud-only
-# ------------------------------------------------------------
-
-# /1-Image/**/*.iso
-
-
-# ------------------------------------------------------------
-# ORNEK 2
-# Media'nin herhangi bir yerindeki ZIP dosyalari
-# ------------------------------------------------------------
-
-# **/*.zip
-
-
-# ------------------------------------------------------------
-# ORNEK 3
-# Bir klasorun tum DOSYALARI cloud-only
-# ------------------------------------------------------------
-
-# /2-Video/archive/**
-
-
-# ------------------------------------------------------------
-# ORNEK 4
-# Tek bir dosya cloud-only
-# ------------------------------------------------------------
-
-# /2-Video/example.mkv
-
-
-# ------------------------------------------------------------
-# ORNEK 5
-# Belirli proje icindeki buyuk arsivler
-# ------------------------------------------------------------
-
-# /6-Project/example/archive/**/*.tar.zst
-
-
-# ============================================================
-# AKTIF CLOUD-ONLY KURALLAR
-# ============================================================
-#
-# Kendi kurallarini bu satirin ALTINA yaz.
-#
-# SU ANDA AKTIF KURAL YOK.
-#
-# ============================================================
+# Yukarida secilmeyen hicbir seyi move etme.
+- **

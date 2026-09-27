@@ -13,16 +13,21 @@ echo "===== STAGE DOTFILES ====="
 
 mkdir -p "$DOTFILES_DST"
 
-if [[ -d "$DOTFILES_SRC" ]]; then
-    rsync -a \
-        --delete \
-        --exclude='.git/' \
-        "$DOTFILES_SRC/" \
-        "$DOTFILES_DST/" &&
-        echo "PASS dotfiles staged" ||
-        echo "FAIL dotfiles staging"
+if [[ ! -d "$DOTFILES_SRC" ]]; then
+    echo "FAIL dotfiles source missing: $DOTFILES_SRC" >&2
+    exit 1
+fi
+
+if rsync -a \
+    --delete \
+    --exclude='.git/' \
+    "$DOTFILES_SRC/" \
+    "$DOTFILES_DST/"
+then
+    echo "PASS dotfiles staged"
 else
-    echo "FAIL dotfiles source missing: $DOTFILES_SRC"
+    echo "FAIL dotfiles staging" >&2
+    exit 1
 fi
 
 echo
@@ -38,12 +43,16 @@ do
     SRC="$RECOVERY_SRC/$file"
     DST="$RECOVERY_DST/$file"
 
-    if [[ -f "$SRC" ]]; then
-        install -m 600 "$SRC" "$DST" &&
-            echo "PASS $file" ||
-            echo "FAIL $file"
+    if [[ ! -f "$SRC" ]]; then
+        echo "FAIL missing: $SRC" >&2
+        exit 1
+    fi
+
+    if install -m 600 "$SRC" "$DST"; then
+        echo "PASS $file"
     else
-        echo "FAIL missing: $SRC"
+        echo "FAIL $file" >&2
+        exit 1
     fi
 done
 

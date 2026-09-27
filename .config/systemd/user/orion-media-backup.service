@@ -8,3 +8,4 @@ Type=oneshot
 
 ExecStartPre=/home/murat/dotfiles/install/rclone/stage-recovery.sh
 ExecStart=/home/murat/dotfiles/install/rclone/media-backup.sh copy
+ExecStart=/home/murat/dotfiles/install/rclone/media-cloud-only.sh move
