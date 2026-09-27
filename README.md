@@ -27,8 +27,6 @@ Validated target:
 - PipeWire / WirePlumber
 - Fedora physical-machine and QEMU/KVM profiles
 
-The previous Arch Linux state is preserved by the Git tag
-`arch-final-2026-09-23`.
 
 ## Installation
 
@@ -75,12 +73,11 @@ FAILED_UNITS=0
 | Topic | Document |
 |---|---|
 | Managed configuration, symlinks, services, Google Drive, PATH apps, Espanso | [docs/system.md](docs/system.md) |
-| Recovery, Git workflow, migration history, system-state reconciliation | [docs/recovery.md](docs/recovery.md) |
+| Recovery, Git workflow and system-state reconciliation | [docs/recovery.md](docs/recovery.md) |
 | Fedora 44 bootstrap target and acceptance rules | [install/FEDORA.md](install/FEDORA.md) |
 | Niri workspaces, shortcuts, window model and validation | [.config/niri/README.md](.config/niri/README.md) |
 | Zellij `orion-status` plugin | [.config/zellij/plugins/orion-status/README.md](.config/zellij/plugins/orion-status/README.md) |
 | ast-grep shell and project configuration | [.config/ast-grep/README.md](.config/ast-grep/README.md) |
-| Historical source-system audit | [audit/current-system/README.md](audit/current-system/README.md) |
 
 ## Repository map
 
@@ -88,7 +85,6 @@ FAILED_UNITS=0
 .config/       Application and desktop configuration
 .local/        User-local scripts and files
 .wallpapers/   Wallpapers
-audit/         Historical and system audits
 docs/          Repository-level documentation
 install/       Fedora bootstrap, verification and recovery tooling
 state/         Generated reproducible system state
