@@ -112,6 +112,7 @@ clang
 clang-libs
 clang-resource-filesystem
 cliphist
+clippy
 cmake
 cmake-data
 cmake-filesystem
@@ -308,6 +309,7 @@ gmp
 gnome-desktop3
 gnome-desktop4
 gnome-keyring
+gnome-keyring-pam
 gnulib-l10n
 gnupg2
 gnupg2-dirmngr
@@ -376,7 +378,6 @@ gtkmm4.0
 gtksourceview4
 gupnp
 gupnp-igd
-gvfs-client
 gvnc
 gwenview
 gwenview-libs
@@ -566,6 +567,7 @@ kf6-kpackage
 kf6-kparts
 kf6-kpty
 kf6-kservice
+kf6-kstatusnotifieritem
 kf6-ktexteditor
 kf6-ktextwidgets
 kf6-kuserfeedback
@@ -602,6 +604,7 @@ kseexpr
 kvantum
 kvantum-data
 kvantum-qt5
+kwayland
 ladspa
 lame-libs
 langpacks-core-en
@@ -1096,6 +1099,7 @@ mesa-libGLU
 mesa-libGLU-devel
 mesa-libgbm
 mesa-vulkan-drivers
+meson
 microcode_ctl
 microsoft-edge-stable
 minizip-ng-compat
@@ -1152,6 +1156,7 @@ ngtcp2
 ngtcp2-crypto-gnutls
 ngtcp2-crypto-ossl
 nilfs-utils
+ninja-build
 niri
 nmap-ncat
 nodejs22
@@ -1213,6 +1218,7 @@ openssh
 openssh-clients
 openssh-server
 openssl
+openssl-devel
 openssl-libs
 openxr-libs
 optipng
@@ -1225,6 +1231,7 @@ osinfo-db-tools
 p11-kit
 p11-kit-trust
 pam
+pam-devel
 pam-libs
 pandoc-cli
 pandoc-common
@@ -1607,6 +1614,7 @@ rust
 rust-std-static
 rust-std-static-wasm32-wasip1
 rustdesk
+rustfmt
 rutabaga-gfx-ffi
 samba-client-libs
 samba-common
@@ -1679,6 +1687,7 @@ swtpm-tools
 syncthing
 systemd
 systemd-container
+systemd-devel
 systemd-libs
 systemd-networkd
 systemd-pam
@@ -1801,6 +1810,7 @@ xdg-dbus-proxy
 xdg-desktop-portal
 xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk
+xdg-desktop-portal-kde
 xdg-utils
 xdriinfo
 xen-libs
