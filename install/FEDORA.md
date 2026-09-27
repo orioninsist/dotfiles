@@ -4,7 +4,6 @@ Target distribution: Fedora Linux 44, x86_64.
 
 Installation image: Fedora Everything 44 Network Install ISO.
 
-The existing Arch source-system audit remains the migration inventory. Debian-specific bootstrap work remains isolated on the bootstrap-debian branch and is not the target here.
 
 ## QEMU / KVM installation baseline
 
