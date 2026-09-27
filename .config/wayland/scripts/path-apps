@@ -121,7 +121,7 @@ while IFS= read -r desktop; do
     fi
 
     # If the real executable is already globally reachable, there is nothing
-    # useful to wrap; Super+D already sees it through PATH.
+    # useful to wrap.
     if command -v "${first##*/}" >/dev/null 2>&1; then
         ((existing++))
         continue
