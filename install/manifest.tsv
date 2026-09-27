@@ -30,7 +30,6 @@ dnf	wireplumber	wireplumber/wpctl	confirmed
 dnf	pavucontrol	pavucontrol	confirmed
 dnf	playerctl	playerctl	confirmed
 dnf	brightnessctl	brightnessctl	confirmed
-dnf	swayidle	swayidle	confirmed
 dnf	swaylock	swaylock	confirmed
 dnf	swaybg	swaybg	confirmed
 dnf	mako	mako/makoctl	confirmed-fedora44

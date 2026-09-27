@@ -16,7 +16,7 @@ dnf repolist --enabled || true
 
 echo
 echo "===== REQUIRED COMMANDS ====="
-for cmd in bash dnf git niri kitty nvim swayimg mpv mako makoctl wl-copy wl-paste grim slurp tesseract ffmpeg ffprobe playerctl brightnessctl swayidle swaylock swaybg notify-send wpctl pactl busctl systemctl fzf rg jq; do
+for cmd in bash dnf git niri kitty nvim swayimg mpv mako makoctl wl-copy wl-paste grim slurp tesseract ffmpeg ffprobe playerctl brightnessctl swaylock swaybg notify-send wpctl pactl busctl systemctl fzf rg jq; do
   if command -v "$cmd" >/dev/null 2>&1; then
     printf 'OK\t%s\t%s\n' "$cmd" "$(command -v "$cmd")"
   else

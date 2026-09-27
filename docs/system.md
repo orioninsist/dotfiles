@@ -73,7 +73,6 @@ Required user units include:
 
 ```text
 ssh-agent.service
-swayidle.service
 swaybg.service
 niri-keyboard-state.service
 zellij-copy.path

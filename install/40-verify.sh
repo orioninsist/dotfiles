@@ -117,7 +117,7 @@ for path in "$HOME/.config/niri" "$HOME/.config/zellij" "$HOME/.config/systemd" 
 done
 
 echo "==> User units"
-for unit in ssh-agent.service swayidle.service swaybg.service niri-keyboard-state.service zellij-copy.path; do
+for unit in ssh-agent.service swaybg.service niri-keyboard-state.service zellij-copy.path; do
   systemctl --user cat "$unit" >/dev/null
   systemctl --user is-enabled --quiet "$unit"
   systemctl --user is-active --quiet "$unit"

@@ -10,6 +10,5 @@ rclone-gdrive-shared.service
 rclone-gdrive.service
 ssh-agent.service
 swaybg.service
-swayidle.service
 systemd-tmpfiles-setup.service
 wireplumber.service

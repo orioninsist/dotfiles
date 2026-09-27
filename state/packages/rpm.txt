@@ -1669,7 +1669,6 @@ sudo-python-plugin
 suitesparse
 svt-av1-libs
 swaybg
-swayidle
 swayimg
 swaylock
 switcheroo-control

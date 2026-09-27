@@ -5,7 +5,6 @@ systemctl --user daemon-reload
 
 required_units=(
   ssh-agent.service
-  swayidle.service
   swaybg.service
   niri-keyboard-state.service
   zellij-copy.path
