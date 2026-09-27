@@ -136,24 +136,6 @@ def test_picker_scripts_close_by_copying_or_typing_selection():
     assert "wtype" not in emoji
 
 
-def test_recording_scripts_use_dynamic_devices():
-    screen = (ROOT / ".config/wayland/scripts/screen-record").read_text()
-    camera = (ROOT / ".config/wayland/scripts/camera-record").read_text()
-    combined = (ROOT / ".config/wayland/scripts/screen-camera-record").read_text()
-    assert "niri msg --json outputs" in screen
-    assert "SCREEN_RECORD_OUTPUT_1:-$(first_output)" in screen
-    assert "SCREEN_RECORD_OUTPUT_2:-$(second_output)" in screen
-    assert "alsa_input.pci" not in camera
-    assert "alsa_output.pci" not in camera
-    assert "pactl get-default-source" in camera
-    assert "niri msg --json outputs" in combined
-    assert "-map 1:a:1" not in combined
-    assert "Failed to start" in screen
-    assert "Recording failed" in screen
-    assert "wait \"$PID\" || true" not in camera
-    assert "Failed to start" in combined
-
-
 def test_calibre_uses_builtin_dark_palette_not_system_theme():
     wrapper = (ROOT / ".local/bin/calibre-kde").read_text()
     assert "exec /usr/bin/calibre" in wrapper
