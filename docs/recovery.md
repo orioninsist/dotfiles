@@ -1,6 +1,6 @@
 # Recovery and maintenance
 
-This document covers repository maintenance, migration history, and system-state recovery.
+This document covers repository maintenance and Fedora system-state recovery.
 
 ## Dotfiles workflow
 
@@ -33,18 +33,7 @@ Expected:
 0  0
 ```
 
-## Migration history
-
-Fedora is the active `main` branch target.
-
-The previous Arch Linux state is preserved by the Git tag:
-
-```text
-arch-final-2026-09-23
-```
-
-The source-system audit is retained under
-[audit/current-system](../audit/current-system/README.md).
+## Private data recovery
 
 Private and user data is intentionally not restored by the dotfiles bootstrap.
 Restore personal data and secrets separately from the private backup after
