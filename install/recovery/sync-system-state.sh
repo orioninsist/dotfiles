@@ -39,7 +39,12 @@ if [[ -n "$(git -C "$ROOT" status --porcelain --untracked-files=normal)" ]]; the
 fi
 
 # Synchronize safely with origin before generating a state commit.
-git -C "$ROOT" fetch origin
+# A temporary network/DNS outage is not a system-state failure; the timer
+# will retry on its next scheduled run.
+if ! git -C "$ROOT" fetch origin; then
+  echo "INFO: origin is temporarily unreachable; system-state sync skipped."
+  exit 0
+fi
 
 branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || true)"
 if [[ -z "$branch" ]]; then
