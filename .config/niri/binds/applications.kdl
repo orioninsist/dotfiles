@@ -1,7 +1,8 @@
 // Personal application launchers.
 binds {
     Mod+Return { spawn "kitty"; }
-    Mod+C { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fzf-popup $HOME/.config/wayland/scripts/espanso-search"; }
+    Mod+D { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/fuzzel-launcher"; }
+    Mod+C { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/espanso-search"; }
     Mod+Y { spawn "kitty" "yazi"; }
 
     Mod+Ctrl+Y { spawn "dolphin" "--new-window"; }

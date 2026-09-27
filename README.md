@@ -231,6 +231,13 @@ niri validate
 
 ## PATH application sync
 
+This setup uses a PATH-oriented launcher flow:
+
+```text
+Super+D -> Fuzzel -> PATH command
+```
+
+
 After installing a GUI application or Chrome/Chromium PWA, run:
 
 ```bash

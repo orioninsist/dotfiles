@@ -125,7 +125,8 @@ Physical placement:
 | Shortcut | Action |
 |---|---|
 | `Super+Enter` | Kitty terminal |
-| `Super+C` | Search and expand Espanso matches with fzf |
+| `Super+D` | Fuzzel PATH command launcher |
+| `Super+C` | Search and expand Espanso matches with Fuzzel |
 | `Super+Y` | Kitty running Yazi |
 | `Super+Ctrl+Y` | Dolphin |
 | `Super+P` | Satty screenshot annotation |

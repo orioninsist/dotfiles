@@ -36,7 +36,7 @@ done
 # in these directories; some are data files or scripts intentionally invoked
 # through an interpreter.
 for helper in \
-  "$ROOT/.config/wayland/scripts/fzf-popup" \
+  "$ROOT/.config/wayland/scripts/fuzzel-launcher" \
   "$ROOT/.config/wayland/scripts/satty-screenshot" \
   "$ROOT/.config/niri/scripts/niri-window-place-once" \
   "$ROOT/.config/wayland/scripts/path-apps"

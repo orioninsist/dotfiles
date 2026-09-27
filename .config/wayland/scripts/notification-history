@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
-log_file="$HOME/.cache/orion-clipboard.log"
-printf 'notification-picker started\n' >> "$log_file"
 
 selection="$(
     makoctl history -j |
@@ -20,12 +17,9 @@ selection="$(
             if ($3 != "") text = text " — " $3
             print text
         }' |
-        fzf --prompt="Notifications > " --height=40% --reverse
+        fuzzel --dmenu --prompt="notifications > "
 )" || exit 0
-
-printf 'notification selection: %q\n' "$selection" >> "$log_file"
-printf '%s\n' "$selection" > "${XDG_RUNTIME_DIR:-$HOME/.cache}/orion-picker-result"
 
 [[ -n "$selection" ]] || exit 0
 
-"$HOME/.config/wayland/scripts/clipboard-copy" "$selection"
+wl-copy "$selection"

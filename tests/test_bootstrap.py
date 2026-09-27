@@ -68,7 +68,7 @@ def test_portable_runtime_paths():
         ROOT / ".config/niri/config.kdl",
         ROOT / ".config/niri/binds/applications.kdl",
         ROOT / ".config/kitty/kitty.conf",
-        ROOT / ".config/wayland/scripts/fzf-popup",
+        ROOT / ".config/wayland/scripts/fuzzel-launcher",
         ROOT / ".config/wayland/scripts/ocr",
         ROOT / ".config/wayland/scripts/mako-toggle",
         ROOT / ".config/yazi/yazi.toml",
@@ -125,14 +125,19 @@ def test_niri_prunes_unused_direct_launchers():
     assert "clipboard-history" not in system
 
 
-def test_picker_scripts_close_by_copying_or_typing_selection():
+def test_picker_scripts_close_by_copying_selection():
     notifications = (ROOT / ".config/wayland/scripts/notification-history").read_text()
     emoji = (ROOT / ".config/wayland/scripts/emoji-picker").read_text()
+    clipboard = (ROOT / ".config/wayland/scripts/clipboard-history").read_text()
+
     assert ".[:5][]" in notifications
-    clipboard = (ROOT / ".config/wayland/scripts/clipboard-copy").read_text()
-    assert "wl-copy" in clipboard
-    assert "clipboard-copy" in notifications
-    assert "clipboard-copy" in emoji
+
+    for script in (notifications, emoji, clipboard):
+        assert "fuzzel --dmenu" in script
+        assert "wl-copy" in script
+
+    assert "clipboard-copy" not in notifications
+    assert "clipboard-copy" not in emoji
     assert "wtype" not in emoji
 
 

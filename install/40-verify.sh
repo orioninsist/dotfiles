@@ -50,7 +50,7 @@ bash --noprofile --rcfile "$HOME/.bashrc" -ic '
 
 echo "==> Executable dotfile helpers"
 for path in \
-  "$HOME/.config/wayland/scripts/fzf-popup" \
+  "$HOME/.config/wayland/scripts/fuzzel-launcher" \
   "$HOME/.config/wayland/scripts/satty-screenshot" \
   "$HOME/.config/niri/scripts/niri-window-place-once" \
   "$HOME/.config/wayland/scripts/path-apps" \
