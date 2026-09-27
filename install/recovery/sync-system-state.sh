@@ -86,7 +86,6 @@ systemctl --user list-unit-files --type=service --state=enabled --no-legend --no
   awk '{print $1}' | LC_ALL=C sort -u > "$STATE_DIR/services/user-enabled.txt" || :
 
 {
-  printf 'captured_at=%s\n' "$(date --iso-8601=seconds)"
   printf 'hostname=%s\n' "$(hostname)"
   printf 'kernel=%s\n' "$(uname -srmo)"
   if [[ -r /etc/os-release ]]; then
