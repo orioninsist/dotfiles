@@ -1,5 +1,6 @@
 // Session, hardware, capture and compositor-independent utilities.
 binds {
+    Mod+S { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/system-status"; }
     Mod+Ctrl+Space { switch-layout "next"; }
 
     XF86AudioMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
