@@ -126,6 +126,7 @@ Physical placement:
 |---|---|
 | `Super+Enter` | Kitty terminal |
 | `Super+D` | Fuzzel PATH command launcher |
+| `Super+S` | System Status menu (Fuzzel) |
 | `Super+C` | Search and expand Espanso matches with Fuzzel |
 | `Super+Y` | Kitty running Yazi |
 | `Super+Ctrl+Y` | Dolphin |
