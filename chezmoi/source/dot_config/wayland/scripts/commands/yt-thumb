@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+url="${1:-}"
+[[ "$url" =~ ^https?:// ]] || { printf 'Kullanim: yt-thumb URL\n' >&2; exit 2; }
+command -v yt-dlp >/dev/null || { printf 'yt-dlp bulunamadi.\n' >&2; exit 127; }
+mkdir -p "$HOME/.thumbnails"
+yt-dlp --skip-download --write-thumbnail --convert-thumbnails jpg -o "$HOME/.thumbnails/%(title)s [%(id)s].%(ext)s" "$url"

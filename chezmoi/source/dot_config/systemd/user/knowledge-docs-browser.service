@@ -1,0 +1,15 @@
+[Unit]
+Description=Knowledge Read-Only Documentation Browser
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Media/6-Project/knowledge
+Environment=KNOWLEDGE_DOCS_ROOT=%h/Media/5-Documentation
+Environment=KNOWLEDGE_DOCS_IGNORE=%h/Media/5-Documentation/Knowledge
+Environment=KNOWLEDGE_DOCS_PORT=1320
+ExecStart=%h/.bun/bin/bun scripts/docs-server.ts
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ChatGPT
+Comment=ChatGPT Desktop
+Exec=/usr/lib/chatgpt/ChatGPT --ozone-platform=wayland
+Terminal=false
+Type=Application
+Icon=chatgpt
+Categories=Utility;Network;
+StartupWMClass=ChatGPT

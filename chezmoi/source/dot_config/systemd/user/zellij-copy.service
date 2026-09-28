@@ -1,0 +1,6 @@
+[Unit]
+Description=Refresh Zellij scrollback clipboard provider
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl --user restart zellij-copy-provider.service

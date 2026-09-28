@@ -1,0 +1,10 @@
+--height=60%
+--layout=reverse
+--border=rounded
+--info=inline-right
+--prompt=❯
+--pointer=❯
+--marker=✓
+--scrollbar=│
+--cycle
+--keep-right

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+for cmd in grim slurp satty; do
+    command -v "$cmd" >/dev/null 2>&1 || {
+        notify-send "Screenshot" "$cmd is not installed"
+        exit 1
+    }
+done
+
+region="$(slurp)" || exit 0
+[[ -n "$region" ]] || exit 0
+
+grim -g "$region" - | satty --filename -

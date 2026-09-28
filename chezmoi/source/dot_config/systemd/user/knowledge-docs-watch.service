@@ -1,0 +1,16 @@
+[Unit]
+Description=Knowledge Documentation Browser Index Watcher
+After=knowledge-docs-browser.service
+Wants=knowledge-docs-browser.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Media/6-Project/knowledge
+Environment=KNOWLEDGE_DOCS_ROOT=%h/Media/5-Documentation
+Environment=KNOWLEDGE_DOCS_IGNORE=%h/Media/5-Documentation/Knowledge
+ExecStart=%h/Media/6-Project/knowledge/scripts/docs-watch.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

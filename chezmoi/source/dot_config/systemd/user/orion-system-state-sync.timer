@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodic Fedora system state reconciliation
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=6h
+Persistent=true
+Unit=orion-system-state-sync.service
+
+[Install]
+WantedBy=timers.target

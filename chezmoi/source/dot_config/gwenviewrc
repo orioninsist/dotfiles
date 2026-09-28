@@ -1,0 +1,11 @@
+[General]
+LastUsedVersion=210800
+
+[MainWindow]
+MenuBar=Disabled
+
+[SideBar]
+InformationSplitterSizes=211,244
+
+[UiSettings]
+ColorScheme=CatppuccinMochaMauve

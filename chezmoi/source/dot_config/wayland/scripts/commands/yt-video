@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+url="${1:-}"
+if [[ -z "$url" ]]; then
+  printf 'Kullanim: yt-video URL\n' >&2
+  exit 2
+fi
+
+for cmd in yt-dlp fzf; do
+  command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }
+done
+
+mkdir -p "$HOME/.video"
+
+formats="$(yt-dlp -F "$url" 2>/dev/null)" || {
+  printf 'Video formatlari alinamadi.\n' >&2
+  exit 1
+}
+
+choice="$(
+  printf '%s\n' "$formats" |
+    awk '
+      /^[[:space:]]*[0-9A-Za-z_-]+[[:space:]]+/ &&
+      $0 !~ /audio only/ &&
+      $0 !~ /^ID[[:space:]]/ &&
+      $0 !~ /^-/ { print }
+    ' |
+    fzf --prompt='Video kalitesi > ' --height=80% --border
+)"
+[[ -n "$choice" ]] || exit 0
+
+id="$(printf '%s\n' "$choice" | awk '{print $1}')"
+
+yt-dlp \
+  -f "$id+bestaudio/best" \
+  --merge-output-format mp4 \
+  --remux-video mp4 \
+  -o "$HOME/.video/%(title)s [%(id)s].%(ext)s" \
+  "$url"

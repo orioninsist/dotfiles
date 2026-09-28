@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch system desktop application directories for changes
+
+[Path]
+PathChanged=/usr/share/applications
+PathChanged=/usr/local/share/applications
+Unit=openwith-normalizer.service
+
+[Install]
+WantedBy=default.target

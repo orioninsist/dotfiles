@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Orion encrypted private recovery backup
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=15m
+Unit=orion-private-backup.service
+
+[Install]
+WantedBy=timers.target

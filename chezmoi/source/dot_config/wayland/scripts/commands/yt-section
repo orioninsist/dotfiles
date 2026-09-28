@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+url="${1:-}"
+[[ "$url" =~ ^https?:// ]] || { printf 'Kullanim: yt-section URL\n' >&2; exit 2; }
+for cmd in yt-dlp fzf; do command -v "$cmd" >/dev/null || { printf '%s bulunamadi.\n' "$cmd" >&2; exit 127; }; done
+mkdir -p "$HOME/.video"
+start="$(printf '' | fzf --print-query --prompt='Baslangic (HH:MM:SS) > ' --height=20% --border | tail -1)"
+[[ -n "$start" ]] || exit 0
+end="$(printf '' | fzf --print-query --prompt='Bitis (HH:MM:SS) > ' --height=20% --border | tail -1)"
+[[ -n "$end" ]] || exit 0
+yt-dlp --download-sections "*$start-$end" --force-keyframes-at-cuts -f 'bv*+ba/b' --merge-output-format mp4 --remux-video mp4 -o "$HOME/.video/%(title)s [%(id)s] [$start-$end].%(ext)s" "$url"
