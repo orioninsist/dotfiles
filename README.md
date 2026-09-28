@@ -8,7 +8,7 @@ This project creates a reproducible Linux workstation state.
 
 The running Linux system is the source of truth.
 
-The mission is simple:
+Mission:
 
 ```
 Capture the machine.
@@ -17,76 +17,45 @@ Rebuild the machine.
 Return to the same environment.
 ```
 
-The goal is:
-
-- analyze the current working Linux system
-- capture required system state using native Linux tools
-- store the reproducible state in Git
-- rebuild the same workstation on a clean installation
-
-The repository does not manually design configuration files.
-
-It records the real state of the running system.
+The project records the real working system instead of manually creating configuration files.
 
 ---
 
-## Core Principle
+# Core Architecture
 
 ```
 Running Linux System
-          |
-          |
-          | Native state capture
-          |
-          v
-     Git Repository
-          |
-          |
-          | git commit / git push
-          |
-          v
- Clean Linux Installation
-          |
-          |
-          | bootstrap
-          |
-          v
- Same workstation state
+        |
+        v
+Native capture
+        |
+        v
+Git Repository
+        |
+        v
+Clean Linux Installation
+        |
+        v
+Bootstrap restore
+        |
+        v
+Same workstation state
 ```
 
-The Linux installation itself is the source of truth.
+Principles:
 
-No symbolic link management.
+- no symbolic link management
+- no manually maintained dotfile list
+- no application package manager replacement
+- Linux/Fedora native tools remain responsible for applications
 
-No manually maintained dotfiles structure.
-
-No manually selected configuration list.
-
----
-
-# Project Identity
-
-This project is not an application repository.
-
-It is a **workstation state repository**.
-
-Applications are managed by Fedora/Linux native tools.
-
-This project records how the working environment is configured.
-
-Examples:
+Example:
 
 ```
-Neovim application
+Neovim package
         -> Fedora package management
 
 Neovim configuration
-        -> captured workstation state
-
-Git application
-        -> Fedora package management
-
-Git user configuration
         -> captured workstation state
 ```
 
@@ -94,92 +63,151 @@ Git user configuration
 
 # Capture Model
 
-The system uses a blacklist approach.
-
-Rule:
+Capture strategy:
 
 ```
-Capture everything required for workstation reproduction.
-Exclude only unnecessary paths.
+Capture everything.
+Ignore unnecessary data.
 ```
 
 No manual file selection exists.
 
-The system uses:
+Capture engine:
 
-- Linux standard exclusions
-- user defined ignore rules
+```
+rsync
+```
+
+Metadata:
+
+- owner
+- group
+- permissions
+- ACL
+- extended attributes
+
+are preserved where required.
+
+---
+
+# Ignore System
+
+Ignore management is layered:
+
+```
+ignore/
+
+├── default.conf
+├── system.conf
+└── local.conf
+```
+
+Purpose:
+
+- default.conf: Linux standard exclusions
+- system.conf: system level exclusions
+- local.conf: machine/user specific exclusions
+
+---
+
+# Privacy Model
+
+The repository uses a public repository model.
+
+Security layers:
+
+```
+Capture
+   |
+   v
+Ignore filtering
+   |
+   v
+Privacy sanitize
+   |
+   v
+Public state
+```
+
+Secrets are stored separately:
+
+```
+age encrypted secrets
+```
 
 ---
 
 # Repository Layout
 
-Captured filesystem state is stored under `state/`.
+State layout uses a hybrid model:
 
 ```
 repository/
 
 ├── state/
 │   ├── etc/
-│   ├── home/
-│   └── usr/
+│   ├── usr/
+│   └── users/
+│       └── main/
 │
-├── ignore.conf
+├── secrets/
+├── ignore/
+├── privacy/
 ├── capture
 └── bootstrap
 ```
 
-Real paths are preserved:
+System paths remain real.
 
-```
-/home/user/.config/nvim
-```
-
-becomes:
-
-```
-state/home/user/.config/nvim
-```
+User state is normalized for portability.
 
 ---
 
-# Capture Engine
+# Automatic Tracking
 
-The capture engine uses native Linux tools.
-
-Filesystem capture:
-
-```
-rsync
-```
-
-Filtering:
-
-```
-Linux standard rules
-+
-ignore.conf
-```
-
-Automatic tracking:
+Tracking uses Fedora native systemd.
 
 ```
 systemd timer
 ```
 
-Capture frequency:
+Frequency:
 
 ```
 Every 6 hours
+```
+
+Capture model:
+
+```
+Full rsync run
+
+No event based watcher.
+
+Rsync detects changes.
 ```
 
 ---
 
 # Git Workflow
 
-Capture is automatic.
+Git history represents workstation state history.
 
-Commit and push are manual.
+Model:
+
+```
+main branch only
+```
+
+No branch workflow.
+
+Commit messages:
+
+```
+system state update YYYY-MM-DD
+```
+
+Workflow:
 
 ```
 systemd timer
@@ -200,47 +228,104 @@ manual commit
 manual push
 ```
 
-This keeps Git history controlled and intentional.
+---
+
+# Restore / Bootstrap
+
+Restore engine:
+
+```
+rsync
+```
+
+Bootstrap responsibilities:
+
+- precheck
+- user handling
+- UID/GID restore
+- ownership correction
+- state restore
+- secret decrypt
+- post actions
+
+User model:
+
+- UID/GID captured
+- users can be created when required
+- multi-user support
 
 ---
 
-# Daily Workflow
+# Testing
 
-Normal Linux usage continues.
+Dry-run mode is optional.
 
-Examples:
+Normal:
 
-- install applications
-- remove applications
-- modify configurations
-- change system settings
-- modify services
+```
+capture
+bootstrap
+```
 
-The user does not manually synchronize files.
+Testing:
 
-The system captures the current workstation state.
+```
+capture --dry-run
+bootstrap --dry-run
+```
+
+Uses native rsync dry-run support.
+
+---
+
+# Logging
+
+Logging uses Fedora native systemd journal.
+
+No separate log files.
+
+Example:
+
+```
+journalctl -u capture.service
+journalctl -u bootstrap.service
+```
+
+---
+
+# Large Files
+
+The repository is not an archive system.
+
+Policy:
+
+- no Git LFS
+- unnecessary large files are ignored
+- only reproducible workstation state is stored
 
 ---
 
 # Recovery
 
-A clean Linux installation should become the previous workstation state with:
+Clean installation:
 
 ```
 git clone repository
 ./bootstrap
 ```
 
-The final result is a rebuilt Linux environment matching the captured workstation state.
+Result:
+
+A rebuilt Linux workstation matching the captured environment.
 
 ---
 
 # Philosophy
 
-This project does not create a new configuration system.
+This project does not replace Linux.
 
-It does not replace Linux.
+It does not create a new configuration framework.
 
-It uses Linux native mechanisms to record, reproduce and rebuild the working environment.
+It uses native Linux mechanisms to capture, store and reproduce a working system state.
 
 The operating system remains the source of truth.
