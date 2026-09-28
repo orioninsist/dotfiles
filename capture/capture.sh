@@ -31,12 +31,23 @@ echo "$RSYNC_OPTIONS"
 echo
 
 echo "capture running"
+
+echo
+echo "running discovery"
+
+"$ROOT_DIR/capture/discover/discover.sh"
+
+echo
+echo "running rules"
+
+"$ROOT_DIR/capture/rules/apply.sh"
+
 mkdir -p "$DEST"
 
 rsync \
 $RSYNC_OPTIONS \
 $RSYNC_PROGRESS \
---filter="merge $ROOT_DIR/$RSYNC_FILTER" \
+--files-from="$ROOT_DIR/$APPROVED_LIST" \
 "$SOURCE_HOME/" \
 "$DEST/" 2>&1 | tee -a "$LOG_FILE"
 
