@@ -13,3 +13,10 @@ system-tools.txt
 .config/zellij/plugins/
 .config/gtk-3.0/bookmarks
 .config/knowledge/workspaces.toml
+
+# Runtime capture data
+state/logs/*
+state/filesystem/*
+
+# Discovery runtime output
+state/discovered/*
