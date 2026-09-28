@@ -1,4 +1,0 @@
-.ssh
-.gnupg
-.config/rclone/rclone.conf
-.local/share/keyrings
