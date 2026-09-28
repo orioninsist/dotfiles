@@ -1,0 +1,60 @@
+=== Block Devices ===
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+zram0       251:0    0     8G  0 disk [SWAP]
+nvme0n1     259:0    0 476.9G  0 disk 
+├─nvme0n1p1 259:1    0     1G  0 part 
+├─nvme0n1p2 259:2    0   1.5G  0 part /boot/efi
+├─nvme0n1p3 259:3    0   1.5G  0 part /boot
+├─nvme0n1p4 259:4    0  15.6G  0 part [SWAP]
+└─nvme0n1p5 259:5    0 457.4G  0 part /
+
+=== Filesystems ===
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p5  450G   62G  366G  15% /
+devtmpfs        7.7G     0  7.7G   0% /dev
+tmpfs           7.8G   16M  7.8G   1% /dev/shm
+efivarfs        246K  114K  128K  48% /sys/firmware/efi/efivars
+tmpfs           3.1G  1.8M  3.1G   1% /run
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none            1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+tmpfs           7.8G   74M  7.7G   1% /tmp
+/dev/nvme0n1p3  1.5G  299M  1.1G  23% /boot
+/dev/nvme0n1p2  1.5G  7.9M  1.5G   1% /boot/efi
+none            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs           1.6G  184K  1.6G   1% /run/user/1000
+gdrive:         5.0T  1.8T  3.3T  35% /home/murat/GoogleDrive
+gdrive{ysOIc}:  5.0T  1.8T  3.3T  35% /home/murat/GoogleDrive-Shared
+
+=== Mounts ===
+/dev/nvme0n1p5 on / type ext4 (rw,relatime,seclabel)
+devtmpfs on /dev type devtmpfs (rw,nosuid,seclabel,size=8061372k,nr_inodes=2015343,mode=755,inode64)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,seclabel,inode64,usrquota)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,seclabel,gid=5,mode=600,ptmxmode=000)
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime,seclabel)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+cgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime,seclabel,nsdelegate,memory_recursiveprot,memory_hugetlb_accounting)
+none on /sys/fs/pstore type pstore (rw,nosuid,nodev,noexec,relatime,seclabel)
+efivarfs on /sys/firmware/efi/efivars type efivarfs (rw,nosuid,nodev,noexec,relatime)
+bpf on /sys/fs/bpf type bpf (rw,nosuid,nodev,noexec,relatime,mode=700)
+configfs on /sys/kernel/config type configfs (rw,nosuid,nodev,noexec,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /run type tmpfs (rw,nosuid,nodev,seclabel,size=3240000k,nr_inodes=819200,mode=755,inode64)
+selinuxfs on /sys/fs/selinux type selinuxfs (rw,nosuid,noexec,relatime)
+systemd-1 on /proc/sys/fs/binfmt_misc type autofs (rw,relatime,fd=41,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=3718)
+mqueue on /dev/mqueue type mqueue (rw,nosuid,nodev,noexec,relatime,seclabel)
+tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime,seclabel)
+hugetlbfs on /dev/hugepages type hugetlbfs (rw,nosuid,nodev,relatime,seclabel,pagesize=2M)
+debugfs on /sys/kernel/debug type debugfs (rw,nosuid,nodev,noexec,relatime,seclabel)
+none on /run/credentials/systemd-journald.service type tmpfs (ro,nosuid,nodev,noexec,relatime,nosymfollow,seclabel,size=1024k,nr_inodes=1024,mode=700,inode64,noswap)
+none on /run/credentials/systemd-resolved.service type tmpfs (ro,nosuid,nodev,noexec,relatime,nosymfollow,seclabel,size=1024k,nr_inodes=1024,mode=700,inode64,noswap)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /tmp type tmpfs (rw,nosuid,nodev,seclabel,nr_inodes=1048576,inode64,usrquota)
+/dev/nvme0n1p3 on /boot type ext4 (rw,relatime,seclabel)
+/dev/nvme0n1p2 on /boot/efi type vfat (rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=winnt,errors=remount-ro)
+sunrpc on /var/lib/nfs/rpc_pipefs type rpc_pipefs (rw,relatime)
+none on /run/credentials/getty@tty1.service type tmpfs (ro,nosuid,nodev,noexec,relatime,nosymfollow,seclabel,size=1024k,nr_inodes=1024,mode=700,inode64,noswap)
+tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,seclabel,size=1619996k,nr_inodes=404999,mode=700,uid=1000,gid=1000,inode64)
+gdrive: on /home/murat/GoogleDrive type fuse.rclone (ro,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+gdrive{ysOIc}: on /home/murat/GoogleDrive-Shared type fuse.rclone (ro,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+portal on /run/user/1000/doc type fuse.portal (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+binfmt_misc on /proc/sys/fs/binfmt_misc type binfmt_misc (rw,nosuid,nodev,noexec,relatime)
