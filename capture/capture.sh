@@ -8,6 +8,8 @@ CONFIG_FILE="$ROOT_DIR/capture/config/default.conf"
 
 source "$CONFIG_FILE"
 
+DEST="$ROOT_DIR/$STATE_DIR"
+
 echo "================================"
 echo " DOTFILES CAPTURE"
 echo "================================"
@@ -17,9 +19,17 @@ echo
 echo "Source:"
 echo "$SOURCE_HOME"
 
-echo "State:"
-echo "$ROOT_DIR/$STATE_DIR"
+echo "Destination:"
+echo "$DEST"
 
 echo
 
-echo "capture configuration loaded"
+echo "Rsync options:"
+echo "$RSYNC_OPTIONS"
+
+echo
+
+echo "capture dry-run ready"
+
+rsync $RSYNC_OPTIONS --dry-run "$SOURCE_HOME/" "$DEST/"
+
