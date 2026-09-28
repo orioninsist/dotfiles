@@ -31,5 +31,5 @@ echo
 
 echo "capture dry-run ready"
 
-rsync $RSYNC_OPTIONS --dry-run "$SOURCE_HOME/" "$DEST/"
+rsync $RSYNC_OPTIONS $RSYNC_PROGRESS --dry-run "$SOURCE_HOME/" "$DEST/"
 
