@@ -18,8 +18,26 @@ mkdir -p "$(dirname "$OUTPUT")"
 
 echo "discovering config directories"
 
+# .config altındaki uygulamalar
+if [ -d "$HOME_DIR/.config" ]; then
+
+    for dir in "$HOME_DIR/.config"/*; do
+
+        [ -e "$dir" ] || continue
+
+        name="${dir#$HOME_DIR/}"
+
+        echo "$name" >> "$OUTPUT"
+        echo "found: $name"
+
+    done
+
+fi
+
+
+# Tekil dosya ve dizinler
+
 for path in \
-    ".config" \
     ".local/bin" \
     ".ssh/config" \
     ".gitconfig" \
@@ -34,6 +52,7 @@ do
     fi
 
 done
+
 
 echo
 echo "discovery completed"

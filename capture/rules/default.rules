@@ -1,0 +1,32 @@
+# ==================================
+# DOTFILES RULES
+# ==================================
+
+# Terminal / shell
+ALLOW .bashrc
+ALLOW .zshrc
+ALLOW .tmux.conf
+ALLOW .gitconfig
+
+# SSH
+ALLOW .ssh/config
+
+# Local tools
+ALLOW .local/bin/**
+
+# Main applications
+ALLOW .config/nvim/**
+ALLOW .config/kitty/**
+ALLOW .config/zellij/**
+ALLOW .config/yazi/**
+ALLOW .config/starship.toml
+ALLOW .config/fzf/**
+ALLOW .config/eza/**
+ALLOW .config/atuin/**
+
+# Exclude large application data
+DENY .config/google-chrome/**
+DENY .config/chromium/**
+DENY .config/BraveSoftware/**
+DENY .config/Code/**
+DENY .config/GIMP/**
