@@ -33,7 +33,12 @@ echo
 echo "capture running"
 mkdir -p "$DEST"
 
-rsync $RSYNC_OPTIONS $RSYNC_PROGRESS "$SOURCE_HOME/" "$DEST/" 2>&1 | tee -a "$LOG_FILE"
+rsync \
+$RSYNC_OPTIONS \
+$RSYNC_PROGRESS \
+--filter="merge $ROOT_DIR/$RSYNC_FILTER" \
+"$SOURCE_HOME/" \
+"$DEST/" 2>&1 | tee -a "$LOG_FILE"
 
 
 echo

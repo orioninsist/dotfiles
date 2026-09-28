@@ -1,0 +1,26 @@
+# ==================================
+# DOTFILES RSYNC FILTER
+# ==================================
+
+# Büyük veri klasörleri hariç
+- /Downloads/**
+- /Documents/**
+- /Videos/**
+- /Pictures/**
+- /GoogleDrive/**
+- /GoogleDrive-Shared/**
+- /.cache/**
+
+# Build ve geçici dosyalar
+- /node_modules/**
+- /.npm/**
+- /.cargo/registry/**
+- /.local/share/Trash/**
+
+# Log ve geçici dosyalar
+- *.log
+- *.tmp
+
+# Özel izin verilen dosyalar
+# örnek:
+# + /GoogleDrive/my-config.conf
