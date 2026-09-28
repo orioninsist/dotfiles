@@ -9,6 +9,7 @@ CONFIG_FILE="$ROOT_DIR/capture/config/default.conf"
 source "$CONFIG_FILE"
 
 DEST="$ROOT_DIR/$STATE_DIR"
+LOG_FILE="$ROOT_DIR/state/logs/capture.log"
 
 echo "================================"
 echo " DOTFILES CAPTURE"
@@ -31,5 +32,5 @@ echo
 
 echo "capture dry-run ready"
 
-rsync $RSYNC_OPTIONS $RSYNC_PROGRESS --dry-run "$SOURCE_HOME/" "$DEST/"
+rsync $RSYNC_OPTIONS $RSYNC_PROGRESS --dry-run "$SOURCE_HOME/" "$DEST/" 2>&1 | tee -a "$LOG_FILE"
 
