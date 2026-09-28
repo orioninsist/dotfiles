@@ -10,11 +10,18 @@ source "$CONFIG_FILE"
 
 SOURCE="$ROOT_DIR/$SOURCE_STATE"
 
+LOG_FILE="$ROOT_DIR/state/logs/restore.log"
+
 echo "================================"
 echo " DOTFILES RESTORE"
 echo "================================"
 
 echo
+
+if [ ! -d "$SOURCE" ]; then
+    echo "ERROR: restore source missing"
+    exit 1
+fi
 
 echo "Source:"
 echo "$SOURCE"
@@ -24,5 +31,9 @@ echo "$TARGET_HOME"
 
 echo
 
-echo "restore configuration loaded"
+mkdir -p "$TARGET_HOME"
+
+echo "restore running"
+
+rsync $RSYNC_OPTIONS "$SOURCE/" "$TARGET_HOME/" 2>&1 | tee -a "$LOG_FILE"
 
