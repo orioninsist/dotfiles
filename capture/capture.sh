@@ -35,3 +35,8 @@ mkdir -p "$DEST"
 
 rsync $RSYNC_OPTIONS $RSYNC_PROGRESS "$SOURCE_HOME/" "$DEST/" 2>&1 | tee -a "$LOG_FILE"
 
+
+echo
+echo "capturing metadata"
+
+"$ROOT_DIR/capture/metadata/run.sh"
