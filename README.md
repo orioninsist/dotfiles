@@ -8,6 +8,15 @@ This project creates a reproducible Linux workstation state.
 
 The running Linux system is the source of truth.
 
+The mission is simple:
+
+```
+Capture the machine.
+Store the state.
+Rebuild the machine.
+Return to the same environment.
+```
+
 The goal is:
 
 - analyze the current working Linux system
@@ -55,32 +64,39 @@ No manually selected configuration list.
 
 ---
 
-# Architecture Decisions
-
-## Project Identity
+# Project Identity
 
 This project is not an application repository.
 
 It is a **workstation state repository**.
 
-Applications are managed by the Linux distribution.
+Applications are managed by Fedora/Linux native tools.
 
-This project records how the user environment and system state are configured.
+This project records how the working environment is configured.
 
 Examples:
 
-- Neovim application -> Fedora package management
-- Neovim configuration -> captured workstation state
-- Git application -> Fedora package management
-- Git user configuration -> captured workstation state
+```
+Neovim application
+        -> Fedora package management
+
+Neovim configuration
+        -> captured workstation state
+
+Git application
+        -> Fedora package management
+
+Git user configuration
+        -> captured workstation state
+```
 
 ---
 
-## Capture Model
+# Capture Model
 
 The system uses a blacklist approach.
 
-The rule is:
+Rule:
 
 ```
 Capture everything required for workstation reproduction.
@@ -89,25 +105,16 @@ Exclude only unnecessary paths.
 
 No manual file selection exists.
 
-The capture system does not maintain a list like:
-
-```
-copy this file
-ignore this file
-```
-
-Instead it uses:
+The system uses:
 
 - Linux standard exclusions
 - user defined ignore rules
 
 ---
 
-## Repository State Layout
+# Repository Layout
 
 Captured filesystem state is stored under `state/`.
-
-Example:
 
 ```
 repository/
@@ -122,9 +129,7 @@ repository/
 └── bootstrap
 ```
 
-The real filesystem structure is preserved.
-
-Example:
+Real paths are preserved:
 
 ```
 /home/user/.config/nvim
@@ -138,11 +143,11 @@ state/home/user/.config/nvim
 
 ---
 
-## Capture Engine
+# Capture Engine
 
 The capture engine uses native Linux tools.
 
-Main filesystem capture:
+Filesystem capture:
 
 ```
 rsync
@@ -156,7 +161,11 @@ Linux standard rules
 ignore.conf
 ```
 
-Automatic tracking is provided by systemd timer.
+Automatic tracking:
+
+```
+systemd timer
+```
 
 Capture frequency:
 
@@ -166,13 +175,11 @@ Every 6 hours
 
 ---
 
-## Git Workflow
+# Git Workflow
 
 Capture is automatic.
 
 Commit and push are manual.
-
-Workflow:
 
 ```
 systemd timer
@@ -194,6 +201,37 @@ manual push
 ```
 
 This keeps Git history controlled and intentional.
+
+---
+
+# Daily Workflow
+
+Normal Linux usage continues.
+
+Examples:
+
+- install applications
+- remove applications
+- modify configurations
+- change system settings
+- modify services
+
+The user does not manually synchronize files.
+
+The system captures the current workstation state.
+
+---
+
+# Recovery
+
+A clean Linux installation should become the previous workstation state with:
+
+```
+git clone repository
+./bootstrap
+```
+
+The final result is a rebuilt Linux environment matching the captured workstation state.
 
 ---
 
