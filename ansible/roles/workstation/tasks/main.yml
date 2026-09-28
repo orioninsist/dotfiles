@@ -1,0 +1,37 @@
+---
+- name: Install workstation management tools
+  ansible.builtin.dnf:
+    name:
+      - git
+      - chezmoi
+      - age
+    state: present
+
+- name: Verify management tools
+  ansible.builtin.command:
+    cmd: "{{ item }} --version"
+  loop:
+    - git
+    - chezmoi
+    - age
+  register: tool_versions
+  changed_when: false
+
+- name: Show installed management tools
+  ansible.builtin.debug:
+    var: tool_versions.results
+
+- name: Install SOPS
+  ansible.builtin.dnf:
+    name: https://github.com/getsops/sops/releases/download/v3.13.3/sops-3.13.3-1.x86_64.rpm
+    state: present
+
+- name: Verify SOPS
+  ansible.builtin.command:
+    cmd: sops --version
+  register: sops_version
+  changed_when: false
+
+- name: Show SOPS version
+  ansible.builtin.debug:
+    var: sops_version.stdout

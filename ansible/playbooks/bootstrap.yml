@@ -1,0 +1,7 @@
+---
+- name: Fedora workstation bootstrap
+  hosts: local
+  become: true
+
+  roles:
+    - workstation

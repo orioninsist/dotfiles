@@ -1,21 +1,15 @@
+# Local analysis output
+system-analysis/
+system-tools.txt
 
+# Ansible temporary files
+*.retry
 
-# systemd user enable state (symlinks into this live dotfiles tree)
-.config/systemd/user/*.wants/
+# Editor files
+*.swp
 
-# Python test bytecode
-__pycache__/
-*.py[cod]
-
-# Generated Zellij plugin artifacts
-.config/zellij/plugins/*/dist/*.wasm
-
-# Desktop runtime state
+# Temporary workstation config capture
+.config/systemd/user/
+.config/zellij/plugins/
 .config/gtk-3.0/bookmarks
-
-# Private recovery material - NEVER COMMIT
-.config/rclone/rclone.conf
-.config/orion-recovery/
-
-# Machine-local generated Knowledge config
 .config/knowledge/workspaces.toml
