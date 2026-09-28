@@ -17,10 +17,6 @@
   register: tool_versions
   changed_when: false
 
-- name: Show installed management tools
-  ansible.builtin.debug:
-    var: tool_versions.results
-
 - name: Install SOPS
   ansible.builtin.dnf:
     name: https://github.com/getsops/sops/releases/download/v3.13.3/sops-3.13.3-1.x86_64.rpm
@@ -31,7 +27,3 @@
     cmd: sops --version
   register: sops_version
   changed_when: false
-
-- name: Show SOPS version
-  ansible.builtin.debug:
-    var: sops_version.stdout

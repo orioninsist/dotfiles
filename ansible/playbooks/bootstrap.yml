@@ -4,4 +4,9 @@
   become: true
 
   roles:
-    - workstation
+    - base
+    - tools
+    - secrets
+    - packages
+    - chezmoi
+    - systemd
