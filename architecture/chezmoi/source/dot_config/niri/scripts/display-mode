@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+INTERNAL="eDP-1"
+EXTERNAL="HDMI-A-1"
+MODE="${1:-}"
+
+notify_mode() {
+    notify-send -a "Niri" "Display mode" "$1" 2>/dev/null || true
+}
+
+focus_and_move_workspace() {
+    local workspace="$1"
+    local output="$2"
+
+    niri msg action focus-workspace "$workspace" >/dev/null
+    niri msg action move-workspace-to-monitor "$output" >/dev/null
+}
+
+case "$MODE" in
+    asus)
+        niri msg output "$EXTERNAL" on >/dev/null
+        niri msg action focus-monitor "$EXTERNAL" >/dev/null
+        niri msg output "$INTERNAL" off >/dev/null
+        notify_mode "ASUS only"
+        ;;
+    thinkpad)
+        niri msg output "$INTERNAL" on >/dev/null
+        niri msg action focus-monitor "$INTERNAL" >/dev/null
+        niri msg output "$EXTERNAL" off >/dev/null
+        notify_mode "ThinkPad only"
+        ;;
+    dual)
+        niri msg output "$INTERNAL" on >/dev/null
+        niri msg output "$EXTERNAL" on >/dev/null
+
+        for workspace in 1 2 3 4 5; do
+            focus_and_move_workspace "$workspace" "$EXTERNAL"
+        done
+        for workspace in 6 7 8 9 10; do
+            focus_and_move_workspace "$workspace" "$INTERNAL"
+        done
+
+        niri msg action focus-workspace 1 >/dev/null
+        notify_mode "Dual screen"
+        ;;
+    *)
+        printf 'Usage: %s {asus|thinkpad|dual}\n' "$0" >&2
+        exit 1
+        ;;
+esac

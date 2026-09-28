@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "================================"
+echo " DOTFILES BOOTSTRAP"
+echo "================================"
+
+
+echo
+echo "===== CHECK REQUIRED TOOLS ====="
+
+
+if ! command -v git >/dev/null 2>&1; then
+    echo "ERROR: git missing"
+    exit 1
+fi
+
+
+echo "OK: git"
+
+
+echo
+echo "===== RUN APPLY ====="
+
+
+"$ROOT_DIR/architecture/scripts/apply"
+
+
+echo
+echo "===== BOOTSTRAP COMPLETE ====="

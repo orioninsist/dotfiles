@@ -1,0 +1,16 @@
+[package]
+name = "orion-status"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+zellij-tile = "0.45.0"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+chrono-tz = "0.10"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

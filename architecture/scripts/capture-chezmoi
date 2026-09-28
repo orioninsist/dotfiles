@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE_DIR="$ROOT_DIR/chezmoi/source"
+
+rm -rf "$SOURCE_DIR"
+mkdir -p "$SOURCE_DIR"
+
+echo "===== CHEZMOI CAPTURE ====="
+
+
+copy_file() {
+    local src="$1"
+    local dst="$2"
+
+    if [ -e "$HOME/$src" ]; then
+        echo "COPY: $src"
+
+        if [ -d "$HOME/$src" ]; then
+            mkdir -p "$SOURCE_DIR/$dst"
+            cp -a "$HOME/$src/." "$SOURCE_DIR/$dst/"
+        else
+            mkdir -p "$(dirname "$SOURCE_DIR/$dst")"
+            cp -a "$HOME/$src" "$SOURCE_DIR/$dst"
+        fi
+    else
+        echo "SKIP: $src"
+    fi
+}
+
+
+copy_file ".bashrc" "dot_bashrc"
+
+copy_file ".config/nvim" "dot_config/nvim"
+copy_file ".config/niri" "dot_config/niri"
+copy_file ".config/zellij" "dot_config/zellij"
+copy_file ".config/kitty" "dot_config/kitty"
+
+
+echo
+echo "===== SOURCE FILE COUNT ====="
+
+find "$SOURCE_DIR" -type f | wc -l
+
+
+echo
+echo "===== SOURCE PREVIEW ====="
+
+find "$SOURCE_DIR" -maxdepth 4 -type f | sort
+
+
+echo
+echo "===== COMPLETE ====="

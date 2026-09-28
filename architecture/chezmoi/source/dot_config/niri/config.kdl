@@ -1,0 +1,96 @@
+// Niri configuration
+// Managed by dotfiles repository
+
+input {
+    keyboard {
+        xkb {
+            layout "us,tr"
+        }
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    warp-mouse-to-focus
+}
+
+environment {
+    QT_QPA_PLATFORM "wayland;xcb"
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    KDE_COLOR_SCHEME "CatppuccinMochaMauve"
+    QT_STYLE_OVERRIDE null
+    CALIBRE_USE_SYSTEM_THEME null
+}
+
+output "eDP-1" {
+    scale 1
+    transform "normal"
+    position x=0 y=0
+}
+
+output "HDMI-A-1" {
+    scale 1
+    transform "normal"
+    position x=1920 y=0
+}
+
+layout {
+    gaps 3
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width {
+        proportion 0.5
+    }
+
+    focus-ring {
+        off
+    }
+
+    border {
+        width 3
+        active-color "#89b4fa"
+        inactive-color "#181825"
+        urgent-color "#f38ba8"
+    }
+}
+
+workspace "1"
+workspace "2"
+workspace "3"
+workspace "4"
+workspace "5"
+workspace "6"
+workspace "7"
+workspace "8"
+workspace "9"
+workspace "10"
+
+spawn-at-startup "mako"
+spawn-at-startup "wlsunset" "-T" "1001" "-t" "1000"
+spawn-at-startup "/usr/libexec/kf6/polkit-kde-authentication-agent-1"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+prefer-no-csd
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+
+include "binds/window-management.kdl"
+include "binds/workspaces.kdl"
+include "binds/system.kdl"
+include "binds/applications.kdl"

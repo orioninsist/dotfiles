@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+echo "===== SYSTEM CAPTURE ====="
+
+echo
+echo "===== DNF PACKAGES ====="
+
+dnf repoquery --userinstalled --qf '%{name}\n' \
+    2>/dev/null \
+    | sort -u \
+    > "$ROOT_DIR/dnf/state/packages.txt"
+
+echo "Saved:"
+echo "$ROOT_DIR/dnf/state/packages.txt"
+
+echo
+echo "===== SYSTEMD ENABLED ====="
+
+systemctl list-unit-files \
+    --state=enabled \
+    --no-legend \
+    --no-pager \
+    | awk '{print $1}' \
+    | sort -u \
+    > "$ROOT_DIR/systemd/state/enabled.txt"
+
+echo "Saved:"
+echo "$ROOT_DIR/systemd/state/enabled.txt"
+
+echo
+echo "===== COUNTS ====="
+
+echo "DNF packages:"
+wc -l "$ROOT_DIR/dnf/state/packages.txt"
+
+echo "Systemd enabled:"
+wc -l "$ROOT_DIR/systemd/state/enabled.txt"
+
+echo
+echo "===== CAPTURE COMPLETE ====="
