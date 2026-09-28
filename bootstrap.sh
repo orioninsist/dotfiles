@@ -33,7 +33,7 @@ for step in \
   install/30-services.sh \
   install/32-system-services.sh \
   install/35-fedora-qemu-guest.sh \
-  install/36-display-manager.sh \
+  install/36-niri-session.sh \
   install/40-verify.sh
 do
   echo "==> $step"

@@ -71,7 +71,7 @@ run_phase 10 "Whisper voice typing" "$ROOT/install/27-whisper.sh"
 run_phase 11 "User services" "$ROOT/install/30-services.sh"
 run_phase 12 "System services" "$ROOT/install/32-system-services.sh"
 run_phase 13 "QEMU guest integration" "$ROOT/install/35-fedora-qemu-guest.sh"
-run_phase 14 "Ly, Niri session and SELinux" "$ROOT/install/36-display-manager.sh"
+run_phase 14 "Niri session" "$ROOT/install/36-niri-session.sh"
 run_phase 15 "Acceptance tests" "$ROOT/install/40-verify.sh"
 
 echo

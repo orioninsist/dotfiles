@@ -113,26 +113,15 @@ When rclone configuration exists, the services are enabled for future
 login/reboot sessions and restart automatically after failures. Backup and
 synchronization are deliberately separate from these mounts.
 
-## Niri, Ly and SELinux
+## Niri TTY session
 
-SELinux must remain enabled. The Fedora bootstrap installs the local Ly SELinux
-policy from:
+The system does not use a display manager.
 
-```text
-install/selinux/ly-local.te
-```
-
-Do not work around Ly session problems by disabling SELinux or permanently
-switching the machine to permissive mode.
-
-Niri configuration can be checked with:
+After logging into a TTY, start the Wayland session manually:
 
 ```bash
-niri validate
-```
+niri-session
 
-See [Niri configuration](../.config/niri/README.md) for the complete workspace,
-shortcut, conflict, and validation reference.
 
 ## PATH application sync
 

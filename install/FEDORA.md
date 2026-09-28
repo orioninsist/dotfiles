@@ -39,10 +39,13 @@ Run the bootstrap from the repository, collect `install/audit-fedora-target.sh`,
 Treat changes to the Fedora bootstrap as ready only after it succeeds twice consecutively (idempotency), the VM survives a reboot, Niri starts as a real session, portals work, and libvirt graceful shutdown works through qemu-guest-agent.
 
 
-## Ly and SELinux
 
-Fedora SELinux must remain enabled. On Fedora 44, Ly can authenticate successfully but fail to start the user session when SELinux denies the process transition from `unconfined_service_t` to `unconfined_t`.
 
-The bootstrap installs `selinux-policy-devel`, builds the repository-owned policy source at `install/selinux/ly-local.te`, and installs it as the `ly-local` SELinux module before enabling Ly. The policy is intentionally minimal and grants only the process transition observed and verified on the Fedora 44 target.
+## Niri TTY session
 
-Do not work around Ly login failures by disabling SELinux or switching the machine to permissive mode. Verification requires the `ly-local` module to be present and SELinux not to be disabled.
+The system does not use a display manager.
+After login on a TTY, start the Wayland session manually:
+
+```bash
+niri-session
+

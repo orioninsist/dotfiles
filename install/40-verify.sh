@@ -108,8 +108,6 @@ grep -Fq 'Mod+Shift+I { spawn "bash" "-lc" "$HOME/.config/wayland/scripts/comman
   }
 
 test -e /usr/share/wayland-sessions/niri.desktop
-systemctl is-enabled --quiet ly@tty2.service
-[[ "$(systemctl get-default)" == "graphical.target" ]]
 
 echo "==> Dotfile links"
 for path in "$HOME/.config/niri" "$HOME/.config/zellij" "$HOME/.config/systemd" "$HOME/.config/knowledge" "$HOME/.config/zed"; do
@@ -419,7 +417,6 @@ echo
 echo "=== SUMMARY ==="
 echo "VERIFY_EXIT=0"
 echo "NIRI=PASS"
-echo "LY=$(systemctl is-enabled ly@tty2.service 2>/dev/null || true)"
 echo "SELINUX=$(getenforce 2>/dev/null || echo UNKNOWN)"
 echo "FAILED_UNITS=$(systemctl --failed --no-legend | wc -l)"
 echo "=== END SUMMARY ==="

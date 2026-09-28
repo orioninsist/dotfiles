@@ -39,7 +39,7 @@ def test_qemu_guest_agent_when_virtualized():
 
 
 def test_graphics_runtime_and_display_manager():
-    for cmd in ["niri", "ly"]:
+    for cmd in ["niri", "niri-session"]:
         assert shutil.which(cmd), cmd
 
     rpm = subprocess.run(
@@ -51,20 +51,6 @@ def test_graphics_runtime_and_display_manager():
 
     session = Path("/usr/share/wayland-sessions/niri.desktop")
     assert session.is_file(), session
-
-    enabled = subprocess.run(
-        ["systemctl", "is-enabled", "ly@tty2.service"],
-        capture_output=True,
-        text=True,
-    )
-    assert enabled.returncode == 0, enabled.stdout + enabled.stderr
-
-    default_target = subprocess.run(
-        ["systemctl", "get-default"],
-        capture_output=True,
-        text=True,
-    )
-    assert default_target.stdout.strip() == "graphical.target", default_target.stdout + default_target.stderr
 
 
 def test_niri_smithay_runtime_packages():
@@ -97,71 +83,15 @@ def test_niri_smithay_runtime_packages():
         assert shutil.which(cmd), cmd
 
 
-def test_niri_session_entrypoint_and_ly_acceptance():
+def test_niri_session_entrypoint():
     session = Path("/usr/share/wayland-sessions/niri.desktop")
     assert session.is_file(), session
+
     text = session.read_text(errors="ignore")
     assert "Exec=niri-session" in text, text
 
-    niri_session = shutil.which("niri-session")
-    assert niri_session, "niri-session not found in PATH"
-
-    ly_unit = Path("/usr/lib/systemd/system/ly@.service")
-    assert ly_unit.is_file(), ly_unit
-
-    enabled = subprocess.run(
-        ["systemctl", "is-enabled", "ly@tty2.service"],
-        capture_output=True,
-        text=True,
-    )
-    assert enabled.returncode == 0, enabled.stdout + enabled.stderr
+    assert shutil.which("niri-session"), "niri-session not found"
 
 
-def test_ly_custom_niri_session_is_absolute():
-    custom = Path("/etc/ly/custom-sessions/niri.desktop")
-    assert custom.is_file(), custom
-    text = custom.read_text(errors="ignore")
-    exec_line = next((line for line in text.splitlines() if line.startswith("Exec=")), "")
-    assert exec_line, text
-
-    niri_session = shutil.which("niri-session")
-    assert niri_session, "niri-session not found in PATH"
-    assert Path(exec_line.removeprefix("Exec=")).resolve() == Path(niri_session).resolve(), (
-        exec_line,
-        niri_session,
-    )
-
-    packaged = Path("/usr/share/wayland-sessions/niri.desktop")
-    assert packaged.is_file(), packaged
 
 
-def test_ly_selinux_policy_is_installed():
-    rpm = subprocess.run(
-        ["rpm", "-q", "selinux-policy-devel"],
-        capture_output=True,
-        text=True,
-    )
-    assert rpm.returncode == 0, rpm.stdout + rpm.stderr
-
-    policy_source = Path(__file__).resolve().parents[1] / "install/selinux/ly-local.te"
-    assert policy_source.is_file(), policy_source
-    policy_text = policy_source.read_text(errors="ignore")
-    assert "allow unconfined_service_t unconfined_t:process transition;" in policy_text
-
-    modules = subprocess.run(
-        ["sudo", "semodule", "-l"],
-        capture_output=True,
-        text=True,
-    )
-    assert modules.returncode == 0, modules.stdout + modules.stderr
-    assert any(line.split() and line.split()[0] == "ly-local" for line in modules.stdout.splitlines())
-
-    getenforce = shutil.which("getenforce")
-    assert getenforce, "getenforce not found"
-    mode = subprocess.run(
-        [getenforce],
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.strip()
-    assert mode == "Enforcing", mode
