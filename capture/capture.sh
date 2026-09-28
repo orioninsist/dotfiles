@@ -30,7 +30,8 @@ echo "$RSYNC_OPTIONS"
 
 echo
 
-echo "capture dry-run ready"
+echo "capture running"
+mkdir -p "$DEST"
 
-rsync $RSYNC_OPTIONS $RSYNC_PROGRESS --dry-run "$SOURCE_HOME/" "$DEST/" 2>&1 | tee -a "$LOG_FILE"
+rsync $RSYNC_OPTIONS $RSYNC_PROGRESS "$SOURCE_HOME/" "$DEST/" 2>&1 | tee -a "$LOG_FILE"
 
