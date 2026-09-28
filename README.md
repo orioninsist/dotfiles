@@ -55,238 +55,145 @@ No manually selected configuration list.
 
 ---
 
-# Architecture
+# Architecture Decisions
 
-The system consists of three main layers.
+## Project Identity
 
----
+This project is not an application repository.
 
-## 1. Native State Capture
+It is a **workstation state repository**.
 
-The capture process analyzes the running Linux system.
+Applications are managed by the Linux distribution.
 
-The system captures real native locations:
+This project records how the user environment and system state are configured.
 
 Examples:
 
-```
-/etc
-/usr
-/home/user/.config
-/home/user/.local
-systemd state
-package state
-user state
-```
-
-The repository represents the captured state.
-
-The user does not decide every individual file manually.
-
-The capture system determines the current state and records changes.
+- Neovim application -> Fedora package management
+- Neovim configuration -> captured workstation state
+- Git application -> Fedora package management
+- Git user configuration -> captured workstation state
 
 ---
 
-## 2. Git Repository
+## Capture Model
 
-Git is the history and synchronization layer.
+The system uses a blacklist approach.
 
-Git stores:
-
-- system state
-- package state
-- service state
-- user configuration
-- rebuild information
-- encrypted secrets
-
-Daily workflow:
+The rule is:
 
 ```
-Use Linux normally
-
-        |
-
-System changes
-
-        |
-
-Capture current state
-
-        |
-
-Review git diff
-
-        |
-
-git commit
-
-        |
-
-git push
+Capture everything required for workstation reproduction.
+Exclude only unnecessary paths.
 ```
 
-GitHub always represents the latest reproducible workstation state.
+No manual file selection exists.
+
+The capture system does not maintain a list like:
+
+```
+copy this file
+ignore this file
+```
+
+Instead it uses:
+
+- Linux standard exclusions
+- user defined ignore rules
 
 ---
 
-## 3. Rebuild System
+## Repository State Layout
 
-A clean Linux installation starts the recovery process.
+Captured filesystem state is stored under `state/`.
 
 Example:
 
 ```
-Install Linux
+repository/
 
-        |
-
-git clone repository
-
-        |
-
-bootstrap
-
-        |
-
-apply system state
-
-        |
-
-machine restored
+├── state/
+│   ├── etc/
+│   ├── home/
+│   └── usr/
+│
+├── ignore.conf
+├── capture
+└── bootstrap
 ```
 
-The rebuild process recreates:
+The real filesystem structure is preserved.
 
-- installed packages
-- applications
-- configurations
-- services
-- user environment
-- required system settings
+Example:
 
----
+```
+/home/user/.config/nvim
+```
 
-# Native Tools
+becomes:
 
-The project uses native Linux tools whenever possible.
-
-## Git
-
-Purpose:
-
-- version control
-- history
-- synchronization
+```
+state/home/user/.config/nvim
+```
 
 ---
 
-## Linux Native Tools
+## Capture Engine
 
-Purpose:
+The capture engine uses native Linux tools.
 
-Capture the real system state.
+Main filesystem capture:
 
-Examples:
+```
+rsync
+```
 
-- package manager tools
-- filesystem tools
-- systemd tools
-- user management tools
-- permission tools
+Filtering:
 
----
+```
+Linux standard rules
++
+ignore.conf
+```
 
-## Ansible
+Automatic tracking is provided by systemd timer.
 
-Purpose:
+Capture frequency:
 
-System rebuild and orchestration.
-
-Ansible applies the captured state to a clean installation.
-
----
-
-## Secret Management
-
-Purpose:
-
-Secure restoration of private information.
-
-Examples:
-
-- SSH keys
-- API tokens
-- application credentials
-
-Secrets are restored securely.
-
-They are not stored as plain text.
+```
+Every 6 hours
+```
 
 ---
 
-# Project Rules
+## Git Workflow
 
-1. The running Linux system is always the source of truth.
+Capture is automatic.
 
-2. Native filesystem paths remain native.
+Commit and push are manual.
 
-3. No symbolic links.
+Workflow:
 
-4. No classic dotfiles manager workflow.
-
-5. No manually maintained configuration selection.
-
-6. Only unnecessary paths are excluded.
-
-7. Excluded paths are documented in an ignore list.
-
-8. Removing something from the real system removes it from future captures.
-
-9. Git commit and push are the only daily maintenance actions.
-
----
-
-# Daily Usage
-
-Normal Linux usage continues.
-
-Install applications.
-
-Remove applications.
-
-Change configurations.
-
-Modify services.
-
-After changes:
-
-```bash
+```
+systemd timer
+        |
+        v
 capture
+        |
+        v
+state updated
+        |
+        v
 git diff
-git add .
-git commit
-git push
+        |
+        v
+manual commit
+        |
+        v
+manual push
 ```
 
-No manual file copying.
-
-No manual synchronization.
-
-No remembering which file changed.
-
----
-
-# Recovery
-
-A clean Linux installation should become the previous workstation state with:
-
-```bash
-git clone repository
-./bootstrap
-```
-
-The final result is a rebuilt Linux environment matching the captured system state.
+This keeps Git history controlled and intentional.
 
 ---
 
@@ -296,6 +203,6 @@ This project does not create a new configuration system.
 
 It does not replace Linux.
 
-It uses Linux native mechanisms to record, reproduce and rebuild the working system.
+It uses Linux native mechanisms to record, reproduce and rebuild the working environment.
 
 The operating system remains the source of truth.
