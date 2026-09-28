@@ -17,8 +17,6 @@ Rebuild the machine.
 Return to the same environment.
 ```
 
-The project records the real working system instead of manually creating configuration files.
-
 ---
 
 # Core Architecture
@@ -49,36 +47,24 @@ Principles:
 - no application package manager replacement
 - Linux/Fedora native tools remain responsible for applications
 
-Example:
-
-```
-Neovim package
-        -> Fedora package management
-
-Neovim configuration
-        -> captured workstation state
-```
-
 ---
 
 # Capture Model
 
-Capture strategy:
+Strategy:
 
 ```
 Capture everything.
 Ignore unnecessary data.
 ```
 
-No manual file selection exists.
-
-Capture engine:
+Engine:
 
 ```
 rsync
 ```
 
-Metadata:
+Preserved metadata:
 
 - owner
 - group
@@ -86,35 +72,17 @@ Metadata:
 - ACL
 - extended attributes
 
-are preserved where required.
-
----
-
-# Ignore System
-
-Ignore management is layered:
-
-```
-ignore/
-
-├── default.conf
-├── system.conf
-└── local.conf
-```
-
-Purpose:
-
-- default.conf: Linux standard exclusions
-- system.conf: system level exclusions
-- local.conf: machine/user specific exclusions
-
 ---
 
 # Privacy Model
 
-The repository uses a public repository model.
+Repository model:
 
-Security layers:
+```
+Public repository + encrypted secrets
+```
+
+Pipeline:
 
 ```
 Capture
@@ -129,7 +97,7 @@ Privacy sanitize
 Public state
 ```
 
-Secrets are stored separately:
+Secrets:
 
 ```
 age encrypted secrets
@@ -137,35 +105,119 @@ age encrypted secrets
 
 ---
 
-# Repository Layout
+# Repository Architecture
 
-State layout uses a hybrid model:
+Layered repository structure:
 
 ```
-repository/
+dotfiles/
 
+├── bootstrap/
+├── capture/
+├── restore/
+├── verify/
 ├── state/
-│   ├── etc/
-│   ├── usr/
-│   └── users/
-│       └── main/
-│
+├── policies/
+│   ├── ignore/
+│   └── privacy/
 ├── secrets/
-├── ignore/
-├── privacy/
-├── capture
-└── bootstrap
+└── README.md
 ```
-
-System paths remain real.
-
-User state is normalized for portability.
 
 ---
 
-# Automatic Tracking
+# State Layout
 
-Tracking uses Fedora native systemd.
+Hybrid state model:
+
+- system paths remain real
+- user state is normalized
+- restore remains portable
+
+State format:
+
+```
+Filesystem + Metadata
+```
+
+Example:
+
+```
+state/
+
+├── filesystem/
+│   ├── etc/
+│   ├── usr/
+│   └── users/
+│
+└── metadata/
+    ├── users
+    ├── permissions
+    ├── packages
+    ├── services
+    ├── hardware
+    ├── kernel
+    └── network
+```
+
+---
+
+# Bootstrap
+
+Model:
+
+```
+Layered bootstrap
+```
+
+Rules:
+
+- starts from git clone
+- idempotent execution
+- critical failures stop execution
+- non-critical failures are reported
+- separate verify phase exists
+
+Bootstrap flow:
+
+```
+git clone
+    |
+    v
+bootstrap
+    |
+    v
+restore
+    |
+    v
+verify
+```
+
+---
+
+# Restore
+
+Restore engine:
+
+```
+rsync
+```
+
+Responsibilities:
+
+- precheck
+- user handling
+- UID/GID restore
+- ownership correction
+- state restore
+- secret decrypt
+- post actions
+
+---
+
+# Tracking
+
+Fedora native systemd:
 
 ```
 systemd timer
@@ -181,30 +233,68 @@ Capture model:
 
 ```
 Full rsync run
-
-No event based watcher.
-
-Rsync detects changes.
+No event watcher
+Rsync detects changes
 ```
+
+---
+
+# Logging
+
+Systemd journal is used.
+
+No extra log files.
+
+Examples:
+
+```
+journalctl -u capture.service
+journalctl -u bootstrap.service
+```
+
+---
+
+# Implementation
+
+Language:
+
+```
+Bash
+```
+
+Native tools:
+
+- rsync
+- systemd
+- journalctl
+- age
+- Fedora native tools
+
+---
+
+# Security Decisions
+
+SSH:
+
+- SSH config is normal state
+- private keys are encrypted with age
+
+Browser:
+
+- browser state is not captured
+
+Secrets:
+
+- isolated from public repository state
 
 ---
 
 # Git Workflow
 
-Git history represents workstation state history.
-
 Model:
 
 ```
 main branch only
-```
-
-No branch workflow.
-
-Commit messages:
-
-```
-system state update YYYY-MM-DD
 ```
 
 Workflow:
@@ -230,84 +320,7 @@ manual push
 
 ---
 
-# Restore / Bootstrap
-
-Restore engine:
-
-```
-rsync
-```
-
-Bootstrap responsibilities:
-
-- precheck
-- user handling
-- UID/GID restore
-- ownership correction
-- state restore
-- secret decrypt
-- post actions
-
-User model:
-
-- UID/GID captured
-- users can be created when required
-- multi-user support
-
----
-
-# Testing
-
-Dry-run mode is optional.
-
-Normal:
-
-```
-capture
-bootstrap
-```
-
-Testing:
-
-```
-capture --dry-run
-bootstrap --dry-run
-```
-
-Uses native rsync dry-run support.
-
----
-
-# Logging
-
-Logging uses Fedora native systemd journal.
-
-No separate log files.
-
-Example:
-
-```
-journalctl -u capture.service
-journalctl -u bootstrap.service
-```
-
----
-
-# Large Files
-
-The repository is not an archive system.
-
-Policy:
-
-- no Git LFS
-- unnecessary large files are ignored
-- only reproducible workstation state is stored
-
----
-
 # Recovery
-
-Clean installation:
 
 ```
 git clone repository
@@ -323,8 +336,6 @@ A rebuilt Linux workstation matching the captured environment.
 # Philosophy
 
 This project does not replace Linux.
-
-It does not create a new configuration framework.
 
 It uses native Linux mechanisms to capture, store and reproduce a working system state.
 
