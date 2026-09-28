@@ -23,3 +23,8 @@ state/discovered/*
 
 # Rules runtime output
 state/approved/*
+
+# Machine specific metadata
+state/metadata/hardware.txt
+state/metadata/network.txt
+state/metadata/storage.txt
