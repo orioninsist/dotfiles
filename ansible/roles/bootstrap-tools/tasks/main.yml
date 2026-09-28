@@ -1,18 +1,16 @@
 ---
-- name: Install workstation management tools
+- name: Install bootstrap tools
   ansible.builtin.dnf:
     name:
       - git
-      - chezmoi
       - age
     state: present
 
-- name: Verify management tools
+- name: Verify bootstrap tools
   ansible.builtin.command:
     cmd: "{{ item }} --version"
   loop:
     - git
-    - chezmoi
     - age
   register: tool_versions
   changed_when: false

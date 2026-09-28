@@ -29,19 +29,6 @@ fi
 
 
 echo
-echo "===== CHEZMOI APPLY ====="
-
-if command -v chezmoi >/dev/null 2>&1; then
-
-    chezmoi \
-        --source="$ROOT_DIR/chezmoi/source" \
-        apply
-
-else
-
-    echo "chezmoi not installed"
-
-fi
 
 
 echo

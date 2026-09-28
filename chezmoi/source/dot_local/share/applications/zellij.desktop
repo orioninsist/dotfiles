@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Zellij
-Comment=Open or attach to the Orion Zellij session in Kitty
-Exec=kitty zellij attach --create orioninsist
-Icon=utilities-terminal
-Terminal=false
-Categories=System;TerminalEmulator;
-StartupNotify=true
