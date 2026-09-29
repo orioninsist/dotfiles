@@ -55,7 +55,6 @@ TAKE_FILE .config/starship.toml
 # Terminal emulator config
 TAKE_PARTIAL .config/kitty
   INCLUDE kitty.conf
-  INCLUDE current-theme.conf
 END
 
 # Initial unclassified top-level blocks
