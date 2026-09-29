@@ -102,3 +102,6 @@ BLOCK .yandex
 # Initial unclassified top-level watch-only candidates
 WATCH .npmrc
 WATCH .profile
+
+# Login shell profile
+TAKE_FILE .bash_profile
