@@ -38,16 +38,16 @@ echo "running discovery"
 "$ROOT_DIR/capture/discover/discover.sh"
 
 echo
-echo "running rules"
+echo "applying path registry"
 
-"$ROOT_DIR/capture/rules/apply.sh"
+"$ROOT_DIR/capture/registry/apply.sh"
 
 mkdir -p "$DEST"
 
 rsync \
 $RSYNC_OPTIONS \
 $RSYNC_PROGRESS \
---files-from="$ROOT_DIR/$APPROVED_LIST" \
+--files-from="$ROOT_DIR/$REGISTRY_CAPTURE_FILE" \
 "$SOURCE_HOME/" \
 "$DEST/" 2>&1 | tee -a "$LOG_FILE"
 

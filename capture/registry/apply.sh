@@ -27,9 +27,12 @@ while IFS= read -r line || [ -n "$line" ]; do
     \#*) continue ;;
   esac
 
-  set -- $line
-  action="${1:-}"
-  path="${2:-}"
+  action="${line%% *}"
+  if [ "$action" = "$line" ]; then
+    path=""
+  else
+    path="${line#* }"
+  fi
 
   case "$action" in
     WATCH)
