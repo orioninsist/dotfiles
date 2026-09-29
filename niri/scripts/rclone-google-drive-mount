@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+main_mount="$HOME/GoogleDrive"
+shared_mount="$HOME/GoogleDrive-Shared"
+log_dir="/tmp/rclone-google-drive"
+
+mkdir -p "$main_mount" "$shared_mount" "$log_dir"
+
+mount_one() {
+    local name="$1"
+    local remote="$2"
+    local mountpoint="$3"
+    shift 3
+
+    if findmnt -rn --mountpoint "$mountpoint" >/dev/null 2>&1; then
+        return 0
+    fi
+
+    rclone mount "$remote" "$mountpoint" \
+        --daemon \
+        --read-only \
+        --vfs-cache-mode off \
+        --buffer-size 0 \
+        --dir-cache-time 5m \
+        --poll-interval 1m \
+        --attr-timeout 1s \
+        --no-modtime \
+        --links \
+        --allow-other=false \
+        --log-level INFO \
+        --log-file "$log_dir/$name.log" \
+        "$@"
+}
+
+mount_one "gdrive" "gdrive:" "$main_mount"
+mount_one "gdrive-shared" "gdrive:" "$shared_mount" --drive-shared-with-me
