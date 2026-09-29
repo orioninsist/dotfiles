@@ -1,0 +1,104 @@
+# ==================================
+# DOTFILES PATH REGISTRY
+# ==================================
+#
+# Actions:
+#   BLOCK        path is ignored completely
+#   WATCH        path is monitored but not captured
+#   TAKE_FILE    capture one file
+#   TAKE_DIR     capture full directory
+#   TAKE_PARTIAL capture selected children only
+#
+# Rule:
+#   WATCH is radar.
+#   TAKE is backup.
+#   BLOCK is invisible.
+
+# Root radar
+WATCH .
+
+# Top-level blocks
+BLOCK Downloads
+BLOCK Videos
+BLOCK Music
+BLOCK Pictures
+BLOCK Public
+BLOCK Templates
+BLOCK GoogleDrive
+BLOCK .cache
+BLOCK .Trash
+
+# Watched roots
+WATCH .config
+WATCH .local
+WATCH .ssh
+
+# Direct files
+TAKE_FILE .bashrc
+TAKE_FILE .gitconfig
+TAKE_FILE .ssh/config
+
+# Local tools
+TAKE_DIR .local/bin
+
+# Main application configs
+TAKE_DIR .config/nvim
+TAKE_DIR .config/yazi
+TAKE_DIR .config/zellij
+TAKE_DIR .config/atuin
+TAKE_DIR .config/eza
+TAKE_DIR .config/fzf
+
+# Single config files
+TAKE_FILE .config/starship.toml
+
+# Terminal emulator config
+TAKE_PARTIAL .config/kitty
+  INCLUDE kitty.conf
+  INCLUDE current-theme.conf
+END
+
+# Initial unclassified top-level blocks
+BLOCK .ansible
+BLOCK .antigravity
+BLOCK .audio
+BLOCK .bash_history
+BLOCK .bash_logout
+BLOCK .bash_profile.before-dotfiles-20260924-182126
+BLOCK .bashrc.before-dotfiles-20260924-182126
+BLOCK .bun
+BLOCK Calibre Library
+BLOCK .cargo
+BLOCK ChatGPT
+BLOCK .claude
+BLOCK .claude.json
+BLOCK .cline
+BLOCK .codex
+BLOCK .continue
+BLOCK .copilot
+BLOCK .docker
+BLOCK Documents
+BLOCK dotfiles
+BLOCK dotfiles-backup-old
+BLOCK .dotnet
+BLOCK .gemini
+BLOCK .gnupg
+BLOCK GoogleDrive-Shared
+BLOCK Media
+BLOCK .mullvad-browser
+BLOCK .npm
+BLOCK .pki
+BLOCK .playlists
+BLOCK .pytest_cache
+BLOCK .record
+BLOCK .screenshoot
+BLOCK .video
+BLOCK .vscode
+BLOCK .vscode-shared
+BLOCK .wallpapers
+BLOCK .wallpapers.before-dotfiles-fix
+BLOCK .yandex
+
+# Initial unclassified top-level watch-only candidates
+WATCH .npmrc
+WATCH .profile
