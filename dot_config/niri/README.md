@@ -66,6 +66,7 @@ or renamed.
 | `Super+End` | Focus last column |
 | `Super+Ctrl+Home` | Move column to first |
 | `Super+Ctrl+End` | Move column to last |
+| `Super+Alt+H/J/K/L` or arrows | Focus monitor left/down/up/right |
 | `Super+Ctrl+Shift+H/J/K/L` or arrows | Move active column to monitor left/down/up/right |
 | `Super+[` | Consume/expel window left |
 | `Super+]` | Consume/expel window right |
@@ -156,7 +157,7 @@ or renamed.
 | `Super+Print` | Screenshot current screen/output |
 | `Super+Ctrl+Print` | Screenshot focused window |
 | `Super+Ctrl+Shift+Print` | OCR capture via `~/.config/wayland/scripts/ocr` |
-| `Super+Ctrl+R` | Open OBS for screen recording |
+| `Super+Ctrl+O` | Open OBS for screen recording |
 
 ### Productivity and utilities
 
@@ -176,7 +177,7 @@ or renamed.
 
 | Shortcut | Action |
 |---|---|
-| `Super+Shift+S` | Lock with swaylock, then suspend |
+| `Super+Shift+S` | Lock with swaylock (does not suspend) |
 | `Super+Shift+Escape` | Quit Niri |
 
 ## Daily mental model
@@ -221,6 +222,7 @@ Useful recovery flow when a session gets messy:
 Upstream Niri defaults are used where they do not break established personal shortcuts.
 
 Deliberate differences:
+- `Super+Alt+H/J/K/L` focuses adjacent monitors without replacing existing window navigation.
 - `Super+C` is free; `Super+Alt+C` remains the center-column shortcut.
 - Upstream `Super+Ctrl+F` expands a column; this setup uses `Super+Alt+F`.
 - Upstream `Super+Shift+V` switches floating/tiling focus; this setup uses `Super+Space`.
@@ -229,7 +231,16 @@ Deliberate differences:
 
 ## Validation
 
-After pulling locally:
+After pulling locally with chezmoi, preview changes before applying:
+
+```sh
+chezmoi status
+chezmoi diff
+chezmoi apply --dry-run --verbose
+chezmoi apply
+```
+
+Validate the resulting Niri configuration:
 
 ```sh
 niri validate -c ~/.config/niri/config.kdl
