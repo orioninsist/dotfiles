@@ -1,0 +1,23 @@
+# Glow Configuration File (glow.yml)
+# Place this file in your default config directory (e.g. ~/.config/glow/glow.yml on Linux/macOS)
+
+# Style name or JSON path (Catppuccin Mocha theme)
+style: "/home/murat/.config/glow/catppuccin-mocha.json"
+
+# Mouse wheel support (TUI-mode only)
+mouse: true
+
+# Use pager to display markdown
+pager: true
+
+# Column width at which text should word wrap
+width: 80
+
+# Show all files, including hidden and ignored
+all: true
+
+# Show line numbers (TUI-mode only)
+showLineNumbers: false
+
+# Preserve newlines in the output
+preserveNewLines: false

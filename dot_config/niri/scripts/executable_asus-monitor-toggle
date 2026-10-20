@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+OUTPUT="HDMI-A-1"
+
+notify_monitor() {
+    notify-send -a "Niri" "ASUS monitor" "$1" 2>/dev/null || true
+}
+
+current_mode="$(
+    niri msg --json outputs |
+        jq -r --arg output "$OUTPUT" '.[$output].current_mode // empty'
+)"
+
+if [[ -n "$current_mode" ]]; then
+    niri msg output "$OUTPUT" off >/dev/null
+    notify_monitor "Closed"
+else
+    niri msg output "$OUTPUT" on >/dev/null
+    notify_monitor "Opened"
+fi

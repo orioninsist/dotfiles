@@ -1,0 +1,8 @@
+[Unit]
+Description=Watch Chrome web app desktop entries
+
+[Path]
+PathChanged=%h/.local/share/applications
+
+[Install]
+WantedBy=default.target

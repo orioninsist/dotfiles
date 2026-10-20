@@ -1,0 +1,97 @@
+// Niri configuration
+// Managed by dotfiles repository
+
+input {
+    keyboard {
+        xkb {
+            layout "us,tr"
+        }
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    warp-mouse-to-focus
+}
+
+environment {
+    QT_QPA_PLATFORM "wayland;xcb"
+    KDE_COLOR_SCHEME "CatppuccinMochaMauve"
+    QT_STYLE_OVERRIDE null
+    CALIBRE_USE_SYSTEM_THEME null
+}
+
+output "eDP-1" {
+    background-color "#171411"
+    mode "1920x1080@60.008"
+    scale 1
+    position x=0 y=0
+}
+
+output "HDMI-A-1" {
+    background-color "#171411"
+    off
+    mode "1920x1080@60.000"
+    scale 1
+    position x=1920 y=0
+}
+
+layout {
+    gaps 3
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width {
+        proportion 0.5
+    }
+
+    focus-ring {
+        off
+    }
+
+    border {
+        width 3
+        active-color "#89b4fa"
+        inactive-color "#181825"
+        urgent-color "#f38ba8"
+    }
+}
+
+
+spawn-at-startup "wlsunset" "-T" "1001" "-t" "1000"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+screenshot-path "/home/murat/.screenshoot/Screenshot from %Y-%m-%d %H-%M-%S.png"
+prefer-no-csd
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+
+include "binds/window-management.kdl"
+include "binds/workspaces.kdl"
+include "binds/system.kdl"
+include "binds/applications.kdl"
+
+spawn-at-startup "/home/murat/.local/bin/orioninsist-start"
+
+
+binds {
+    Mod+D { spawn "fuzzel"; }
+    Mod+P { spawn "fuzzel" "--list-executables-in-path"; }
+
+
+
+}

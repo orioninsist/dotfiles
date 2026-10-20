@@ -1,0 +1,40 @@
+[mgr]
+prepend_keymap = [
+  { on = "l", run = "plugin smart-enter", desc = "Smart Enter: open file or enter directory" },
+  { on = [ "c", "m" ], run = "plugin chmod", desc = "Change file permissions" },
+  # Shell acma
+  { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here", for = "unix" },
+
+  # Git root dizinine gecis
+  { on = [ "g", "r" ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to Git root" },
+
+  # Sistem panosuna kopyalama (wl-copy)
+  { on = "y", run = [ 'shell -- for path in %s; do echo "file://$path"; done | wl-copy -t text/uri-list', "yank" ], desc = "Copy file & sync to clipboard", for = "unix" },
+
+  # Surukle-Birak (Dragon)
+  { on = "<C-n>", run = 'shell -- dragon -x -i -T %h', desc = "Drag and Drop with Dragon" },
+
+  # Onizleme kaydirma
+  { on = "K", run = "seek -5", desc = "Seek up in preview" },
+  { on = "J", run = "seek 5",  desc = "Seek down in preview" },
+
+  # EKLENTILER
+  # Basilan harfe hizlica ziplama (f)
+  { on = "f", run = "plugin jump-to-char", desc = "Jump to char" },
+
+  # Onizleme panelini tam ekran yapma/kucultme (T)
+  { on = "T", run = "plugin toggle-pane max-preview", desc = "Maximize or restore preview" },
+
+  # USB / Disk baglama menusu (m m)
+  { on = [ "m", "m" ], run = "plugin mount", desc = "Disk mount manager" },
+
+  # Onizleme panelini gizleme / acma (b p)
+  { on = [ "b", "p" ], run = "plugin toggle-pane min-preview", desc = "Toggle preview pane" },
+ { on = "p", run = ["paste", "tasks:show"], desc = "Paste and show copy progress" },
+]
+
+[input]
+prepend_keymap = [
+  # Esc ile girdi penceresini kapatma
+  { on = "<Esc>", run = "close", desc = "Cancel input directly" }
+]

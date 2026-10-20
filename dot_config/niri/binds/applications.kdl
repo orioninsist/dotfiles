@@ -1,0 +1,10 @@
+// Personal application launchers.
+binds {
+    Mod+Return { spawn "kitty"; }
+    Mod+D { spawn "/home/murat/.config/wayland/scripts/fuzzel-launcher"; }
+    Mod+C { spawn "/home/murat/.config/wayland/scripts/espanso-search"; }
+    Mod+Y { spawn "kitty" "yazi"; }
+
+
+    Mod+P { spawn "/home/murat/.config/wayland/scripts/satty-screenshot"; }
+}

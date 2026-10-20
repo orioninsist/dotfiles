@@ -1,0 +1,69 @@
+[mgr]
+ratio          = [ 1, 3, 4 ]
+sort_by        = "natural"
+sort_dir_first = true
+show_hidden    = false
+
+[preview]
+wrap          = "no"
+tab_size      = 2
+max_width     = 1200
+max_height    = 1200
+image_delay   = 20
+image_filter  = "triangle"
+image_quality = 90
+
+[tasks]
+image_alloc = 1073741824
+image_bound = [ 15000, 15000 ]
+
+
+[opener]
+edit = [
+  { run = 'env NVIM_APPNAME=astronvim nvim %s', block = true, desc = "AstroNvim", for = "unix" },
+]
+
+image = [
+  { run = 'imv %s1', orphan = true, desc = "imv", for = "unix" }
+]
+
+media = [
+  { run = 'mpv %s1', orphan = true, desc = "mpv", for = "unix" }
+]
+
+pdf = [
+  { run = 'zathura %s1', orphan = true, desc = "Zathura", for = "unix" },
+]
+
+docx = [
+  { run = '"$HOME/.local/bin/orion-open-docx" %s1', orphan = true, desc = "Google Docs", for = "unix" },
+]
+
+xlsx = [
+  { run = '"$HOME/.local/bin/orion-open-xlsx" %s1', orphan = true, desc = "Google Sheets", for = "unix" },
+]
+
+pptx = [
+  { run = '"$HOME/.local/bin/orion-open-pptx" %s1', orphan = true, desc = "Google Slides", for = "unix" },
+]
+
+open = [
+  { run = 'gio open "$1"', orphan = true, desc = "System default", for = "unix" },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.docx", use = "docx" },
+  { url = "*.xlsx", use = "xlsx" },
+  { url = "*.pptx", use = "pptx" },
+
+  { url = "*.{md,markdown,txt,log,csv,tsv,py,sh,bash,js,ts,jsx,tsx,html,css,scss,json,jsonl,yaml,yml,toml,xml,ini,conf,c,h,cpp,hpp,rs,go,lua,sql,typ,mmd,d2}", use = "edit" },
+
+  { url = "*.{svg,SVG,png,jpg,jpeg,webp,gif,bmp,avif,tif,tiff}", use = "image" },
+
+  { mime = "text/*", use = "edit" },
+  { mime = "application/{json,ndjson,javascript,wine-extension-ini}", use = "edit" },
+  { mime = "image/*", use = "image" },
+  { mime = "{audio,video}/*", use = "media" },
+  { mime = "application/pdf", use = "pdf" },
+]
