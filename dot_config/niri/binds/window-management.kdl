@@ -40,6 +40,16 @@ binds {
     Mod+Ctrl+Home { move-column-to-first; }
     Mod+Ctrl+End { move-column-to-last; }
 
+    // Focus adjacent monitors without overriding existing H/J/K/L navigation.
+    Mod+Alt+Left { focus-monitor-left; }
+    Mod+Alt+Down { focus-monitor-down; }
+    Mod+Alt+Up { focus-monitor-up; }
+    Mod+Alt+Right { focus-monitor-right; }
+    Mod+Alt+H { focus-monitor-left; }
+    Mod+Alt+J { focus-monitor-down; }
+    Mod+Alt+K { focus-monitor-up; }
+    Mod+Alt+L { focus-monitor-right; }
+
     // Monitor operations use Ctrl+Shift to avoid the established move-column binds.
     Mod+Ctrl+Shift+Left { move-column-to-monitor-left; }
     Mod+Ctrl+Shift+Down { move-column-to-monitor-down; }
