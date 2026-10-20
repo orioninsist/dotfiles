@@ -38,7 +38,7 @@ binds {
     Mod+Ctrl+E { spawn "/home/murat/.config/wayland/scripts/emoji-picker"; }
 
     Mod+Shift+S { spawn "swaylock" "-f" "-c" "000000"; }
-    Mod+Shift+C { load-config-file; }
+    Mod+Shift+C { spawn "niri" "msg" "action" "load-config-file"; }
     Mod+Shift+Escape { quit; }
     Mod+Ctrl+O { spawn "obs"; }
 
