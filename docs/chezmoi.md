@@ -373,9 +373,9 @@ chezmoi diff
 git -C "$(chezmoi source-path)" status --short
 ```
 
-A missing `~/.config/chezmoi/chezmoi.toml` is normal for the currently verified default setup. No permanent age identity, SOPS policy, or chezmoi encryption configuration was created during these tests. Avoid making an unnecessary configuration file merely to enable a feature that is not yet used.
+At the time of the temporary tests described above, no permanent age identity or chezmoi encryption configuration had been created. The subsequent permanent age setup is documented below.
 
-### Future rollout checklist (not yet performed)
+### Historical rollout checklist (subsequently completed for age)
 
 1. Identify an actual configuration file that needs encryption and inspect its contents locally.
 2. Decide whether SOPS or chezmoi's native age support is appropriate; consult the official guides.
@@ -393,3 +393,63 @@ A missing `~/.config/chezmoi/chezmoi.toml` is normal for the currently verified 
 - [Chezmoi daily operations](https://www.chezmoi.io/user-guide/daily-operations/)
 - [Chezmoi command reference](https://www.chezmoi.io/reference/commands/)
 - [Git reference](https://git-scm.com/docs)
+
+### Permanent age encryption and rclone recovery (October 20, 2026)
+
+The earlier SOPS + age experiments described above were temporary tests.
+A permanent age identity and chezmoi age configuration have since been
+established and verified on Fedora.
+
+**Current configuration**
+
+- Age private identity: `~/.config/age/keys.txt` (mode `600`).
+- Age identity directory: `~/.config/age` (mode `700`).
+- Chezmoi encryption: `age`, configured in `.chezmoi.toml.tmpl`.
+- The age public recipient is stored in `.chezmoi.toml.tmpl`.
+- The private identity is **not** managed by chezmoi or stored in GitHub.
+- Password-encrypted recovery copy: `~/age-recovery.age`.
+- The recovery copy was locally decrypted and compared with the original.
+  Uploading it to Google Drive and keeping an offline copy remain separate
+  manual recovery steps until explicitly verified.
+
+**Rclone files**
+
+- `~/.config/rclone/backup.conf` is managed by chezmoi at
+  `dot_config/private_rclone/backup.conf`.
+- `~/.config/rclone/rclone.conf` contains OAuth credentials and refreshed
+  tokens. It must not be committed in plaintext.
+- Its encrypted snapshot is stored at
+  `.chezmoitemplates/rclone/rclone.conf.age`.
+- The encrypted snapshot is not a managed target file.
+- `.chezmoiscripts/run_after_restore-rclone.sh.tmpl` restores the snapshot
+  only when the target `rclone.conf` does not already exist.
+- The restore script was tested with an isolated HOME: restoration succeeded,
+  permissions were `600`, and an existing file was preserved.
+
+**Restore on a new Fedora installation**
+
+1. Install chezmoi and age.
+2. Clone or initialize the dotfiles repository.
+3. Restore `~/.config/age/keys.txt` from the separately protected recovery
+   backup; set its directory permissions to `700` and file permissions to `600`.
+4. Run `chezmoi init` to generate the age configuration.
+5. Review `chezmoi apply --dry-run --verbose`.
+6. Run `chezmoi apply` only after reviewing the planned changes.
+7. Verify rclone configuration locally without displaying OAuth tokens.
+
+**Refreshing the encrypted snapshot**
+
+Rclone may refresh OAuth tokens in the live `rclone.conf`.
+The encrypted snapshot is not automatically synchronized with these changes.
+
+After reviewing the current live file locally, regenerate the encrypted
+snapshot using a temporary file and replace the existing encrypted snapshot
+only after verifying that it decrypts to the current live configuration.
+Review the Git diff before committing the encrypted snapshot.
+
+Never commit the age private identity, plaintext `rclone.conf`, OAuth tokens,
+recovery passwords, or decrypted temporary files.
+
+**Security limitation:** The encrypted snapshot can become outdated.
+Restoring an old snapshot may require reconnecting the Google Drive remote
+if its OAuth credentials have expired or been revoked.

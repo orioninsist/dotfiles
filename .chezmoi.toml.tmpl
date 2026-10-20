@@ -2,7 +2,9 @@
 # Generated as ~/.config/chezmoi/chezmoi.toml by `chezmoi init`.
 # Do not store credentials or machine-specific secrets here.
 
+
 safe = true
+encryption = "age"
 
 [template]
 options = ["missingkey=error"]
@@ -14,3 +16,7 @@ autoPush = false
 
 [edit]
 apply = false
+
+[age]
+identity = "{{ .chezmoi.homeDir }}/.config/age/keys.txt"
+recipient = "age1c3xlkwavefls4fnfc4mvxgnxj6v4hm3fqeudssk0mtgta3f5eywqkw7km6"

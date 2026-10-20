@@ -1,0 +1,44 @@
+#!/bin/sh
+set -eu
+
+target="$HOME/.config/rclone/rclone.conf"
+identity="$HOME/.config/age/keys.txt"
+encrypted={{ joinPath .chezmoi.sourceDir ".chezmoitemplates/rclone/rclone.conf.age" | quote }}
+
+# Mevcut dosyaya veya sembolik bağlantıya dokunma.
+if [ -e "$target" ] || [ -L "$target" ]; then
+    exit 0
+fi
+
+# Anahtar henüz geri yüklenmemişse sonraki apply'da tekrar dene.
+if [ ! -r "$identity" ]; then
+    echo "Rclone geri yükleme atlandı: age anahtarı bulunamadı." >&2
+    exit 0
+fi
+
+if [ ! -r "$encrypted" ]; then
+    echo "Rclone geri yükleme atlandı: şifreli yedek bulunamadı." >&2
+    exit 0
+fi
+
+umask 077
+mkdir -p "$HOME/.config/rclone"
+chmod 700 "$HOME/.config/rclone"
+
+tmp="$(mktemp "$HOME/.config/rclone/.rclone.conf.XXXXXXXX")"
+trap 'rm -f "$tmp"' EXIT HUP INT TERM
+
+age -d -i "$identity" -o "$tmp" "$encrypted"
+chmod 600 "$tmp"
+
+# Atomik oluşturma: hedef varsa üzerine yazma.
+if ln "$tmp" "$target" 2>/dev/null; then
+    echo "Rclone yapılandırması şifreli yedekten geri yüklendi."
+else
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        echo "Rclone yapılandırması zaten mevcut; korunuyor."
+    else
+        echo "Rclone geri yükleme başarısız: hedef oluşturulamadı." >&2
+        exit 1
+    fi
+fi
