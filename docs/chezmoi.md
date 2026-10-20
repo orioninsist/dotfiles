@@ -33,8 +33,12 @@ chezmoi apply --dry-run --verbose  # Uygulamadan önce önizle
 ## Bilinen doctor uyarıları
 
 - `latest-version`: Fedora paket sürümü 2.73.0 iken doctor 2.73.2 bildiriyor. Tek başına kurulum hatası değildir.
-- `hardlink: invalid cross-device link`: kaynak dizini ile `/tmp` arasında hardlink testi başarısız. Farklı dosya sistemleri olası açıklamadır; kök neden henüz ayrıca doğrulanmadı.
+- `hardlink: invalid cross-device link`: kaynak dizini ile `/tmp` arasında hardlink testi başarısız. Nedeni doğrulandı: kaynak dizini `/` üzerinde `ext4`, `/tmp` ise ayrı `tmpfs` dosya sisteminde. Farklı dosya sistemleri arasında hardlink oluşturulamaz. Bu test hatası için `/tmp` değiştirilmemelidir.
 - `chezmoi.toml` bulunmuyor: mevcut kurulum varsayılan ayarlarla çalışıyor.
+
+## Depo belgelerinin yönetim dışı tutulması
+
+`README.md` ve `docs/` GitHub'da bilgi merkezi olarak tutulur, ev dizinine kopyalanmamalıdır. Bunun için depo kökündeki [`.chezmoiignore`](../.chezmoiignore) dosyasında `README.md`, `docs` ve `docs/**` desenleri bulunur. [Düzeltme commit'i](https://github.com/orioninsist/dotfiles/commit/609403b03c3a0f9418e5f35338108c78dbe1c40a). Fedora'daki `chezmoi managed`, `status` ve `diff` ile son doğrulama bekleniyor.
 
 ## Resmî belgeler
 
