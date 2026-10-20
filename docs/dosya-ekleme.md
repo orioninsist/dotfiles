@@ -1,53 +1,45 @@
-# Fedora + Chezmoi + GitHub — Dosya Yönetimi Rehberi
+# Chezmoi + Git + GitHub — Kopyala/Çalıştır Komut Rehberi
 
-> [Ana sayfa](../README.md) · [Chezmoi notları](chezmoi.md) · [Çalışma günlüğü](gunluk.md)
+> [Chezmoi komutları](chezmoi.md) · [Çalışma günlüğü](gunluk.md) · [Ana sayfa](../README.md)
 
-## Amaç ve sınırlar
+**Ortam:** Fedora; chezmoi kaynak deposu `~/.local/share/chezmoi`; GitHub deposu `orioninsist/dotfiles`; dal `main`. Bunlar 20 Ekim 2026 terminal çıktılarıyla doğrulanan ortam bilgileridir.
 
-Bu rehber Fedora'da **yeni bir kullanıcı yapılandırma dosyasını** chezmoi'ye eklemek, kontrol etmek ve GitHub'a güvenli biçimde göndermek içindir. Her adımın çıktısını kontrol et; hata varsa sonraki adıma geçme. Komutlar Fedora terminalinde çalıştırılır. GitHub'daki `docs/` belgeleri ise doğrudan Git ile sürümlenir, chezmoi ile ev dizinine uygulanmaz.
+**Kural:** Kod bloklarını sırayla çalıştır. Hata görürsen sonraki bloğa geçme. `git push` öncesi `git diff --cached` içeriğini incele. Parola, API anahtarı, SSH özel anahtarı, token veya özel metinleri herkese açık depoya gönderme.
 
-**Önemli:** Her örnekteki `HEDEF` değerini gerçek dosya yoluna göre değiştir. Dizinleri topluca eklemek yerine mümkünse tek dosyayla başla. Parola, token, özel anahtar, kişisel veri veya makineye özgü sır içeren dosyayı herkese açık depoya gönderme. `git push` öncesi diff'i insan gözüyle incele.
+## Senaryo 1 — Tek yapılandırma dosyası ekle
 
-## A. Yeni dosya ekleme — sırasıyla
+**Örnek hedef:** `~/.config/kitty/kitty.conf`. Yeni bir dosyada `HEDEF` satırını değiştir. Kitty zaten yönetiliyorsa aynı dosyayı tekrar eklemene gerek yok.
 
-### 1. Dosya gerçekten var mı?
+### A. Hedefi denetle
 
 ```bash
-HEDEF="$HOME/.config/kitty/kitty.conf"  # Örnek; gerçek yolu yaz
-test -f "$HEDEF" && ls -l "$HEDEF"
+HEDEF="$HOME/.config/kitty/kitty.conf"
+test -f "$HEDEF" || { echo "Dosya yok: $HEDEF"; exit 1; }
+ls -l "$HEDEF"
+file "$HEDEF"
 ```
 
-Dosya yoksa dur. Dosyanın içeriğini yerel olarak incele; hassas verileri terminal çıktısı olarak paylaşma.
-
-### 2. Chezmoi'ye ekle
+### B. Chezmoi'ye al
 
 ```bash
 chezmoi add "$HEDEF"
 chezmoi source-path "$HEDEF"
-```
-
-İlk komut hedef dosyayı chezmoi kaynak dizinine alır. İkinci komut Git'te tutulacak kaynak dosyanın **gerçek yolunu** gösterir. `dot_`, `private_` veya `.tmpl` gibi adlandırmalar olabileceği için yolu tahmin etme.
-
-### 3. Chezmoi ve Git durumunu kontrol et
-
-```bash
 chezmoi managed
 chezmoi status
 chezmoi diff
 chezmoi apply --dry-run --verbose
-git -C "$(chezmoi source-path)" status --short
 ```
 
-`managed` yönetilen hedefleri listeler. `status` ve `diff` kaynak–hedef farkını, `--dry-run` uygulamanın önizlemesini gösterir. Yeni eklenen dosya hedefle aynıysa `chezmoi diff` **boş olabilir**; bu, Git'e gönderildiği anlamına gelmez. `git status --short` yeni/değişen kaynak dosyalarını gösterir.
+Yeni eklemeden sonra `chezmoi diff` boş olabilir; **bu Git'e eklendiği anlamına gelmez.**
 
-### 4. Yalnızca istediğin dosyayı Git'e hazırla
+### C. Git'e hazırla — kaynağın gerçek adını doğrula
 
 ```bash
 cd "$(chezmoi source-path)"
 git status --short
 ```
 
-`chezmoi source-path "$HEDEF"` çıktısının kaynak dizinine göre yolunu bul. Örneğin Kitty dosyası için yol `dot_config/kitty/kitty.conf` olabilir. Aşağıdaki örneği yalnızca yol doğrulandıysa çalıştır:
+Örnekte kaynak yolunun `dot_config/kitty/kitty.conf` olduğu doğrulanmışsa:
 
 ```bash
 git add -- dot_config/kitty/kitty.conf
@@ -56,84 +48,211 @@ git diff --cached
 git status --short
 ```
 
-`git add` yalnızca seçilen dosyayı aşamaya alır. `git diff --cached` **yeni dosyaların içeriğini de** gösterir. Gizli bilgi, yanlış dosya veya beklenmedik değişiklik varsa dur; commit/push yapma. `git add .` veya `git add -A` komutlarını otomatik alışkanlık olarak kullanma.
-
-### 5. Commit ve GitHub'a gönderme
-
-Yalnızca aşamaya alınan değişiklikler onaylandıktan sonra:
+`git diff --cached` beklenen dosyayı ve **güvenli içeriği** gösteriyorsa:
 
 ```bash
 git commit -m "feat(chezmoi): manage kitty configuration"
 git push origin main
 ```
 
-Commit mesajını gerçek uygulamaya göre değiştir. Push reddedilirse zorla gönderme (`--force` kullanma); önce yerel ve uzak dal farkını incele. `git pull --rebase` gibi geçmişi etkileyen işlemleri sonucu değerlendirmeden çalıştırma.
-
-### 6. Sonucu doğrula
+### D. Uzak depo doğrulaması
 
 ```bash
 git status --short
 git log -1 --oneline
+git rev-parse HEAD
 git ls-remote --heads origin main
 chezmoi status
 chezmoi diff
 ```
 
-`git status --short` boşsa yerel çalışma ağacında görünür değişiklik yoktur. `git log -1` yerel commit'i, `git ls-remote` uzak `main` commit'ini gösterir; SHA'ların eşleşmesini ve GitHub'daki dosyanın içeriğini kontrol et. `chezmoi status`/`diff` boş olması hedefin kaynakla uyumlu olduğuna işaret eder, GitHub push'unu **kanıtlamaz**.
+Yerel HEAD ve uzak `main` SHA değerleri eşleşmeli; `git status --short` boş olmalı. Çalışma günlüğüne ve Sheets'e ancak bu çıktılarla doğruladığın sonucu kaydet.
 
-### 7. Günlüğe ve envantere kaydet
+## Senaryo 2 — Bir klasördeki yapılandırmaları ekle
 
-[Çalışma günlüğüne](gunluk.md) tarih, hedef dosya, kaynak yolu, çalıştırılan önemli komutlar, kontrol sonuçları, commit SHA ve GitHub bağlantısını ekle. [Google Sheets yönetim merkezindeki](https://docs.google.com/spreadsheets/d/1sutPQH5P0kotlz__uTs7v_PY3LeRZcvSjgDekgImyRg/edit) **Yönetilen Dosyalar** ve **Değişiklik Günlüğü** sekmelerini yalnızca doğrulanmış verilerle güncelle. Komut çalıştırılmadıysa veya sonuç bilinmiyorsa bunu açıkça belirt.
+**Örnek:** Atuin (`~/.config/atuin`).
 
-## B. Mevcut yönetilen dosyayı düzenleme
+### A. Önce hangi dosyalar var, gör
 
 ```bash
-chezmoi edit "$HEDEF"
+find "$HOME/.config/atuin" -type f -print
+du -ah "$HOME/.config/atuin" | sort -h | tail -20
+```
+
+Veritabanı, geçmiş, kişisel veri veya başka sır içeren dosyalar varsa dizinin tamamını ekleme; seçilen dosyaları tek tek `chezmoi add DOSYA` ile ekle.
+
+### B. Yalnızca içerik uygunsa topluca ekle
+
+```bash
+chezmoi add --recursive "$HOME/.config/atuin"
+chezmoi managed | grep '/atuin/'
 chezmoi status
 chezmoi diff
+git -C "$(chezmoi source-path)" status --short
+```
+
+### C. Git'e aktar
+
+```bash
+cd "$(chezmoi source-path)"
+git add -- dot_config/atuin
+git diff --cached --check
+git diff --cached
+git commit -m "feat(chezmoi): manage atuin configuration"
+git push origin main
+```
+
+**Şart:** Commit ve push satırlarına yalnızca `git diff --cached` güvenli, beklenen dosyaları gösteriyorsa geç.
+
+## Senaryo 3 — Klasör içinde ayrı bir .git deposu varsa
+
+**Yaşanan gerçek örnek:** `~/.config/espanso/match/.git`. Bu iç Git deposunun nesnelerini, geçmişini ve yapılandırmasını dotfiles deposuna kopyalama.
+
+### A. Tespit
+
+```bash
+find "$HOME/.config/espanso" -name .git -print
+chezmoi managed | grep '/espanso/'
+```
+
+### B. Yanlışlıkla chezmoi'ye eklendiyse
+
+Chezmoi kaynak adlandırmasında `.git` klasörü `dot_git` olabilir. Kaynak yolunu **doğrulamadan silme**:
+
+```bash
+chezmoi source-path "$HOME/.config/espanso/match/.git"
+```
+
+Yalnızca iç deponun `chezmoi` tarafından yönetildiğini gördüğünde:
+
+```bash
+chezmoi forget "$HOME/.config/espanso/match/.git"
+test -d "$HOME/.config/espanso/match/.git" && echo "Gerçek Git deposu duruyor"
+chezmoi managed | grep '/espanso/match/.git' || echo "Chezmoi yönetiminde değil"
+```
+
+`chezmoi forget` **chezmoi kaynak kopyasını kaldırır**; gerçek hedefteki `.git` deposunu silmez. Etkileşimli silme istemini kontrol et. Gerçek terminal çıktısında `forget` sonrası `.git` yönetim dışında kalmış ve hedef korunmuştur.
+
+### C. Güvenli dosyaları aşamaya al
+
+```bash
+cd "$(chezmoi source-path)"
+git add -- dot_config/espanso
+git diff --cached --name-only
+git diff --cached --check
+git diff --cached
+```
+
+Listeye `dot_config/espanso/match/dot_git/` veya `.git/` girdiyse commit/push yapma; önce `git restore --staged -- İLGİLİ_YOL` ve `chezmoi forget` ile düzelt.
+
+## Senaryo 4 — Yönetilen dosyayı düzenle
+
+**Kaynak kopyayı düzenlemek için:**
+
+```bash
+HEDEF="$HOME/.config/atuin/config.toml"
+chezmoi edit "$HEDEF"
+chezmoi diff
+chezmoi status
 chezmoi apply --dry-run --verbose
 ```
 
-`chezmoi edit` kaynak kopyayı düzenler; hedef dosyayı hemen değiştirmez. Farkı onayladıktan sonra `chezmoi apply "$HEDEF"` hedefi değiştirebilir. Önce yedekleme ve uygulamanın çalışmasına etkisini değerlendir; ardından A bölümündeki Git kontrol, commit, push ve doğrulama adımlarını uygula.
-
-**Hedef dosyayı chezmoi dışında değiştirdiysen:** `chezmoi diff` ile farkı incele; yerel değişikliği kaynak depoya almak istiyorsan `chezmoi re-add "$HEDEF"` seçeneğini değerlendir. Bu komutu mevcut kaynak içeriğini değiştirebileceği için önizleme/karşılaştırma olmadan kullanma.
-
-## C. Tüm dizini eklemek (isteğe bağlı, daha riskli)
+İçeriği ve etkisini doğruladıktan sonra gerçek hedefe uygula:
 
 ```bash
-find "$HOME/.config/kitty" -maxdepth 2 -type f -print
+chezmoi apply "$HEDEF"
+chezmoi status
 ```
 
-Dosyaların her birini inceledikten ve tümünü yönetmek istediğine karar verdikten sonra:
+Sonra `git status`, hedefe özel `git add`, `git diff --cached`, commit/push ve SHA doğrulamasını **Senaryo 1** gibi uygula. `chezmoi apply` mevcut hedef dosyayı değiştirebilir.
+
+## Senaryo 5 — Fedora'daki hedef dosyayı doğrudan değiştirdin
+
+Hedef dosyadaki değişikliği kaynak depoya almak için **önce farkı gör**:
 
 ```bash
-chezmoi add --recursive "$HOME/.config/kitty"
+HEDEF="$HOME/.config/atuin/config.toml"
+chezmoi diff "$HEDEF"
+chezmoi status
+chezmoi source-path "$HEDEF"
 ```
 
-Sonraki Git adımlarında bütün eklenen dosyaları **tek tek** kontrol et. Gizli bilgiler, önbellek, geçici dosyalar ve makineye özgü ayarlar bulunabilir.
+Değişikliği bilerek kaynağa geçirmek istiyorsan:
 
-## D. Hata olursa
+```bash
+chezmoi re-add "$HEDEF"
+chezmoi diff "$HEDEF"
+git -C "$(chezmoi source-path)" status --short
+```
 
-- **Dosya bulunamadı:** Hedef yolu `ls -l` ile doğrula.
-- **Chezmoi farkı boş:** `git status --short` ve `chezmoi source-path` ile kaynak dosyayı kontrol et.
-- **Push reddedildi:** `git fetch origin`, `git status`, `git log --oneline --graph --decorate --all -n 15` ile farkı incele; körlemesine rebase/force yapma.
-- **Yanlış dosya stage edildi:** Commit öncesi `git restore --staged -- DOSYA` ile yalnızca staging'den çıkar; dosya içeriği korunur.
-- **Çakışma veya beklenmedik değişiklik:** İşlemi durdur; çıktıyı değerlendir, mevcut yapılandırmayı ezme.
+`re-add` kaynak kopyayı günceller; beklenmeyen değişiklikte commit yapma.
 
-## E. Her yeni dosya için kısa kontrol listesi
+## Senaryo 6 — GitHub push reddedildi (fetch first)
 
-- [ ] Hedef dosya ve içeriği doğrulandı
-- [ ] Gizli bilgi bulunmadığı kontrol edildi
-- [ ] Chezmoi kaynak yolu doğrulandı
-- [ ] `chezmoi status`, `diff`, dry-run incelendi
-- [ ] Yalnızca ilgili dosya Git'e eklendi
-- [ ] `git diff --cached` incelendi
-- [ ] Commit ve push başarılı
-- [ ] Uzak commit ve dosya GitHub'da doğrulandı
-- [ ] Günlük ve gerekli Sheets kayıtları güncellendi
+20 Ekim'de yerel `bcf044b` commit'inden sonra GitHub'da yeni belge commit'i `085d182` oluşmuştu. Çözüm hızlı ileri sarma oldu.
 
-## Resmî kaynaklar
+```bash
+cd "$(chezmoi source-path)"
+git fetch origin
+git status
+git log --oneline --graph --decorate --all -n 12
+git pull --ff-only origin main
+```
 
-- [Chezmoi günlük işlemler](https://www.chezmoi.io/user-guide/daily-operations/)
-- [Chezmoi komut referansı](https://www.chezmoi.io/reference/commands/)
-- [Git belgeleri](https://git-scm.com/docs)
+`--ff-only` başarısızsa **dur**; körlemesine `--force`, `reset --hard` veya `pull --rebase` uygulama. Durum çözülünce yeniden `git push origin main`.
+
+## Senaryo 7 — Yanlışlıkla stage edilenleri geri al
+
+Bu işlem dosyaları silmez; yalnızca Git'in **staging alanından çıkarır**:
+
+```bash
+cd "$(chezmoi source-path)"
+git restore --staged -- dot_config/atuin dot_config/espanso
+git status --short
+```
+
+Bundan sonra `git commit` çalıştırırsan “nothing added to commit” görebilirsin. Önce güvenli dosyaları tekrar `git add` ile seçmen gerekir.
+
+## Senaryo 8 — GitHub'da docs/ dosyasını değiştirdik, Fedora'yı güncelle
+
+`docs/` dosyaları **doğrudan Git ile** yönetilir; chezmoi'nin hedef uygulama listesine girmez.
+
+```bash
+cd "$(chezmoi source-path)"
+git status --short
+git fetch origin
+git pull --ff-only origin main
+git log -1 --oneline
+```
+
+`README.md` ve `docs/` için chezmoi uygulaması gerekmez.
+
+## Senaryo 9 — Güvenlik ve eksik denetim
+
+Sadece anahtar sözcük aramak **güvenli olduğunu kanıtlamaz**. İçeriği yerel terminalde gözden geçir:
+
+```bash
+cd "$(chezmoi source-path)"
+git diff --cached --name-only
+git diff --cached --check
+git diff --cached
+```
+
+Özel depo geçmişi, token, parolalar, kişisel metinler, veritabanları, `.git` nesneleri ve uygulama önbelleklerini ekleme. `git add .` alışkanlığından kaçın. Yanlışlıkla sır push edildiğinde yalnızca dosyayı silmek yeterli olmaz; erişim bilgisinin iptal/yenilenmesi ve geçmiş temizliği gerekebilir.
+
+## Her işlemden sonra kopyala/çalıştır
+
+```bash
+cd "$(chezmoi source-path)"
+git status --short
+git log -1 --oneline
+git rev-parse HEAD
+git ls-remote --heads origin main
+chezmoi managed
+chezmoi status
+chezmoi diff
+```
+
+**Kayıt:** [docs/gunluk.md](gunluk.md) ve [Google Sheets](https://docs.google.com/spreadsheets/d/1sutPQH5P0kotlz__uTs7v_PY3LeRZcvSjgDekgImyRg/edit) — yalnızca gerçek terminal ve GitHub çıktısına göre.
+
+**Başvuru:** [Chezmoi günlük işlemler](https://www.chezmoi.io/user-guide/daily-operations/) · [Komut referansı](https://www.chezmoi.io/reference/commands/) · [Git komut referansı](https://git-scm.com/docs)
