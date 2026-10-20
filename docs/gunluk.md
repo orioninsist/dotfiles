@@ -17,6 +17,16 @@
 
 **Not:** Bu belge konuşmada paylaşılan terminal çıktılarından oluşturuldu. README ve belge commit'leri ayrı kaydedilir.
 
+## 20 Ekim 2026 — Kitty yapılandırması
+
+- `~/.config/kitty` altında yalnızca `kitty.conf` dosyası görüldü.
+- `chezmoi add --recursive ~/.config/kitty` ile dosya yönetim altına alındı; klasör satırları ayrı dosya kopyaları değildir.
+- `chezmoi status` ve `chezmoi diff` boştu; Git diff kontrolü yapıldı.
+- Yerel `9efca15` commit'i, uzaktaki belge commit'leri nedeniyle ilk push'ta reddedildi.
+- `git pull --rebase origin main` başarıyla tamamlandı; yeniden yazılan Kitty commit'i [`23d7013`](https://github.com/orioninsist/dotfiles/commit/23d7013) olarak `main` dalına push edildi.
+- Push öncesi Git çalışma ağacı temizdi. Kitty dosyası depoda mevcut; GitHub üzerinden ayrıca doğrulandı.
+- Kitty yapılandırması `~/.config/wayland/scripts/kitty-copy-scrollback` harici betiğine başvuruyor; bu betiğin varlığı/çalışması henüz doğrulanmadı.
+
 ## Sonraki işler
 
 - Yönetilecek diğer dosyaları tek tek seçmek.
