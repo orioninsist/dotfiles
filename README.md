@@ -20,6 +20,7 @@ GitHub'ın desteklediği **GitHub Flavored Markdown (GFM)** kullanılır. GitHub
 
 - 📖 [Chezmoi — Kullanım Notları](docs/chezmoi.md)
 - 🗓️ [Çalışma Günlüğü](docs/gunluk.md)
+- 📋 [Dosya ve dizin ekleme — kopyalanabilir komutlar](docs/dosya-ekleme.md)
 - 📊 [Google Sheets — Yönetim Merkezi](https://docs.google.com/spreadsheets/d/1sutPQH5P0kotlz__uTs7v_PY3LeRZcvSjgDekgImyRg/edit)
 - 📚 [Chezmoi resmî dokümantasyonu](https://www.chezmoi.io/)
 - 🛠️ [Chezmoi resmî GitHub deposu](https://github.com/twpayne/chezmoi)
