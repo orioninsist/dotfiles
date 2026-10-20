@@ -1,0 +1,12 @@
+matches:
+  - trigger: ":zellij"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://zellij.dev/ --engine python --language en
+
+  - trigger: ":zellijmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/zellij.dev \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

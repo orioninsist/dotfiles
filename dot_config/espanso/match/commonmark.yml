@@ -1,0 +1,12 @@
+matches:
+  - trigger: ":commonmark"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://commonmark.org/ --engine python --language en
+
+  - trigger: ":commonmarkmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/commonmark.org \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

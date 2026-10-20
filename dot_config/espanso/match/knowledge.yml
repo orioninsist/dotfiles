@@ -1,0 +1,72 @@
+# Knowledge / Documentation terminal shortcuts
+
+matches:
+
+  # ------------------------------------------------------------
+  # KNOWLEDGE
+  # ------------------------------------------------------------
+
+  # Go to Knowledge root
+  - trigger: ":kn"
+    replace: "cd /home/murat/Media/8-Document/Knowledge"
+
+  # Find an existing file or type a new filename and open in AstroNvim
+  - trigger: ":knfile"
+    replace: "knfile"
+
+# Search text-file contents and open selected result in AstroNvim
+
+  - trigger: ":knsearch"
+    replace: "knsearch"
+
+  # Rename a Knowledge file
+  - trigger: ":knrename"
+    replace: "knrename"
+
+
+  # Find Markdown and read with Glow
+  - trigger: ":knglow"
+    replace: "knglow"
+
+  - trigger: ":docsearch"
+    replace: "docsearch"
+
+  # ------------------------------------------------------------
+  # VISUAL
+  # ------------------------------------------------------------
+
+  # Excalidraw
+  - trigger: ":knexcalidraw"
+    replace: "f=\"$(fd -t f -e excalidraw . /home/murat/Media/8-Document/Knowledge | fzf)\"; [ -n \"$f\" ] && excalidraw-desktop \"$f\""
+
+  # D2 -> SVG -> imv
+  - trigger: ":knd2"
+    replace: "f=\"$(fd -t f -e d2 . /home/murat/Media/8-Document/Knowledge | fzf)\"; [ -n \"$f\" ] && d2 \"$f\" /tmp/knowledge-d2.svg && imv /tmp/knowledge-d2.svg"
+
+  # Mermaid -> SVG -> imv
+  - trigger: ":knmermaid"
+    replace: "f=\"$(fd -t f -e mmd . /home/murat/Media/8-Document/Knowledge | fzf)\"; [ -n \"$f\" ] && mmdc -p /home/murat/knowledge-tool-test/puppeteer.json -i \"$f\" -o /tmp/knowledge-mermaid.svg && imv /tmp/knowledge-mermaid.svg"
+
+  # ------------------------------------------------------------
+  # DOCUMENTS
+  # ------------------------------------------------------------
+
+  # Typst -> PDF -> Zathura
+  - trigger: ":kntypst"
+    replace: "f=\"$(fd -t f -e typ . /home/murat/Media/8-Document/Knowledge | fzf)\"; [ -n \"$f\" ] && typst compile \"$f\" /tmp/knowledge-typst.pdf && zathura /tmp/knowledge-typst.pdf"
+
+  # PDF -> Zathura
+  - trigger: ":knpdf"
+    replace: "f=\"$(fd -t f -e pdf . /home/murat/Media/8-Document/Knowledge | fzf)\"; [ -n \"$f\" ] && zathura \"$f\""
+
+  # EPUB -> ebook-viewer
+  - trigger: ":knepub"
+    replace: "f=\"$(fd -t f -e epub . /home/murat/Media/8-Document/Knowledge | fzf)\"; [ -n \"$f\" ] && ebook-viewer \"$f\""
+
+  # ------------------------------------------------------------
+  # PROJECT
+  # ------------------------------------------------------------
+
+  # Go to Knowledge repository
+  - trigger: ":knrepo"
+    replace: "cd /home/murat/Media/6-Project/knowledge"

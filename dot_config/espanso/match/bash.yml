@@ -1,0 +1,13 @@
+matches:
+
+  - trigger: ":bash"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html --engine python --language en
+
+  - trigger: ":bashmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/www.gnu.org \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

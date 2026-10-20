@@ -1,0 +1,12 @@
+matches:
+  - trigger: ":kitty"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://sw.kovidgoyal.net/kitty/ --engine python --language en
+
+  - trigger: ":kittymerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/sw.kovidgoyal.net-kitty \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

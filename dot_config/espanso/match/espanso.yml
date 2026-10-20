@@ -1,0 +1,33 @@
+matches:
+  - trigger: ":espanso"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://espanso.org/ --engine python --language en
+
+  - trigger: ":espansomerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/espanso.org \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+  - trigger: ":espansowiki"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://github.com/espanso/espanso/wiki --engine python --language en
+
+  - trigger: ":espansowikimerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/github.com \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+
+
+  - trigger: ":espansonewfile"
+    replace: "espanso-word nvim "
+
+  # Aynı Zed penceresine klasörü ekle
+  - trigger: ":espansofolder"
+    replace: "zed --add /home/murat/.config/espanso/match"

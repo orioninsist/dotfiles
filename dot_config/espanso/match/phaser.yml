@@ -1,0 +1,20 @@
+matches:
+
+## DOCSYNC
+#####
+
+  - trigger: ":phaserdocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://docs.phaser.io/ --engine python --language en
+
+
+## MERGE
+#####
+
+  - trigger: ":phaserdocsmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/docs.phaser.io \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

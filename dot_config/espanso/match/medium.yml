@@ -1,0 +1,12 @@
+matches:
+  - trigger: ":medium"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://help.medium.com/hc/en-us --engine python --language en
+
+  - trigger: ":mediummerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/help.medium.com-hc-en-us \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base:

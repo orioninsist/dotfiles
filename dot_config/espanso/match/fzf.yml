@@ -1,0 +1,24 @@
+matches:
+  - trigger: ":fzf"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://junegunn.github.io/fzf/ --engine python --language en
+
+  - trigger: ":fzfmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/junegunn.github.io-fzf \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+  - trigger: ":fzfwiki"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://github.com/junegunn/fzf/wiki --engine python --language en
+
+  - trigger: ":fzfwikimerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/github.com-junegunn-fzf-wiki \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

@@ -1,0 +1,12 @@
+matches:
+  - trigger: ":docker"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://docs.docker.com/ --engine python --language en
+
+  - trigger: ":dockermerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/docs.docker.com \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

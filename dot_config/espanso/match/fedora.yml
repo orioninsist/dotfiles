@@ -1,0 +1,13 @@
+matches:
+
+  - trigger: ":fedora"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://docs.fedoraproject.org/en-US/docs/ --engine python --language en
+
+  - trigger: ":fedoramerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/docs.fedoraproject.org \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

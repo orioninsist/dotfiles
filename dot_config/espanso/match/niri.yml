@@ -1,0 +1,32 @@
+
+matches:
+
+#### DOCSYNC
+#####
+
+  - trigger: ":niri"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://github.com/niri-wm/niri/wiki --engine python --language en
+
+  - trigger: ":niridocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://niri-wm.github.io/niri/ --engine python --language en
+
+
+## MERGE
+
+  - trigger: ":nirimerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/github.com-niri-wm-niri-wiki \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+  - trigger: ":niridocsmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/niri-wm.github.io-niri \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

@@ -1,0 +1,27 @@
+matches:
+  # Systemd - Suspend / Hibernate
+
+  - trigger: ":suspend"
+    replace: "systemctl suspend"
+
+  - trigger: ":hibernate"
+    replace: "systemctl hibernate"
+
+  - trigger: ":suspend30"
+    replace: "systemd-run --user --on-active=30m systemctl suspend"
+
+  - trigger: ":hibernate1h"
+    replace: "systemd-run --user --on-active=1h systemctl hibernate"
+
+  - trigger: ":systemdDocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://systemd.io/ --engine python --language en
+
+
+  - trigger: ":systemdmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/systemd.io \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

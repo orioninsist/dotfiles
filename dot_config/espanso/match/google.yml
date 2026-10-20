@@ -1,0 +1,96 @@
+## DOCSYNC
+matches:
+  - trigger: ":aiDocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://ai.google.dev --engine python --language en
+
+
+
+  - trigger: ":googlesearch"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://developers.google.com/search/ --engine python --language en
+
+  - trigger: ":googlesearchmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/developers.google.com-search \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+  - trigger: ":gemininotebookDocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://support.google.com/gemininotebook --engine python --language en
+
+
+  - trigger: ":youtubeDocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://support.google.com/youtube --engine python --language en
+
+  - trigger: ":androidDocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://developer.android.com --engine python --language en
+
+  - trigger: ":deepmindDocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://deepmind.google/ --engine python --language en
+
+  - trigger: ":googledevelopersDocs"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://developers.google.com/ --engine python --language en
+
+
+## MERGE
+
+  - trigger: ":googleaimerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/ai.google.dev \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+
+
+  - trigger: ":youtubemerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/support.google.com-youtube \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+
+  - trigger: ":gemininotebookmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/support.google.com-gemininotebook \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+
+  - trigger: ":androidmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/developer.android.com \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+
+  - trigger: ":deepmindmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/deepmind.google \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+  - trigger: ":googledevelopersmerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/developers.google.com \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base

@@ -1,0 +1,17 @@
+matches:
+  - trigger: ":rclone"
+    replace: |
+      cd /home/murat/Project/docsync && uv run docsync sync https://rclone.org/ --engine python --language en
+
+  - trigger: ":rclonemerge"
+    replace: |
+      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      /home/murat/Library/Documents/Documentation/rclone.org \
+      --token-limit 1800000 \
+      --reserve-tokens 50000 \
+      --encoding o200k_base
+
+
+  - trigger: ":rclonelog"
+    replace: |
+      journalctl --user -u rclone-backup.service -f
