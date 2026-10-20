@@ -1,0 +1,24 @@
+[user]
+	name = murat
+	email = 74824857+orioninsist@users.noreply.github.com
+[safe]
+	directory = /mnt/local/areas/docsync
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = true
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	colorMoved = default
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[url "git@codeberg.org:"]
+	insteadOf = https://codeberg.org/
