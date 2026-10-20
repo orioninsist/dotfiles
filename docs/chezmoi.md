@@ -1,53 +1,110 @@
-# Chezmoi — Kullanım Notları
+# Chezmoi — Komut Cep Rehberi
 
-> [Ana sayfa](../README.md) · [Çalışma günlüğü](gunluk.md)
+> [Dosya ekleme ve senaryolar](dosya-ekleme.md) · [Çalışma günlüğü](gunluk.md)
 
-## Amaç
+## Doğrulanmış Fedora kurulumu — 20 Ekim 2026
 
-Fedora kullanıcı yapılandırmalarını chezmoi ile yönetmek, GitHub'da sürümlemek ve Google Sheets'te takip etmek.
-
-## Doğrulanan kurulum (20 Ekim 2026)
-
-- Fedora Linux 44, x86_64
-- Fedora RPM paketi: chezmoi v2.73.0
-- Kaynak dizini: `~/.local/share/chezmoi`
-- Git remote: `https://github.com/orioninsist/dotfiles.git`
-- Yönetilen ilk dosya: `~/.bashrc` (kaynak: `dot_bashrc`)
-- Son doğrulanan commit: [`49b9b24`](https://github.com/orioninsist/dotfiles/commit/49b9b24)
-- `chezmoi diff` boş; Git çalışma ağacı temiz.
-
-## Temel komutlar
-
-```bash
-chezmoi doctor                 # Kurulum tanılama
-chezmoi managed                # Yönetilen hedefleri listele
-chezmoi status                 # Kaynak ve hedef durumunu karşılaştır
-chezmoi diff                   # Uygulanacak içerik farkını incele
-chezmoi add ~/.bashrc          # Hedef dosyayı kaynak depoya al
-chezmoi edit ~/.bashrc         # Kaynak dosyayı düzenle
-chezmoi apply --dry-run --verbose  # Uygulamadan önce önizle
+```text
+Fedora:      44 / x86_64
+Chezmoi:     2.73.0 (Fedora RPM)
+Kaynak depo: ~/.local/share/chezmoi
+Git remote:  https://github.com/orioninsist/dotfiles.git
+Dal:         main
 ```
 
-`chezmoi apply` mevcut kullanıcı dosyalarını değiştirebilir. Önce `status`, `diff` ve dry-run çıktıları incelenmelidir. `chezmoi add` öncesi gizli bilgileri kontrol et.
+Son doğrulanan yapılandırma commit'i: [`8b1e6c0`](https://github.com/orioninsist/dotfiles/commit/8b1e6c0b92f47441ca0af4b7423e954ad4d24f64) — Atuin ve Espanso eklendi; Fedora terminalinde Git çalışma ağacı temiz, yerel/uzak SHA aynı, chezmoi status boştu. Bu bilgi bir **anlık doğrulama**dır, şu anki Fedora durumunun garantisi değildir.
 
-## Bilinen doctor uyarıları
+## 1. Günlük kontrol — değiştirmez
 
-- `latest-version`: Fedora paket sürümü 2.73.0 iken doctor 2.73.2 bildiriyor. Tek başına kurulum hatası değildir.
-- `hardlink: invalid cross-device link`: kaynak dizini ile `/tmp` arasında hardlink testi başarısız. Nedeni doğrulandı: kaynak dizini `/` üzerinde `ext4`, `/tmp` ise ayrı `tmpfs` dosya sisteminde. Farklı dosya sistemleri arasında hardlink oluşturulamaz. Bu test hatası için `/tmp` değiştirilmemelidir.
-- `chezmoi.toml` bulunmuyor: mevcut kurulum varsayılan ayarlarla çalışıyor.
+```bash
+chezmoi --version
+chezmoi doctor
+chezmoi source-path
+chezmoi managed
+chezmoi status
+chezmoi diff
+chezmoi apply --dry-run --verbose
+git -C "$(chezmoi source-path)" status --short
+```
 
-## Depo belgelerinin yönetim dışı tutulması
+`doctor` ortam sorunlarını inceler. `managed` yönetilen **hedef yollarını** listeler; `status` ve `diff` kaynak–hedef uyuşmazlığını gösterir; `--dry-run` değişiklikleri uygulamadan önizler.
 
-`README.md` ve `docs/` GitHub'da bilgi merkezi olarak tutulur, ev dizinine kopyalanmamalıdır. Bunun için depo kökündeki [`.chezmoiignore`](../.chezmoiignore) dosyasında `README.md`, `docs` ve `docs/**` desenleri bulunur. [Düzeltme commit'i](https://github.com/orioninsist/dotfiles/commit/609403b03c3a0f9418e5f35338108c78dbe1c40a). Fedora'daki `chezmoi managed`, `status` ve `diff` ile son doğrulama bekleniyor.
+## 2. Chezmoi temel komutları ve parametreleri
 
-## Resmî belgeler
+| Komut | Amaç |
+|---|---|
+| `chezmoi init REPO` | Yeni kurulumda uzak depoyu kaynak olarak başlat |
+| `chezmoi add DOSYA` | Hedef dosyayı chezmoi kaynağına ekle |
+| `chezmoi add --recursive DIZIN` | Dizin ağacını ekle; önce tüm dosyaları incele |
+| `chezmoi source-path DOSYA` | Hedefin kaynak karşılığını göster |
+| `chezmoi edit DOSYA` | Kaynak kopyayı düzenle |
+| `chezmoi re-add DOSYA` | Hedefteki mevcut içeriği kaynağa yeniden al |
+| `chezmoi forget DOSYA` | Hedefi yönetimden çıkar; kaynak kopyayı siler, hedefi korur |
+| `chezmoi diff` | Uygulanacak değişikliklerin farkı |
+| `chezmoi status` | Kaynak–hedef durum kodları |
+| `chezmoi apply --dry-run --verbose` | Güvenli önizleme |
+| `chezmoi apply DOSYA` | Kaynağı hedefe uygula; hedefi değiştirebilir |
+| `chezmoi update` | Uzak kaynak değişikliklerini çekip uygular; dikkatli kullan |
+| `chezmoi doctor` | Kurulum tanılaması |
 
-- [Chezmoi resmî belgeleri](https://www.chezmoi.io/)
-- [Hızlı başlangıç](https://www.chezmoi.io/quick-start/)
-- [Kullanıcı kılavuzu](https://www.chezmoi.io/user-guide/)
-- [Komut referansı](https://www.chezmoi.io/reference/commands/)
-- [Chezmoi kaynak kodu](https://github.com/twpayne/chezmoi)
+Bu referans gerçek `chezmoi 2.73.0` kurulumunda doğrulanan temel kullanım akışına odaklanır. Tüm seçenekler için `chezmoi help KOMUT` çalıştır:
 
-## Konu dizini
+```bash
+chezmoi help add
+chezmoi help apply
+chezmoi help forget
+chezmoi help update
+```
 
-Yeni uygulama yapılandırmaları yönetilmeye başladığında bu dizine ayrı GFM belgeleri eklenebilir. Ana README'de bunlara göreli Markdown bağlantıları verilir.
+## 3. Git komutları — chezmoi kaynak deposunda çalıştır
+
+```bash
+cd "$(chezmoi source-path)"
+git status --short
+git diff
+git diff --cached
+git diff --cached --check
+git log --oneline -n 8
+git remote -v
+```
+
+- `git diff`: aşamaya alınmamış, **izlenen** dosyalardaki fark; yeni (untracked) dosyaları içermez.
+- `git diff --cached`: commit'e girecek aşamaya alınmış içerik; yeni dosyaları da gösterir.
+- `git status --short`: `??` yeni/izlenmeyen, `A` eklenen, `M` değişen dosyalar.
+- `git add -- YOL`: yalnızca belirtilen yolu stage et.
+- `git restore --staged -- YOL`: stage'i geri al; dosya içeriğini silmez.
+- `git commit -m "mesaj"`: stage edilmiş içeriği sürümle.
+- `git push origin main`: commit'i GitHub'a gönder.
+- `git fetch origin`: uzaktaki geçmişi al, yerel dosyaları uygulama.
+- `git pull --ff-only origin main`: yalnızca güvenli fast-forward mümkünse yerel dalı ilerlet.
+
+**Tam, uygulanabilir örnekler:** [dosya-ekleme.md](dosya-ekleme.md).
+
+## 4. Şimdi yönetilen uygulamalar
+
+```text
+~/.bashrc                         → dot_bashrc
+~/.config/kitty/kitty.conf        → dot_config/kitty/kitty.conf
+~/.config/atuin/config.toml       → dot_config/atuin/config.toml
+~/.config/espanso/config/default.yml → dot_config/espanso/config/default.yml
+~/.config/espanso/match/*.yml     → dot_config/espanso/match/*.yml
+```
+
+Atuin/Espanso commit'inde toplam **40 yeni dosya** vardır: bir Atuin TOML, bir Espanso varsayılan YAML, 37 Espanso eşleşme YAML dosyası ve bir `.keep` dosyası. `~/.config/espanso/match/.git` iç Git deposu **hariçtir**; kaynakta chezmoi adlandırması `dot_git` olabilir.
+
+## 5. Bilinen uyarılar
+
+```text
+doctor latest-version: Fedora RPM 2.73.0; o tarihte 2.73.2 mevcut
+doctor hardlink: invalid cross-device link
+```
+
+İkinci uyarının gözlenen nedeni: chezmoi kaynak dizini `ext4`, `/tmp` ise ayrı `tmpfs` dosya sistemindedir. Bu nedenle `/tmp` değiştirilmemelidir. `~/.config/chezmoi/chezmoi.toml` yokken varsayılan kurulum çalışmıştır.
+
+## 6. Neleri chezmoi apply etmemelisin?
+
+`README.md` ve `docs/` doğrudan GitHub bilgi belgeleridir. Depodaki `.chezmoiignore` dosyası bu yolları chezmoi'nin hedef uygulamasından dışlar. GitHub'daki yeni belgeleri Fedora'ya almak için `git pull --ff-only origin main` yeterlidir; `chezmoi apply` çalıştırma.
+
+## Referans
+
+[Chezmoi](https://www.chezmoi.io/) · [Günlük işlemler](https://www.chezmoi.io/user-guide/daily-operations/) · [Komutlar](https://www.chezmoi.io/reference/commands/) · [Git](https://git-scm.com/docs)
