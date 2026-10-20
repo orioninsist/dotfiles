@@ -71,7 +71,7 @@ hotkey-overlay {
     skip-at-startup
 }
 
-screenshot-path "/home/murat/.screenshoot/Screenshot from %Y-%m-%d %H-%M-%S.png"
+screenshot-path "/home/murat/Library/Image/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
 
 window-rule {
@@ -84,14 +84,3 @@ include "binds/window-management.kdl"
 include "binds/workspaces.kdl"
 include "binds/system.kdl"
 include "binds/applications.kdl"
-
-spawn-at-startup "/home/murat/.local/bin/orioninsist-start"
-
-
-binds {
-    Mod+D { spawn "fuzzel"; }
-    Mod+P { spawn "fuzzel" "--list-executables-in-path"; }
-
-
-
-}

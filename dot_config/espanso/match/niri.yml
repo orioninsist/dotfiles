@@ -17,7 +17,8 @@ matches:
 
   - trigger: ":nirimerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/github.com-niri-wm-niri-wiki \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -25,7 +26,8 @@ matches:
 
   - trigger: ":niridocsmerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/niri-wm.github.io-niri \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
