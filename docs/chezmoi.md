@@ -338,6 +338,55 @@ Earlier verified changes:
 - [ ] Local HEAD equals remote main; working tree and chezmoi state checked
 - [ ] Verified results logged in [Google Sheets](https://docs.google.com/spreadsheets/d/1sutPQH5P0kotlz__uTs7v_PY3LeRZcvSjgDekgImyRg/edit)
 
+
+## 14. SOPS + age — encryption and secret handling (verified October 20, 2026)
+
+### Verified Fedora environment
+
+| Component | Observed version | Verification |
+|---|---|---|
+| Fedora | 44 x86_64 | User terminal output |
+| chezmoi | 2.73.0 (Fedora RPM) | `chezmoi doctor` |
+| SOPS | 3.13.3 | `sops --version` |
+| age | 1.3.1 | `age --version` and `age-keygen --version` |
+| gopass | 1.16.1 (Fedora RPM) | `gopass version`, `rpm -q gopass` |
+
+**Tested:** age password-based encryption/decryption produced matching plaintext files. A temporary age identity and recipient were generated; SOPS encrypted a two-field YAML file and successfully decrypted it with `SOPS_AGE_KEY_FILE`. The decrypted YAML had the same values but omitted optional quotation marks, so a byte-for-byte `diff` reported a formatting difference; explicit value checks passed. The user then removed the temporary test directory and test files. This demonstrates a successful **test only**, not a deployed permanent key or encrypted dotfile.
+
+### Security and ownership boundaries
+
+- Keep age **private identity files** outside the public Git repository, Google Sheets, and chezmoi-managed source files. A public age recipient (`age1...`) is not a secret, but never confuse it with the private identity.
+- Do not commit decrypted files, SOPS test plaintext, temporary identities, password databases, browser vault data, tokens, or recovery codes. Review staged contents before every push.
+- If permanent encrypted dotfiles are needed later, first choose an identity storage location with restrictive permissions and a tested, separate backup/recovery method. Do not assume encryption substitutes for backups.
+- SOPS and chezmoi's native age encryption are **distinct integration approaches**. Choose one for a concrete file only after examining official documentation and the target's lifecycle; do not automatically enable both.
+- gopass is installed but no password store or GPG key setup has been verified. Do not document it as operational secret storage yet.
+- Google Password Manager remains the user's primary password manager. Bitwarden Desktop is installed as an unused alternative; no password migration is planned.
+
+### Read-only checks before adopting encrypted files
+
+```bash
+age --version
+sops --version
+chezmoi doctor
+chezmoi status
+chezmoi diff
+git -C "$(chezmoi source-path)" status --short
+```
+
+A missing `~/.config/chezmoi/chezmoi.toml` is normal for the currently verified default setup. No permanent age identity, SOPS policy, or chezmoi encryption configuration was created during these tests. Avoid making an unnecessary configuration file merely to enable a feature that is not yet used.
+
+### Future rollout checklist (not yet performed)
+
+1. Identify an actual configuration file that needs encryption and inspect its contents locally.
+2. Decide whether SOPS or chezmoi's native age support is appropriate; consult the official guides.
+3. Generate and back up a permanent identity **locally**; verify recovery before encrypting irreplaceable data.
+4. Encrypt a disposable test copy first, then test decryption on Fedora.
+5. Preview chezmoi changes with `chezmoi status`, `chezmoi diff`, and `chezmoi apply --dry-run --verbose`.
+6. Stage only approved encrypted source files; review the full `git diff --cached` and scan for secrets.
+7. Commit and push only after approval; verify the remote commit and record the result in Google Sheets.
+
+**Official sources:** [SOPS](https://github.com/getsops/sops) · [age](https://github.com/FiloSottile/age) · [chezmoi encryption](https://www.chezmoi.io/user-guide/encryption/) · [gopass](https://github.com/gopasspw/gopass).
+
 ## Official references
 
 - [Chezmoi documentation](https://www.chezmoi.io/)
