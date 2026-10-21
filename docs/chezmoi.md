@@ -414,14 +414,14 @@ established and verified on Fedora.
 
 **Rclone files**
 
-- `~/.config/rclone/backup.conf` is managed by chezmoi at
-  `dot_config/private_rclone/backup.conf`.
+- `~/.config/rclone/backup.conf` is documented as managed by chezmoi at
+  `dot_config/private_rclone/backup.conf` (historical Fedora observation; verify locally).
 - `~/.config/rclone/rclone.conf` contains OAuth credentials and refreshed
   tokens. It must not be committed in plaintext.
 - Its encrypted snapshot is stored at
   `.chezmoitemplates/rclone/rclone.conf.age`.
 - The encrypted snapshot is not a managed target file.
-- `.chezmoiscripts/run_after_restore-rclone.sh.tmpl` restores the snapshot
+- `.chezmoiscripts/run_once_after_restore-rclone.sh.tmpl` restores the snapshot
   only when the target `rclone.conf` does not already exist.
 - The restore script was tested with an isolated HOME: restoration succeeded,
   permissions were `600`, and an existing file was preserved.
@@ -453,3 +453,30 @@ recovery passwords, or decrypted temporary files.
 **Security limitation:** The encrypted snapshot can become outdated.
 Restoring an old snapshot may require reconnecting the Google Drive remote
 if its OAuth credentials have expired or been revoked.
+
+
+### Restore implementation: repository-verified notes (October 21, 2026)
+
+These points were checked against the repository's actual tracked files, not a live Fedora machine:
+
+- The script is **`.chezmoiscripts/run_once_after_restore-rclone.sh.tmpl`**, not `run_after_restore-rclone.sh.tmpl`. The `run_once_` prefix matters: chezmoi tracks one-time script execution by its generated contents. Do **not** assume an unchanged script automatically retries on the next `chezmoi apply` just because the age identity was missing during the first run.
+- The script skips restoration when `~/.config/rclone/rclone.conf` already exists **or is a symlink**, and skips with a message if the age identity or encrypted snapshot is unreadable. It decrypts into a private temporary file, uses a hard link to create the target without overwriting an existing path, and removes the temporary path on exit. This explains the implementation, **not** a new end-to-end Fedora test.
+- The encrypted source is `.chezmoitemplates/rclone/rclone.conf.age`. Template files are inputs, not automatically applied target files. The secret age identity remains outside Git and must be recovered separately.
+- Restore the age identity **before** the first applicable chezmoi script run; confirm that `age` is installed and that the identity matches the public recipient. If the one-time script ran without its identity, inspect `chezmoi state` and the installed chezmoi help before choosing a controlled retry; never delete all chezmoi state blindly.
+- An encrypted rclone snapshot is a point-in-time backup. A successful decrypt does not confirm that OAuth access still works, and updating live rclone tokens does **not** update the committed snapshot.
+
+Read-only checks on the actual Fedora machine:
+
+```bash
+chezmoi --version
+chezmoi source-path
+chezmoi doctor
+chezmoi status
+chezmoi diff
+chezmoi state --help
+ls -ld "$HOME/.config/age" "$HOME/.config/rclone" 2>/dev/null
+ls -l "$HOME/.config/age/keys.txt" "$HOME/.config/rclone/rclone.conf" 2>/dev/null
+git -C "$(chezmoi source-path)" status --short
+```
+
+**Security caution:** `chezmoi apply --dry-run --verbose` is an application preview, not a guarantee that a future script will never expose sensitive data. Avoid posting decrypted configuration, key material, and OAuth tokens in logs or chat. Do not execute restoration on a working machine just to test the guide.
