@@ -4,7 +4,6 @@ binds {
     Mod+D { spawn "/home/murat/.config/wayland/scripts/fuzzel-launcher"; }
     Mod+C { spawn "/home/murat/.config/wayland/scripts/espanso-search"; }
     Mod+Y { spawn "kitty" "yazi"; }
-    Mod+Ctrl+Y { spawn "dolphin"; }
 
 
     Mod+P { spawn "/home/murat/.config/wayland/scripts/satty-screenshot"; }
