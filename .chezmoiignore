@@ -23,3 +23,50 @@ docs/**
 **/*.bak.*
 **/*.orig.*
 **/*.before-dotfiles-*
+
+# ------------------------------------------------------------
+# ~/.config - Yanlislikla yonetime alinmamasi gereken veriler
+# ------------------------------------------------------------
+
+# Tarayici profilleri, oturumlar ve onbellekler
+.config/BraveSoftware
+.config/chromium
+.config/google-chrome
+.config/google-chrome-beta
+.config/google-chrome-for-testing
+.config/google-chrome-unstable
+.config/microsoft-edge
+.config/mozilla
+.config/opera
+.config/torbrowser
+.config/vivaldi
+.config/yandex-browser
+
+# Editor/IDE uygulama verileri ve profilleri
+# Ayarlar gerekiyorsa ileride secilerek yonetilebilir.
+.config/Antigravity
+.config/Antigravity IDE
+.config/Code
+.config/Codex
+.config/Codex.test-final
+
+# Uygulama durum verileri ve otomatik olusan dosyalar
+.config/dconf
+.config/pulse
+.config/session
+.config/QtProject.conf
+.config/kconf_updaterc
+.config/libaccounts-glib
+.config/glib-2.0
+.config/yarn
+.config/go
+
+# Yerel kimlik, hesap ve baglanti verileri
+# Bu dizinler gerekirse dosya bazinda ayrica incelenmeli.
+.config/age
+.config/gh
+.config/libvirt
+
+# Yedek ve gecici dosyalar
+.config/mimeapps.list.orion-backup
+.config/starship.toml.before-dotfiles-*
