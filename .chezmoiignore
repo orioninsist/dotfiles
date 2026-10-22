@@ -16,3 +16,10 @@ docs/**
 **/*.tmp
 **/*.bak
 **/*.orig
+
+# Eski yapilandirma ve tarihli yedekler.
+**/*.old
+**/*.backup
+**/*.bak.*
+**/*.orig.*
+**/*.before-dotfiles-*
