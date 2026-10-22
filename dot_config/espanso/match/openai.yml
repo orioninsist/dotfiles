@@ -47,7 +47,8 @@ matches:
 
   - trigger: :openaidevelopersmerge
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/developers.openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -55,7 +56,8 @@ matches:
 
   - trigger: :openaiacademymerge
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/academy.openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -63,7 +65,8 @@ matches:
 
   - trigger: :openaihelpmerge
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/help.openai.com-en \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -71,7 +74,8 @@ matches:
 
   - trigger: :chatgptlearnmerge
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/learn.chatgpt.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -79,7 +83,8 @@ matches:
 
   - trigger: :openaimerge
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -87,7 +92,8 @@ matches:
 
   - trigger: :openaiplatformmerge
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/platform.openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \

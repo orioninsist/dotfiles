@@ -5,7 +5,8 @@ matches:
 
   - trigger: ":commonmarkmerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/commonmark.org \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
