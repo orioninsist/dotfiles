@@ -22,3 +22,6 @@ id_ed25519
 
 # Chezmoi yerel durum dosyasi
 .chezmoistate.boltdb
+
+# Varsayilan Bottom yapilandirmasi; dotfiles deposuna alinmaz.
+/dot_config/bottom/bottom.toml
