@@ -1,0 +1,24 @@
+# Editor ve gecici dosyalar
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# Yerel ortam ve kimlik bilgileri
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# Yerel veritabanlari
+*.sqlite
+*.sqlite3
+
+# Chezmoi yerel durum dosyasi
+.chezmoistate.boltdb

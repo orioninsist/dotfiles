@@ -1,4 +1,18 @@
-# GitHub deposundaki belgeler ev dizinine uygulanmasın.
+# Chezmoi resmi belgeleri:
+# https://www.chezmoi.io/reference/special-files/chezmoiignore/
+#
+# Kaliplar kaynak adlariyla degil, hedef yollarla eslesir.
+# Mevcut yonetilen uygulama ayarlari korunur.
+
+# Depo belgeleri ev dizinine uygulanmasin.
 README.md
 docs
 docs/**
+
+# Yanlislikla yonetime alinmis gecici dosyalar.
+**/*.swp
+**/*.swo
+**/*~
+**/*.tmp
+**/*.bak
+**/*.orig
