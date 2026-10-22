@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+card="alsa_card.pci-0000_00_1f.3"
+
+analog_sink="alsa_output.pci-0000_00_1f.3.analog-stereo"
+hdmi_sink="alsa_output.pci-0000_00_1f.3.hdmi-stereo"
+
+analog_profile="output:analog-stereo+input:analog-stereo"
+hdmi_profile="output:hdmi-stereo+input:analog-stereo"
+
+ee_config="$HOME/.config/easyeffects/db/easyeffectsrc"
+
+current_sink="$(pactl get-default-sink)"
+
+case "$current_sink" in
+    "$analog_sink")
+        target_sink="$hdmi_sink"
+        target_profile="$hdmi_profile"
+        target_name="ASUS VN247 monitor speakers"
+        ;;
+    "$hdmi_sink")
+        target_sink="$analog_sink"
+        target_profile="$analog_profile"
+        target_name="ThinkPad speakers"
+        ;;
+    *)
+        target_sink="$analog_sink"
+        target_profile="$analog_profile"
+        target_name="ThinkPad speakers"
+        ;;
+esac
+
+pactl set-card-profile "$card" "$target_profile"
+
+for _ in {1..20}; do
+    if pactl list short sinks | awk '{print $2}' | grep -Fxq "$target_sink"; then
+        break
+    fi
+    sleep 0.1
+done
+
+if ! pactl list short sinks | awk '{print $2}' | grep -Fxq "$target_sink"; then
+    printf 'Audio output is unavailable: %s\n' "$target_name" >&2
+    exit 1
+fi
+
+pactl set-default-sink "$target_sink"
+
+if [[ -f "$ee_config" ]]; then
+    sed -i \
+        "s|^outputDevice=.*|outputDevice=$target_sink|" \
+        "$ee_config"
+fi
+
+systemctl --user restart easyeffects.service
+
+printf 'Audio output: %s\n' "$target_name"

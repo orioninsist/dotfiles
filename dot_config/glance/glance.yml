@@ -1,0 +1,163 @@
+server:
+  port: 8081
+
+pages:
+  - name: Günlük Operasyon
+    columns:
+      - size: full
+        widgets:
+          - type: bookmarks
+            title: Ana Operasyon
+            groups:
+              - title: Günlük İş Akışı
+                links:
+                  - title: Ana Operasyon - Google Sheets
+                    url: https://docs.google.com/spreadsheets/d/1RddopLx50kqdIHgHUrPE1CvtTeLKXZ9wxaOwyB-xtow/edit
+                  - title: Araştırma - FreshRSS
+                    url: http://localhost:8080
+                  - title: RSS Okuyucu - Folo
+                    url: https://app.folo.is
+                  - title: ChatGPT
+                    url: https://chatgpt.com
+              - title: Üretim ve Yayın
+                links:
+                  - title: Google Drive
+                    url: https://drive.google.com
+                  - title: Remotion
+                    url: https://www.remotion.dev
+                  - title: GitHub
+                    url: https://github.com
+                  - title: YouTube Studio
+                    url: https://studio.youtube.com
+          - type: rss
+            title: AI ve İçerik Üretimi
+            limit: 12
+            collapse-after: 6
+            cache: 30m
+            feeds:
+              - url: https://openai.com/news/rss.xml
+                title: OpenAI
+              - url: https://huggingface.co/blog/feed.xml
+                title: Hugging Face
+              - url: https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
+                title: The Verge AI
+
+      - size: small
+        widgets:
+          - type: bookmarks
+            title: Hızlı Erişim
+            groups:
+              - title: İş Araçları
+                links:
+                  - title: Google Calendar
+                    url: https://calendar.google.com
+                  - title: Gmail
+                    url: https://mail.google.com
+                  - title: Google Trends
+                    url: https://trends.google.com
+                  - title: Canva
+                    url: https://www.canva.com
+
+  - name: Araştırma ve Fırsatlar
+    columns:
+      - size: full
+        widgets:
+          - type: rss
+            title: Siber Güvenlik ve SOC
+            limit: 20
+            collapse-after: 10
+            cache: 30m
+            feeds:
+              - url: https://www.cisecurity.org/feed/advisories
+                title: CIS Advisories
+              - url: https://www.cisecurity.org/feed/alert
+                title: CIS Threat Alerts
+              - url: https://isc.sans.edu/rssfeed_full.xml
+                title: SANS ISC
+              - url: https://www.bleepingcomputer.com/feed/
+                title: BleepingComputer
+
+          - type: rss
+            title: Güvenlik Analizleri
+            limit: 12
+            collapse-after: 6
+            cache: 30m
+            feeds:
+              - url: https://thedfirreport.com/feed/
+                title: The DFIR Report
+              - url: https://unit42.paloaltonetworks.com/feed/
+                title: Unit 42
+
+      - size: small
+        widgets:
+          - type: bookmarks
+            title: Fırsat Araştırması
+            groups:
+              - title: Pazar ve Ürün
+                links:
+                  - title: Google Trends
+                    url: https://trends.google.com
+                  - title: Product Hunt
+                    url: https://www.producthunt.com
+                  - title: Gumroad
+                    url: https://gumroad.com
+                  - title: Etsy
+                    url: https://www.etsy.com
+                  - title: GitHub Trending
+                    url: https://github.com/trending
+
+  - name: Üretim ve Yayın
+    columns:
+      - size: full
+        widgets:
+          - type: bookmarks
+            title: Dijital Ürün ve İçerik Üretimi
+            groups:
+              - title: İçerik Hazırlama
+                links:
+                  - title: ChatGPT
+                    url: https://chatgpt.com
+                  - title: Google Docs
+                    url: https://docs.google.com/document/
+                  - title: Canva
+                    url: https://www.canva.com
+                  - title: Hugging Face
+                    url: https://huggingface.co
+              - title: Video ve Geliştirme
+                links:
+                  - title: Remotion
+                    url: https://www.remotion.dev
+                  - title: GitHub
+                    url: https://github.com
+                  - title: FFmpeg
+                    url: https://ffmpeg.org
+              - title: Yayınlama
+                links:
+                  - title: YouTube Studio
+                    url: https://studio.youtube.com
+                  - title: Gumroad
+                    url: https://gumroad.com
+                  - title: Etsy Seller
+                    url: https://www.etsy.com/your/shops/me/dashboard
+              - title: Ölçüm ve İyileştirme
+                links:
+                  - title: Ana Operasyon Tablosu
+                    url: https://docs.google.com/spreadsheets/d/1RddopLx50kqdIHgHUrPE1CvtTeLKXZ9wxaOwyB-xtow/edit
+                  - title: YouTube Analytics
+                    url: https://studio.youtube.com
+                  - title: Google Trends
+                    url: https://trends.google.com
+
+      - size: small
+        widgets:
+          - type: bookmarks
+            title: Günlük Çalışma
+            groups:
+              - title: Planlama
+                links:
+                  - title: Google Calendar
+                    url: https://calendar.google.com
+                  - title: Google Drive
+                    url: https://drive.google.com
+                  - title: Gmail
+                    url: https://mail.google.com
