@@ -70,3 +70,22 @@ docs/**
 # Yedek ve gecici dosyalar
 .config/mimeapps.list.orion-backup
 .config/starship.toml.before-dotfiles-*
+
+# Ilave yerel uygulama durumlari ve hassas profiller
+# Bu dizinlerdeki ayarlar ileride dosya bazinda gozden gecirilebilir.
+.config/calibre
+.config/miniflux
+.config/rustdesk
+.config/vscode-sqltools
+.config/com.github.githubapp
+.config/wireshark
+.config/menus
+.config/baloofileinformationrc
+.config/kiorc
+.config/trashrc
+
+# Yerel chezmoi ayarlari; kaynak depodaki .chezmoi.toml.tmpl korunur.
+.config/chezmoi
+
+# Kayitli tarihli yedegin tam hedef adi.
+.config/mimeapps.list.before-dotfiles-*
