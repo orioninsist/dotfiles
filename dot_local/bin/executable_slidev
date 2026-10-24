@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+PROJECT="$HOME/Project/slidev/orioninsist"
+
+if [ ! -f "$PROJECT/run.sh" ]; then
+  echo "Hata: Slidev calistiricisi bulunamadi." >&2
+  exit 1
+fi
+
+exec bash "$PROJECT/run.sh" "$@"
