@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Yeni niri oturumunun soketini mevcut tmux sunucusuna aktar.
+if [[ -n "${NIRI_SOCKET:-}" && -S "$NIRI_SOCKET" ]]; then
+    tmux set-environment -g NIRI_SOCKET "$NIRI_SOCKET" 2>/dev/null || true
+fi
+
+windows="$(niri msg -j windows)"
+
+has_window() {
+    python3 -c '
+import json, sys
+app_ids = set(sys.argv[1:])
+windows = json.load(sys.stdin)
+sys.exit(0 if any(w.get("app_id") in app_ids for w in windows) else 1)
+' "$@" <<< "$windows"
+}
+
+# Tek tmux oturumunu koru; yeni tmux penceresi oluşturma.
+if tmux has-session -t '=orioninsist' 2>/dev/null; then
+    echo "tmux: orioninsist zaten çalışıyor."
+else
+    echo "tmux: orioninsist bulunamadı."
+    echo "Önce Kitty içinde tmux komutuyla aç."
+fi
+
+# Kitty: açık pencereyi koru; yoksa tek tmux oturumuna bağlan.
+if has_window kitty; then
+    echo "Kitty zaten açık."
+else
+    echo "Kitty ve orioninsist başlatılıyor."
+    kitty tmux new-session -A -s orioninsist >/dev/null 2>&1 &
+fi
+
+# VS Code
+if has_window com.microsoft.VSCode; then
+    echo "VS Code zaten açık."
+else
+    echo "VS Code başlatılıyor."
+    code >/dev/null 2>&1 &
+fi
+
+# ChatGPT Desktop
+if has_window Chatgpt; then
+    echo "ChatGPT Desktop zaten açık."
+else
+    echo "ChatGPT Desktop başlatılıyor."
+    gtk-launch chatgpt >/dev/null 2>&1 &
+fi
+
+# ChatGPT web: her niri oturumunda yalnızca bir kez aç.
+session_key="$(printf '%s' "${NIRI_SOCKET:-unknown}" | sha256sum | cut -c1-16)"
+state_dir="${XDG_RUNTIME_DIR:?}/orioninsist"
+mkdir -p "$state_dir"
+
+(
+    if ! flock -w 2 -x 9; then
+        echo "ChatGPT web kilidi meşgul; yeni sekme açılmadı."
+        exit 0
+    fi
+    marker="$state_dir/chatgpt-web-$session_key"
+
+    if [[ -f "$marker" ]]; then
+        echo "ChatGPT web bu oturumda daha önce açıldı."
+    else
+        google-chrome --new-tab https://chatgpt.com/ \
+            </dev/null >/dev/null 2>&1 9>&- &
+        echo "ChatGPT web açma isteği gönderildi (PID: $!)."
+        touch "$marker"
+    fi
+) 9>"$state_dir/chatgpt-web.lock"
+
+echo "Tamamlandı. Codex manuel."

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+    echo 'Kullanim: ara "kelime veya cumle"'
+    exit 1
+fi
+
+KELIME="$*"
+KAYNAK="$PWD"
+AD="${KELIME//\//_}"
+HEDEF="$KAYNAK/.ara-sonuclari/$AD"
+
+if [[ -e "$HEDEF" ]]; then
+    echo "Bu arama zaten var: $HEDEF"
+    exit 1
+fi
+
+LISTE=$(mktemp)
+trap 'rm -f "$LISTE"' EXIT
+
+# Dosya isimlerinde ara (fd)
+fd -t f -H -I -i -F -0 \
+    -E .git -E .ara-sonuclari \
+    -- "$KELIME" "$KAYNAK" >> "$LISTE"
+
+# Dosya iceriklerinde ara (ripgrep)
+rg -l -0 -i -F --hidden --no-ignore \
+    -g '!.git/**' \
+    -g '!**/.git/**' \
+    -g '!.ara-sonuclari/**' \
+    -g '!**/.ara-sonuclari/**' \
+    -- "$KELIME" "$KAYNAK" >> "$LISTE" || true
+
+# Ayni dosyayi tekrar kopyalama
+sort -zu "$LISTE" -o "$LISTE"
+
+SAYAC=0
+
+while IFS= read -r -d '' DOSYA; do
+    [[ -f "$DOSYA" ]] || continue
+
+    GORELI="${DOSYA#"$KAYNAK"/}"
+    CIKTI="$HEDEF/$GORELI"
+
+    mkdir -p "$(dirname "$CIKTI")"
+    cp -p -- "$DOSYA" "$CIKTI"
+
+    ((SAYAC+=1))
+    echo "Kopyalandi: $GORELI"
+done < "$LISTE"
+
+echo
+echo "Toplam: $SAYAC dosya"
+echo "Klasor: $HEDEF"
