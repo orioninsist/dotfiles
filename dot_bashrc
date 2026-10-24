@@ -153,4 +153,13 @@ export PATH="$HOME/go/bin:$PATH"
 # ORION_ASTRO_EDITOR_BEGIN
 export EDITOR='env NVIM_APPNAME=astronvim nvim'
 export VISUAL='env NVIM_APPNAME=astronvim nvim'
-# ORION_ASTRO_EDITOR_END
+
+
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+export HISTCONTROL=ignoredups:erasedups # Tekrarlayan komutları eler
+shopt -s histappend                      # Oturum kapandığında geçmişin üzerine yazmak yerine sonuna ekler
+shopt -s checkwinsize # Terminal boyutu değiştiğinde satır/sütun boyutlarını otomatik günceller
+shopt -s globstar     # '**' deseniyle alt dizinlerde özyinelemeli (recursive) dosya aramayı açar
+shopt -s autocd       # Sadece dizin adını yazarak cd komutsuz dizine geçmeyi sağlar
+
