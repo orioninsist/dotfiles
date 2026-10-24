@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+for h in /sys/class/hwmon/hwmon*; do
+  [ "$(cat "$h/name" 2>/dev/null)" = "acpitz" ] || continue
+  f="$h/temp1_input"
+  [ -r "$f" ] || continue
+  v="$(cat "$f" 2>/dev/null || true)"
+  [ -n "$v" ] && echo "MB$((v/1000))°" && exit 0
+done
+echo "MB?"

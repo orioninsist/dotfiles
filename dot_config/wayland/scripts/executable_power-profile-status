@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+json() {
+    printf '{"text":"%s","class":"%s","tooltip":"%s"}\n' "$1" "$2" "$3"
+}
+
+if ! command -v powerprofilesctl >/dev/null 2>&1; then
+    json "PWR?" "unknown" "powerprofilesctl yok"
+    exit 0
+fi
+
+profile="$(powerprofilesctl get 2>/dev/null || true)"
+
+case "$profile" in
+    performance)
+        json "PERF" "performance" "Performance"
+        ;;
+    balanced)
+        json "BAL" "balanced" "Balanced"
+        ;;
+    power-saver)
+        json "SAVE" "saver" "Power saver"
+        ;;
+    *)
+        json "PWR?" "unknown" "Power profile okunamıyor"
+        ;;
+esac

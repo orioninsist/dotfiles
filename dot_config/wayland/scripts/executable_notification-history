@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+selection="$(
+    makoctl history -j |
+        jq -r '
+            .[:5][] |
+            [
+                (.app_name // "notification"),
+                (.summary // ""),
+                ((.body // "") | gsub("\n"; " "))
+            ] |
+            @tsv
+        ' |
+        awk -F '\t' '{
+            text = "[" $1 "] " $2
+            if ($3 != "") text = text " — " $3
+            print text
+        }' |
+        fuzzel --dmenu --prompt="notifications > "
+)" || exit 0
+
+[[ -n "$selection" ]] || exit 0
+
+wl-copy "$selection"
