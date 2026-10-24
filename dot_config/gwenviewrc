@@ -1,0 +1,34 @@
+[General]
+LastUsedVersion=210800
+ThumbnailBarIsVisible=true
+
+[MainWindow]
+MenuBar=Disabled
+
+[Recent Files]
+File1[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-10-06 at 8.20.38 PM (6).jpeg
+File10[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-10-06 at 8.20.38 PM (5).jpeg
+File2[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-10-06 at 8.20.39 PM.jpeg
+File3[$e]=$HOME/Downloads/aynur/1.png
+File4[$e]=$HOME/Downloads/aynur/2.png
+File5[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-09-23 at 6.20.42 PM.jpeg
+File6[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-10-06 at 8.20.38 PM (1).jpeg
+File7[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-10-06 at 8.20.38 PM (2).jpeg
+File8[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-10-06 at 8.20.38 PM (3).jpeg
+File9[$e]=$HOME/Downloads/aynur/WhatsApp Image 2026-10-06 at 8.20.38 PM (4).jpeg
+Name1[$e]=WhatsApp Image 2026-10-06 at 8.20.38 PM (6).jpeg
+Name10[$e]=WhatsApp Image 2026-10-06 at 8.20.38 PM (5).jpeg
+Name2[$e]=WhatsApp Image 2026-10-06 at 8.20.39 PM.jpeg
+Name3[$e]=1.png
+Name4[$e]=2.png
+Name5[$e]=WhatsApp Image 2026-09-23 at 6.20.42 PM.jpeg
+Name6[$e]=WhatsApp Image 2026-10-06 at 8.20.38 PM (1).jpeg
+Name7[$e]=WhatsApp Image 2026-10-06 at 8.20.38 PM (2).jpeg
+Name8[$e]=WhatsApp Image 2026-10-06 at 8.20.38 PM (3).jpeg
+Name9[$e]=WhatsApp Image 2026-10-06 at 8.20.38 PM (4).jpeg
+
+[SideBar]
+InformationSplitterSizes=211,244
+
+[UiSettings]
+ColorScheme=CatppuccinMochaMauve
