@@ -5,3 +5,11 @@
 # Bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# User-local executable paths.
+export PATH="$HOME/.local/bin:$PATH"
+
+# JetBrains Toolbox
+if [[ -d "$HOME/.local/share/JetBrains/Toolbox/scripts" ]]; then
+    export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+fi
