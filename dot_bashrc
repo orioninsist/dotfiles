@@ -163,3 +163,9 @@ shopt -s checkwinsize # Terminal boyutu değiştiğinde satır/sütun boyutları
 shopt -s globstar     # '**' deseniyle alt dizinlerde özyinelemeli (recursive) dosya aramayı açar
 shopt -s autocd       # Sadece dizin adını yazarak cd komutsuz dizine geçmeyi sağlar
 
+
+mand() { bash "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/man2gfm.sh" "$@"; }
+
+source "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/mand-completion.bash"
+
+source "$HOME/.config/ripgrep/search.bash"

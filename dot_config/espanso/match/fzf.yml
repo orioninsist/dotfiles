@@ -5,7 +5,8 @@ matches:
 
   - trigger: ":fzfmerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/junegunn.github.io-fzf \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -17,7 +18,8 @@ matches:
 
   - trigger: ":fzfwikimerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/github.com-junegunn-fzf-wiki \
       --token-limit 1800000 \
       --reserve-tokens 50000 \

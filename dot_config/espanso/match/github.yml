@@ -5,7 +5,8 @@ matches:
 
   - trigger: ":gfmmerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/github.github.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
@@ -20,7 +21,8 @@ matches:
 
   - trigger: ":githubdocsmerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/docs.github.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \

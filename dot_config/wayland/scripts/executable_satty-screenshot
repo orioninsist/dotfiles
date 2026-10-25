@@ -11,4 +11,4 @@ done
 region="$(slurp)" || exit 0
 [[ -n "$region" ]] || exit 0
 
-grim -g "$region" - | satty --filename - --output-filename "/home/murat/.screenshoot/Screenshot from %Y-%m-%d %H-%M-%S.png"
+grim -g "$region" - | satty --filename - --output-filename "/home/murat/Library/Image/Screenshot/ from %Y-%m-%d %H-%M-%S.png"

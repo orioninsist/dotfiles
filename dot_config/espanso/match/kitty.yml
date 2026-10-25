@@ -5,7 +5,8 @@ matches:
 
   - trigger: ":kittymerge"
     replace: |
-      cd /home/murat/Library/Documents/markdownMerge&& uv run mdmerge \
+      cd /home/murat/Project/docsync/markdownMerge && \
+      uv run mdmerge \
       /home/murat/Library/Documents/Documentation/sw.kovidgoyal.net-kitty \
       --token-limit 1800000 \
       --reserve-tokens 50000 \

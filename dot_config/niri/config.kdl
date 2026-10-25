@@ -61,14 +61,10 @@ layout {
         urgent-color "#f38ba8"
     }
 }
-
-
 spawn-at-startup "wlsunset" "-T" "1001" "-t" "1000"
-
 hotkey-overlay {
     skip-at-startup
 }
-
 screenshot-path "/home/murat/Library/Image/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
 
@@ -76,9 +72,6 @@ window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
 }
-
-
 include "binds/window-management.kdl"
 include "binds/workspaces.kdl"
-include "binds/system.kdl"
 include "binds/applications.kdl"

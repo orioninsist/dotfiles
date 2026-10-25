@@ -345,7 +345,7 @@ symbol = "󰛳 "
 style = "blue"
 
 [sudo]
-disabled = false
+disabled = true
 symbol = "󰌆 "
 style = "red"
 format = "[$symbol]($style)"

@@ -1,7 +1,7 @@
 matches:
 
   - trigger: ":hugoblog"
-    replace: "cd /home/murat/Media/6-Project/orioninsist.github.io"
+    replace: "cd /home/murat/Project/orioninsist.github.io"
 
   - trigger: ":hugonew"
     replace: "hugo new content/blog/"
