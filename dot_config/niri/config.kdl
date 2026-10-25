@@ -22,6 +22,7 @@ environment {
 }
 
 output "eDP-1" {
+    focus-at-startup
     background-color "#171411"
     mode "1920x1080@60.008"
     scale 1
@@ -30,7 +31,6 @@ output "eDP-1" {
 
 output "HDMI-A-1" {
     background-color "#171411"
-    off
     mode "1920x1080@60.000"
     scale 1
     position x=1920 y=0
@@ -68,10 +68,27 @@ hotkey-overlay {
 screenshot-path "/home/murat/Library/Image/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
 
+// Initial workspace for new windows; windows remain movable.
+window-rule {
+    match app-id="google-chrome"
+    open-on-workspace "ws1"
+}
+
+window-rule {
+    match app-id="kitty"
+    open-on-workspace "ws1"
+}
+
+window-rule {
+    match app-id="com.microsoft.VSCode"
+    open-on-workspace "ws2"
+}
+
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
 }
-include "binds/window-management.kdl"
-include "binds/workspaces.kdl"
-include "binds/applications.kdl"
+
+include "workspaces.kdl"
+include "window-management.kdl"
+include "applications.kdl"
