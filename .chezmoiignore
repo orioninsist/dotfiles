@@ -54,7 +54,6 @@ docs/**
 .config/dconf
 .config/pulse
 .config/session
-.config/QtProject.conf
 .config/kconf_updaterc
 .config/libaccounts-glib
 .config/glib-2.0
@@ -80,8 +79,6 @@ docs/**
 .config/com.github.githubapp
 .config/wireshark
 .config/menus
-.config/baloofileinformationrc
-.config/kiorc
 .config/trashrc
 
 # Yerel chezmoi ayarlari; kaynak depodaki .chezmoi.toml.tmpl korunur.

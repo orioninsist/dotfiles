@@ -17,8 +17,6 @@ input {
 }
 
 environment {
-    QT_QPA_PLATFORM "wayland;xcb"
-    KDE_COLOR_SCHEME "CatppuccinMochaMauve"
 }
 
 output "eDP-1" {
