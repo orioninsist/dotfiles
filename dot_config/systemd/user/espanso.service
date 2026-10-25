@@ -2,7 +2,7 @@
 Description=espanso
 
 [Service]
-ExecStart=/home/murat/.local/bin/espanso launcher
+ExecStart=/home/murat/.config/espanso/espanso launcher
 Restart=on-failure
 RestartSec=3
 
