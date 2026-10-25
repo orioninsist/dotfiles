@@ -10,6 +10,8 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
 [[ $- != *i* ]] && return
 
+export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
+
 alias ls="eza --icons=auto --group-directories-first"
 alias ll="eza -lah --git --icons=auto --group-directories-first"
 alias la="eza -a --icons=auto --group-directories-first"
@@ -34,8 +36,6 @@ if [[ -d "$FLYCOMP_COMPLETION_DIR" ]]; then
 fi
 unset completion_file FLYCOMP_COMPLETION_DIR
 
-command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
-[[ -d "$HOME/.bun/bin" ]] && export PATH="$HOME/.bun/bin:$PATH"
 
 if [ -f "$HOME/.local/share/bash-completion/completions/kn" ]; then
     source "$HOME/.local/share/bash-completion/completions/kn"
@@ -102,7 +102,8 @@ complete -F _espanso_word_complete espanso-word
 
 # Added by Antigravity CLI installer
 export PATH="/home/murat/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export PATH="$CARGO_HOME/bin:$PATH"
 
 # Neovim profiles
 
@@ -169,3 +170,12 @@ mand() { bash "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/man2gfm.sh" "$@"; }
 source "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/mand-completion.bash"
 
 source "$HOME/.config/ripgrep/search.bash"
+
+export ANSIBLE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/ansible"
+
+command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
+
+export NPM_CONFIG_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/npm"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
+
+export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
