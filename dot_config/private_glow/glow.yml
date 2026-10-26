@@ -8,7 +8,7 @@ style: "/home/murat/.config/glow/catppuccin-mocha.json"
 mouse: true
 
 # Use pager to display markdown
-pager: true
+pager: false
 
 # Column width at which text should word wrap
 width: 80

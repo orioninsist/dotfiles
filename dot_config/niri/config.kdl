@@ -66,27 +66,11 @@ hotkey-overlay {
 screenshot-path "/home/murat/Library/Image/Screenshot from %Y-%m-%d %H-%M-%S.png"
 prefer-no-csd
 
-// Initial workspace for new windows; windows remain movable.
-window-rule {
-    match app-id="google-chrome"
-    open-on-workspace "ws1"
-}
 
-window-rule {
-    match app-id="kitty"
-    open-on-workspace "ws1"
-}
 
-window-rule {
-    match app-id="com.microsoft.VSCode"
-    open-on-workspace "ws2"
-}
 
-window-rule {
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-    open-floating true
-}
 
 include "workspaces.kdl"
 include "window-management.kdl"
 include "applications.kdl"
+include "window-rule.kdl"

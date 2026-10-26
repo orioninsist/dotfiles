@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export PATH="$HOME/.local/bin:$HOME/.config/wayland/scripts/commands:$PATH"
+export PATH="$HOME/.config/wayland/scripts/commands:$PATH"
 
 match_dir="$HOME/.config/espanso/match"
 
@@ -38,4 +38,4 @@ triggers="${file_triggers[$selected_file]-}"
 trigger="$(printf '%s\n' "$triggers" | sed '/^[[:space:]]*$/d' | fuzzel --dmenu --prompt="${selected_file} > ")" || exit 0
 [[ -n "$trigger" ]] || exit 0
 
-espanso match exec --trigger "$trigger"
+"$HOME/.config/espanso/espanso" match exec --trigger "$trigger"
