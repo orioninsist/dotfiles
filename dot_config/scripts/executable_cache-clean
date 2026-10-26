@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Yardım
+case "${1:-}" in
+    -h|--help)
+        cat <<'HELP'
+cache-clean - XDG önbellek temizleyici
+
+KULLANIM
+    cache-clean [--help]
+
+AÇIKLAMA
+    ~/.cache altındaki belirlenmiş uygulama önbelleklerini temizler.
+    Google Chrome önbelleğini korur.
+
+TEMİZLENENLER
+    pip HTTP önbelleği, Codex çalışma önbellekleri,
+    Puppeteer, Camoufox, Playwright, Whisper, Go,
+    Tracker3, libdnf5, Firefox, Tor Browser,
+    Yandex Browser, Chromium, Edge, Calibre ve Hugo.
+
+ÖZEL İŞLEMLER
+    uv cache prune     Kullanılmayan önbelleği budar.
+    npm cache verify   npm önbelleğini doğrular.
+
+KORUNANLAR
+    Google Chrome önbelleği
+    XDG yapılandırma ve kullanıcı veri dizinleri
+    Kurulu sistem paketleri
+
+UYARILAR
+    Temizleme işlemi geri alınamaz.
+    İlgili uygulamaları çalıştırmadan önce kapat.
+    Modeller ve tarayıcı bileşenleri yeniden indirilebilir.
+    Tracker3 arama indeksini yeniden oluşturabilir.
+
+SEÇENEKLER
+    -h, --help    Bu yardım mesajını göster.
+HELP
+        exit 0
+        ;;
+    "")
+        ;;
+    *)
+        printf 'Bilinmeyen seçenek: %s\n' "$1" >&2
+        exit 2
+        ;;
+esac
+
+
+cache="${XDG_CACHE_HOME:-$HOME/.cache}"
+
+[[ -d "$cache" && "$cache" != "/" && "$cache" != "$HOME" && ! -L "$cache" ]] || exit 1
+
+
+printf 'Önce: '
+du -sh "$cache"
+
+command -v uv >/dev/null 2>&1 && uv cache prune
+command -v npm >/dev/null 2>&1 && npm cache verify
+
+for dir in \
+    pip/http-v2 pip/selfcheck \
+    codex-runtimes Codex Codex.test-final \
+    puppeteer camoufox ms-playwright \
+    whisper go-build \
+    tracker3 libdnf5 \
+    mozilla torbrowser yandex-browser \
+    chromium microsoft-edge \
+    calibre hugo_cache \
+    # google-chrome
+do
+    if [[ -d "$cache/$dir" && ! -L "$cache/$dir" ]]; then
+        rm -rf -- "$cache/$dir"
+    fi
+done
+
+printf 'Sonra: '
+du -sh "$cache"
