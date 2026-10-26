@@ -1,6 +1,49 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+    cat <<'HELP'
+Kullanım:
+  trash-cleanup.sh [--help]
+
+Seçenekler:
+  -h, --help    Bu yardım mesajını gösterir.
+
+Açıklama:
+  XDG çöp kutusunun boyutunu gösterir ve kullanıcı
+  onayıyla içeriğini kalıcı olarak temizler.
+
+Gereksinimler:
+  Fedora Linux, Bash, trash-cli
+
+Güvenlik:
+  - Silme öncesinde kullanıcı onayı ister.
+  - sudo kullanmaz.
+  - Çöp kutusu dışındaki dosyaları hedeflemez.
+  - İzinleri otomatik değiştirmez.
+  - Silinen dosyalar geri alınamaz.
+HELP
+}
+
+case "${1:-}" in
+    -h|--help)
+        usage
+        exit 0
+        ;;
+    "")
+        ;;
+    *)
+        printf 'Bilinmeyen seçenek: %s\\n' "$1" >&2
+        usage >&2
+        exit 2
+        ;;
+esac
+
+if (( $# > 1 )); then
+    printf 'Hata: Fazla argüman.\\n' >&2
+    exit 2
+fi
+
 trash="${XDG_DATA_HOME:-$HOME/.local/share}/Trash"
 files="$trash/files"
 
