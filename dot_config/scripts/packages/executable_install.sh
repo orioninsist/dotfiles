@@ -268,6 +268,90 @@ read    : Kayıtları görüntüle
 HELP
 }
 
+
+# Harici depo dosyalarını kontrol et; hiçbir sistem dosyasını değiştirme.
+check_repositories() {
+    local file name missing=0 found=0
+    local current_fedora
+    current_fedora="$(rpm -E '%fedora')" || return 1
+
+    printf 'Fedora sürümü: %s\n' "$current_fedora"
+
+    for file in "$ROOT"/repos/*.repo; do
+        [[ -f "$file" && ! -L "$file" ]] || {
+            echo "HATA: Geçersiz depo yedeği: $file" >&2
+            return 1
+        }
+
+        name="${file##*/}"
+
+        if grep -Eq '(^|[^0-9])fedora[-_/ ]?(4[0-9]|[5-9][0-9])([^0-9]|$)' "$file"; then
+            if grep -Eiq 'fedora[-_/ ]?44([^0-9]|$)' "$file" &&
+               [[ "$current_fedora" != 44 ]]; then
+                echo "HATA: Fedora 44 için sabitlenmiş depo: $name" >&2
+                return 1
+            fi
+        fi
+
+        if [[ -e "/etc/yum.repos.d/$name" || -L "/etc/yum.repos.d/$name" ]]; then
+            found=$((found + 1))
+        else
+            missing=$((missing + 1))
+            printf 'Eksik: %s\n' "$name"
+        fi
+    done
+
+    printf 'Mevcut: %s | Eksik: %s\n' "$found" "$missing"
+}
+
+# Yalnızca açık komutla çalışır. Mevcut dosyaları değiştirmez.
+restore_repositories() {
+    local file name answer
+    local current_fedora
+
+    current_fedora="$(rpm -E '%fedora')" || return 1
+
+    if [[ "$current_fedora" != 44 ]]; then
+        echo "HATA: Yedekler Fedora 44 üzerinde alındı."
+        echo "Farklı Fedora sürümünde depo uyumluluğu ayrıca doğrulanmalı."
+        return 1
+    fi
+
+    check_repositories || return 1
+
+    printf 'Eksik depo dosyalarını /etc/yum.repos.d/ içine eklemek istiyor musun? [e/H] '
+    read -r answer
+    [[ "$answer" == e || "$answer" == E ]] || {
+        echo "İptal edildi."
+        return 0
+    }
+
+    for file in "$ROOT"/repos/*.repo; do
+        name="${file##*/}"
+
+        if [[ -e "/etc/yum.repos.d/$name" || -L "/etc/yum.repos.d/$name" ]]; then
+            continue
+        fi
+
+        # Hedef varsa üzerine yazmayı reddet.
+        if ! sudo cp --no-clobber -- "$file" "/etc/yum.repos.d/$name"; then
+            echo "HATA: $name kopyalanamadı." >&2
+            return 1
+        fi
+
+        if ! sudo cmp -s -- "$file" "/etc/yum.repos.d/$name"; then
+            echo "HATA: $name doğrulanamadı." >&2
+            return 1
+        fi
+
+        sudo chmod 644 "/etc/yum.repos.d/$name" || return 1
+        echo "Eklendi: $name"
+    done
+
+    echo "Depo dosyaları kontrol edildi."
+    echo "Paket kurulumundan önce DNF depo erişimini ayrıca doğrula."
+}
+
 main() {
     local action="${1:-help}"
     local started ended status
@@ -297,6 +381,8 @@ main() {
 
             return "$status"
             ;;
+        repos-check) check_repositories ;;
+        repos-restore) restore_repositories ;;
         summary) summary ;;
         read) read_inventory "${2:-all}" ;;
         help|-h|--help) usage ;;
