@@ -1,0 +1,3 @@
+user	de.haeckerfelix.Shortwave	flathub
+user	md.obsidian.Obsidian	flathub
+user	net.ankiweb.Anki	flathub

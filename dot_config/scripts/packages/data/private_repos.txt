@@ -1,0 +1,12 @@
+brave-browser
+code
+copr:copr.fedorainfracloud.org:atim:lazygit
+copr:copr.fedorainfracloud.org:frodo:zellij
+copr:copr.fedorainfracloud.org:lihaohong:yazi
+fedora
+fedora-cisco-openh264
+google-chrome
+microsoft-edge
+mullvad-stable
+updates
+yandex-browser
