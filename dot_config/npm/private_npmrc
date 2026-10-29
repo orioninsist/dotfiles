@@ -1,0 +1,2 @@
+allow-git=true
+prefix=/home/murat/.local/share/npm

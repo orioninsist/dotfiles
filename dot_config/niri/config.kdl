@@ -60,6 +60,7 @@ layout {
     }
 }
 spawn-at-startup "wlsunset" "-T" "1001" "-t" "1000"
+spawn-at-startup "lxpolkit"
 hotkey-overlay {
     skip-at-startup
 }

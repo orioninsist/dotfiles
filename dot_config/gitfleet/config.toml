@@ -1,8 +1,0 @@
-[paths]
-scan_root = "/mnt/.data/local/projects"
-clone_root = "/mnt/.data/local/projects"
-report = "reports/projects.md"
-
-[backup]
-remote = "gdrive:backups/projects"
-format = "tar.zst"
