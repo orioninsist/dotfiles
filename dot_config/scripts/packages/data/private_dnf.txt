@@ -197,6 +197,7 @@ torbrowser-launcher
 trash-cli
 tree
 tuned
+unrar
 upower
 usbutils
 util-linux
