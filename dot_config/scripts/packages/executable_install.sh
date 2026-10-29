@@ -255,9 +255,27 @@ install_missing() {
         log "HATA: Kayıtlı bazı DNF depoları etkin değil."
         log "Eksik depolar:"
         comm -23 "$DATA/repos.txt" "$tmp/repos"
-        log "Depo yapılandırmaları doğrulanmadan paket kurulmadı."
-        rm -r "$tmp"
-        return 1
+        log "Eksik depolar için geri yükleme başlatılıyor."
+
+        if ! restore_repositories; then
+            log "Depo geri yükleme tamamlanmadı; paket kurulmadı."
+            rm -r "$tmp"
+            return 1
+        fi
+
+        if ! capture_repos > "$tmp/repos"; then
+            log "Depolar yeniden okunamadı."
+            rm -r "$tmp"
+            return 1
+        fi
+
+        sort -u "$tmp/repos" -o "$tmp/repos"
+
+        if [[ -n "$(comm -23 "$DATA/repos.txt" "$tmp/repos")" ]]; then
+            log "Bazı depolar hâlâ etkin değil; paket kurulmadı."
+            rm -r "$tmp"
+            return 1
+        fi
     fi
 
     log "=== EKSİK PAKET KURULUMU ==="
@@ -400,7 +418,7 @@ restore_repositories() {
     read -r answer
     [[ "$answer" == e || "$answer" == E ]] || {
         echo "İptal edildi."
-        return 0
+        return 1
     }
 
     for file in "$ROOT"/repos/*.repo; do
