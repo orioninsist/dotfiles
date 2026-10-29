@@ -1,0 +1,4 @@
+bottom|0.14.9-1|https://github.com/ClementTsang/bottom/releases/download/0.14.9/bottom-0.14.9-1.x86_64.rpm|04e2e2f66f9db42face25238123eebaef7b417416325e658c6ceb6fe99ffea33
+excalidraw-desktop|0.8.0-1|https://github.com/quabyt-tech/excalidraw-desktop/releases/download/v0.8.0/Excalidraw.Desktop-0.8.0-1.x86_64.rpm|3ae07921bc14c485e5e9ae64f190cef3f835bf83619afbfb64252643a055e6bb
+rustdesk|1.5.0-0|https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-0.x86_64.rpm|96e4246d62a992630dacac3472f356ad517a5ef6d0cd8ea02b5648bc1cabff26
+sops|3.13.3-1|https://github.com/getsops/sops/releases/download/v3.13.3/sops-3.13.3-1.x86_64.rpm|f362eabc5b17b84894952fc57737eccf26ef8a4321453c165f4b1205b5544123

@@ -157,6 +157,73 @@ read_inventory() {
     esac
 }
 
+
+install_local_rpm() {
+    local package="$1"
+    local name version url checksum extra
+    local file tmp identity actual
+
+    [[ -f "$DATA/rpm-sources.txt" ]] || {
+        log "HATA: RPM kaynak listesi bulunamadı." >&2
+        return 1
+    }
+
+    while IFS='|' read -r name version url checksum extra; do
+        [[ "$name" == "$package" ]] || continue
+
+        if [[ -n "$extra" ||
+              ! "$version" =~ ^[A-Za-z0-9._+-]+$ ||
+              ! "$url" =~ ^https://github\.com/[^/]+/[^/]+/releases/download/[^/]+/[^/]+\.rpm$ ||
+              ! "$checksum" =~ ^[a-fA-F0-9]{64}$ ]]; then
+            log "HATA: Geçersiz RPM kaydı: $package" >&2
+            return 1
+        fi
+
+        tmp="$(mktemp -d)" || return 1
+        file="$tmp/${url##*/}"
+
+        if ! curl -fL --retry 3 -- "$url" -o "$file"; then
+            log "HATA: RPM indirilemedi: $package" >&2
+            rm -r "$tmp"
+            return 1
+        fi
+
+        actual="$(sha256sum "$file")"
+        actual="${actual%% *}"
+
+        if [[ "$actual" != "$checksum" ]]; then
+            log "HATA: SHA-256 uyuşmuyor: $package" >&2
+            rm -r "$tmp"
+            return 1
+        fi
+
+        identity="$(rpm -qp --queryformat '%{NAME}|%{VERSION}-%{RELEASE}|%{ARCH}' "$file")" || {
+            rm -r "$tmp"
+            return 1
+        }
+
+        if [[ "$identity" != "$name|$version|x86_64" ]]; then
+            log "HATA: RPM kimliği uyuşmuyor: $package" >&2
+            rm -r "$tmp"
+            return 1
+        fi
+
+        log "Doğrulandı: $package $version"
+
+        if sudo dnf5 install -y "$file" &&
+           rpm -q "$package" >/dev/null 2>&1; then
+            rm -r "$tmp"
+            return 0
+        fi
+
+        rm -r "$tmp"
+        return 1
+    done < "$DATA/rpm-sources.txt"
+
+    log "HATA: RPM kaynak kaydı bulunamadı: $package" >&2
+    return 1
+}
+
 install_missing() {
     local tmp package scope app remote
     local success=0 failed=0 skipped=0
@@ -204,6 +271,16 @@ install_missing() {
         fi
 
         log "DNF: $package"
+
+        if grep -q "^${package}|" "$DATA/rpm-sources.txt" 2>/dev/null; then
+            if install_local_rpm "$package"; then
+                success=$((success + 1))
+            else
+                failed=$((failed + 1))
+                log "BAŞARISIZ: $package"
+            fi
+            continue
+        fi
 
         if sudo dnf5 install -y "$package" &&
            rpm -q "$package" >/dev/null 2>&1; then
