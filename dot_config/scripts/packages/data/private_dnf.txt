@@ -162,6 +162,8 @@ rclone
 ripgrep
 rootfiles
 rpm
+rpmfusion-free-release
+rpmfusion-nonfree-release
 rsms-inter-fonts
 rsync
 rust-std-static-wasm32-wasip1

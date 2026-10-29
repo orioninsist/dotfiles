@@ -8,5 +8,9 @@ fedora-cisco-openh264
 google-chrome
 microsoft-edge
 mullvad-stable
+rpmfusion-free
+rpmfusion-free-updates
+rpmfusion-nonfree
+rpmfusion-nonfree-updates
 updates
 yandex-browser
