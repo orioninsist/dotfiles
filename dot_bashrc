@@ -11,7 +11,9 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 [[ $- != *i* ]] && return
 
 export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
-
+export CODEX_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/codex"
+export COPILOT_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/copilot"
+export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin:$PATH"
 alias ls="eza --icons=auto --group-directories-first"
 alias ll="eza -lah --git --icons=auto --group-directories-first"
 alias la="eza -a --icons=auto --group-directories-first"
@@ -179,3 +181,11 @@ export NPM_CONFIG_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/npm"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
 
 export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
+
+
+[[ ":$PATH:" == *":$HOME/.config/scripts:"* ]] || export PATH="$HOME/.config/scripts:$PATH"
+
+source /home/murat/Project/gomplate/orioninsist/gomplate.sh
+
+
+source "/home/murat/Project/slidev/slidev-docker.sh"

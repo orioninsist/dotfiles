@@ -9,3 +9,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # User-local executable paths.
 
 
+
+# Kullanici CLI betikleri
+export PATH="$HOME/.config/scripts:$PATH"
