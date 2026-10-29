@@ -349,17 +349,55 @@ summary() {
 
 usage() {
     cat <<'HELP'
-./install.sh analyze
-./install.sh update
-./install.sh install
-./install.sh summary
-./install.sh read dnf|flatpak|repos|all
+# Fedora Package Inventory Manager
 
-analyze : Read-only inventory comparison
-update  : Synchronize inventory with installed packages
-install : Install missing packages; skip existing ones
-summary : Inventory and last operation summary
-read    : Display inventory records
+Manage and restore DNF5 packages, Flatpak applications, and repository configurations on Fedora 44.
+
+## Commands
+
+| Command | Description |
+| --- | --- |
+| `./install.sh help` | Display this help documentation. |
+| `./install.sh analyze` | Compare saved inventories with the current system without changing anything. |
+| `./install.sh update` | Refresh package and repository inventories from the current system. |
+| `./install.sh install` | Install missing DNF and Flatpak packages, restoring missing repository files with confirmation when needed. |
+| `./install.sh summary` | Show saved inventory counts and the last recorded update or installation. |
+| `./install.sh read all` | Display all saved DNF, Flatpak, and repository inventories. |
+| `./install.sh read dnf` | List saved DNF packages. |
+| `./install.sh read flatpak` | List saved Flatpak applications and their remotes. |
+| `./install.sh read repos` | List saved enabled DNF repositories. |
+| `./install.sh repos-check` | Check whether backed-up third-party repository files exist on the system. |
+| `./install.sh repos-restore` | Restore missing third-party repository files after confirmation, without overwriting existing files. |
+
+## Inventory Files
+
+| File | Contents |
+| --- | --- |
+| `data/dnf.txt` | User-installed DNF package names. |
+| `data/flatpak.txt` | Flatpak application IDs, installation scopes, and remotes. |
+| `data/repos.txt` | Enabled DNF repository IDs. |
+| `data/rpm-sources.txt` | Download URLs, versions, and SHA-256 checksums for selected local RPM packages. |
+| `repos/*.repo` | Backups of third-party repository configuration files. |
+| `reports/last.txt` | Result of the most recent update or installation operation. |
+
+## Typical Workflow
+
+1. Run `./install.sh analyze` to check for missing packages or repositories.
+2. Run `./install.sh update` after intentionally changing installed packages or repositories.
+3. Run `./install.sh repos-check` to verify third-party repository backups.
+4. Run `./install.sh install` to restore missing packages when needed.
+5. Run `./install.sh summary` to review inventory counts and the last operation.
+
+## Safety Notes
+
+- `analyze`, `summary`, `read`, and `repos-check` do not install packages.
+- `update` refreshes inventory files; it does not install packages.
+- `install` skips packages already present and installs missing packages.
+- Local RPM downloads are checked against recorded SHA-256 checksums and RPM identities.
+- Repository restoration requires confirmation and does not overwrite existing repository files.
+- Repository backups are intended for Fedora 44 and must be reviewed before use on another Fedora release.
+- This tool does not automatically commit or push changes to GitHub.
+
 HELP
 }
 
