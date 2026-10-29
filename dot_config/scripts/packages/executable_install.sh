@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Fedora 44 / DNF5 / Flatpak paket envanteri
-# Kullanım: analyze | update | install | summary | read [dnf|flatpak|repos|all]
+# Fedora 44 / DNF5 / Flatpak package inventory
+# Usage: analyze | update | install | summary | read [dnf|flatpak|repos|all]
 
 set -u
 export LC_ALL=C
@@ -76,13 +76,13 @@ analyze() {
     local tmp category saved result=0
 
     tmp="$(mktemp -d)" || return 1
-    log "=== ANALİZ ==="
+    log "=== ANALYSIS ==="
 
     for category in dnf flatpak repos; do
         saved="$DATA/$category.txt"
 
         if ! capture "$category" > "$tmp/$category"; then
-            log "$category: okunamadı"
+            log "$category: could not be read"
             result=1
             continue
         fi
@@ -90,9 +90,9 @@ analyze() {
         sort -u "$tmp/$category" -o "$tmp/$category"
 
         if [[ -f "$saved" ]]; then
-            log "$category: kayıtlı $(count "$saved"), mevcut $(count "$tmp/$category"), eksik $(missing_count "$saved" "$tmp/$category")"
+            log "$category: saved $(count "$saved"), present $(count "$tmp/$category"), missing $(missing_count "$saved" "$tmp/$category")"
         else
-            log "$category: mevcut $(count "$tmp/$category"), kayıt henüz yok"
+            log "$category: present $(count "$tmp/$category"), no saved inventory"
         fi
     done
 
@@ -104,13 +104,13 @@ update() {
     local tmp category saved added removed result=0
 
     tmp="$(mktemp -d)" || return 1
-    log "=== ENVANTER GÜNCELLEME ==="
+    log "=== INVENTORY UPDATE ==="
 
     for category in dnf flatpak repos; do
         saved="$DATA/$category.txt"
 
         if ! capture "$category" > "$tmp/$category"; then
-            log "$category: HATA, eski kayıt korundu"
+            log "$category: ERROR, previous inventory preserved"
             result=1
             continue
         fi
@@ -126,10 +126,10 @@ update() {
         fi
 
         if [[ -f "$saved" ]] && cmp -s "$saved" "$tmp/$category"; then
-            log "$category: değişmedi ($(count "$saved"))"
+            log "$category: unchanged ($(count "$saved"))"
         else
             cp "$tmp/$category" "$saved"
-            log "$category: toplam $(count "$saved"), yeni $added, çıkarılan $removed"
+            log "$category: total $(count "$saved"), added $added, removed $removed"
         fi
     done
 
@@ -151,7 +151,7 @@ read_inventory() {
             [[ ! -f "$DATA/$category.txt" ]] || cat "$DATA/$category.txt"
             ;;
         *)
-            log "Geçersiz kategori: $category" >&2
+            log "Invalid category: $category" >&2
             return 2
             ;;
     esac
@@ -164,7 +164,7 @@ install_local_rpm() {
     local file tmp identity actual
 
     [[ -f "$DATA/rpm-sources.txt" ]] || {
-        log "HATA: RPM kaynak listesi bulunamadı." >&2
+        log "ERROR: RPM source list not found." >&2
         return 1
     }
 
@@ -175,7 +175,7 @@ install_local_rpm() {
               ! "$version" =~ ^[A-Za-z0-9._+-]+$ ||
               ! "$url" =~ ^https://github\.com/[^/]+/[^/]+/releases/download/[^/]+/[^/]+\.rpm$ ||
               ! "$checksum" =~ ^[a-fA-F0-9]{64}$ ]]; then
-            log "HATA: Geçersiz RPM kaydı: $package" >&2
+            log "ERROR: Invalid RPM record: $package" >&2
             return 1
         fi
 
@@ -183,7 +183,7 @@ install_local_rpm() {
         file="$tmp/${url##*/}"
 
         if ! curl -fL --retry 3 -- "$url" -o "$file"; then
-            log "HATA: RPM indirilemedi: $package" >&2
+            log "ERROR: RPM download failed: $package" >&2
             rm -r "$tmp"
             return 1
         fi
@@ -192,7 +192,7 @@ install_local_rpm() {
         actual="${actual%% *}"
 
         if [[ "$actual" != "$checksum" ]]; then
-            log "HATA: SHA-256 uyuşmuyor: $package" >&2
+            log "ERROR: SHA-256 mismatch: $package" >&2
             rm -r "$tmp"
             return 1
         fi
@@ -203,12 +203,12 @@ install_local_rpm() {
         }
 
         if [[ "$identity" != "$name|$version|x86_64" ]]; then
-            log "HATA: RPM kimliği uyuşmuyor: $package" >&2
+            log "ERROR: RPM identity mismatch: $package" >&2
             rm -r "$tmp"
             return 1
         fi
 
-        log "Doğrulandı: $package $version"
+        log "Verified: $package $version"
 
         if sudo dnf5 install -y "$file" &&
            rpm -q "$package" >/dev/null 2>&1; then
@@ -220,7 +220,7 @@ install_local_rpm() {
         return 1
     done < "$DATA/rpm-sources.txt"
 
-    log "HATA: RPM kaynak kaydı bulunamadı: $package" >&2
+    log "ERROR: RPM source record not found: $package" >&2
     return 1
 }
 
@@ -230,7 +230,7 @@ install_missing() {
 
     for package in dnf flatpak repos; do
         if [[ ! -f "$DATA/$package.txt" ]]; then
-            log "Eksik envanter: $package" >&2
+            log "Missing inventory: $package" >&2
             return 1
         fi
     done
@@ -240,7 +240,7 @@ install_missing() {
     if ! capture_dnf > "$tmp/dnf" ||
        ! capture_flatpak > "$tmp/flatpak" ||
        ! capture_repos > "$tmp/repos"; then
-        log "Sistem durumu okunamadı; kurulum durduruldu." >&2
+        log "Could not read system state; installation stopped." >&2
         rm -r "$tmp"
         return 1
     fi
@@ -249,22 +249,22 @@ install_missing() {
     sort -u "$tmp/flatpak" -o "$tmp/flatpak"
     sort -u "$tmp/repos" -o "$tmp/repos"
 
-    # Eksik depoların kurulum adresleri envanterden çıkarılamaz.
-    # Yanlış kaynaktan paket kurulmasını önlemek için önce durdur.
+    # Repository installation URLs cannot be determined from inventory.
+    # Stop first to prevent installation from an incorrect source.
     if [[ -n "$(comm -23 "$DATA/repos.txt" "$tmp/repos")" ]]; then
-        log "HATA: Kayıtlı bazı DNF depoları etkin değil."
-        log "Eksik depolar:"
+        log "ERROR: Some saved DNF repositories are not enabled."
+        log "Missing repositories:"
         comm -23 "$DATA/repos.txt" "$tmp/repos"
-        log "Eksik depolar için geri yükleme başlatılıyor."
+        log "Starting restoration of missing repositories."
 
         if ! restore_repositories; then
-            log "Depo geri yükleme tamamlanmadı; paket kurulmadı."
+            log "Repository restoration incomplete; no packages installed."
             rm -r "$tmp"
             return 1
         fi
 
         if ! capture_repos > "$tmp/repos"; then
-            log "Depolar yeniden okunamadı."
+            log "Could not read repositories again."
             rm -r "$tmp"
             return 1
         fi
@@ -272,13 +272,13 @@ install_missing() {
         sort -u "$tmp/repos" -o "$tmp/repos"
 
         if [[ -n "$(comm -23 "$DATA/repos.txt" "$tmp/repos")" ]]; then
-            log "Bazı depolar hâlâ etkin değil; paket kurulmadı."
+            log "Some repositories are still disabled; no packages installed."
             rm -r "$tmp"
             return 1
         fi
     fi
 
-    log "=== EKSİK PAKET KURULUMU ==="
+    log "=== MISSING PACKAGE INSTALLATION ==="
 
     while IFS= read -r package; do
         [[ -n "$package" ]] || continue
@@ -295,7 +295,7 @@ install_missing() {
                 success=$((success + 1))
             else
                 failed=$((failed + 1))
-                log "BAŞARISIZ: $package"
+                log "FAILED: $package"
             fi
             continue
         fi
@@ -305,7 +305,7 @@ install_missing() {
             success=$((success + 1))
         else
             failed=$((failed + 1))
-            log "BAŞARISIZ: $package"
+            log "FAILED: $package"
         fi
     done < "$DATA/dnf.txt"
 
@@ -324,25 +324,25 @@ install_missing() {
             success=$((success + 1))
         else
             failed=$((failed + 1))
-            log "BAŞARISIZ: $app"
+            log "FAILED: $app"
         fi
     done < "$DATA/flatpak.txt"
 
-    log "Başarılı: $success | Zaten mevcut: $skipped | Hatalı: $failed"
+    log "Installed: $success | Already present: $skipped | Failed: $failed"
 
     rm -r "$tmp"
     (( failed == 0 ))
 }
 
 summary() {
-    log "=== ENVANTER ÖZETİ ==="
+    log "=== INVENTORY SUMMARY ==="
     log "DNF: $(count "$DATA/dnf.txt")"
     log "Flatpak: $(count "$DATA/flatpak.txt")"
-    log "Depolar: $(count "$DATA/repos.txt")"
+    log "Repositories: $(count "$DATA/repos.txt")"
 
     if [[ -f "$LAST" ]]; then
         log ""
-        log "=== SON İŞLEM ==="
+        log "=== LAST OPERATION ==="
         cat "$LAST"
     fi
 }
@@ -355,26 +355,26 @@ usage() {
 ./install.sh summary
 ./install.sh read dnf|flatpak|repos|all
 
-analyze : Salt okunur karşılaştırma
-update  : Envanteri mevcut kurulumla eşitle
-install : Eksik paketleri kur; mevcutları atla
-summary : Envanter ve son işlem özeti
-read    : Kayıtları görüntüle
+analyze : Read-only inventory comparison
+update  : Synchronize inventory with installed packages
+install : Install missing packages; skip existing ones
+summary : Inventory and last operation summary
+read    : Display inventory records
 HELP
 }
 
 
-# Harici depo dosyalarını kontrol et; hiçbir sistem dosyasını değiştirme.
+# Check external repository files without modifying system files.
 check_repositories() {
     local file name missing=0 found=0
     local current_fedora
     current_fedora="$(rpm -E '%fedora')" || return 1
 
-    printf 'Fedora sürümü: %s\n' "$current_fedora"
+    printf 'Fedora version: %s\n' "$current_fedora"
 
     for file in "$ROOT"/repos/*.repo; do
         [[ -f "$file" && ! -L "$file" ]] || {
-            echo "HATA: Geçersiz depo yedeği: $file" >&2
+            echo "ERROR: Invalid repository backup: $file" >&2
             return 1
         }
 
@@ -383,7 +383,7 @@ check_repositories() {
         if grep -Eq '(^|[^0-9])fedora[-_/ ]?(4[0-9]|[5-9][0-9])([^0-9]|$)' "$file"; then
             if grep -Eiq 'fedora[-_/ ]?44([^0-9]|$)' "$file" &&
                [[ "$current_fedora" != 44 ]]; then
-                echo "HATA: Fedora 44 için sabitlenmiş depo: $name" >&2
+                echo "ERROR: Repository pinned to Fedora 44: $name" >&2
                 return 1
             fi
         fi
@@ -392,14 +392,14 @@ check_repositories() {
             found=$((found + 1))
         else
             missing=$((missing + 1))
-            printf 'Eksik: %s\n' "$name"
+            printf 'Missing: %s\n' "$name"
         fi
     done
 
-    printf 'Mevcut: %s | Eksik: %s\n' "$found" "$missing"
+    printf 'Present: %s | Missing: %s\n' "$found" "$missing"
 }
 
-# Yalnızca açık komutla çalışır. Mevcut dosyaları değiştirmez.
+# Runs only when explicitly requested. Does not overwrite existing files.
 restore_repositories() {
     local file name answer
     local current_fedora
@@ -407,17 +407,17 @@ restore_repositories() {
     current_fedora="$(rpm -E '%fedora')" || return 1
 
     if [[ "$current_fedora" != 44 ]]; then
-        echo "HATA: Yedekler Fedora 44 üzerinde alındı."
-        echo "Farklı Fedora sürümünde depo uyumluluğu ayrıca doğrulanmalı."
+        echo "ERROR: Backups were created on Fedora 44."
+        echo "Repository compatibility must be checked on other Fedora versions."
         return 1
     fi
 
     check_repositories || return 1
 
-    printf 'Eksik depo dosyalarını /etc/yum.repos.d/ içine eklemek istiyor musun? [e/H] '
+    printf 'Restore missing repository files to /etc/yum.repos.d/? [e/H] '
     read -r answer
     [[ "$answer" == e || "$answer" == E ]] || {
-        echo "İptal edildi."
+        echo "Cancelled."
         return 1
     }
 
@@ -428,23 +428,23 @@ restore_repositories() {
             continue
         fi
 
-        # Hedef varsa üzerine yazmayı reddet.
+        # Refuse to overwrite an existing destination.
         if ! sudo cp --no-clobber -- "$file" "/etc/yum.repos.d/$name"; then
-            echo "HATA: $name kopyalanamadı." >&2
+            echo "ERROR: $name could not be copied." >&2
             return 1
         fi
 
         if ! sudo cmp -s -- "$file" "/etc/yum.repos.d/$name"; then
-            echo "HATA: $name doğrulanamadı." >&2
+            echo "ERROR: $name could not be verified." >&2
             return 1
         fi
 
         sudo chmod 644 "/etc/yum.repos.d/$name" || return 1
-        echo "Eklendi: $name"
+        echo "Added: $name"
     done
 
-    echo "Depo dosyaları kontrol edildi."
-    echo "Paket kurulumundan önce DNF depo erişimini ayrıca doğrula."
+    echo "Repository files checked."
+    echo "Verify DNF repository access before installing packages."
 }
 
 main() {
@@ -468,10 +468,10 @@ main() {
             ended="$(date +%s)"
 
             {
-                log "İşlem: $action"
-                log "Tarih: $(date '+%Y-%m-%d %H:%M:%S')"
-                log "Süre: $((ended - started)) saniye"
-                log "Çıkış kodu: $status"
+                log "Operation: $action"
+                log "Date: $(date '+%Y-%m-%d %H:%M:%S')"
+                log "Duration: $((ended - started)) seconds"
+                log "Exit code: $status"
             } > "$LAST"
 
             return "$status"
