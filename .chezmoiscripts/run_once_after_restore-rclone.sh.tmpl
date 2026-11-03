@@ -10,15 +10,20 @@ if [ -e "$target" ] || [ -L "$target" ]; then
     exit 0
 fi
 
-# Anahtar henüz geri yüklenmemişse sonraki apply'da tekrar dene.
+# Anahtar yoksa hata ver: run_once başarılı sayılmamalı; sonraki apply tekrar denemeli.
 if [ ! -r "$identity" ]; then
     echo "Rclone geri yükleme atlandı: age anahtarı bulunamadı." >&2
-    exit 0
+    exit 1
 fi
 
 if [ ! -r "$encrypted" ]; then
     echo "Rclone geri yükleme atlandı: şifreli yedek bulunamadı." >&2
-    exit 0
+    exit 1
+fi
+
+if ! command -v age >/dev/null 2>&1; then
+    echo "Rclone geri yükleme başarısız: age komutu bulunamadı." >&2
+    exit 1
 fi
 
 umask 077
