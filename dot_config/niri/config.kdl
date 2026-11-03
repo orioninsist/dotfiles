@@ -71,7 +71,7 @@ prefer-no-csd
 
 
 
-include "workspaces.kdl"
-include "window-management.kdl"
-include "applications.kdl"
-include "window-rule.kdl"
+include "binds/workspaces.kdl"
+include "binds/window-management.kdl"
+include "binds/applications.kdl"
+include "binds/system.kdl"
