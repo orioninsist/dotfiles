@@ -1,6 +1,6 @@
 binds {
     Mod+Return { spawn "kitty"; }
-    Mod+D {  spawn "fuzzel" "--anchor=center" "--width=45" "--lines=10" "--font=monospace:size=12" "--icon-theme=Adwaita" "--match-mode=fuzzy" "--fields=name,generic,keywords" "--placeholder=Uygulama ara..." "--prompt=>" "--counter" "--show-actions" "--border-radius=12" "--selection-radius=8" "--border-width=1" "--horizontal-pad=24" "--vertical-pad=10" "--dpi-aware=auto" "--layer=overlay" "--keyboard-focus=exclusive"; }
+    Mod+D {  spawn "fuzzel" "--anchor=center" "--width=45" "--lines=10" "--font=monospace:size=12" "--icon-theme=Adwaita" "--match-mode=fuzzy" "--fields=name,generic,keywords" "--placeholder=Uygulama ara..." "--prompt=>" "--counter" "--show-actions" "--border-radius=12"  "--border-width=1" "--horizontal-pad=24" "--vertical-pad=10" "--dpi-aware=auto" "--layer=overlay" "--keyboard-focus=exclusive"; }
     Mod+C { spawn "/home/murat/.config/wayland/scripts/espanso-search"; }
     Mod+Y { spawn "kitty" "yazi"; }
     Mod+P { spawn "/home/murat/.config/wayland/scripts/satty-screenshot"; }

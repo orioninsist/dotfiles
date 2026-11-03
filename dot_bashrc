@@ -24,7 +24,6 @@ PS1="[\u@\h \W]\$ "
 
 export _ZO_RESOLVE_SYMLINKS=1
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
-
 FLYLINE_SO="$HOME/.local/lib/libflyline.so"
 if [[ -f "$FLYLINE_SO" ]]; then
     enable -p | grep -q "^enable flyline$" || enable -f "$FLYLINE_SO" flyline
@@ -176,6 +175,13 @@ mand() { bash "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/man2gfm.sh" "$@"; }
 export ANSIBLE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/ansible"
 
 command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
+# Keep Starship active while preserving existing prompt hooks.
+if declare -F starship_precmd >/dev/null; then
+    case ";${PROMPT_COMMAND:-};" in
+        *";starship_precmd;"*) ;;
+        *) PROMPT_COMMAND="starship_precmd; ${PROMPT_COMMAND:-}" ;;
+    esac
+fi
 
 export NPM_CONFIG_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/npm"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
