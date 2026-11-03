@@ -1,31 +1,29 @@
 matches:
   - trigger: ":espanso"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://espanso.org/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://espanso.org/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Espanso/Documentation/espanso.org
 
   - trigger: ":espansomerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/espanso.org \
+      /home/murat/Library/Documents/Notes/Murat/Espanso/Documentation/espanso.org \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
 
   - trigger: ":espansowiki"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://github.com/espanso/espanso/wiki --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://github.com/espanso/espanso/wiki --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Espanso/Documentation/github.com
 
   - trigger: ":espansowikimerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/github.com \
+      /home/murat/Library/Documents/Notes/Murat/Espanso/Documentation/github.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
-
-
 
   - trigger: ":espansonewfile"
     replace: "espanso-word nvim "

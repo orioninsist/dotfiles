@@ -1,55 +1,36 @@
 matches:
   - trigger: ":developersDocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://developers.openai.com/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://developers.openai.com/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/developers.openai.com
 
   - trigger: ":academyDocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://academy.openai.com/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://academy.openai.com/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/academy.openai.com
 
   - trigger: ":helpDocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://help.openai.com/en --engine python --language en --headful
+      cd /home/murat/Project/docsync && uv run docsync sync https://help.openai.com/en --engine python --language en --headful -o /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/help.openai.com
 
   - trigger: ":chatgptlearnDocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://learn.chatgpt.com/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://learn.chatgpt.com/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/learn.chatgpt.com
 
   - trigger: ":openaiDocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://openai.com/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://openai.com/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/openai.com
 
   - trigger: ":platformDocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://platform.openai.com/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://platform.openai.com/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/platform.openai.com
 
 
 
-# ============================================================
-# markdownMerge project
-# Markdown docs -> LLM context packages
-#
-# Project:
-# /home/murat/Project/docsync/markdownMerge
-#
-# Output name:
-# Automatically derived from INPUT_DIRECTORY name
-#
-# Tokenizer:
-# o200k_base
-#
-# Output:
-# - Markdown context files
-# - manifest.json
-# - summary.txt
-# - validation.txt
-# ============================================================
 
   - trigger: :openaidevelopersmerge
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/developers.openai.com \
+      /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/developers.openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
@@ -58,7 +39,7 @@ matches:
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/academy.openai.com \
+      /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/academy.openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
@@ -67,7 +48,7 @@ matches:
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/help.openai.com-en \
+      /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/help.openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
@@ -76,7 +57,7 @@ matches:
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/learn.chatgpt.com \
+      /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/learn.chatgpt.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
@@ -85,7 +66,7 @@ matches:
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/openai.com \
+      /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
@@ -94,81 +75,7 @@ matches:
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/platform.openai.com \
+      /home/murat/Library/Documents/Notes/Murat/Openai/Documentation/platform.openai.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
-
-
-# ============================================================
-# markdownMerge checks
-# Check generated AI packages
-# ============================================================
-
-  - trigger: :openaimergecheck
-    replace: |
-      cat /home/murat/Media/8-Document/markdownMerge/openai.com/summary.txt && \
-      echo && \
-      cat /home/murat/Media/8-Document/markdownMerge/openai.com/validation.txt
-
-  - trigger: :openaimergemanifest
-    replace: |
-      jq . /home/murat/Media/8-Document/markdownMerge/openai.com/manifest.json
-
-
-
-  # ============================================================
-  # markdownParts project
-  # Markdown docs -> Exact number of merged Markdown parts
-  #
-  # Project:
-  # /home/murat/Project/docsync/markdownParts
-  #
-  # Output:
-  # /home/murat/Media/8-Document/markdownPart/
-  #
-  # Output name:
-  # Automatically derived from INPUT_DIRECTORY name
-  #
-  # Split:
-  # By Markdown file count
-  #
-  # Output:
-  # - Only merged .md files
-  # ============================================================
-
-  - trigger: :openaidevelopersparts
-    replace: |
-      cd /home/murat/Project/docsync/markdownParts && uv run mdparts \
-      /home/murat/Library/Documents/Documentation/developers.openai.com \
-      --parts 2
-
-  - trigger: :openaiacademyparts
-    replace: |
-      cd /home/murat/Project/docsync/markdownParts && uv run mdparts \
-      /home/murat/Library/Documents/Documentation/academy.openai.com \
-      --parts 2
-
-  - trigger: :openaihelpparts
-    replace: |
-      cd /home/murat/Project/docsync/markdownParts && uv run mdparts \
-      /home/murat/Library/Documents/Documentation/help.openai.com-en \
-      --parts 2
-
-  - trigger: :chatgptlearnparts
-    replace: |
-      cd /home/murat/Project/docsync/markdownParts && uv run mdparts \
-      /home/murat/Library/Documents/Documentation/learn.chatgpt.com \
-      --parts 2
-
-  - trigger: :openaiparts
-    replace: |
-      cd /home/murat/Project/docsync/markdownParts && uv run mdparts \
-      /home/murat/Library/Documents/Documentation/openai.com \
-      --parts 2
-
-  - trigger: :openaiplatformparts
-    replace: |
-      cd /home/murat/Project/docsync/markdownParts && uv run mdparts \
-      /home/murat/Library/Documents/Documentation/platform.openai.com \
-      --parts 2

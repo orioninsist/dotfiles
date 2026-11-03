@@ -15,14 +15,13 @@ matches:
 
   - trigger: ":systemdDocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://systemd.io/ --engine python --language en
-
+      cd /home/murat/Project/docsync && uv run docsync sync https://systemd.io/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Systemd/Documentation/systemd.io
 
   - trigger: ":systemdmerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/systemd.io \
+      /home/murat/Library/Documents/Notes/Murat/Systemd/Documentation/systemd.io \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base

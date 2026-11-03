@@ -1,29 +1,26 @@
 matches:
   - trigger: ":gfm"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://github.github.com/gfm/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://github.github.com/gfm/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Github/Documentation/github.github.com
 
   - trigger: ":gfmmerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/github.github.com \
+      /home/murat/Library/Documents/Notes/Murat/Github/Documentation/github.github.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
 
-
-
-
   - trigger: ":githubdocs"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://docs.github.com/en --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://docs.github.com/en --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Github/Documentation/docs.github.com
 
   - trigger: ":githubdocsmerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/docs.github.com \
+      /home/murat/Library/Documents/Notes/Murat/Github/Documentation/docs.github.com \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base

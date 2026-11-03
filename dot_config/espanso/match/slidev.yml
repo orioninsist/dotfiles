@@ -1,13 +1,13 @@
 matches:
   - trigger: ":slidev"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://sli.dev --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://sli.dev --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Slidev/Documentation/sli.dev
 
   - trigger: ":smerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/sli.dev  \
+      /home/murat/Library/Documents/Notes/Murat/Slidev/Documentation/sli.dev \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base

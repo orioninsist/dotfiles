@@ -1,13 +1,13 @@
 matches:
   - trigger: ":crawlee"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://crawlee.dev/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://crawlee.dev/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Crawlee/Documentation/crawlee.dev
 
   - trigger: ":crawleemerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/crawlee.dev \
+      /home/murat/Library/Documents/Notes/Murat/Crawlee/Documentation/crawlee.dev \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base

@@ -1,14 +1,13 @@
 matches:
-
   - trigger: ":remotion"
     replace: |
-      cd /home/murat/Project/docsync && uv run docsync sync https://www.remotion.dev/ --engine python --language en
+      cd /home/murat/Project/docsync && uv run docsync sync https://www.remotion.dev/ --engine python --language en -o /home/murat/Library/Documents/Notes/Murat/Remotion/Documentation/www.remotion.dev
 
   - trigger: ":remotionmerge"
     replace: |
       cd /home/murat/Project/docsync/markdownMerge && \
       uv run mdmerge \
-      /home/murat/Library/Documents/Documentation/www.remotion.dev \
+      /home/murat/Library/Documents/Notes/Murat/Remotion/Documentation/www.remotion.dev \
       --token-limit 1800000 \
       --reserve-tokens 50000 \
       --encoding o200k_base
