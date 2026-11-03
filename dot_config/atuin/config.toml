@@ -68,7 +68,7 @@ enabled = false
 autostart = false
 
 [search]
-filters = ["global", "session", "session-preload", "workspace", "directory", "host"]
+filters = ["global", "session", "workspace", "directory", "host"]
 
 [tmux]
 enabled = false

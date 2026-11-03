@@ -9,7 +9,7 @@ command_timeout = 1000
 palette = "catppuccin_mocha"
 
 format = """
-$os$username$hostname$directory$git_branch$git_commit$git_state$git_status$git_metrics$package$docker_context$kubernetes$aws$gcloud$azure$openstack$terraform$pulumi$helm$buf$c$cpp$cmake$meson$rust$golang$zig$odin$nim$vlang$nodejs$bun$deno$python$conda$pixi$java$kotlin$gradle$scala$dotnet$php$ruby$lua$swift$dart$elixir$erlang$gleam$haskell$ocaml$perl$julia$typst$solidity$elm$fennel$haxe$crystal$purescript$raku$quarto$nix_shell$guix_shell$direnv$mise$container$netns$sudo$memory_usage$cmd_duration$jobs$status$line_break$character"""
+$os$username$hostname$directory$git_branch$git_commit$git_state$git_status$git_metrics$package$docker_context$kubernetes$aws$gcloud$azure$openstack$terraform$pulumi$helm$buf$c$cmake$meson$rust$golang$zig$odin$nim$vlang$nodejs$bun$deno$python$conda$java$kotlin$gradle$scala$dotnet$php$ruby$lua$swift$dart$elixir$erlang$gleam$haskell$ocaml$perl$julia$typst$solidity$elm$fennel$haxe$crystal$purescript$raku$quarto$nix_shell$guix_shell$direnv$container$sudo$memory_usage$cmd_duration$jobs$status$line_break$character"""
 
 right_format = """$battery$time"""
 
@@ -149,9 +149,6 @@ symbol = " "
 style = "green"
 format = "via [$symbol$environment]($style) "
 
-[pixi]
-symbol = "󰏗 "
-style = "mauve"
 
 [golang]
 symbol = " "
@@ -163,11 +160,6 @@ symbol = " "
 style = "blue"
 format = "via [$symbol$version]($style) "
 
-[cpp]
-disabled = false
-symbol = " "
-style = "blue"
-format = "via [$symbol$version]($style) "
 
 [cmake]
 symbol = " "
@@ -331,18 +323,11 @@ symbol = "󰇥 "
 style = "yellow"
 format = "[$symbol$loaded]($style) "
 
-[mise]
-symbol = "󰌌 "
-style = "mauve"
 
 [container]
 symbol = "⬢ "
 style = "yellow"
 format = "[$symbol$name]($style) "
-
-[netns]
-symbol = "󰛳 "
-style = "blue"
 
 [sudo]
 disabled = true

@@ -169,9 +169,9 @@ shopt -s autocd       # Sadece dizin adını yazarak cd komutsuz dizine geçmeyi
 
 mand() { bash "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/man2gfm.sh" "$@"; }
 
-source "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/mand-completion.bash"
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/mand-completion.bash" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/mand-completion.bash"
 
-source "$HOME/.config/ripgrep/search.bash"
+[[ -r "$HOME/.config/ripgrep/search.bash" ]] && source "$HOME/.config/ripgrep/search.bash"
 
 export ANSIBLE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/ansible"
 
@@ -185,10 +185,10 @@ export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
 
 [[ ":$PATH:" == *":$HOME/.config/scripts:"* ]] || export PATH="$HOME/.config/scripts:$PATH"
 
-source /home/murat/Project/gomplate/orioninsist/gomplate.sh
+[[ -r /home/murat/Project/gomplate/orioninsist/gomplate.sh ]] && source /home/murat/Project/gomplate/orioninsist/gomplate.sh
 
 
-source "/home/murat/Project/slidev/slidev-docker.sh"
+[[ -r "/home/murat/Project/slidev/slidev-docker.sh" ]] && source "/home/murat/Project/slidev/slidev-docker.sh"
 
 [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/bash/functions/ff.bash" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/bash/functions/ff.bash"
 
