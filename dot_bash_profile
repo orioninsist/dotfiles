@@ -12,3 +12,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Kullanici CLI betikleri
 export PATH="$HOME/.config/scripts:$PATH"
+
+# NOS
+export PATH="$HOME/.config/scripts/nos:$PATH"

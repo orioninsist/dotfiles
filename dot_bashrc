@@ -189,3 +189,9 @@ source /home/murat/Project/gomplate/orioninsist/gomplate.sh
 
 
 source "/home/murat/Project/slidev/slidev-docker.sh"
+
+[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/bash/functions/ff.bash" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/bash/functions/ff.bash"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
