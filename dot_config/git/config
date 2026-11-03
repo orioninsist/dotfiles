@@ -4,7 +4,7 @@
 [safe]
 	directory = /mnt/local/areas/docsync
 [core]
-	pager = delta
+	pager = less
 [interactive]
 	diffFilter = delta --color-only
 [delta]
