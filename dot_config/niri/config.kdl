@@ -64,7 +64,7 @@ spawn-at-startup "lxpolkit"
 hotkey-overlay {
     skip-at-startup
 }
-screenshot-path "~/Library/Image/Screenshot from %Y-%m-%d %H-%M-%S.png"
+screenshot-path "/home/murat/Library/Documents/Notes/Murat/Screenshot/Screenshot_%Y-%m-%d_%H-%M-%S.png"
 prefer-no-csd
 
 
