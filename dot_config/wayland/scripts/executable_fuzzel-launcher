@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+selection="$(
+    compgen -c |
+        sort -u |
+        fuzzel --dmenu --prompt=""
+)" || exit 0
+
+[[ -n "$selection" ]] || exit 0
+
+exec "$selection"

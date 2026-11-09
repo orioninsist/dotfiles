@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+SOURCE="@DEFAULT_AUDIO_SOURCE@"
+
+STATE=$(wpctl get-volume "$SOURCE")
+
+if echo "$STATE" | grep -q MUTED; then
+    wpctl set-mute "$SOURCE" 0
+    notify-send "Microphone" "Microphone ON 🎙"
+else
+    wpctl set-mute "$SOURCE" 1
+    notify-send "Microphone" "Microphone OFF 🔇"
+fi

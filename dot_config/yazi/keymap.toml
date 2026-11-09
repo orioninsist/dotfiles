@@ -1,6 +1,6 @@
 [mgr]
 prepend_keymap = [
-  { on = "l", run = "plugin smart-enter", desc = "Smart Enter: open file or enter directory" },
+  { on = "l", run = "open", desc = "Open file or enter directory" },
   { on = [ "c", "m" ], run = "plugin chmod", desc = "Change file permissions" },
   # Shell acma
   { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here", for = "unix" },

@@ -17,6 +17,7 @@ input {
 }
 
 environment {
+    QT_QPA_PLATFORMTHEME "qt6ct"
 }
 
 output "eDP-1" {
@@ -60,18 +61,15 @@ layout {
     }
 }
 spawn-at-startup "wlsunset" "-T" "1001" "-t" "1000"
-spawn-at-startup "lxpolkit"
 hotkey-overlay {
     skip-at-startup
 }
-screenshot-path "/home/murat/Library/Documents/Notes/Murat/Screenshot/Screenshot_%Y-%m-%d_%H-%M-%S.png"
+screenshot-path "/home/murat/Pictures/Screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png"
 prefer-no-csd
-
-
-
-
-
 include "binds/workspaces.kdl"
 include "binds/window-management.kdl"
 include "binds/applications.kdl"
-include "binds/system.kdl"
+binds {
+    Mod+N { spawn "sh" "-c" "$HOME/.config/wayland/scripts/mako-toggle"; }
+    Mod+F4 { spawn "sh" "-c" "$HOME/.config/wayland/scripts/audio-toggle"; }
+}

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export PATH="$HOME/.local/bin:$HOME/.config/wayland/scripts/commands:$PATH"
+
+match_dir="$HOME/.config/espanso/match"
+
+declare -a entries=()
+declare -A file_triggers=()
+
+while IFS= read -r -d '' file; do
+    relative="${file#"$match_dir"/}"
+
+    triggers="$(
+        sed -nE 's/^[[:space:]]*-[[:space:]]*trigger:[[:space:]]*["'\'']?([^"'\'']+)["'\'']?[[:space:]]*$/\1/p' "$file" |
+        sort -u
+    )"
+
+    [[ -n "$triggers" ]] || continue
+
+    count="$(printf '%s\n' "$triggers" | sed '/^[[:space:]]*$/d' | wc -l)"
+    entries+=("$(printf '%-40s %4d trigger' "$relative" "$count")")
+    file_triggers["$relative"]="$triggers"
+done < <(
+    find "$match_dir" -type f \( -name '*.yml' -o -name '*.yaml' \) -print0 2>/dev/null |
+        sort -z
+)
+
+(("${#entries[@]}" > 0)) || exit 0
+
+selection="$(printf '%s\n' "${entries[@]}" | fuzzel --dmenu --prompt="Espanso files > ")" || exit 0
+[[ -n "$selection" ]] || exit 0
+
+selected_file="${selection%%[[:space:]]*}"
+triggers="${file_triggers[$selected_file]-}"
+[[ -n "$triggers" ]] || exit 0
+
+trigger="$(printf '%s\n' "$triggers" | sed '/^[[:space:]]*$/d' | fuzzel --dmenu --prompt="${selected_file} > ")" || exit 0
+[[ -n "$trigger" ]] || exit 0
+
+espanso match exec --trigger "$trigger"

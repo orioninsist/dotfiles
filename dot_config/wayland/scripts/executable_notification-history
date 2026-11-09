@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+HISTORY=$(makoctl history 2>/dev/null)
+
+if [[ -z "$HISTORY" ]]; then
+    printf '%s\n' "No notification history" |
+        fuzzel --dmenu --prompt="notifications > "
+    exit 0
+fi
+
+ITEMS=$(
+    printf '%s\n' "$HISTORY" |
+    awk '
+        /^Notification [0-9]+:/ {
+            if (item != "") print item
+            item = $0
+            sub(/^Notification [0-9]+: /, "", item)
+            next
+        }
+        /^[[:space:]]+App name:/ {
+            app = $0
+            sub(/^[[:space:]]+App name:[[:space:]]*/, "", app)
+            item = "[" app "] " item
+        }
+        END {
+            if (item != "") print item
+        }
+    '
+)
+
+if [[ -z "$ITEMS" ]]; then
+    printf '%s\n' "No notification history" |
+        fuzzel --dmenu --prompt="notifications > "
+    exit 0
+fi
+
+SELECTION=$(
+    printf '%s\n' "$ITEMS" |
+        fuzzel --dmenu --prompt="notifications > "
+) || exit 0
+
+[[ -n "$SELECTION" ]] || exit 0
+
+printf '%s' "$SELECTION" | wl-copy

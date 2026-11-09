@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! pgrep -x mako >/dev/null; then
+    systemctl --user start mako.service
+fi
+
+if makoctl mode | grep -qx 'do-not-disturb'; then
+    makoctl dismiss --all
+    makoctl mode -r do-not-disturb
+    notify-send "Notifications enabled"
+else
+    makoctl dismiss --all
+    makoctl mode -a do-not-disturb
+fi

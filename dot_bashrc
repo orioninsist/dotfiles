@@ -201,3 +201,40 @@ export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+. "/home/murat/.local/share/cargo/env"
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+
+export RIPGREP_CONFIG_PATH=/home/murat/.config/ripgrep/config
+
+export PATH="/usr/local/bin:$PATH"
+
+export PATH="/home/murat/.local/share/cargo/bin:$PATH"
+
+# Flyline - local build
+if [[ $- == *i* ]] && [[ -f /home/murat/Project/flyline/target/debug/libflyline.so ]]; then
+  enable flyline 2>/dev/null || enable -f /home/murat/Project/flyline/target/debug/libflyline.so flyline
+fi
+
+export PATH="$HOME/.cargo/bin:$PATH"
+eval "$(fzf --bash)"
+eval "$(zoxide init bash)"
+
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+
+markerpdf() {
+  if [ -z "$1" ]; then
+    echo "Usage: markerpdf /path/to/file.pdf"
+    return 1
+  fi
+
+  (
+    cd /home/murat/Project/marker || exit 1
+    uv run --no-sync marker_single "$1" --mode fast --disable_ocr
+  )
+}
+
+# ORION_PATH_DEDUP_FINAL
+# Remove duplicate PATH entries while preserving their order.
+PATH="$(printf '%s' "$PATH" | awk -v RS=: -v ORS=: '!seen[$0]++ && length($0) { print }')"
+PATH="${PATH%:}"
+export PATH

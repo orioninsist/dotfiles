@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+for h in /sys/class/hwmon/hwmon*; do
+  [ "$(cat "$h/name" 2>/dev/null)" = "nvme" ] || continue
+  for f in "$h"/temp*_input; do
+    base="${f%_input}"
+    label="$(cat "${base}_label" 2>/dev/null || true)"
+    [ "$label" = "Composite" ] || continue
+    v="$(cat "$f" 2>/dev/null || true)"
+    [ -n "$v" ] && echo "SSD$((v/1000))°" && exit 0
+  done
+done
+echo "SSD?"

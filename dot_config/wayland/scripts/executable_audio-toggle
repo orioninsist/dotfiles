@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+CARD="alsa_card.pci-0000_00_1f.3"
+
+PROFILE=$(pactl list cards | awk '
+    /Name: alsa_card.pci-0000_00_1f.3/ {found=1}
+    found && /Active Profile:/ {print $3; exit}
+')
+
+if [[ "$PROFILE" == output:hdmi-stereo* ]]; then
+    TARGET_PROFILE="output:analog-stereo+input:analog-stereo"
+    TARGET_SINK="alsa_output.pci-0000_00_1f.3.analog-stereo"
+    echo "Switching to laptop speakers"
+else
+    TARGET_PROFILE="output:hdmi-stereo+input:analog-stereo"
+    TARGET_SINK="alsa_output.pci-0000_00_1f.3.hdmi-stereo"
+    echo "Switching to ASUS HDMI"
+fi
+
+if ! pactl set-card-profile "$CARD" "$TARGET_PROFILE"; then
+    echo "ERROR: Could not change audio profile"
+    exit 1
+fi
+
+for i in 1 2 3 4 5 6 7 8 9 10; do
+    pactl list short sinks | awk '{print $2}' | grep -Fxq "$TARGET_SINK" && break
+    sleep 0.3
+done
+
+if ! pactl list short sinks | awk '{print $2}' | grep -Fxq "$TARGET_SINK"; then
+    echo "ERROR: Target audio output did not appear"
+    exit 1
+fi
+
+pactl set-default-sink "$TARGET_SINK"
+pactl set-sink-mute "$TARGET_SINK" 0
+pactl set-sink-volume "$TARGET_SINK" 70%
+
+pactl list short sink-inputs | awk '{print $1}' |
+while read -r ID; do
+    pactl move-sink-input "$ID" "$TARGET_SINK" 2>/dev/null || true
+done
+
+echo "ACTIVE: $TARGET_SINK"
